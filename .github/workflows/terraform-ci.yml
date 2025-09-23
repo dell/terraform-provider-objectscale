@@ -99,6 +99,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: dell/objectscale-client
+          ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: go generate
       - name: git diff
