@@ -37,9 +37,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Extract go client
-        run: make client-checkout
+        uses: actions/checkout@v4
+        with:
+          repository: dell/objectscale-client
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run the formatter, linter, and vetter
         uses: dell/common-github-actions/go-code-formatter-linter-vetter@main
         with:
@@ -65,9 +68,12 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
       - uses: actions/checkout@v3
-      - run: |
-          make client-build
-          make build
+      - name: Extract go client
+        uses: actions/checkout@v4
+        with:
+          repository: dell/objectscale-client
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: make build
 
   go_security_scan:
     name: Go security
@@ -87,7 +93,11 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
       - uses: hashicorp/setup-terraform@v3
       - uses: actions/checkout@v3
-      - run: make clean
+      - name: Extract go client
+        uses: actions/checkout@v4
+        with:
+          repository: dell/objectscale-client
+          token: ${{ secrets.GITHUB_TOKEN }}
       - run: go generate
       - name: git diff
         run: |
