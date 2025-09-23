@@ -15,19 +15,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package models
+package client
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	objectscale "github.com/dell/objectscale-client/golang/pkg"
+)
 
-// ExampleResourceModel describes the resource data model.
-type ExampleResourceModel struct {
-	ConfigurableAttribute types.String `tfsdk:"configurable_attribute"`
-	Defaulted             types.String `tfsdk:"defaulted"`
-	ID                    types.String `tfsdk:"id"`
+type Client struct {
+	ManagementClient *objectscale.ManagementClient
 }
 
-// ExampleDataSourceModel describes the data source data model.
-type ExampleDataSourceModel struct {
-	ConfigurableAttribute types.String `tfsdk:"configurable_attribute"`
-	ID                    types.String `tfsdk:"id"`
+func NewClient(
+	endpoint string,
+	username string,
+	password string,
+	insecure bool,
+) (*Client, error) {
+	managementClient, err := objectscale.NewManagementClient(endpoint, username, password, insecure)
+	if err != nil {
+		return nil, err
+	}
+
+	client := Client{
+		ManagementClient: managementClient,
+	}
+
+	return &client, nil
 }

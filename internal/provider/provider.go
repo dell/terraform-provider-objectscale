@@ -19,8 +19,7 @@ package provider
 
 import (
 	"context"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"terraform-provider-objectscale/client"
+	"terraform-provider-objectscale/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
@@ -37,24 +36,18 @@ var _ provider.Provider = &ObjectScaleProvider{}
 
 // ObjectScaleProvider defines the provider implementation.
 type ObjectScaleProvider struct {
-	// client can contain the upstream provider SDK or HTTP client used to
-	// communicate with the upstream service. Resource and DataSource
-	// implementations can then make calls using this client.
-
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
 	version string
 }
 
-// Data describes the provider data model.
-type Data struct {
+// ObjectScaleProviderModel describes the provider data model.
+type ObjectScaleProviderModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
 	Username types.String `tfsdk:"username"`
 	Password types.String `tfsdk:"password"`
 	Insecure types.Bool   `tfsdk:"insecure"`
-	AuthType types.Int64  `tfsdk:"auth_type"`
-	Timeout  types.Int64  `tfsdk:"timeout"`
 }
 
 // Metadata describes the provider arguments.
@@ -66,12 +59,12 @@ func (p *ObjectScaleProvider) Metadata(ctx context.Context, req provider.Metadat
 // Schema describes the provider arguments.
 func (p *ObjectScaleProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.",
-		Description:         "The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.",
+		MarkdownDescription: "The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.",
+		Description:         "The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
-				MarkdownDescription: "The API endpoint, ex. https://172.17.177.230:8080",
-				Description:         "The API endpoint, ex. https://172.17.177.230:8080",
+				MarkdownDescription: "The API endpoint, ex. https://10.225.100.1:4443",
+				Description:         "The API endpoint, ex. https://10.225.100.1:4443",
 				Required:            true,
 			},
 			"username": schema.StringAttribute{
@@ -96,26 +89,13 @@ func (p *ObjectScaleProvider) Schema(ctx context.Context, req provider.SchemaReq
 				Description:         "whether to skip SSL validation",
 				Required:            true,
 			},
-			"auth_type": schema.Int64Attribute{
-				MarkdownDescription: "what should be the auth type, 0 for basic and 1 for session-based",
-				Description:         "what should be the auth type, 0 for basic and 1 for session-based",
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.OneOf(0, 1),
-				},
-			},
-			"timeout": schema.Int64Attribute{
-				MarkdownDescription: "specifies a time limit for requests",
-				Description:         "specifies a time limit for requests",
-				Optional:            true,
-			},
 		},
 	}
 }
 
 // Configure configures the provider.
 func (p *ObjectScaleProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
-	var data Data
+	var data ObjectScaleProviderModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
@@ -123,48 +103,38 @@ func (p *ObjectScaleProvider) Configure(ctx context.Context, req provider.Config
 		return
 	}
 
-	// if timeout is not set. use default value 2000
-	if data.Timeout.IsNull() || data.Timeout.IsUnknown() {
-		data.Timeout = types.Int64Value(2000)
-	}
-	// If auth type is not set, use session based auth by default
-	if data.AuthType.IsNull() || data.AuthType.IsUnknown() {
-		data.AuthType = types.Int64Value(1)
-	}
 	// Configuration values are now available.
-	objectscaleClient, err := client.NewClient(
+	client, err := client.NewClient(
 		data.Endpoint.ValueString(),
-		data.Insecure.ValueBool(),
 		data.Username.ValueString(),
 		data.Password.ValueString(),
-		data.AuthType.ValueInt64(),
-		data.Timeout.ValueInt64(),
+		data.Insecure.ValueBool(),
 	)
 
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to create objectscale client",
-			"Error creating new client",
+			err.Error(),
 		)
 		return
 	}
 
 	// client configuration for data sources and resources
-	resp.DataSourceData = objectscaleClient
-	resp.ResourceData = objectscaleClient
+	resp.DataSourceData = client
+	resp.ResourceData = client
 }
 
 // Resources describes the provider resources.
 func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewExampleResource,
+		NewNamespaceResource,
 	}
 }
 
 // DataSources describes the provider data sources.
 func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewExampleDataSource,
+		NewNamespaceDataSource,
 	}
 }
 

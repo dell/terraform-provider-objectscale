@@ -40,4 +40,3 @@ Example resource
 ### Read-Only
 
 - `id` (String) Example identifier
-

@@ -15,34 +15,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-**OpenSource Licenses for Terraform Provider for ObjectScale
+OpenSource Licenses for Terraform Provider for ObjectScale
 =
-Package: golang.org/x/net  
-Version: v0.11.0  
-Copyright: Copyright (c) 2009 The Go Authors. All rights reserved.   
-License: [BSD-3-Clause](https://github.com/golang/net/blob/v0.11.0/LICENSE)
-* * *
 
 Package: github.com/hashicorp/terraform-plugin-docs  
-Version: v0.15.0  
+Version: v0.23.0  
 Copyright: Copyright (c) 2020 HashiCorp, Inc.  
-License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-docs/blob/v0.15.0/LICENSE)
+License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-docs/blob/v0.23.0/LICENSE)
 * * *
 
 Package: github.com/hashicorp/terraform-plugin-framework  
-Version: v1.3.1  
+Version: v1.15.1  
 Copyright: Copyright (c) 2021 HashiCorp, Inc.  
-License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-framework/blob/v1.3.1/LICENSE)
+License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-framework/blob/v1.15.1/LICENSE)
 * * *
 
 Package: github.com/hashicorp/terraform-plugin-framework-validators  
-Version: v0.10.0  
+Version: v0.18.0  
 Copyright: Copyright (c) 2022 HashiCorp, Inc.  
-License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-framework-validators/blob/v0.10.0/LICENSE)
+License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-framework-validators/blob/v0.18.0/LICENSE)
 * * *
 
 Package: github.com/hashicorp/terraform-plugin-log  
 Version: v0.9.0  
 Copyright: Copyright (c) 2021 HashiCorp, Inc.  
 License: [MPL-2.0 license](https://github.com/hashicorp/terraform-plugin-log/blob/v0.9.0/LICENSE)
+* * *
+
+Package: github.com/dell/objectscale-client/golang  
+Version: v1.0.0  
+Copyright: Copyright (c) Dell Inc., or its subsidiaries.  
+License: [Apache License 2.0](https://github.com/dell/objectscale-client/blob/main/LICENSE)
 * * *

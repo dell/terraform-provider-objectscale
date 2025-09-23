@@ -30,5 +30,3 @@ variable "endpoint" {
 variable "insecure" {
   type = bool
 }
-
-

@@ -36,4 +36,12 @@ website/vendor
 # Keep windows files with windows line endings
 *.winfile eol=crlf
 *coverage.out*
+
+/objectscale-client
 terraform-provider-objectscale
+terraform-provider-objectscale.exe
+terraform-provider-objectscale_*
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl

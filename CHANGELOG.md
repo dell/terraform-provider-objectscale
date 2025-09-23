@@ -16,7 +16,7 @@ limitations under the License.
 -->
 
 
-# v1.0.0 (Jan 1, 2024)
+# v1.0.0 (Dec 26, 2025)
 ## Release Summary
 
 ## Features

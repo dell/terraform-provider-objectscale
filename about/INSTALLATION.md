@@ -42,6 +42,7 @@ terraform init
 1. Clone this repo
 2. In the root of this repo run
 ```
+make client-build
 make install
 ```
 Then follow [installation from public repo](#installation-from-public-repository)

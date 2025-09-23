@@ -22,7 +22,7 @@ import (
 	"flag"
 	"log"
 
-	"terraform-provider-objectscale/objectscale/provider"
+	"terraform-provider-objectscale/internal/provider"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )

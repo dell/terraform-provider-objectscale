@@ -71,15 +71,10 @@ provider "objectscale" {
 
 ### Required
 
-- `endpoint` (String) The API endpoint, ex. https://172.17.177.230:8080
+- `endpoint` (String) The API endpoint, ex. https://172.17.177.230:4443
 - `insecure` (Boolean) whether to skip SSL validation
 - `password` (String, Sensitive) The password
 - `username` (String) The username
-
-### Optional
-
-- `auth_type` (Number) what should be the auth type, 0 for basic and 1 for session-based
-- `timeout` (Number) specifies a time limit for requests
 
 ## Best Practices
 1. The parent resource attributes of a certain resource can only be designated at creation.
