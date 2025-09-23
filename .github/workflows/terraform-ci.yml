@@ -38,10 +38,6 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - name: Extract go client
-        run: git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
-        env:
-          TOKEN: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - name: Run the formatter, linter, and vetter
         uses: dell/common-github-actions/go-code-formatter-linter-vetter@main
         with:
@@ -68,7 +64,9 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
       - uses: actions/checkout@v4
       - name: Extract go client
-        run: git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
+        run: |
+          git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
+          cd ./objectscale-client/c && cargo build --release
         env:
           TOKEN: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - run: make build
@@ -92,7 +90,9 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - uses: actions/checkout@v4
       - name: Extract go client
-        run: git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
+        run: |
+          git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
+          cd ./objectscale-client/c && cargo build --release
         env:
           TOKEN: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - run: go generate
