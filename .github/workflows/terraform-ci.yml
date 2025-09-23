@@ -38,6 +38,10 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
+      - name: Extract go client
+        run: |
+          git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
+          cd ./objectscale-client/c && cargo build --release
       - name: Run the formatter, linter, and vetter
         uses: dell/common-github-actions/go-code-formatter-vetter@main
         with:
