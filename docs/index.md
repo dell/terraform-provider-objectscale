@@ -21,12 +21,12 @@ linkTitle: "Provider"
 page_title: "objectscale Provider"
 subcategory: ""
 description: |-
-  The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.
+  The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.
 ---
 
 # objectscale Provider
 
-The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.
+The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.
 
 ## Example Usage
 The following abridged example demonstrates the usage of the provider.
@@ -71,7 +71,7 @@ provider "objectscale" {
 
 ### Required
 
-- `endpoint` (String) The API endpoint, ex. https://172.17.177.230:4443
+- `endpoint` (String) The API endpoint, ex. https://10.225.100.1:4443
 - `insecure` (Boolean) whether to skip SSL validation
 - `password` (String, Sensitive) The password
 - `username` (String) The username

@@ -14,20 +14,20 @@ provider "objectscale" {
 }
 
 resource "objectscale_namespace" "example" {
-  name = "luis_namespace"
+  name                        = "luis_namespace"
   default_data_services_vpool = "urn:storageos:ReplicationGroupInfo:0e953ad1-94a5-4eb1-825a-d58d29e85434:global"
   retention_classes = {
     retention_class = [{
-      name = "r1"
+      name   = "r1"
       period = 1
     }]
   }
   user_mapping = [{
     attributes = [{
-      key = "key1"
+      key   = "key1"
       value = ["value1"]
     }]
-    domain =  "domain"
+    domain = "domain"
     groups = ["group"]
   }]
 }

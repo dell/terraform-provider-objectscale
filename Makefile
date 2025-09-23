@@ -57,8 +57,10 @@ uninstall:
 	find examples -type f -name "*.backup" -delete
 	rm -rf trace.*
 
-client-build: clean
+client-checkout:
 	git clone -b main https://github.com/dell/objectscale-client.git
+
+client-build: clean client-checkout
 	cd ./objectscale-client/c && cargo build --release
 
 clean:
@@ -66,8 +68,7 @@ clean:
 	sudo rm -f terraform-provider-${NAME}_*
 	sudo rm -rf ./objectscale-client
 
-docker-build-linux:
-	git clone -b main https://github.com/dell/objectscale-client.git
+docker-build-linux: client-checkout
 	docker run --rm -it -v ./objectscale-client:/io -w /io/c ghcr.io/rust-cross/rust-musl-cross:x86_64-musl cargo rustc --crate-type=staticlib --release
 	docker run --rm -it -v .:/src -w /src -e CC="gcc" -e CGO_LDFLAGS="-L/src/objectscale-client/target/x86_64-unknown-linux-musl/release/" golang:1.23-alpine sh -c "apk add --no-cache musl-dev build-base && go build -ldflags=\"-linkmode external -extldflags '-static'\" -o ${BINARY}"
 
