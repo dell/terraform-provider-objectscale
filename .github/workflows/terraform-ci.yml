@@ -43,7 +43,7 @@ jobs:
         with:
           repository: dell/objectscale-client
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - name: Run the formatter, linter, and vetter
         uses: dell/common-github-actions/go-code-formatter-linter-vetter@main
         with:
@@ -74,7 +74,7 @@ jobs:
         with:
           repository: dell/objectscale-client
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - run: make build
 
   go_security_scan:
@@ -100,7 +100,7 @@ jobs:
         with:
           repository: dell/objectscale-client
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - run: go generate
       - name: git diff
         run: |
