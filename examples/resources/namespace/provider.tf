@@ -18,9 +18,25 @@ limitations under the License.
 terraform {
   required_providers {
     objectscale = {
-      source  = "registry.terraform.io/dell/objectscale"
+      source = "registry.terraform.io/dell/objectscale"
     }
   }
+}
+
+variable "username" {
+  type = string
+}
+
+variable "password" {
+  type = string
+}
+
+variable "endpoint" {
+  type = string
+}
+
+variable "insecure" {
+  type = bool
 }
 
 provider "objectscale" {

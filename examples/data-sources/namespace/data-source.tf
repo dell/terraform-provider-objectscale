@@ -15,17 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-terraform {
-  required_providers {
-    objectscale = {
-      source  = "registry.terraform.io/dell/objectscale"
-    }
-  }
+data "objectscale_namespace" "all" {
 }
 
-provider "objectscale" {
-  username = var.username
-  password = var.password
-  endpoint = var.endpoint
-  insecure = var.insecure
+output "objectscale_namespace_all" {
+  value = data.objectscale_namespace.all
 }
