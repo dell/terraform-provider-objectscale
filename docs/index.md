@@ -52,8 +52,7 @@ limitations under the License.
 terraform {
   required_providers {
     objectscale = {
-      source  = "registry.terraform.io/dell/objectscale"
-      version = "1.0.0"
+      source = "registry.terraform.io/dell/objectscale"
     }
   }
 }
