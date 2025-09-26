@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -59,8 +59,8 @@ func (p *ObjectScaleProvider) Metadata(ctx context.Context, req provider.Metadat
 // Schema describes the provider arguments.
 func (p *ObjectScaleProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.",
-		Description:         "The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.",
+		MarkdownDescription: "The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.",
+		Description:         "The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				MarkdownDescription: "The API endpoint, ex. https://10.225.100.1:4443",

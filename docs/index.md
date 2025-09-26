@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,19 +21,19 @@ linkTitle: "Provider"
 page_title: "objectscale Provider"
 subcategory: ""
 description: |-
-  The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.
+  The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.
 ---
 
 # objectscale Provider
 
-The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.
+The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.
 
 ## Example Usage
 The following abridged example demonstrates the usage of the provider.
 
 ```terraform
 /*
-Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
