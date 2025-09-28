@@ -64,9 +64,9 @@ client-build: clean client-checkout
 	cd ./objectscale-client/c && cargo build --release
 
 clean:
-	sudo rm -f ${BINARY}
-	sudo rm -f terraform-provider-${NAME}_*
-	sudo rm -rf ./objectscale-client
+	rm -f ${BINARY}
+	rm -f terraform-provider-${NAME}_*
+	rm -rf ./objectscale-client
 
 docker-build-linux: client-checkout
 	docker run --rm -it -v ./objectscale-client:/io -w /io/c ghcr.io/rust-cross/rust-musl-cross:x86_64-musl cargo rustc --crate-type=staticlib --release
