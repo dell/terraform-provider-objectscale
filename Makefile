@@ -93,11 +93,16 @@ clean:
 	rm -f terraform-provider-${NAME}_*
 	rm -rf ./objectscale-client
 
-docker-build-linux: client-checkout
-	docker run --rm -it -v ./objectscale-client:/io -w /io/c ghcr.io/rust-cross/rust-musl-cross:x86_64-musl cargo rustc --crate-type=staticlib --release
-	docker run --rm -it -v .:/src -w /src -e CC="gcc" -e CGO_LDFLAGS="-L/src/objectscale-client/target/x86_64-unknown-linux-musl/release/" golang:1.23-alpine sh -c "apk add --no-cache musl-dev build-base && go build -ldflags=\"-linkmode external -extldflags '-static'\" -o ${BINARY}"
+build-linux-amd64:
+	docker run --rm -it -v .:/io -w /io ghcr.io/rust-cross/rust-musl-cross:x86_64-musl /bin/bash -c "cd objectscale-client/c && cargo rustc --crate-type=staticlib --release; cd /tmp && curl -LO https://go.dev/dl/go1.24.7.linux-amd64.tar.gz && rm -rf /usr/local/go && tar -C /usr/local -xzf go1.24.7.linux-amd64.tar.gz; cd /io && CC='x86_64-unknown-linux-musl-gcc' GOFLAGS='-buildvcs=false' CGO_LDFLAGS='-L/io/objectscale-client/target/x86_64-unknown-linux-musl/release/' /usr/local/go/bin/go build -ldflags=\"-linkmode external -extldflags '-static'\" -o ${BINARY}"
 
-release: clean docker-build-linux
+build-linux-arm64:
+	docker run --rm -it -v .:/io -w /io ghcr.io/rust-cross/rust-musl-cross:aarch64-musl /bin/bash -c "cd objectscale-client/c && cargo rustc --crate-type=staticlib --release; cd /tmp && curl -LO https://go.dev/dl/go1.24.7.linux-amd64.tar.gz && rm -rf /usr/local/go && tar -C /usr/local -xzf go1.24.7.linux-amd64.tar.gz; cd /io && CC='aarch64-unknown-linux-musl-gcc' GOFLAGS='-buildvcs=false' GOARCH=arm64 CGO_ENABLED=1 CGO_LDFLAGS='-L/io/objectscale-client/target/aarch64-unknown-linux-musl/release/' /usr/local/go/bin/go build -ldflags=\"-linkmode external -extldflags '-static'\" -o ${BINARY}"
+
+build-linux-arm:
+	docker run --rm -it -v .:/io -w /io ghcr.io/rust-cross/rust-musl-cross:arm-musleabi /bin/bash -c "cd objectscale-client/c && cargo rustc --crate-type=staticlib --release; cd /tmp && curl -LO https://go.dev/dl/go1.24.7.linux-amd64.tar.gz && rm -rf /usr/local/go && tar -C /usr/local -xzf go1.24.7.linux-amd64.tar.gz; cd /io && CC='arm-unknown-linux-musleabi-gcc' GOFLAGS='-buildvcs=false' GOARCH=arm CGO_ENABLED=1 CGO_LDFLAGS='-L/io/objectscale-client/target/arm-unknown-linux-musleabi/release/' /usr/local/go/bin/go build -ldflags=\"-linkmode external -extldflags '-static'\" -o ${BINARY}"
+
+release:
 	cp terraform-provider-objectscale terraform-provider-${NAME}_v${VERSION}
 	zip -j terraform-provider-${NAME}_${VERSION}_${OS_ARCH}.zip terraform-provider-${NAME}_v${VERSION}
 	cp terraform-registry-manifest.json terraform-provider-${NAME}_${VERSION}_manifest.json
