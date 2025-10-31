@@ -1,26 +1,10 @@
-/*
-Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
-
-Licensed under the Mozilla Public License Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://mozilla.org/MPL/2.0/
-
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 package provider
 
 import (
 	"context"
 	"fmt"
 	"terraform-provider-objectscale/internal/client"
+	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
@@ -304,7 +288,7 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	namespaces, err := d.client.ManagementClient.ListNamespaces("")
+	allNsResp, _, err := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespaces(ctx).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error getting the list of namespaces",
@@ -313,19 +297,7 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	var namespaceList []models.NamespaceEntity
-	for _, namespace := range namespaces {
-		entity := models.NamespaceEntity{}
-		err := helper.CopyFields(ctx, namespace, &entity)
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Error converting namespaces",
-				err.Error(),
-			)
-			return
-		}
-		namespaceList = append(namespaceList, entity)
-	}
+	namespaceList := d.updateNamespaceState(allNsResp.Namespace)
 
 	// hardcoding a response value to save into the Terraform state.
 	data.ID = types.StringValue("namespace_datasource")
@@ -337,4 +309,63 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (d *NamespaceDataSource) updateNamespaceState(namespaces []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) []models.NamespaceEntity {
+	return helper.SliceTransform(namespaces, func(v clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) models.NamespaceEntity {
+		IsEncryptionEnabled := false
+		if v.IsEncryptionEnabled != nil && *v.IsEncryptionEnabled == "true" {
+			IsEncryptionEnabled = true
+		}
+		return models.NamespaceEntity{
+			Name:   helper.TfString(v.Name),
+			Id:     helper.TfString(v.Id),
+			Global: helper.TfBool(v.Global),
+			Remote: helper.TfBool(v.Remote),
+			Link: models.TenancyLink{
+				Rel:  helper.TfString(v.Link.Rel),
+				Href: helper.TfString(v.Link.Href),
+			},
+			CreationTime:             types.Int64PointerValue(v.CreationTime),
+			Inactive:                 helper.TfBool(v.Inactive),
+			Internal:                 helper.TfBool(v.Internal),
+			DefaultDataServicesVpool: helper.TfString(v.DefaultDataServicesVpool),
+			AllowedVpoolsList:        helper.SliceTransform(v.AllowedVpoolsList, types.StringValue),
+			DisallowedVpoolsList:     helper.SliceTransform(v.DisallowedVpoolsList, types.StringValue),
+			NamespaceAdmins:          helper.TfString(v.NamespaceAdmins),
+			UserMapping: helper.SliceTransform(v.UserMapping, func(vi clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner) models.UserMapping {
+				return models.UserMapping{
+					Domain: types.StringValue(vi.Domain),
+					Attributes: helper.SliceTransform(vi.Attribute, func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner) models.Attribute {
+						return models.Attribute{
+							Key:   types.StringValue(via.Key),
+							Value: helper.SliceTransform(via.Value, types.StringValue),
+						}
+					}),
+					Groups: helper.SliceTransform(vi.Group, types.StringValue),
+				}
+			}),
+			IsEncryptionEnabled:          types.BoolValue(IsEncryptionEnabled),
+			DefaultBucketBlockSize:       helper.TfInt64(v.DefaultBucketBlockSize),
+			ExternalGroupAdmins:          helper.TfString(v.ExternalGroupAdmins),
+			IsStaleAllowed:               helper.TfBool(v.IsStaleAllowed),
+			IsObjectLockWithAdoAllowed:   helper.TfBool(v.IsObjectLockWithAdoAllowed),
+			IsComplianceEnabled:          helper.TfBool(v.IsComplianceEnabled),
+			NotificationSize:             helper.TfInt64(v.NotificationSize),
+			BlockSize:                    helper.TfInt64(v.BlockSize),
+			NotificationSizeInCount:      helper.TfInt64(v.NotificationSizeInCount),
+			BlockSizeInCount:             helper.TfInt64(v.BlockSizeInCount),
+			DefaultAuditDeleteExpiration: helper.TfInt64(v.DefaultAuditDeleteExpiration),
+			RetentionClasses: models.RetentionClasses{
+				RetentionClass: helper.SliceTransform(v.RetentionClasses.RetentionClass, func(vr clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner) models.RetentionClass {
+					return models.RetentionClass{
+						Name:   helper.TfString(vr.Name),
+						Period: helper.TfInt64(vr.Period),
+					}
+				}),
+			},
+			RootUserName:     helper.TfString(v.RootUserName),
+			RootUserPassword: helper.TfString(v.RootUserPassword),
+		}
+	})
 }

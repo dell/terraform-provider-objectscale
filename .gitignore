@@ -40,10 +40,11 @@ website/vendor
 *coverage.out*
 *coverage.html*
 
-/objectscale-client
-terraform-provider-objectscale
-terraform-provider-objectscale.exe
-terraform-provider-objectscale_*
+.vscode
+*.env
+clientgen_utils/__pycache__
+openapi-generator-cli-6.6.0.jar
+
 *.tfstate
 *.tfstate.backup
 .terraform/
