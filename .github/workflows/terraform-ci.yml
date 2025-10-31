@@ -33,22 +33,15 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   code-check:
-    name: Check Go formatting, linting, vetting
+    name: Check Go formatting, vetting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - name: Extract go client
-        run: |
-          git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
-          cd ./objectscale-client/c && cargo build --release
-        env:
-          TOKEN: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
-      - name: Run the formatter, linter, and vetter
+      - name: Run the formatter, and vetter
         uses: dell/common-github-actions/go-code-formatter-vetter@main
         with:
-          directories: ./internal/...
-
+          directories: ./...
   sanitize:
     name: Check for forbidden words
     runs-on: ubuntu-latest
@@ -58,7 +51,7 @@ jobs:
       - name: Run the forbidden words scan
         uses: dell/common-github-actions/code-sanitizer@main
         with:
-          args: /github/workspace/internal
+          args: /github/workspace
 
   build:
     name: Build
@@ -69,12 +62,6 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
       - uses: actions/checkout@v4
-      - name: Extract go client
-        run: |
-          git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
-          cd ./objectscale-client/c && cargo build --release
-        env:
-          TOKEN: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
       - run: make build
 
   go_security_scan:
@@ -94,13 +81,11 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
       - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.5"
       - uses: actions/checkout@v4
-      - name: Extract go client
-        run: |
-          git clone -b main https://$TOKEN@github.com/dell/objectscale-client.git
-          cd ./objectscale-client/c && cargo build --release
-        env:
-          TOKEN: ${{ secrets.OBJECTSCALE_CLIENT_PAT }}
+        with:
+          fetch-depth: 0
       - run: go generate
       - name: git diff
         run: |
@@ -118,3 +103,27 @@ jobs:
         with:
           directories: .
           options: -ri
+  
+  verify_client:
+    name: Verify Go Client
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.GO_VERSION }} 
+      - name: Install GoImports tool
+        run: go install golang.org/x/tools/cmd/goimports@latest
+      - name: Download openapi generator
+        uses: ethanjli/cached-download-action@v0.1.2
+        with:
+          url: https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.6.0/openapi-generator-cli-6.6.0.jar
+          destination: /tmp/downloads-cache/openapi-generator-cli-6.6.0.jar
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Generate client from JSON file
+        run: OPENAPI_CMD='java -Xmx16G -jar /tmp/downloads-cache/openapi-generator-cli-6.6.0.jar' make build_client
+      - name: git diff
+        run: |
+          git diff --compact-summary --exit-code || \
+            (echo; echo "Unexpected difference in directories after code generation. Run 'go generate ./...' command and commit."; exit 1)

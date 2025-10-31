@@ -74,4 +74,6 @@ Optional:
 - `key` (String) Lookup string for this key-value pair
 - `value` (List of String) Lookup result for this key-value pair.
 
+Unless specified otherwise, all fields of this resource can be updated.
+
 

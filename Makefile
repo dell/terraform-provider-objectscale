@@ -87,6 +87,7 @@ gosec:
 	gosec -quiet  ./...
 
 generate:
+	terraform fmt -recursive examples/
 	go generate ./...
 
 cover:
