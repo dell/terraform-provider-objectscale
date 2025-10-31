@@ -49,9 +49,9 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
       - name: Remove the openapi spec folder
-        run: rm -rf /github/workspace/clientgen_utils/openapi_specs
+        run: rm -rf ./clientgen_utils/openapi_specs
       - name: Remove the generated client folder
-        run: rm -rf /github/workspace/internal/clientgen
+        run: rm -rf ./internal/clientgen
       - name: Run the forbidden words scan
         uses: dell/common-github-actions/code-sanitizer@main
         with:
@@ -94,7 +94,7 @@ jobs:
         run: go generate ./...
       - name: git diff
         run: |
-          git diff --compact-summary --exit-code || \
+          git diff --exit-code || \
             (echo; echo "Unexpected difference in directories after code generation. Run 'make generate' command and commit."; exit 1)
 
   malware_security_scan:
