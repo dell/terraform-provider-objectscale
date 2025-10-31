@@ -16,7 +16,7 @@
 
 title: "objectscale_namespace resource"
 linkTitle: "objectscale_namespace"
-page_title: "objectscale_namespace Resource - objectscale"
+page_title: "objectscale_namespace Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
   ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.
