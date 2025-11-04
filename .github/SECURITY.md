@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,4 +25,4 @@ In addition to this, there are various security checks that get executed against
 
 Have you discovered a security vulnerability in this project?
 We ask you to alert the maintainers by sending an email, describing the issue, impact, and fix - if applicable.
-You can reach the Maintainers at Terraform.Providers@dell.com
+You can reach the Maintainers at tpfdi.team@dell.com

@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2024-2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,19 +21,19 @@ linkTitle: "Provider"
 page_title: "objectscale Provider"
 subcategory: ""
 description: |-
-  The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.
+  The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.
 ---
 
 # objectscale Provider
 
-The Terraform provider for Dell ObjectScale can be used to interact with a Dell ObjectScale array in order to manage the array resources.
+The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.
 
 ## Example Usage
 The following abridged example demonstrates the usage of the provider.
 
 ```terraform
 /*
-Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -52,8 +52,7 @@ limitations under the License.
 terraform {
   required_providers {
     objectscale = {
-      source  = "registry.terraform.io/dell/objectscale"
-      version = "1.0.0"
+      source = "registry.terraform.io/dell/objectscale"
     }
   }
 }
@@ -71,15 +70,11 @@ provider "objectscale" {
 
 ### Required
 
-- `endpoint` (String) The API endpoint, ex. https://172.17.177.230:8080
+- `endpoint` (String) The API endpoint, ex. https://10.225.100.1:4443
 - `insecure` (Boolean) whether to skip SSL validation
 - `password` (String, Sensitive) The password
+- `timeout` (Number) The timeout in seconds
 - `username` (String) The username
-
-### Optional
-
-- `auth_type` (Number) what should be the auth type, 0 for basic and 1 for session-based
-- `timeout` (Number) specifies a time limit for requests
 
 ## Best Practices
 1. The parent resource attributes of a certain resource can only be designated at creation.

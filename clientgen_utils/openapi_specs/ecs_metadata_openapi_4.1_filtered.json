@@ -1,0 +1,1953 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Dell ObjectScale/ECS Management API",
+		"description": "Generated from ECS source code metadata. Provides reliable schemas and examples for client generation.",
+		"version": "4.0.0",
+		"contact": {
+			"name": "Dell ObjectScale Support",
+			"url": "https://www.dell.com/support"
+		}
+	},
+	"servers": [
+		{
+			"url": "https://{host}:4443",
+			"description": "ObjectScale Management API",
+			"variables": {
+				"host": {
+					"default": "objectscale.local",
+					"description": "ObjectScale cluster hostname or IP"
+				}
+			}
+		}
+	],
+	"tags": [
+		{
+			"name": "Alert",
+			"description": "Alert operations"
+		},
+		{
+			"name": "Alert Policy",
+			"description": "Alert Policy operations"
+		},
+		{
+			"name": "Atmos Object Acl Operation",
+			"description": "Atmos Object Acl Operation operations"
+		},
+		{
+			"name": "Atmos Object Info Operation",
+			"description": "Atmos Object Info Operation operations"
+		},
+		{
+			"name": "Atmos Object Operation",
+			"description": "Atmos Object Operation operations"
+		},
+		{
+			"name": "Atmos Object Rename Operation",
+			"description": "Atmos Object Rename Operation operations"
+		},
+		{
+			"name": "Atmos Object Replication Info Operation",
+			"description": "Atmos Object Replication Info Operation operations"
+		},
+		{
+			"name": "Atmos Object System Metadata Operation",
+			"description": "Atmos Object System Metadata Operation operations"
+		},
+		{
+			"name": "Atmos Object Tags Metadata Operation",
+			"description": "Atmos Object Tags Metadata Operation operations"
+		},
+		{
+			"name": "Atmos Object User Metadata Operation",
+			"description": "Atmos Object User Metadata Operation operations"
+		},
+		{
+			"name": "Atmos Pass Through Operation",
+			"description": "Atmos Pass Through Operation operations"
+		},
+		{
+			"name": "Atmos Subtenant List Object Operation",
+			"description": "Atmos Subtenant List Object Operation operations"
+		},
+		{
+			"name": "Atmos Subtenant List Tag Operation",
+			"description": "Atmos Subtenant List Tag Operation operations"
+		},
+		{
+			"name": "Atmos Subtenant Operation",
+			"description": "Atmos Subtenant Operation operations"
+		},
+		{
+			"name": "Auth Provider",
+			"description": "Auth Provider operations"
+		},
+		{
+			"name": "Authentication",
+			"description": "Authentication operations"
+		},
+		{
+			"name": "Billing",
+			"description": "Billing operations"
+		},
+		{
+			"name": "Bucket",
+			"description": "Bucket operations"
+		},
+		{
+			"name": "Bucket Notification Event",
+			"description": "Bucket Notification Event operations"
+		},
+		{
+			"name": "Call Home",
+			"description": "Call Home operations"
+		},
+		{
+			"name": "Capacity Info",
+			"description": "Capacity Info operations"
+		},
+		{
+			"name": "Compression Config",
+			"description": "Compression Config operations"
+		},
+		{
+			"name": "Configuration",
+			"description": "Configuration operations"
+		},
+		{
+			"name": "Dashboard Api Router",
+			"description": "Dashboard Api Router operations"
+		},
+		{
+			"name": "Data Migration",
+			"description": "Data Migration operations"
+		},
+		{
+			"name": "Data Store",
+			"description": "Data Store operations"
+		},
+		{
+			"name": "Data Vpool",
+			"description": "Data Vpool operations"
+		},
+		{
+			"name": "Dm",
+			"description": "Dm operations"
+		},
+		{
+			"name": "Dynamic Config Admin Request Handler",
+			"description": "Dynamic Config Admin Request Handler operations"
+		},
+		{
+			"name": "E K M Cluster",
+			"description": "E K M Cluster operations"
+		},
+		{
+			"name": "E K M Server",
+			"description": "E K M Server operations"
+		},
+		{
+			"name": "Feature",
+			"description": "Feature operations"
+		},
+		{
+			"name": "Hide Secret Key",
+			"description": "Hide Secret Key operations"
+		},
+		{
+			"name": "Iam",
+			"description": "Iam operations"
+		},
+		{
+			"name": "Iam Provider",
+			"description": "Iam Provider operations"
+		},
+		{
+			"name": "Instances",
+			"description": "Instances operations"
+		},
+		{
+			"name": "Mgmt Server Names Accept List",
+			"description": "Mgmt Server Names Accept List operations"
+		},
+		{
+			"name": "Mgmt User Info",
+			"description": "Mgmt User Info operations"
+		},
+		{
+			"name": "Monitoring",
+			"description": "Monitoring operations"
+		},
+		{
+			"name": "N F S Access Control",
+			"description": "N F S Access Control operations"
+		},
+		{
+			"name": "Namespace",
+			"description": "Namespace operations"
+		},
+		{
+			"name": "Nodes",
+			"description": "Nodes operations"
+		},
+		{
+			"name": "Object Base Url",
+			"description": "Object Base Url operations"
+		},
+		{
+			"name": "Object Certificate",
+			"description": "Object Certificate operations"
+		},
+		{
+			"name": "Object Varray",
+			"description": "Object Varray operations"
+		},
+		{
+			"name": "Page Table",
+			"description": "Page Table operations"
+		},
+		{
+			"name": "Priority Task",
+			"description": "Priority Task operations"
+		},
+		{
+			"name": "Rotation Event",
+			"description": "Rotation Event operations"
+		},
+		{
+			"name": "Rotation Task",
+			"description": "Rotation Task operations"
+		},
+		{
+			"name": "S3 Access Mode Operation",
+			"description": "S3 Access Mode Operation operations"
+		},
+		{
+			"name": "S3 Bucket Acl Operations",
+			"description": "S3 Bucket Acl Operations operations"
+		},
+		{
+			"name": "S3 Bucket Cors Operations",
+			"description": "S3 Bucket Cors Operations operations"
+		},
+		{
+			"name": "S3 Bucket Empty Status Operations",
+			"description": "S3 Bucket Empty Status Operations operations"
+		},
+		{
+			"name": "S3 Bucket Is Stale Allowed Operations",
+			"description": "S3 Bucket Is Stale Allowed Operations operations"
+		},
+		{
+			"name": "S3 Bucket Lifecycle Operation",
+			"description": "S3 Bucket Lifecycle Operation operations"
+		},
+		{
+			"name": "S3 Bucket List Uploads Operations",
+			"description": "S3 Bucket List Uploads Operations operations"
+		},
+		{
+			"name": "S3 Bucket Location Operations",
+			"description": "S3 Bucket Location Operations operations"
+		},
+		{
+			"name": "S3 Bucket Lock Configuration Operations",
+			"description": "S3 Bucket Lock Configuration Operations operations"
+		},
+		{
+			"name": "S3 Bucket Notification Event Operations",
+			"description": "S3 Bucket Notification Event Operations operations"
+		},
+		{
+			"name": "S3 Bucket Notification Operations",
+			"description": "S3 Bucket Notification Operations operations"
+		},
+		{
+			"name": "S3 Bucket Object Lock Operations",
+			"description": "S3 Bucket Object Lock Operations operations"
+		},
+		{
+			"name": "S3 Bucket Operations",
+			"description": "S3 Bucket Operations operations"
+		},
+		{
+			"name": "S3 Bucket Policy Operations",
+			"description": "S3 Bucket Policy Operations operations"
+		},
+		{
+			"name": "S3 Bucket Versioning Operations",
+			"description": "S3 Bucket Versioning Operations operations"
+		},
+		{
+			"name": "S3 Bucket Versions Operations",
+			"description": "S3 Bucket Versions Operations operations"
+		},
+		{
+			"name": "S3 Data Node Operation",
+			"description": "S3 Data Node Operation operations"
+		},
+		{
+			"name": "S3 File Access Operation",
+			"description": "S3 File Access Operation operations"
+		},
+		{
+			"name": "S3 Metadata Key List Operations",
+			"description": "S3 Metadata Key List Operations operations"
+		},
+		{
+			"name": "S3 Metadata Key System List Operation",
+			"description": "S3 Metadata Key System List Operation operations"
+		},
+		{
+			"name": "S3 Metadata Search Operation",
+			"description": "S3 Metadata Search Operation operations"
+		},
+		{
+			"name": "S3 Multi Object Delete Operations",
+			"description": "S3 Multi Object Delete Operations operations"
+		},
+		{
+			"name": "S3 Object Acl Operations",
+			"description": "S3 Object Acl Operations operations"
+		},
+		{
+			"name": "S3 Object Attributes Operations",
+			"description": "S3 Object Attributes Operations operations"
+		},
+		{
+			"name": "S3 Object Init Uploads Operations",
+			"description": "S3 Object Init Uploads Operations operations"
+		},
+		{
+			"name": "S3 Object Legal Hold Operations",
+			"description": "S3 Object Legal Hold Operations operations"
+		},
+		{
+			"name": "S3 Object Operations",
+			"description": "S3 Object Operations operations"
+		},
+		{
+			"name": "S3 Object Replication Info Operations",
+			"description": "S3 Object Replication Info Operations operations"
+		},
+		{
+			"name": "S3 Object Retention Operations",
+			"description": "S3 Object Retention Operations operations"
+		},
+		{
+			"name": "S3 Object Tagging Operations",
+			"description": "S3 Object Tagging Operations operations"
+		},
+		{
+			"name": "S3 Object Uploads Operations",
+			"description": "S3 Object Uploads Operations operations"
+		},
+		{
+			"name": "S3 Options Operations",
+			"description": "S3 Options Operations operations"
+		},
+		{
+			"name": "S3 Ping Operation",
+			"description": "S3 Ping Operation operations"
+		},
+		{
+			"name": "S3 Retention Update Operation",
+			"description": "S3 Retention Update Operation operations"
+		},
+		{
+			"name": "S3 Select Operations",
+			"description": "S3 Select Operations operations"
+		},
+		{
+			"name": "Secret Key",
+			"description": "Secret Key operations"
+		},
+		{
+			"name": "Sed Handler",
+			"description": "Sed Handler operations"
+		},
+		{
+			"name": "Sensor",
+			"description": "Sensor operations"
+		},
+		{
+			"name": "Smtp",
+			"description": "Smtp operations"
+		},
+		{
+			"name": "Smtp Test",
+			"description": "Smtp Test operations"
+		},
+		{
+			"name": "Snmp",
+			"description": "Snmp operations"
+		},
+		{
+			"name": "Snmp Test",
+			"description": "Snmp Test operations"
+		},
+		{
+			"name": "Sts",
+			"description": "Sts operations"
+		},
+		{
+			"name": "Swift Access Mode Operations",
+			"description": "Swift Access Mode Operations operations"
+		},
+		{
+			"name": "Swift Account Operations",
+			"description": "Swift Account Operations operations"
+		},
+		{
+			"name": "Swift Container Operations",
+			"description": "Swift Container Operations operations"
+		},
+		{
+			"name": "Swift File Access Operations",
+			"description": "Swift File Access Operations operations"
+		},
+		{
+			"name": "Swift Helper",
+			"description": "Swift Helper operations"
+		},
+		{
+			"name": "Swift Keystone Operations",
+			"description": "Swift Keystone Operations operations"
+		},
+		{
+			"name": "Swift Object Operations",
+			"description": "Swift Object Operations operations"
+		},
+		{
+			"name": "Syslog",
+			"description": "Syslog operations"
+		},
+		{
+			"name": "Temp Failed Zone",
+			"description": "Temp Failed Zone operations"
+		},
+		{
+			"name": "Transformation",
+			"description": "Transformation operations"
+		},
+		{
+			"name": "Trust Store",
+			"description": "Trust Store operations"
+		},
+		{
+			"name": "User Cas",
+			"description": "User Cas operations"
+		},
+		{
+			"name": "User Info Page",
+			"description": "User Info Page operations"
+		},
+		{
+			"name": "User Management",
+			"description": "User Management operations"
+		},
+		{
+			"name": "User Password Group",
+			"description": "User Password Group operations"
+		},
+		{
+			"name": "User Secret Key",
+			"description": "User Secret Key operations"
+		},
+		{
+			"name": "V D C Keystore",
+			"description": "V D C Keystore operations"
+		},
+		{
+			"name": "Webhook Configuration",
+			"description": "Webhook Configuration operations"
+		},
+		{
+			"name": "Zone Info",
+			"description": "Zone Info operations"
+		}
+	],
+	"paths": {
+		"/login": {
+			"get": {
+				"tags": [
+					"Authentication"
+				],
+				"summary": "Authenticates a user and obtains an authentication token",
+				"description": "Get login token to use in subsequent api calls",
+				"operationId": "AuthenticationResource_getLoginToken",
+				"parameters": [
+					{
+						"name": "service",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Optional query parameter, to specify a URL to redirect to on successful \n        authentication"
+					},
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "namespaces available for the user."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"user": "root"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces": {
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the list of all configured namespaces",
+				"description": "Gets the list of all configured namespaces.",
+				"operationId": "NamespaceService_getNamespaces",
+				"parameters": [
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Number of objects requested in current fetch."
+					},
+					{
+						"name": "marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Reference to last object returned."
+					},
+					{
+						"name": "name",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Case sensitive prefix of the Namespace name with a wild card(*) Ex : any_prefix_string*"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of all configured namespaces",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getNamespacesResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace/{id}": {
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the details for the specified namespace",
+				"description": "Gets the details for the given namespace.",
+				"operationId": "NamespaceService_getNamespace",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which details needs to be retrieved."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Namespace details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getNamespaceResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "s3",
+											"id": "s3",
+											"link": {
+												"rel": "self",
+												"href": "/object/namespaces/namespace/s3"
+											},
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"default_data_services_vpool": "urn:storageos:ReplicationGroupInfo:4644a1d1-a299-4f37-b0de-84d637312665:global",
+											"allowed_vpools_list": [
+												"urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global"
+											],
+											"disallowed_vpools_list": [],
+											"user_mapping": [],
+											"is_encryption_enabled": "false",
+											"default_bucket_block_size": -1,
+											"is_stale_allowed": false,
+											"is_compliance_enabled": false,
+											"blockSize": -1,
+											"notificationSize": -1
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace/{namespace}": {
+			"put": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Updates namespace details like replication group list, namespace admins and user mappings",
+				"description": "Updates namespace details like replication group list, namespace admins and user mappings.\n <br/><br/>Replication group can be\n <ul>\n     <li><p>Added to allowed or disallowed replication group list</p></li>\n     <li><p>Removed from allowed or disallowed replication group list</p></li>\n </ul>",
+				"operationId": "NamespaceService_updateNamespace",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier whose details needs to be updated"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update the namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"namespace_update": {
+												"namespace": "tenant3",
+												"tenant": "jt_tenant3",
+												"namespace_admins": "admin1,admin2,admin3",
+												"default_object_project": "project4",
+												"is_stale_allowed": "true",
+												"user_mapping": [
+													{
+														"domain": "sanity.local",
+														"attributes": {
+															"attribute": [
+																{
+																	"key": "ou",
+																	"value": "123"
+																},
+																{
+																	"key": "dept",
+																	"value": "finance"
+																}
+															]
+														},
+														"groups": {
+															"group": [
+																"Domain Users",
+																"group 2"
+															]
+														}
+													},
+													{
+														"domain": "sanity.local",
+														"attributes": {
+															"attribute": {
+																"key": "dept",
+																"value": "HR"
+															}
+														},
+														"groups": {
+															"group": "group3"
+														}
+													},
+													{
+														"domain": " sanity.local",
+														"attributes": {
+															"attribute": {
+																"key": "secret_attribute",
+																"value": "super_admin"
+															}
+														}
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_updateNamespaceRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace": {
+			"post": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Creates a namespace with the given details",
+				"description": "Creates a namespace with the given details.",
+				"operationId": "NamespaceService_createNamespace",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Response indicating the result of the create operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_createNamespaceResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_createNamespaceRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace/{namespace}/deactivate": {
+			"post": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Deactivates and deletes the given namespace and all associated user mappings",
+				"description": "Deactivates and deletes the given namespace and all associated user mappings.",
+				"operationId": "NamespaceService_deactivateNamespace",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "An active namespace identifier which needs to be deactivated/deleted"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to deactivate/delete namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"NamespaceService_getNamespacesResponse": {
+				"type": "object",
+				"properties": {
+					"namespace": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"default_data_services_vpool": {
+									"type": "string",
+									"format": "uri",
+									"description": "Default replication group identifier for this tenant when creating buckets"
+								},
+								"allowed_vpools_list": {
+									"type": "array",
+									"items": {
+										"type": "string",
+										"format": "uri"
+									},
+									"description": "List of replication group that are allowed access to namespace"
+								},
+								"disallowed_vpools_list": {
+									"type": "array",
+									"items": {
+										"type": "string",
+										"format": "uri"
+									},
+									"description": "List of replication group that are not allowed access to namespace"
+								},
+								"namespace_admins": {
+									"type": "string",
+									"description": "Comma separated list of namespace admins"
+								},
+								"is_encryption_enabled": {
+									"type": "string",
+									"description": "encryption status of the namesapce"
+								},
+								"user_mapping": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"domain": {
+												"type": "string",
+												"description": "A single-valued attribute indicating the user's IDP domain"
+											},
+											"attribute": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"key": {
+															"type": "string",
+															"description": "Lookup string for this key-value pair"
+														},
+														"value": {
+															"type": "array",
+															"items": {
+																"type": "string"
+															},
+															"description": "Lookup result for this key-value pair"
+														}
+													},
+													"required": [
+														"key",
+														"value"
+													]
+												}
+											},
+											"group": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										},
+										"required": [
+											"domain"
+										]
+									},
+									"description": "List of user mappings for this tenant"
+								},
+								"default_bucket_block_size": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Default bucket quota size."
+								},
+								"external_group_admins": {
+									"type": "string",
+									"description": "List of groups from AD Server"
+								},
+								"is_stale_allowed": {
+									"type": "boolean",
+									"description": "Namespace isStaleAllowed flag"
+								},
+								"is_object_lock_with_ado_allowed": {
+									"type": "boolean",
+									"description": "Optional\n <br>\n Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Existing buckets are not affected by this flag.\n <br>\n When true the is_object_lock_with_ado_allowed flag is applied to new buckets allowing them to enable\n Object Lock with ADO without having to explicitly enable the flag on the bucket.\n <br>\n When false or omitted, buckets created in the namespace will not be allowed to enable OBJECT LOCK with writable ADO unless\n the is_object_lock_with_ado_allowed flag is explicitly enabled on the bucket.\n <br>\n The flag only affects new buckets.  Existing buckets must set the flag explicitly to allow Object Lock with ADO.\n <br>\n Warning: Once the flag is enabled on a bucket it cannot be changed. Make sure you understand the risk of data loss before enabling this flag. See the Admin Guide for more information."
+								},
+								"is_compliance_enabled": {
+									"type": "boolean",
+									"description": "Namespace isComplianceEnabled flag"
+								},
+								"notificationSize": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Notification Size in GB."
+								},
+								"blockSize": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Blocksize in GB"
+								},
+								"notificationSizeInCount": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Notification Size in Count."
+								},
+								"blockSizeInCount": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Blocksize in Count"
+								},
+								"retention_classes": {
+									"type": "object",
+									"properties": {
+										"retention_class": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"name": {
+														"type": "string",
+														"description": "Name of the retention class"
+													},
+													"period": {
+														"type": "integer",
+														"format": "int64",
+														"description": "Period of the retention class in seconds"
+													}
+												}
+											},
+											"description": "List of retention classes"
+										}
+									},
+									"description": "List of retention classes for this tenant"
+								},
+								"default_audit_delete_expiration": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Default bucket audit delete expiration"
+								},
+								"root_user_name": {
+									"type": "string"
+								},
+								"root_user_password": {
+									"type": "string"
+								},
+								"name": {
+									"type": "string",
+									"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+								},
+								"id": {
+									"type": "string",
+									"format": "uri",
+									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+								},
+								"link": {
+									"type": "object",
+									"properties": {
+										"rel": {
+											"type": "string",
+											"description": "Relationship type of the hyperlink"
+										},
+										"href": {
+											"type": "string",
+											"description": "Hyperlink URL to the related resource"
+										}
+									},
+									"description": "Hyperlink to the details for this resource"
+								},
+								"creation_time": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Timestamp that shows when this resource was created in ECS"
+								},
+								"inactive": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+								},
+								"global": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is global."
+								},
+								"remote": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is remote."
+								},
+								"vdc": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uri",
+											"description": "ECS Id of the related object"
+										},
+										"link": {
+											"type": "object",
+											"properties": {
+												"rel": {
+													"type": "string",
+													"description": "Relationship type of the hyperlink"
+												},
+												"href": {
+													"type": "string",
+													"description": "Hyperlink URL to the related resource"
+												}
+											},
+											"description": "Hyperlink to the related object"
+										}
+									}
+								},
+								"internal": {
+									"type": "boolean",
+									"description": "Indicated whether the resource is an internal resource"
+								}
+							},
+							"required": [
+								"disallowed_vpools_list"
+							]
+						},
+						"description": "A list of namespaces"
+					},
+					"MaxNamespaces": {
+						"type": "integer",
+						"description": "Number of Namespaces requested."
+					},
+					"NextMarker": {
+						"type": "string",
+						"description": "Reference object to retrieve next set of objects."
+					},
+					"Filter": {
+						"type": "string",
+						"description": "filter used to get the objects."
+					},
+					"NextPageLink": {
+						"type": "string",
+						"description": "link to get the next page."
+					}
+				}
+			},
+			"NamespaceService_getNamespaceResponse": {
+				"type": "object",
+				"properties": {
+					"default_data_services_vpool": {
+						"type": "string",
+						"format": "uri",
+						"description": "Default replication group identifier for this tenant when creating buckets"
+					},
+					"allowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group that are allowed access to namespace"
+					},
+					"disallowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group that are not allowed access to namespace"
+					},
+					"namespace_admins": {
+						"type": "string",
+						"description": "Comma separated list of namespace admins"
+					},
+					"is_encryption_enabled": {
+						"type": "string",
+						"description": "encryption status of the namesapce"
+					},
+					"user_mapping": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"domain": {
+									"type": "string",
+									"description": "A single-valued attribute indicating the user's IDP domain"
+								},
+								"attribute": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"key": {
+												"type": "string",
+												"description": "Lookup string for this key-value pair"
+											},
+											"value": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												},
+												"description": "Lookup result for this key-value pair"
+											}
+										},
+										"required": [
+											"key",
+											"value"
+										]
+									}
+								},
+								"group": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							},
+							"required": [
+								"domain"
+							]
+						},
+						"description": "List of user mappings for this tenant"
+					},
+					"default_bucket_block_size": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default bucket quota size."
+					},
+					"external_group_admins": {
+						"type": "string",
+						"description": "List of groups from AD Server"
+					},
+					"is_stale_allowed": {
+						"type": "boolean",
+						"description": "Namespace isStaleAllowed flag"
+					},
+					"is_object_lock_with_ado_allowed": {
+						"type": "boolean",
+						"description": "Optional\n <br>\n Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Existing buckets are not affected by this flag.\n <br>\n When true the is_object_lock_with_ado_allowed flag is applied to new buckets allowing them to enable\n Object Lock with ADO without having to explicitly enable the flag on the bucket.\n <br>\n When false or omitted, buckets created in the namespace will not be allowed to enable OBJECT LOCK with writable ADO unless\n the is_object_lock_with_ado_allowed flag is explicitly enabled on the bucket.\n <br>\n The flag only affects new buckets.  Existing buckets must set the flag explicitly to allow Object Lock with ADO.\n <br>\n Warning: Once the flag is enabled on a bucket it cannot be changed. Make sure you understand the risk of data loss before enabling this flag. See the Admin Guide for more information."
+					},
+					"is_compliance_enabled": {
+						"type": "boolean",
+						"description": "Namespace isComplianceEnabled flag"
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification Size in GB."
+					},
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Blocksize in GB"
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification Size in Count."
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Blocksize in Count"
+					},
+					"retention_classes": {
+						"type": "object",
+						"properties": {
+							"retention_class": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": "Name of the retention class"
+										},
+										"period": {
+											"type": "integer",
+											"format": "int64",
+											"description": "Period of the retention class in seconds"
+										}
+									}
+								},
+								"description": "List of retention classes"
+							}
+						},
+						"description": "List of retention classes for this tenant"
+					},
+					"default_audit_delete_expiration": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default bucket audit delete expiration"
+					},
+					"root_user_name": {
+						"type": "string"
+					},
+					"root_user_password": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
+					}
+				},
+				"required": [
+					"disallowed_vpools_list"
+				]
+			},
+			"NamespaceService_updateNamespaceRequest": {
+				"type": "object",
+				"properties": {
+					"default_data_services_vpool": {
+						"type": "string",
+						"format": "uri",
+						"description": "Default replication group identifier when creating buckets"
+					},
+					"vpools_added_to_allowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group identifier which will be added in the allowed List for allowing namespace access"
+					},
+					"vpools_added_to_disallowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group identifier which will be added in the disAllowed list for prohibiting namespace access"
+					},
+					"vpools_removed_from_allowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group identifier which will be removed from allowed list"
+					},
+					"vpools_removed_from_disallowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group identifier which will be removed from disAllowed list for removing their prohibition namespace access"
+					},
+					"namespace_admins": {
+						"type": "string",
+						"description": "Comma separated list of namespace admins"
+					},
+					"user_mapping": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"domain": {
+									"type": "string",
+									"description": "A single-valued attribute indicating the user's IDP domain"
+								},
+								"attribute": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"key": {
+												"type": "string",
+												"description": "Lookup string for this key-value pair"
+											},
+											"value": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												},
+												"description": "Lookup result for this key-value pair"
+											}
+										},
+										"required": [
+											"key",
+											"value"
+										]
+									}
+								},
+								"group": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							},
+							"required": [
+								"domain"
+							]
+						},
+						"description": "List of user mappings for this tenant"
+					},
+					"default_bucket_block_size": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default bucket quota size."
+					},
+					"external_group_admins": {
+						"type": "string",
+						"description": "List of groups from AD Server"
+					},
+					"is_encryption_enabled": {
+						"type": "boolean",
+						"description": "Does request contain update of encryption enabled of namespace.\n If null then encryption update is not requested else it is."
+					},
+					"is_stale_allowed": {
+						"type": "boolean",
+						"description": "isStaleAllowed flag of the namespace."
+					},
+					"is_object_lock_with_ado_allowed": {
+						"type": "boolean",
+						"description": "Optional\n <br>\n Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Existing buckets are not affected by this flag.\n <br>\n When true the is_object_lock_with_ado_allowed flag is applied to new buckets allowing them to enable\n Object Lock with ADO without having to explicitly enable the flag on the bucket.\n <br>\n When false or omitted, buckets created in the namespace will not be allowed to enable OBJECT LOCK with writable ADO unless\n the is_object_lock_with_ado_allowed flag is explicitly enabled on the bucket.\n <br>\n The flag only affects new buckets.  Existing buckets must set the flag explicitly to allow Object Lock with ADO.\n <br>\n Warning: Once the flag is enabled on a bucket it cannot be changed. Make sure you understand the risk of data loss before enabling this flag. See the Admin Guide for more information."
+					},
+					"default_audit_delete_expiration": {
+						"type": "integer",
+						"format": "int64",
+						"description": "default bucket audit delete expiration"
+					},
+					"current_root_user_password": {
+						"type": "string",
+						"description": "Current password for namespace 'virtual root' user"
+					},
+					"new_root_user_password": {
+						"type": "string",
+						"description": "New password for namespace 'virtual root' user"
+					}
+				},
+				"required": [
+					"user_mapping"
+				]
+			},
+			"NamespaceService_createNamespaceRequest": {
+				"type": "object",
+				"properties": {
+					"namespace": {
+						"type": "string",
+						"description": "User provided namespace (verified unique)\n <p>can not include dots or slashes (.|/) in the name</p>"
+					},
+					"default_object_project": {
+						"type": "string",
+						"format": "uri",
+						"description": "Default project id for this tenant when creating buckets"
+					},
+					"default_data_services_vpool": {
+						"type": "string",
+						"format": "uri",
+						"description": "Default replication group identifier for this tenant when creating buckets"
+					},
+					"allowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication groups that are allowed to create buckets on the corresponding namespace"
+					},
+					"disallowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication groups that are not allowed to create buckets on the corresponding namespace"
+					},
+					"namespace_admins": {
+						"type": "string",
+						"description": "Comma separated list of namespace admins"
+					},
+					"user_mapping": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"domain": {
+									"type": "string",
+									"description": "A single-valued attribute indicating the user's IDP domain"
+								},
+								"attribute": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"key": {
+												"type": "string",
+												"description": "Lookup string for this key-value pair"
+											},
+											"value": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												},
+												"description": "Lookup result for this key-value pair"
+											}
+										},
+										"required": [
+											"key",
+											"value"
+										]
+									}
+								},
+								"group": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							},
+							"required": [
+								"domain"
+							]
+						},
+						"description": "List of user mappings"
+					},
+					"is_encryption_enabled": {
+						"type": "boolean",
+						"description": "tag to enable encryption for the namespace"
+					},
+					"default_bucket_block_size": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default bucket quota size."
+					},
+					"external_group_admins": {
+						"type": "string",
+						"description": "List of groups from AD Server"
+					},
+					"is_stale_allowed": {
+						"type": "boolean",
+						"description": "Tag to allow stale data within the namespace"
+					},
+					"is_object_lock_with_ado_allowed": {
+						"type": "boolean",
+						"description": "Optional\n <br>\n Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Existing buckets are not affected by this flag.\n <br>\n When true the is_object_lock_with_ado_allowed flag is applied to new buckets allowing them to enable\n Object Lock with ADO without having to explicitly enable the flag on the bucket.\n <br>\n When false or omitted, buckets created in the namespace will not be allowed to enable OBJECT LOCK with writable ADO unless\n the is_object_lock_with_ado_allowed flag is explicitly enabled on the bucket.\n <br>\n The flag only affects new buckets.  Existing buckets must set the flag explicitly to allow Object Lock with ADO.\n <br>\n Warning: Once the flag is enabled on a bucket it cannot be changed. Make sure you understand the risk of data loss before enabling this flag. See the Admin Guide for more information."
+					},
+					"compliance_enabled": {
+						"type": "boolean",
+						"description": "Tag to enable namespace compliance"
+					},
+					"default_audit_delete_expiration": {
+						"type": "integer",
+						"format": "int64",
+						"description": "default bucket audit delete expiration"
+					},
+					"root_user_password": {
+						"type": "string",
+						"description": "password for namespace 'virtual root' user"
+					}
+				},
+				"required": [
+					"namespace"
+				]
+			},
+			"NamespaceService_createNamespaceResponse": {
+				"type": "object",
+				"properties": {
+					"default_data_services_vpool": {
+						"type": "string",
+						"format": "uri",
+						"description": "Default replication group identifier for this tenant when creating buckets"
+					},
+					"allowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group that are allowed access to namespace"
+					},
+					"disallowed_vpools_list": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "List of replication group that are not allowed access to namespace"
+					},
+					"namespace_admins": {
+						"type": "string",
+						"description": "Comma separated list of namespace admins"
+					},
+					"is_encryption_enabled": {
+						"type": "string",
+						"description": "encryption status of the namesapce"
+					},
+					"user_mapping": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"domain": {
+									"type": "string",
+									"description": "A single-valued attribute indicating the user's IDP domain"
+								},
+								"attribute": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"key": {
+												"type": "string",
+												"description": "Lookup string for this key-value pair"
+											},
+											"value": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												},
+												"description": "Lookup result for this key-value pair"
+											}
+										},
+										"required": [
+											"key",
+											"value"
+										]
+									}
+								},
+								"group": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							},
+							"required": [
+								"domain"
+							]
+						},
+						"description": "List of user mappings for this tenant"
+					},
+					"default_bucket_block_size": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default bucket quota size."
+					},
+					"external_group_admins": {
+						"type": "string",
+						"description": "List of groups from AD Server"
+					},
+					"is_stale_allowed": {
+						"type": "boolean",
+						"description": "Namespace isStaleAllowed flag"
+					},
+					"is_object_lock_with_ado_allowed": {
+						"type": "boolean",
+						"description": "Optional\n <br>\n Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Existing buckets are not affected by this flag.\n <br>\n When true the is_object_lock_with_ado_allowed flag is applied to new buckets allowing them to enable\n Object Lock with ADO without having to explicitly enable the flag on the bucket.\n <br>\n When false or omitted, buckets created in the namespace will not be allowed to enable OBJECT LOCK with writable ADO unless\n the is_object_lock_with_ado_allowed flag is explicitly enabled on the bucket.\n <br>\n The flag only affects new buckets.  Existing buckets must set the flag explicitly to allow Object Lock with ADO.\n <br>\n Warning: Once the flag is enabled on a bucket it cannot be changed. Make sure you understand the risk of data loss before enabling this flag. See the Admin Guide for more information."
+					},
+					"is_compliance_enabled": {
+						"type": "boolean",
+						"description": "Namespace isComplianceEnabled flag"
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification Size in GB."
+					},
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Blocksize in GB"
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification Size in Count."
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Blocksize in Count"
+					},
+					"retention_classes": {
+						"type": "object",
+						"properties": {
+							"retention_class": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": "Name of the retention class"
+										},
+										"period": {
+											"type": "integer",
+											"format": "int64",
+											"description": "Period of the retention class in seconds"
+										}
+									}
+								},
+								"description": "List of retention classes"
+							}
+						},
+						"description": "List of retention classes for this tenant"
+					},
+					"default_audit_delete_expiration": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default bucket audit delete expiration"
+					},
+					"root_user_name": {
+						"type": "string"
+					},
+					"root_user_password": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
+					}
+				},
+				"required": [
+					"disallowed_vpools_list"
+				]
+			}
+		},
+		"securitySchemes": {
+			"AuthToken": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "X-SDS-AUTH-TOKEN",
+				"description": "Authentication token obtained from /login endpoint"
+			},
+			"BasicAuth": {
+				"type": "http",
+				"scheme": "basic",
+				"description": "Basic authentication for login endpoint"
+			}
+		}
+	},
+	"security": [
+		{
+			"AuthToken": []
+		}
+	]
+}

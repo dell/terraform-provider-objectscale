@@ -4,6 +4,7 @@
 example.tf
 terraform.tfplan
 terraform.tfstate
+terraform.tfvars
 openapitools.json
 bin/
 dist/
@@ -35,5 +36,16 @@ website/vendor
 
 # Keep windows files with windows line endings
 *.winfile eol=crlf
+
 *coverage.out*
-terraform-provider-objectscale
+*coverage.html*
+
+.vscode
+*.env
+clientgen_utils/__pycache__
+openapi-generator-cli-6.6.0.jar
+
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl

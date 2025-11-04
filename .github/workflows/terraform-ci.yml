@@ -28,32 +28,34 @@ permissions:
 env:
   # Go language version to use for building. This value should also be updated
   # in the testing workflow if changed.
-  GO_VERSION: '1.22'
+  GO_VERSION: '1.24'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   code-check:
-    name: Check Go formatting, linting, vetting
+    name: Check Go formatting, vetting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
-      - name: Extract go client
-        run: make clean
-      - name: Run the formatter, linter, and vetter
-        uses: dell/common-github-actions/go-code-formatter-linter-vetter@main
+        uses: actions/checkout@v4
+      - name: Run the formatter, and vetter
+        uses: dell/common-github-actions/go-code-formatter-vetter@main
         with:
-          directories: ./objectscale/...
+          directories: ./...
   sanitize:
     name: Check for forbidden words
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3
+      - name: Remove the openapi spec folder
+        run: rm -rf ./clientgen_utils/openapi_specs
+      - name: Remove the generated client folder
+        run: rm -rf ./internal/clientgen
       - name: Run the forbidden words scan
         uses: dell/common-github-actions/code-sanitizer@main
         with:
-          args: /github/workspace/objectscale
+          args: /github/workspace
 
   build:
     name: Build
@@ -63,15 +65,15 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GO_VERSION }}
-      - uses: actions/checkout@v3
-      - run: make clean build
+      - uses: actions/checkout@v4
+      - run: make build
 
   go_security_scan:
     name: Go security
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run Go Security
         uses: securego/gosec@master
 
@@ -82,22 +84,51 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GO_VERSION }}
-      - uses: actions/checkout@v3
-      - run: make clean
-      - run: go generate
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.5"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate
+        run: go generate ./...
       - name: git diff
         run: |
-          git diff --compact-summary --exit-code || \
-            (echo; echo "Unexpected difference in directories after code generation. Run 'go generate ./...' command and commit."; exit 1)
+          git diff --exit-code || \
+            (echo; echo "Unexpected difference in directories after code generation. Run 'make generate' command and commit."; exit 1)
 
   malware_security_scan:
     name: Malware Scanner
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Malware Scanner
         uses: dell/common-github-actions/malware-scanner@main
         with:
           directories: .
           options: -ri
+  
+  verify_client:
+    name: Verify Go Client
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.GO_VERSION }} 
+      - name: Install GoImports tool
+        run: go install golang.org/x/tools/cmd/goimports@latest
+      - name: Download openapi generator
+        uses: ethanjli/cached-download-action@v0.1.2
+        with:
+          url: https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.6.0/openapi-generator-cli-6.6.0.jar
+          destination: /tmp/downloads-cache/openapi-generator-cli-6.6.0.jar
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Generate client from JSON file
+        run: OPENAPI_CMD='java -Xmx16G -jar /tmp/downloads-cache/openapi-generator-cli-6.6.0.jar' make build_client
+      - name: git diff
+        run: |
+          git diff --compact-summary --exit-code || \
+            (echo; echo "Unexpected difference in directories after code generation. Run 'go generate ./...' command and commit."; exit 1)

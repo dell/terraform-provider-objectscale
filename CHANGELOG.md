@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2024 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ limitations under the License.
 -->
 
 
-# v1.0.0 (Jan 1, 2024)
+# v1.0.0 (Dec 26, 2025)
 ## Release Summary
 
 ## Features
