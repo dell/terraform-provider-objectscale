@@ -41,7 +41,7 @@ def _get_refs(json_obj: dict) -> set:
 def _filter_by_paths(json_obj, paths):
     ret = {}
     for key in json_obj:
-        if key in paths:
+        if any(key == path or (path.endswith('*') and key.startswith(path[:-1])) for path in paths):
             ret[key] = json_obj[key]
     return ret
 
