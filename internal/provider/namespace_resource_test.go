@@ -3,6 +3,7 @@ package provider
 import (
 	"os"
 	"reflect"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -42,6 +43,41 @@ func TestAccNSRs(t *testing.T) {
 				}
 				`,
 			},
+			{
+				// import
+				Config: ProviderConfigForTesting + locals + `
+				resource"objectscale_namespace" "all" {
+					name                        = "testacc_namespace"
+					default_data_services_vpool = local.rgs["rg1"]
+					allowed_vpools_list         = [local.rgs["rg2"]]
+					disallowed_vpools_list      = [local.rgs["rg3"]]
+					is_compliance_enabled = true
+					# is_encryption_enabled = true
+					default_audit_delete_expiration = 3600
+				}
+				`,
+				ResourceName: "objectscale_namespace.all",
+				ImportState:  true,
+			},
+			{
+				// import error
+				Config: ProviderConfigForTesting + locals + `
+				resource"objectscale_namespace" "all" {
+					name                        = "testacc_namespace"
+					default_data_services_vpool = local.rgs["rg1"]
+					allowed_vpools_list         = [local.rgs["rg2"]]
+					disallowed_vpools_list      = [local.rgs["rg3"]]
+					is_compliance_enabled = true
+					# is_encryption_enabled = true
+					default_audit_delete_expiration = 3600
+				}
+				`,
+				ResourceName:  "objectscale_namespace.all",
+				ImportState:   true,
+				ExpectError:   regexp.MustCompile(".*Error reading namespace.*"),
+				ImportStateId: "invalid-id",
+			},
+
 			// TODO: something wrong with default_audit_delete_expiration update
 			// {
 			// 	// update default audit delete expiration
