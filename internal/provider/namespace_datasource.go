@@ -337,13 +337,13 @@ func (d *NamespaceDataSource) updateNamespaceState(namespaces []clientgen.Namesp
 			UserMapping: helper.SliceTransform(v.UserMapping, func(vi clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner) models.UserMapping {
 				return models.UserMapping{
 					Domain: types.StringValue(vi.Domain),
-					Attributes: helper.SliceTransform(vi.Attribute, func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner) models.Attribute {
+					Attributes: helper.SliceTransform(vi.Attributes, func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner) models.Attribute {
 						return models.Attribute{
 							Key:   types.StringValue(via.Key),
 							Value: helper.SliceTransform(via.Value, types.StringValue),
 						}
 					}),
-					Groups: helper.SliceTransform(vi.Group, types.StringValue),
+					Groups: helper.SliceTransform(vi.Groups, types.StringValue),
 				}
 			}),
 			IsEncryptionEnabled:          types.BoolValue(IsEncryptionEnabled),

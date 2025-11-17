@@ -25,15 +25,10 @@ import (
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
@@ -137,21 +132,21 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				MarkdownDescription: "Comma separated list of namespace admins. Default: ''. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(""),
+				// Default:             stringdefault.StaticString(""),
 			},
 			"user_mapping": schema.ListNestedAttribute{
 				Description:         "User Mapping. Default: []. Updatable.",
 				MarkdownDescription: "User Mapping. Default: []. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default: listdefault.StaticValue(types.ListValueMust(types.ObjectType{AttrTypes: map[string]attr.Type{
-					"domain": types.StringType,
-					"groups": types.ListType{ElemType: types.StringType},
-					"attributes": types.ListType{ElemType: types.ObjectType{AttrTypes: map[string]attr.Type{
-						"key":   types.StringType,
-						"value": types.ListType{ElemType: types.StringType},
-					}}},
-				}}, []attr.Value{})),
+				// Default: listdefault.StaticValue(types.ListValueMust(types.ObjectType{AttrTypes: map[string]attr.Type{
+				// 	"domain": types.StringType,
+				// 	"groups": types.ListType{ElemType: types.StringType},
+				// 	"attributes": types.ListType{ElemType: types.ObjectType{AttrTypes: map[string]attr.Type{
+				// 		"key":   types.StringType,
+				// 		"value": types.ListType{ElemType: types.StringType},
+				// 	}}},
+				// }}, []attr.Value{})),
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"domain": schema.StringAttribute{
@@ -198,7 +193,7 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				MarkdownDescription: "Encryption status of the namesapce. Default: false.",
 				Computed:            true,
 				Optional:            true,
-				Default:             booldefault.StaticBool(false),
+				// Default:             booldefault.StaticBool(false),
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.UseStateForUnknown(),
 				},
@@ -208,35 +203,35 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				MarkdownDescription: "Default bucket quota size. Default: -1. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default:             int64default.StaticInt64(-1),
+				// Default:             int64default.StaticInt64(-1),
 			},
 			"external_group_admins": schema.StringAttribute{
 				Description:         "List of groups from AD Server. Default: ''. Updatable.",
 				MarkdownDescription: "List of groups from AD Server. Default: ''. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(""),
+				// Default:             stringdefault.StaticString(""),
 			},
 			"is_stale_allowed": schema.BoolAttribute{
 				Description:         "Namespace isStaleAllowed flag. Default: false. Updatable..",
 				MarkdownDescription: "Namespace isStaleAllowed flag. Default: false. Updatable..",
 				Optional:            true,
 				Computed:            true,
-				Default:             booldefault.StaticBool(false),
+				// Default:             booldefault.StaticBool(false),
 			},
 			"is_object_lock_with_ado_allowed": schema.BoolAttribute{
 				Description:         "Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Default: false. Updatable.",
 				MarkdownDescription: "Defines the default behavior for allowing Object Lock with ADO on new buckets created in the namespace. Default: false. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default:             booldefault.StaticBool(false),
+				// Default:             booldefault.StaticBool(false),
 			},
 			"is_compliance_enabled": schema.BoolAttribute{
 				Description:         "Namespace isComplianceEnabled flag. Default: false.",
 				MarkdownDescription: "Namespace isComplianceEnabled flag. Default: false.",
 				Optional:            true,
 				Computed:            true,
-				Default:             booldefault.StaticBool(false),
+				// Default:             booldefault.StaticBool(false),
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.UseStateForUnknown(),
 				},
@@ -275,7 +270,7 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				MarkdownDescription: "Default bucket audit delete expiration. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default:             int64default.StaticInt64(0),
+				// Default:             int64default.StaticInt64(0),
 			},
 			// TODO :: Add in separate resource
 			// "retention_classes": schema.SingleNestedAttribute{
@@ -359,14 +354,14 @@ func (r *NamespaceResource) Configure(ctx context.Context, req resource.Configur
 
 func (r *NamespaceResource) userMappingJson(u models.NsResUserMapping) clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner {
 	return clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner{
-		Domain:    u.Domain.ValueString(),
-		Attribute: helper.ValueListTransform(u.Attributes, r.userMappingAttrJson),
-		Group:     helper.ValueToList[string](u.Groups),
+		Domain:     u.Domain.ValueString(),
+		Attributes: helper.ValueListTransform(u.Attributes, r.userMappingAttrJson),
+		Groups:     helper.ValueToList[string](u.Groups),
 	}
 }
 
-func (r *NamespaceResource) userMappingAttrJson(a models.NsResUserMappingAttr) clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner {
-	return clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner{
+func (r *NamespaceResource) userMappingAttrJson(a models.NsResUserMappingAttr) clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner {
+	return clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner{
 		Key:   a.Key.ValueString(),
 		Value: helper.ValueToList[string](a.Value),
 	}
@@ -472,14 +467,14 @@ func (r *NamespaceResource) getModel(
 			func(v clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner) types.Object {
 				return helper.Object(models.NsResUserMapping{
 					Domain: types.StringValue(v.Domain),
-					Attributes: helper.ListNotNull(v.Attribute,
-						func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner) types.Object {
+					Attributes: helper.ListNotNull(v.Attributes,
+						func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner) types.Object {
 							return helper.Object(models.NsResUserMappingAttr{
 								Key:   types.StringValue(via.Key),
 								Value: helper.ListNotNull(via.Value, types.StringValue),
 							})
 						}),
-					Groups: helper.ListNotNull(v.Group, types.StringValue),
+					Groups: helper.ListNotNull(v.Groups, types.StringValue),
 				})
 			}),
 		IsEncryptionEnabled:          helper.TfBoolNN(&IsEncryptionEnabled),
@@ -555,6 +550,9 @@ func (r *NamespaceResource) Update(ctx context.Context, req resource.UpdateReque
 		VpoolsAddedToDisallowedVpoolsList: r.vpoolDiff(
 			planJson.DisallowedVpoolsList,
 			stateJson.DisallowedVpoolsList),
+		VpoolsRemovedFromDisallowedVpoolsList: r.vpoolDiff(
+			stateJson.DisallowedVpoolsList,
+			planJson.DisallowedVpoolsList),
 
 		NamespaceAdmins:              planJson.NamespaceAdmins,
 		UserMapping:                  planJson.UserMapping,

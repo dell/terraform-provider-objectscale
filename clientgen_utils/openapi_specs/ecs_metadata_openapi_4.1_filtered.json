@@ -1024,7 +1024,7 @@
 												"type": "string",
 												"description": "A single-valued attribute indicating the user's IDP domain"
 											},
-											"attribute": {
+											"attributes": {
 												"type": "array",
 												"items": {
 													"type": "object",
@@ -1047,7 +1047,7 @@
 													]
 												}
 											},
-											"group": {
+											"groups": {
 												"type": "array",
 												"items": {
 													"type": "string"
@@ -1272,7 +1272,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -1295,7 +1295,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -1510,7 +1510,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -1533,7 +1533,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -1631,7 +1631,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -1654,7 +1654,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -1747,7 +1747,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -1770,7 +1770,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
