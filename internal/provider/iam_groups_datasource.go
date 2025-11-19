@@ -308,4 +308,3 @@ func stringValue(s *string) string {
 	}
 	return ""
 }
-

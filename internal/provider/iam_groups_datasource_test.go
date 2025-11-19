@@ -129,7 +129,7 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
                 `,
 				ExpectError: regexp.MustCompile(`namespace`),
 			},
-			
+
 			// Nonexistent user → triggers "Error Listing IAM Groups for User"
 			{
 				Config: ProviderConfigForTesting + `
