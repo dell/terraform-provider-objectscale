@@ -974,6 +974,243 @@
 					}
 				}
 			}
+		},
+		"/iam?Action=GetGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve list of users in IAM group.",
+				"description": "Retrieve list of users in IAM group.",
+				"operationId": "IamService_GetGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:108c7:f3"
+											},
+											"GetGroupResult": {
+												"Group": {
+													"GroupName": "FinanceGroup",
+													"Arn": "urn:ecs:iam::ns:group/FinanceGroup",
+													"GroupId": "AGPA11B2858814F35CA0",
+													"Path": "/",
+													"CreateDate": "2020-04-15T15:03:25Z"
+												},
+												"Users": [],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListGroups": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the IAM groups.",
+				"description": "Lists the IAM groups.",
+				"operationId": "IamService_ListGroups",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListGroupsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1a5e4:13d"
+											},
+											"ListGroupsResult": {
+												"Groups": [
+													{
+														"GroupName": "iamFinanceGroup",
+														"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup",
+														"GroupId": "AGPA6CBEB03207E74FF2",
+														"Path": "/",
+														"CreateDate": "2020-04-13T19:04:45Z"
+													},
+													{
+														"GroupName": "iamFinanceGroup2",
+														"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup2",
+														"GroupId": "AGPAC470F6C1E9E196E1",
+														"Path": "/",
+														"CreateDate": "2020-04-13T19:56:39Z"
+													},
+													{
+														"GroupName": "iamFinanceGroup3",
+														"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup3",
+														"GroupId": "AGPA78EE8690DC060154",
+														"Path": "/",
+														"CreateDate": "2020-04-13T19:58:22Z"
+													}
+												],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -1929,6 +2166,120 @@
 				"required": [
 					"disallowed_vpools_list"
 				]
+			},
+			"IamService_GetGroupResponse": {
+				"type": "object",
+				"properties": {
+					"GetGroupResult": {
+						"type": "object",
+						"properties": {
+							"Users": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean"
+							},
+							"Marker": {
+								"type": "string"
+							},
+							"Group": {
+								"type": "object",
+								"properties": {
+									"GroupName": {
+										"type": "string",
+										"description": "Simple name identifying the Group."
+									},
+									"Arn": {
+										"type": "string",
+										"description": "Arn that identifies the Group."
+									},
+									"GroupId": {
+										"type": "string",
+										"description": "Unique Id associated with the Group."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the IAM Group."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "ISO 8601 format DateTime when group was created."
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListGroupsResponse": {
+				"type": "object",
+				"properties": {
+					"ListGroupsResult": {
+						"type": "object",
+						"properties": {
+							"Groups": {
+								"type": "array",
+								"description": "Get groups.",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Arn": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"GroupId": {
+											"type": "string"
+										},
+										"GroupName": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"Arn",
+										"CreateDate",
+										"GroupId",
+										"GroupName",
+										"Path"
+									]
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+							}
+						},
+						"description": "Get listGroupsResult"
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
 			}
 		},
 		"securitySchemes": {

@@ -62555,10 +62555,35 @@
             "properties": {
               "Groups": {
                 "type": "array",
+                "description": "Get groups.",
                 "items": {
-                  "type": "string"
-                },
-                "description": "Get groups."
+                  "type": "object",
+                  "properties": {
+                    "Arn": {
+                      "type": "string"
+                    },
+                    "CreateDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "GroupId": {
+                      "type": "string"
+                    },
+                    "GroupName": {
+                      "type": "string"
+                    },
+                    "Path": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "Arn",
+                    "CreateDate",
+                    "GroupId",
+                    "GroupName",
+                    "Path"
+                  ]
+                }
               },
               "IsTruncated": {
                 "type": "boolean",
