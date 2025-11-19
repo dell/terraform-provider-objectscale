@@ -195,6 +195,9 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
+	// Determine namespace
+	namespace := state.Namespace.ValueString()
+
 	// Determine entity type and name
 	var entityType, entityName string
 	if !state.Username.IsNull() && !state.Username.IsUnknown() {
@@ -209,35 +212,84 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 	}
 
 	// Step 1: Call List<entity>Policies API
-	listAction := fmt.Sprintf("List%sPolicies", entityType)
-	listParams := map[string]string{
-		fmt.Sprintf("%sName", entityType): entityName,
-	}
+	var policyNames []string
+	switch entityType {
+	case "User":
+		listResp, _, err := r.client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
+			XEmcNamespace(namespace).
+			UserName(entityName).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
+			return
+		}
+		policyNames = listResp.ListUserPoliciesResult.Member
 
-	listResp, err := r.client.PostIAMAction(ctx, listAction, listParams)
-	if err != nil {
-		resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
-		return
-	}
+	case "Group":
+		listResp, _, err := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
+			XEmcNamespace(namespace).
+			GroupName(entityName).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
+			return
+		}
+		policyNames = listResp.ListGroupPoliciesResult.Member
 
-	policyNames := listResp.GetPolicyNames() // Extract []string from response
+	case "Role":
+		listResp, _, err := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
+			XEmcNamespace(namespace).
+			RoleName(entityName).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
+			return
+		}
+		policyNames = listResp.ListRolePoliciesResult.Member
+	}
 
 	// Step 2: For each policy name, call Get<entity>Policy API
 	var policies []models.IAMInlinePolicyModel
 	for _, policyName := range policyNames {
-		getAction := fmt.Sprintf("Get%sPolicy", entityType)
-		getParams := map[string]string{
-			fmt.Sprintf("%sName", entityType): entityName,
-			"PolicyName":                      policyName,
+		var policyDoc string
+		switch entityType {
+		case "User":
+			getResp, _, err := r.client.GenClient.IamApi.IamServiceGetUserPolicy(ctx).
+				XEmcNamespace(namespace).
+				UserName(entityName).
+				PolicyName(policyName).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
+				return
+			}
+			policyDoc = *getResp.GetUserPolicyResult.PolicyDocument
+
+		case "Group":
+			getResp, _, err := r.client.GenClient.IamApi.IamServiceGetGroupPolicy(ctx).
+				XEmcNamespace(namespace).
+				GroupName(entityName).
+				PolicyName(policyName).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
+				return
+			}
+			policyDoc = *getResp.GetGroupPolicyResult.PolicyDocument
+
+		case "Role":
+			getResp, _, err := r.client.GenClient.IamApi.IamServiceGetRolePolicy(ctx).
+				XEmcNamespace(namespace).
+				RoleName(entityName).
+				PolicyName(policyName).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
+				return
+			}
+			policyDoc = *getResp.GetRolePolicyResult.PolicyDocument
 		}
 
-		getResp, err := r.client.PostIAMAction(ctx, getAction, getParams)
-		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
-			return
-		}
-
-		policyDoc := getResp.GetPolicyDocument() // Extract JSON string
 		policies = append(policies, models.IAMInlinePolicyModel{
 			Name:     types.StringValue(policyName),
 			Document: types.StringValue(policyDoc),
@@ -289,6 +341,9 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 }
 
 func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models.IAMInlinePolicyResourceModel) (models.IAMInlinePolicyResourceModel, error) {
+	// Determine namespace
+	namespace := plan.Namespace.ValueString()
+
 	// Determine entity type and name
 	var entityType, entityName string
 	if !plan.Username.IsNull() && !plan.Username.IsUnknown() {
@@ -303,17 +358,38 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 	}
 
 	// Step 1: Get current policies from ObjectScale
-	listAction := fmt.Sprintf("List%sPolicies", entityType)
-	listParams := map[string]string{
-		fmt.Sprintf("%sName", entityType): entityName,
-	}
+	var currentPolicies []string
+	switch entityType {
+	case "User":
+		listResp, _, err := r.client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
+			XEmcNamespace(namespace).
+			UserName(entityName).
+			Execute()
+		if err != nil {
+			return plan, fmt.Errorf("failed to list policies: %w", err)
+		}
+		currentPolicies = listResp.ListUserPoliciesResult.Member
 
-	listResp, err := r.client.PostIAMAction(ctx, listAction, listParams)
-	if err != nil {
-		return plan, fmt.Errorf("failed to list policies: %w", err)
-	}
+	case "Group":
+		listResp, _, err := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
+			XEmcNamespace(namespace).
+			GroupName(entityName).
+			Execute()
+		if err != nil {
+			return plan, fmt.Errorf("failed to list policies: %w", err)
+		}
+		currentPolicies = listResp.ListGroupPoliciesResult.Member
 
-	currentPolicies := listResp.GetPolicyNames() // []string
+	case "Role":
+		listResp, _, err := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
+			XEmcNamespace(namespace).
+			RoleName(entityName).
+			Execute()
+		if err != nil {
+			return plan, fmt.Errorf("failed to list policies: %w", err)
+		}
+		currentPolicies = listResp.ListRolePoliciesResult.Member
+	}
 
 	// Convert desired policies to map for quick lookup
 	desiredMap := make(map[string]string)
@@ -324,32 +400,80 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 	// Step 2: Delete policies not in desired config
 	for _, existing := range currentPolicies {
 		if _, found := desiredMap[existing]; !found {
-			deleteAction := fmt.Sprintf("Delete%sPolicy", entityType)
-			deleteParams := map[string]string{
-				fmt.Sprintf("%sName", entityType): entityName,
-				"PolicyName":                      existing,
-			}
-			if err := r.client.PostIAMAction(ctx, deleteAction, deleteParams); err != nil {
-				return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
+			switch entityType {
+			case "User":
+				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteUserPolicy(ctx).
+					XEmcNamespace(namespace).
+					UserName(entityName).
+					PolicyName(existing).
+					Execute()
+				if err != nil {
+					return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
+				}
+
+			case "Group":
+				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteGroupPolicy(ctx).
+					XEmcNamespace(namespace).
+					GroupName(entityName).
+					PolicyName(existing).
+					Execute()
+				if err != nil {
+					return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
+				}
+
+			case "Role":
+				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteRolePolicy(ctx).
+					XEmcNamespace(namespace).
+					RoleName(entityName).
+					PolicyName(existing).
+					Execute()
+				if err != nil {
+					return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
+				}
 			}
 		}
 	}
 
 	// Step 3: Create or Update desired policies
 	for name, doc := range desiredMap {
-		putAction := fmt.Sprintf("Put%sPolicy", entityType)
-		putParams := map[string]string{
-			fmt.Sprintf("%sName", entityType): entityName,
-			"PolicyName":                      name,
-			"PolicyDocument":                  url.QueryEscape(doc), // URL encode the JSON document
-		}
-		if err := r.client.PostIAMAction(ctx, putAction, putParams); err != nil {
-			return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
+		switch entityType {
+		case "User":
+			_, _, err := r.client.GenClient.IamApi.IamServicePutUserPolicy(ctx).
+				XEmcNamespace(namespace).
+				UserName(entityName).
+				PolicyName(name).
+				PolicyDocument(url.QueryEscape(doc)).
+				Execute()
+			if err != nil {
+				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
+			}
+
+		case "Group":
+			_, _, err := r.client.GenClient.IamApi.IamServicePutGroupPolicy(ctx).
+				XEmcNamespace(namespace).
+				GroupName(entityName).
+				PolicyName(name).
+				PolicyDocument(url.QueryEscape(doc)).
+				Execute()
+			if err != nil {
+				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
+			}
+
+		case "Role":
+			_, _, err := r.client.GenClient.IamApi.IamServicePutRolePolicy(ctx).
+				XEmcNamespace(namespace).
+				RoleName(entityName).
+				PolicyName(name).
+				PolicyDocument(url.QueryEscape(doc)).
+				Execute()
+			if err != nil {
+				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
+			}
 		}
 	}
 
 	// Set ID - format: <namespace>:<entity_type>:<entity_name>
-	plan.ID = types.StringValue(fmt.Sprintf("%s:%s:%s", plan.Namespace.ValueString(), strings.ToLower(entityType), entityName))
+	plan.ID = types.StringValue(fmt.Sprintf("%s:%s:%s", namespace, strings.ToLower(entityType), entityName))
 
 	return plan, nil
 }
