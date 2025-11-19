@@ -20,17 +20,18 @@ package models
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type IAMGroupsDatasourceModel struct {
-	ID        types.String    `tfsdk:"id"`
-	GroupName types.String    `tfsdk:"group_name"`
-	Namespace types.String    `tfsdk:"namespace"`
-	Groups    []IAMGroupModel `tfsdk:"groups"`
+    ID        types.String   `tfsdk:"id"`
+    Namespace types.String   `tfsdk:"namespace"`
+    GroupName types.String   `tfsdk:"group_name"`
+    UserName  types.String   `tfsdk:"user_name"`  // <-- add this
+    Groups    []IAMGroupModel `tfsdk:"groups"`
 }
 
 type IAMGroupModel struct {
-	GroupName  types.String   `tfsdk:"group_name"`
-	GroupId    types.String   `tfsdk:"group_id"`
-	Arn        types.String   `tfsdk:"arn"`
-	Path       types.String   `tfsdk:"path"`
-	CreateDate types.String   `tfsdk:"create_date"`
-	Users      []types.String `tfsdk:"users"`
+    GroupName  types.String   `tfsdk:"group_name"`
+    GroupId    types.String   `tfsdk:"group_id"`
+    Arn        types.String   `tfsdk:"arn"`
+    Path       types.String   `tfsdk:"path"`
+    CreateDate types.String   `tfsdk:"create_date"`
+    Users      []types.String `tfsdk:"users"`
 }

@@ -1211,6 +1211,116 @@
 					}
 				}
 			}
+		},
+		"/iam?Action=ListGroupsForUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Groups for IAM User",
+				"description": "List Groups for IAM User",
+				"operationId": "IamService_ListGroupsForUser",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the user."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListGroupsForUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:8b9d:196"
+											},
+											"ListGroupsForUserResult": {
+												"Groups": [
+													{
+														"GroupName": "FinanceGroup",
+														"Arn": "urn:ecs:iam::ns:group/FinanceGroup",
+														"GroupId": "AGPA11B2858814F35CA0",
+														"Path": "/"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -2270,6 +2380,53 @@
 							}
 						},
 						"description": "Get listGroupsResult"
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListGroupsForUserResponse": {
+				"type": "object",
+				"properties": {
+					"ListGroupsForUserResult": {
+						"type": "object",
+						"properties": {
+							"Groups": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Arn": {
+											"type": "string"
+										},
+										"GroupId": {
+											"type": "string"
+										},
+										"GroupName": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										}
+									}
+								},
+								"description": "List of groups the user belongs to."
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "Marker for pagination if IsTruncated is true."
+							}
+						}
 					},
 					"ResponseMetadata": {
 						"type": "object",

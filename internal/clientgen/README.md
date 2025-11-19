@@ -81,6 +81,7 @@ Class | Method | HTTP request | Description
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
 *IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 *IamApi* | [**IamServiceListGroups**](docs/IamApi.md#iamservicelistgroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
+*IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 *NamespaceApi* | [**NamespaceServiceGetNamespace**](docs/NamespaceApi.md#namespaceservicegetnamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
@@ -94,6 +95,9 @@ Class | Method | HTTP request | Description
  - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
  - [IamServiceGetGroupResponseGetGroupResultGroup](docs/IamServiceGetGroupResponseGetGroupResultGroup.md)
  - [IamServiceGetGroupResponseResponseMetadata](docs/IamServiceGetGroupResponseResponseMetadata.md)
+ - [IamServiceListGroupsForUserResponse](docs/IamServiceListGroupsForUserResponse.md)
+ - [IamServiceListGroupsForUserResponseListGroupsForUserResult](docs/IamServiceListGroupsForUserResponseListGroupsForUserResult.md)
+ - [IamServiceListGroupsForUserResponseListGroupsForUserResultGroupsInner](docs/IamServiceListGroupsForUserResponseListGroupsForUserResultGroupsInner.md)
  - [IamServiceListGroupsResponse](docs/IamServiceListGroupsResponse.md)
  - [IamServiceListGroupsResponseListGroupsResult](docs/IamServiceListGroupsResponseListGroupsResult.md)
  - [IamServiceListGroupsResponseListGroupsResultGroupsInner](docs/IamServiceListGroupsResponseListGroupsResultGroupsInner.md)
