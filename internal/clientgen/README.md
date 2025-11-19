@@ -92,6 +92,18 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
 *IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 *IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
+*IamApi* | [**IamServiceDeleteGroupPolicy**](docs/IamApi.md#iamservicedeletegrouppolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceDeleteRolePolicy**](docs/IamApi.md#iamservicedeleterolepolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
+*IamApi* | [**IamServiceDeleteUserPolicy**](docs/IamApi.md#iamservicedeleteuserpolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
+*IamApi* | [**IamServiceGetGroupPolicy**](docs/IamApi.md#iamservicegetgrouppolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceGetRolePolicy**](docs/IamApi.md#iamservicegetrolepolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
+*IamApi* | [**IamServiceGetUserPolicy**](docs/IamApi.md#iamservicegetuserpolicy) | **Post** /iam?Action&#x3D;GetUserPolicy | Get specific inlinePolicy for IAM User.
+*IamApi* | [**IamServiceListGroupPolicies**](docs/IamApi.md#iamservicelistgrouppolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
+*IamApi* | [**IamServiceListRolePolicies**](docs/IamApi.md#iamservicelistrolepolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
+*IamApi* | [**IamServiceListUserPolicies**](docs/IamApi.md#iamservicelistuserpolicies) | **Post** /iam?Action&#x3D;ListUserPolicies | List Inline Policies for IAM User.
+*IamApi* | [**IamServicePutGroupPolicy**](docs/IamApi.md#iamserviceputgrouppolicy) | **Post** /iam?Action&#x3D;PutGroupPolicy | Add or Update Inline Policy for IAM Group.
+*IamApi* | [**IamServicePutRolePolicy**](docs/IamApi.md#iamserviceputrolepolicy) | **Post** /iam?Action&#x3D;PutRolePolicy | Adds or updates an inline policy document that is embedded in the specified IAM role.
+*IamApi* | [**IamServicePutUserPolicy**](docs/IamApi.md#iamserviceputuserpolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
@@ -141,6 +153,23 @@ Class | Method | HTTP request | Description
  - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
  - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
  - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
+ - [IamServiceDeleteGroupPolicyResponse](docs/IamServiceDeleteGroupPolicyResponse.md)
+ - [IamServiceDeleteGroupPolicyResponseResponseMetadata](docs/IamServiceDeleteGroupPolicyResponseResponseMetadata.md)
+ - [IamServiceDeleteRolePolicyResponse](docs/IamServiceDeleteRolePolicyResponse.md)
+ - [IamServiceDeleteUserPolicyResponse](docs/IamServiceDeleteUserPolicyResponse.md)
+ - [IamServiceGetGroupPolicyResponse](docs/IamServiceGetGroupPolicyResponse.md)
+ - [IamServiceGetGroupPolicyResponseGetGroupPolicyResult](docs/IamServiceGetGroupPolicyResponseGetGroupPolicyResult.md)
+ - [IamServiceGetRolePolicyResponse](docs/IamServiceGetRolePolicyResponse.md)
+ - [IamServiceGetRolePolicyResponseGetRolePolicyResult](docs/IamServiceGetRolePolicyResponseGetRolePolicyResult.md)
+ - [IamServiceGetUserPolicyResponse](docs/IamServiceGetUserPolicyResponse.md)
+ - [IamServiceGetUserPolicyResponseGetUserPolicyResult](docs/IamServiceGetUserPolicyResponseGetUserPolicyResult.md)
+ - [IamServiceListGroupPoliciesResponse](docs/IamServiceListGroupPoliciesResponse.md)
+ - [IamServiceListGroupPoliciesResponseListGroupPoliciesResult](docs/IamServiceListGroupPoliciesResponseListGroupPoliciesResult.md)
+ - [IamServiceListRolePoliciesResponse](docs/IamServiceListRolePoliciesResponse.md)
+ - [IamServiceListUserPoliciesResponse](docs/IamServiceListUserPoliciesResponse.md)
+ - [IamServicePutGroupPolicyResponse](docs/IamServicePutGroupPolicyResponse.md)
+ - [IamServicePutRolePolicyResponse](docs/IamServicePutRolePolicyResponse.md)
+ - [IamServicePutUserPolicyResponse](docs/IamServicePutUserPolicyResponse.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
