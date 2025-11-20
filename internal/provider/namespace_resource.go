@@ -272,51 +272,26 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Computed:            true,
 				// Default:             int64default.StaticInt64(0),
 			},
-			// TODO :: Add in separate resource
-			// "retention_classes": schema.SingleNestedAttribute{
-			// 	Description:         "RetentionClasses.",
-			// 	MarkdownDescription: "RetentionClasses.",
-			// 	Optional:            true,
-			// 	Computed:            true,
-			// 	Default: objectdefault.StaticValue(
-			// 		types.ObjectValueMust(
-			// 			map[string]attr.Type{
-			// 				"retention_class": types.ListType{ElemType: types.ObjectType{AttrTypes: map[string]attr.Type{
-			// 					"name":   types.StringType,
-			// 					"period": types.Int64Type,
-			// 				}},
-			// 				},
-			// 			},
-			// 			map[string]attr.Value{
-			// 				"retention_class": types.ListValueMust(types.ObjectType{AttrTypes: map[string]attr.Type{
-			// 					"name":   types.StringType,
-			// 					"period": types.Int64Type,
-			// 				}}, []attr.Value{}),
-			// 			},
-			// 		),
-			// 	),
-			// 	Attributes: map[string]schema.Attribute{
-			// 		"retention_class": schema.ListNestedAttribute{
-			// 			Description:         "Retention Class.",
-			// 			MarkdownDescription: "Retention Class.",
-			// 			Required:            true,
-			// 			NestedObject: schema.NestedAttributeObject{
-			// 				Attributes: map[string]schema.Attribute{
-			// 					"name": schema.StringAttribute{
-			// 						Description:         "Name of the retention class.",
-			// 						MarkdownDescription: "Name of the retention class.",
-			// 						Required:            true,
-			// 					},
-			// 					"period": schema.Int64Attribute{
-			// 						Description:         "Period of the retention class in seconds.",
-			// 						MarkdownDescription: "Period of the retention class in seconds.",
-			// 						Required:            true,
-			// 					},
-			// 				},
-			// 			},
-			// 		},
-			// 	},
-			// },
+			"retention_classes": schema.ListNestedAttribute{
+				Description:         "Retention Class.",
+				MarkdownDescription: "Retention Class.",
+				Optional:            true,
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							Description:         "Name of the retention class.",
+							MarkdownDescription: "Name of the retention class.",
+							Required:            true,
+						},
+						"period": schema.Int64Attribute{
+							Description:         "Period of the retention class in seconds.",
+							MarkdownDescription: "Period of the retention class in seconds.",
+							Required:            true,
+						},
+					},
+				},
+			},
 			"root_user_name": schema.StringAttribute{
 				Description:         "root user name.",
 				MarkdownDescription: "root user name.",
@@ -367,20 +342,42 @@ func (r *NamespaceResource) userMappingAttrJson(a models.NsResUserMappingAttr) c
 	}
 }
 
-func (r *NamespaceResource) modelToJson(plan models.NamespaceResourceModel) clientgen.NamespaceServiceCreateNamespaceRequest {
-	return clientgen.NamespaceServiceCreateNamespaceRequest{
-		Namespace:                    plan.Name.ValueString(),
+func (r *NamespaceResource) boolToString(b *bool) *string {
+	if b == nil {
+		return nil
+	}
+	ret := "false"
+	if *b {
+		ret = "true"
+	}
+	return &ret
+}
+
+func (r *NamespaceResource) stringToBool(s *string) *bool {
+	if s == nil {
+		return nil
+	}
+	ret := false
+	if *s == "true" {
+		ret = true
+	}
+	return &ret
+}
+
+func (r *NamespaceResource) modelToJson(plan models.NamespaceResourceModel) clientgen.NamespaceServiceGetNamespaceResponse {
+	return clientgen.NamespaceServiceGetNamespaceResponse{
+		Name:                         helper.ValueToPointer[string](plan.Name),
 		DefaultDataServicesVpool:     helper.ValueToPointer[string](plan.DefaultDataServicesVpool),
 		AllowedVpoolsList:            helper.ValueToList[string](plan.AllowedVpoolsList),
 		DisallowedVpoolsList:         helper.ValueToList[string](plan.DisallowedVpoolsList),
 		NamespaceAdmins:              helper.ValueToPointer[string](plan.NamespaceAdmins),
 		UserMapping:                  helper.ValueListTransform(plan.UserMapping, r.userMappingJson),
-		IsEncryptionEnabled:          helper.ValueToPointer[bool](plan.IsEncryptionEnabled),
+		IsEncryptionEnabled:          r.boolToString(helper.ValueToPointer[bool](plan.IsEncryptionEnabled)),
 		DefaultBucketBlockSize:       helper.ValueToPointer[int64](plan.DefaultBucketBlockSize),
 		ExternalGroupAdmins:          helper.ValueToPointer[string](plan.ExternalGroupAdmins),
 		IsStaleAllowed:               helper.ValueToPointer[bool](plan.IsStaleAllowed),
 		IsObjectLockWithAdoAllowed:   helper.ValueToPointer[bool](plan.IsObjectLockWithAdoAllowed),
-		ComplianceEnabled:            helper.ValueToPointer[bool](plan.IsComplianceEnabled),
+		IsComplianceEnabled:          helper.ValueToPointer[bool](plan.IsComplianceEnabled),
 		DefaultAuditDeleteExpiration: helper.ValueToPointer[int64](plan.DefaultAuditDeleteExpiration),
 		RootUserPassword:             helper.ValueToPointer[string](plan.RootUserPassword),
 	}
@@ -396,10 +393,25 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	planJson := r.modelToJson(plan)
 
 	nsreq := r.client.GenClient.NamespaceApi.NamespaceServiceCreateNamespace(ctx)
 	namespace, _, err := nsreq.NamespaceServiceCreateNamespaceRequest(
-		r.modelToJson(plan)).Execute()
+		clientgen.NamespaceServiceCreateNamespaceRequest{
+			Namespace:                    *planJson.Name,
+			DefaultDataServicesVpool:     planJson.DefaultDataServicesVpool,
+			AllowedVpoolsList:            planJson.AllowedVpoolsList,
+			DisallowedVpoolsList:         planJson.DisallowedVpoolsList,
+			NamespaceAdmins:              planJson.NamespaceAdmins,
+			UserMapping:                  planJson.UserMapping,
+			IsEncryptionEnabled:          r.stringToBool(planJson.IsEncryptionEnabled),
+			DefaultBucketBlockSize:       planJson.DefaultBucketBlockSize,
+			ExternalGroupAdmins:          planJson.ExternalGroupAdmins,
+			IsStaleAllowed:               planJson.IsStaleAllowed,
+			IsObjectLockWithAdoAllowed:   planJson.IsObjectLockWithAdoAllowed,
+			ComplianceEnabled:            planJson.IsComplianceEnabled,
+			DefaultAuditDeleteExpiration: planJson.DefaultAuditDeleteExpiration,
+		}).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating namespace", err.Error())
 		return
@@ -419,6 +431,7 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 		IsStaleAllowed:               namespace.IsStaleAllowed,
 		IsObjectLockWithAdoAllowed:   namespace.IsObjectLockWithAdoAllowed,
 		IsComplianceEnabled:          namespace.IsComplianceEnabled,
+		RetentionClasses:             namespace.RetentionClasses,
 		DefaultAuditDeleteExpiration: namespace.DefaultAuditDeleteExpiration,
 	}, plan.RootUserPassword)
 
@@ -477,12 +490,19 @@ func (r *NamespaceResource) getModel(
 					Groups: helper.ListNotNull(v.Groups, types.StringValue),
 				})
 			}),
-		IsEncryptionEnabled:          helper.TfBoolNN(&IsEncryptionEnabled),
-		DefaultBucketBlockSize:       helper.TfInt64NN(namespace.DefaultBucketBlockSize),
-		ExternalGroupAdmins:          helper.TfStringNN(namespace.ExternalGroupAdmins),
-		IsStaleAllowed:               helper.TfBoolNN(namespace.IsStaleAllowed),
-		IsObjectLockWithAdoAllowed:   helper.TfBoolNN(namespace.IsObjectLockWithAdoAllowed),
-		IsComplianceEnabled:          helper.TfBoolNN(namespace.IsComplianceEnabled),
+		IsEncryptionEnabled:        helper.TfBoolNN(&IsEncryptionEnabled),
+		DefaultBucketBlockSize:     helper.TfInt64NN(namespace.DefaultBucketBlockSize),
+		ExternalGroupAdmins:        helper.TfStringNN(namespace.ExternalGroupAdmins),
+		IsStaleAllowed:             helper.TfBoolNN(namespace.IsStaleAllowed),
+		IsObjectLockWithAdoAllowed: helper.TfBoolNN(namespace.IsObjectLockWithAdoAllowed),
+		IsComplianceEnabled:        helper.TfBoolNN(namespace.IsComplianceEnabled),
+		RetentionClasses: helper.ListNotNull(namespace.RetentionClasses.RetentionClass,
+			func(v clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner) types.Object {
+				return helper.Object(models.RetentionClass{
+					Name:   helper.TfStringNN(v.Name),
+					Period: helper.TfInt64NN(v.Period),
+				})
+			}),
 		DefaultAuditDeleteExpiration: helper.TfInt64NN(namespace.DefaultAuditDeleteExpiration),
 		RootUserName:                 helper.TfStringNN(namespace.RootUserName),
 		RootUserPassword:             rootpwd,
@@ -506,7 +526,6 @@ func (r *NamespaceResource) vpoolDiff(first, second []string) []string {
 
 func (r *NamespaceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	tflog.Info(ctx, "updating namespace")
-	// TODO: Add update logic
 	var plan, state models.NamespaceResourceModel
 
 	// Read Terraform plan and state data into the models

@@ -168,7 +168,7 @@ type NamespaceResourceModel struct {
 	// // Default bucket audit delete expiration. Updatable
 	DefaultAuditDeleteExpiration types.Int64 `tfsdk:"default_audit_delete_expiration"`
 	// retention classes. Updatable
-	// RetentionClasses types.Object `tfsdk:"retention_classes"`
+	RetentionClasses types.List `tfsdk:"retention_classes"`
 	// root user name
 	RootUserName types.String `tfsdk:"root_user_name"`
 	// root user password.
