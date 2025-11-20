@@ -20,7 +20,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"strings"
 	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/models"
@@ -148,11 +147,7 @@ func (r *IAMInlinePolicyResource) Schema(_ context.Context, _ resource.SchemaReq
 
 // ValidateConfig validates the resource configuration.
 func (r *IAMInlinePolicyResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var config struct {
-		Username  types.String `tfsdk:"username"`
-		Groupname types.String `tfsdk:"groupname"`
-		Rolename  types.String `tfsdk:"rolename"`
-	}
+	var config models.IAMInlinePolicyResourceModel
 
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
@@ -442,7 +437,7 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 				XEmcNamespace(namespace).
 				UserName(entityName).
 				PolicyName(name).
-				PolicyDocument(url.QueryEscape(doc)).
+				PolicyDocument(doc).
 				Execute()
 			if err != nil {
 				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
@@ -453,7 +448,7 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 				XEmcNamespace(namespace).
 				GroupName(entityName).
 				PolicyName(name).
-				PolicyDocument(url.QueryEscape(doc)).
+				PolicyDocument(doc).
 				Execute()
 			if err != nil {
 				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
@@ -464,7 +459,7 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 				XEmcNamespace(namespace).
 				RoleName(entityName).
 				PolicyName(name).
-				PolicyDocument(url.QueryEscape(doc)).
+				PolicyDocument(doc).
 				Execute()
 			if err != nil {
 				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
