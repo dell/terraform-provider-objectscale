@@ -24,6 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // TfString - Converts *string to types.String, returns types.StringNull if input is nil
@@ -79,15 +80,6 @@ func TfInt64NN(in *int64) types.Int64 {
 	return types.Int64Value(*in)
 }
 
-// TfObject - Converts input using the transform transform function, returns empty output if input is nil
-func TfObject[tfT any, jT any](in *jT, transform func(jT) tfT) tfT {
-	if in == nil {
-		var ret tfT
-		return ret
-	}
-	return transform(*in)
-}
-
 // ValueToPointer - Extracts Go value pointer from attr.Value
 // Returns nil if input is not known
 // Supported types: types.String, types.Bool
@@ -130,6 +122,15 @@ func ValueToList[T GoTypes](in types.List) []T {
 		}
 	}
 	return ret
+}
+
+func ValueObjectTransform[T any, Tf any](in types.Object, transform func(Tf) T) T {
+	var ret Tf
+	in.As(context.Background(), &ret, basetypes.ObjectAsOptions{
+		UnhandledNullAsEmpty:    true,
+		UnhandledUnknownAsEmpty: true,
+	})
+	return transform(ret)
 }
 
 type TfCollection interface {

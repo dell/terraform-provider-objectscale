@@ -177,35 +177,26 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Optional:            true,
 				Computed:            true,
 			},
-			// TODO : Quotas resource?
-			// "notification_size": schema.Int64Attribute{
-			// 	Description:         "Notification Size in GB. Default: -1. Updatable.",
-			// 	MarkdownDescription: "Notification Size in GB. Default: -1. Updatable.",
-			// 	Optional:            true,
-			// 	Computed:            true,
-			// 	Default:             int64default.StaticInt64(-1),
-			// },
-			// "block_size": schema.Int64Attribute{
-			// 	Description:         "Block Size in GB. Default: -1. Updatable.",
-			// 	MarkdownDescription: "Block Size in GB. Default: -1. Updatable.",
-			// 	Optional:            true,
-			// 	Computed:            true,
-			// 	Default:             int64default.StaticInt64(-1),
-			// },
-			// "notification_size_in_count": schema.Int64Attribute{
-			// 	Description:         "Notification Size in Count. Default: -1. Updatable.",
-			// 	MarkdownDescription: "Notification Size in Count. Default: -1. Updatable.",
-			// 	Optional:            true,
-			// 	Computed:            true,
-			// 	Default:             int64default.StaticInt64(-1),
-			// },
-			// "block_size_in_count": schema.Int64Attribute{
-			// 	Description:         "Block Size in Count. Default: -1. Updatable.",
-			// 	MarkdownDescription: "Block Size in Count. Default: -1. Updatable.",
-			// 	Optional:            true,
-			// 	Computed:            true,
-			// 	Default:             int64default.StaticInt64(-1),
-			// },
+			"quota": schema.SingleNestedAttribute{
+				Description:         "Namespace Quota.",
+				MarkdownDescription: "Namespace Quota.",
+				Optional:            true,
+				Computed:            true,
+				Attributes: map[string]schema.Attribute{
+					"notification_size": schema.Int64Attribute{
+						Description:         "Notification Size in GB. Default: -1. Updatable.",
+						MarkdownDescription: "Notification Size in GB. Default: -1. Updatable.",
+						Optional:            true,
+						Computed:            true,
+					},
+					"block_size": schema.Int64Attribute{
+						Description:         "Block Size in GB. Default: -1. Updatable.",
+						MarkdownDescription: "Block Size in GB. Default: -1. Updatable.",
+						Optional:            true,
+						Computed:            true,
+					},
+				},
+			},
 			"default_audit_delete_expiration": schema.Int64Attribute{
 				Description:         "Default bucket audit delete expiration. Updatable.",
 				MarkdownDescription: "Default bucket audit delete expiration. Updatable.",
@@ -257,7 +248,7 @@ func fillSchemaWithUseState(in map[string]schema.Attribute) map[string]schema.At
 		case schema.Int64Attribute:
 			val.PlanModifiers = append(val.PlanModifiers, int64planmodifier.UseStateForUnknown())
 			in[key] = val
-		case schema.ObjectAttribute:
+		case schema.SingleNestedAttribute:
 			val.PlanModifiers = append(val.PlanModifiers, objectplanmodifier.UseStateForUnknown())
 			in[key] = val
 		case schema.StringAttribute:
@@ -334,7 +325,15 @@ func (r *NamespaceResource) stringToBool(s *string) *bool {
 	return &ret
 }
 
+func (r *NamespaceResource) quotaJson(in models.NsResQuota) clientgen.NamespaceServiceGetNamespaceResponse {
+	return clientgen.NamespaceServiceGetNamespaceResponse{
+		NotificationSize: helper.ValueToPointer[int64](in.NotificationSize),
+		BlockSize:        helper.ValueToPointer[int64](in.BlockSize),
+	}
+}
+
 func (r *NamespaceResource) modelToJson(plan models.NamespaceResourceModel) clientgen.NamespaceServiceGetNamespaceResponse {
+	pQuota := helper.ValueObjectTransform(plan.Quota, r.quotaJson)
 	return clientgen.NamespaceServiceGetNamespaceResponse{
 		Id:                           helper.ValueToPointer[string](plan.Id),
 		Name:                         helper.ValueToPointer[string](plan.Name),
@@ -354,6 +353,8 @@ func (r *NamespaceResource) modelToJson(plan models.NamespaceResourceModel) clie
 		RetentionClasses: &clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses{
 			RetentionClass: helper.ValueListTransform(plan.RetentionClasses, r.rcListJson),
 		},
+		NotificationSize: pQuota.NotificationSize,
+		BlockSize:        pQuota.BlockSize,
 	}
 }
 
@@ -413,6 +414,8 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 		IsComplianceEnabled:          namespace.IsComplianceEnabled,
 		RetentionClasses:             namespace.RetentionClasses,
 		DefaultAuditDeleteExpiration: namespace.DefaultAuditDeleteExpiration,
+		NotificationSize:             namespace.NotificationSize,
+		BlockSize:                    namespace.BlockSize,
 	}
 	data := r.getModel(stateJson1, plan.RootUserPassword)
 
@@ -549,6 +552,10 @@ func (r *NamespaceResource) getModel(
 					Period: helper.TfInt64NN(v.Period),
 				})
 			}),
+		Quota: helper.Object(models.NsResQuota{
+			NotificationSize: helper.TfInt64NN(namespace.NotificationSize),
+			BlockSize:        helper.TfInt64NN(namespace.BlockSize),
+		}),
 		DefaultAuditDeleteExpiration: helper.TfInt64NN(namespace.DefaultAuditDeleteExpiration),
 		RootUserName:                 helper.TfStringNN(namespace.RootUserName),
 		RootUserPassword:             rootpwd,
