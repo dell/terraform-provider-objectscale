@@ -20,4 +20,5 @@ RequiredAPIs = [
     "/object/namespaces/namespace",
     "/object/namespaces/namespace/{namespace}",
     "/object/namespaces/namespace/{namespace}/deactivate",
+    "/object/namespaces/namespace/{namespace}/retention*",
 ]

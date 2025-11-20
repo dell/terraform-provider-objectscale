@@ -5,10 +5,14 @@ All URIs are relative to *https://objectscale.local:4443*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**NamespaceServiceCreateNamespace**](NamespaceApi.md#NamespaceServiceCreateNamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
+[**NamespaceServiceCreateRetentionClass**](NamespaceApi.md#NamespaceServiceCreateRetentionClass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 [**NamespaceServiceDeactivateNamespace**](NamespaceApi.md#NamespaceServiceDeactivateNamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 [**NamespaceServiceGetNamespace**](NamespaceApi.md#NamespaceServiceGetNamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
 [**NamespaceServiceGetNamespaces**](NamespaceApi.md#NamespaceServiceGetNamespaces) | **Get** /object/namespaces | Gets the list of all configured namespaces
+[**NamespaceServiceGetRetentionClass**](NamespaceApi.md#NamespaceServiceGetRetentionClass) | **Get** /object/namespaces/namespace/{namespace}/retention/{class} | Gets the retention period for the given namespace and retention class
+[**NamespaceServiceGetRetentionClasses**](NamespaceApi.md#NamespaceServiceGetRetentionClasses) | **Get** /object/namespaces/namespace/{namespace}/retention | Gets the list of retention classes for the specified namespace
 [**NamespaceServiceUpdateNamespace**](NamespaceApi.md#NamespaceServiceUpdateNamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
+[**NamespaceServiceUpdateRetentionClass**](NamespaceApi.md#NamespaceServiceUpdateRetentionClass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
 
 
 
@@ -63,6 +67,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**NamespaceServiceCreateNamespaceResponse**](NamespaceServiceCreateNamespaceResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## NamespaceServiceCreateRetentionClass
+
+> map[string]interface{} NamespaceServiceCreateRetentionClass(ctx, namespace).NamespaceServiceCreateRetentionClassRequest(namespaceServiceCreateRetentionClassRequest).Execute()
+
+Creates a retention class for the specified namespace
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    namespace := "namespace_example" // string | Namespace identifier for which retention class needs to created.
+    namespaceServiceCreateRetentionClassRequest := *openapiclient.NewNamespaceServiceCreateRetentionClassRequest() // NamespaceServiceCreateRetentionClassRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.NamespaceApi.NamespaceServiceCreateRetentionClass(context.Background(), namespace).NamespaceServiceCreateRetentionClassRequest(namespaceServiceCreateRetentionClassRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `NamespaceApi.NamespaceServiceCreateRetentionClass``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `NamespaceServiceCreateRetentionClass`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `NamespaceApi.NamespaceServiceCreateRetentionClass`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**namespace** | **string** | Namespace identifier for which retention class needs to created. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNamespaceServiceCreateRetentionClassRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **namespaceServiceCreateRetentionClassRequest** | [**NamespaceServiceCreateRetentionClassRequest**](NamespaceServiceCreateRetentionClassRequest.md) |  | 
+
+### Return type
+
+**map[string]interface{}**
 
 ### Authorization
 
@@ -288,6 +364,149 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## NamespaceServiceGetRetentionClass
+
+> NamespaceServiceGetRetentionClassResponse NamespaceServiceGetRetentionClass(ctx, namespace, class).Execute()
+
+Gets the retention period for the given namespace and retention class
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    namespace := "namespace_example" // string | Namespace for which retention period needs to retrieved
+    class := "class_example" // string | Class name for which retention period needs to retrieved
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.NamespaceApi.NamespaceServiceGetRetentionClass(context.Background(), namespace, class).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `NamespaceApi.NamespaceServiceGetRetentionClass``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `NamespaceServiceGetRetentionClass`: NamespaceServiceGetRetentionClassResponse
+    fmt.Fprintf(os.Stdout, "Response from `NamespaceApi.NamespaceServiceGetRetentionClass`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**namespace** | **string** | Namespace for which retention period needs to retrieved | 
+**class** | **string** | Class name for which retention period needs to retrieved | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNamespaceServiceGetRetentionClassRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**NamespaceServiceGetRetentionClassResponse**](NamespaceServiceGetRetentionClassResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## NamespaceServiceGetRetentionClasses
+
+> NamespaceServiceGetRetentionClassesResponse NamespaceServiceGetRetentionClasses(ctx, namespace).Execute()
+
+Gets the list of retention classes for the specified namespace
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    namespace := "namespace_example" // string | Namespace identifier for which retention classes needs to retrieved
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.NamespaceApi.NamespaceServiceGetRetentionClasses(context.Background(), namespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `NamespaceApi.NamespaceServiceGetRetentionClasses``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `NamespaceServiceGetRetentionClasses`: NamespaceServiceGetRetentionClassesResponse
+    fmt.Fprintf(os.Stdout, "Response from `NamespaceApi.NamespaceServiceGetRetentionClasses`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**namespace** | **string** | Namespace identifier for which retention classes needs to retrieved | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNamespaceServiceGetRetentionClassesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**NamespaceServiceGetRetentionClassesResponse**](NamespaceServiceGetRetentionClassesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## NamespaceServiceUpdateNamespace
 
 > map[string]interface{} NamespaceServiceUpdateNamespace(ctx, namespace).NamespaceServiceUpdateNamespaceRequest(namespaceServiceUpdateNamespaceRequest).Execute()
@@ -341,6 +560,81 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **namespaceServiceUpdateNamespaceRequest** | [**NamespaceServiceUpdateNamespaceRequest**](NamespaceServiceUpdateNamespaceRequest.md) |  | 
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## NamespaceServiceUpdateRetentionClass
+
+> map[string]interface{} NamespaceServiceUpdateRetentionClass(ctx, namespace, class).NamespaceServiceUpdateRetentionClassRequest(namespaceServiceUpdateRetentionClassRequest).Execute()
+
+Updates the retention class details for a specified retention class for a namespace
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    namespace := "namespace_example" // string | Namespace identifier for which retention class needs to retrieved.
+    class := "class_example" // string | Retention class for which details needs to updated.
+    namespaceServiceUpdateRetentionClassRequest := *openapiclient.NewNamespaceServiceUpdateRetentionClassRequest() // NamespaceServiceUpdateRetentionClassRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.NamespaceApi.NamespaceServiceUpdateRetentionClass(context.Background(), namespace, class).NamespaceServiceUpdateRetentionClassRequest(namespaceServiceUpdateRetentionClassRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `NamespaceApi.NamespaceServiceUpdateRetentionClass``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `NamespaceServiceUpdateRetentionClass`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `NamespaceApi.NamespaceServiceUpdateRetentionClass`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**namespace** | **string** | Namespace identifier for which retention class needs to retrieved. | 
+**class** | **string** | Retention class for which details needs to updated. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiNamespaceServiceUpdateRetentionClassRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **namespaceServiceUpdateRetentionClassRequest** | [**NamespaceServiceUpdateRetentionClassRequest**](NamespaceServiceUpdateRetentionClassRequest.md) |  | 
 
 ### Return type
 

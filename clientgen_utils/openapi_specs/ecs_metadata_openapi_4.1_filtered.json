@@ -974,6 +974,345 @@
 					}
 				}
 			}
+		},
+		"/object/namespaces/namespace/{namespace}/retention/{class}": {
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the retention period for the given namespace and retention class",
+				"description": "Gets the retention period for the given namespace and retention class.",
+				"operationId": "NamespaceService_getRetentionClass",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for which retention period needs to retrieved"
+					},
+					{
+						"name": "class",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Class name for which retention period needs to retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retention period for the given namespace and retention class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getRetentionClassResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "class_9cc8777c-bce0-11e4-8580-0050569c6fd7",
+											"period": 2
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Updates the retention class details for a specified retention class for a namespace",
+				"description": "Updates the retention class details for a specified retention class for a namespace.",
+				"operationId": "NamespaceService_updateRetentionClass",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which retention class needs to retrieved."
+					},
+					{
+						"name": "class",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Retention class for which details needs to updated."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update retention class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"retention_class_update": {
+												"period": "2"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_updateRetentionClassRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace/{namespace}/retention": {
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the list of retention classes for the specified namespace",
+				"description": "Gets the list of retention classes for the specified namespace.",
+				"operationId": "NamespaceService_getRetentionClasses",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which retention classes needs to retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retention class list for the given Namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getRetentionClassesResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"retention_class": [
+												{
+													"name": "class_9cc8777c-bce0-11e4-8580-0050569c6fd7",
+													"period": 2
+												},
+												{
+													"name": "class_9cc8777d-bce0-11e4-8580-0050569c6fd7",
+													"period": 3
+												},
+												{
+													"name": "class_9e350b48-bce0-11e4-8580-0050569c6fd7",
+													"period": 4
+												},
+												{
+													"name": "class_9e350b49-bce0-11e4-8580-0050569c6fd7",
+													"period": 5
+												},
+												{
+													"name": "class_9fa0b612-bce0-11e4-8580-0050569c6fd7",
+													"period": 6
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Creates a retention class for the specified namespace",
+				"description": "Creates a retention class for the specified namespace. The method payload specifies the retention class details\n which define a name for the class and a retention period.",
+				"operationId": "NamespaceService_createRetentionClass",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which retention class needs to created."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to create retention class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"name": "s31",
+											"period": "1"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_createRetentionClassRequest"
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -1931,6 +2270,67 @@
 				"required": [
 					"disallowed_vpools_list"
 				]
+			},
+			"NamespaceService_getRetentionClassResponse": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Name of the retention class"
+					},
+					"period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Period of the retention class in seconds"
+					}
+				}
+			},
+			"NamespaceService_getRetentionClassesResponse": {
+				"type": "object",
+				"properties": {
+					"retention_class": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Name of the retention class"
+								},
+								"period": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Period of the retention class in seconds"
+								}
+							}
+						},
+						"description": "List of retention classes"
+					}
+				}
+			},
+			"NamespaceService_createRetentionClassRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Name of the retention class"
+					},
+					"period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Period of the retention class in seconds"
+					}
+				}
+			},
+			"NamespaceService_updateRetentionClassRequest": {
+				"type": "object",
+				"properties": {
+					"period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "A new period value for class in seconds"
+					}
+				}
 			}
 		},
 		"securitySchemes": {

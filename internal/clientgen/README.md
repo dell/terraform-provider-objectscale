@@ -80,16 +80,21 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
+*NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 *NamespaceApi* | [**NamespaceServiceGetNamespace**](docs/NamespaceApi.md#namespaceservicegetnamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
 *NamespaceApi* | [**NamespaceServiceGetNamespaces**](docs/NamespaceApi.md#namespaceservicegetnamespaces) | **Get** /object/namespaces | Gets the list of all configured namespaces
+*NamespaceApi* | [**NamespaceServiceGetRetentionClass**](docs/NamespaceApi.md#namespaceservicegetretentionclass) | **Get** /object/namespaces/namespace/{namespace}/retention/{class} | Gets the retention period for the given namespace and retention class
+*NamespaceApi* | [**NamespaceServiceGetRetentionClasses**](docs/NamespaceApi.md#namespaceservicegetretentionclasses) | **Get** /object/namespaces/namespace/{namespace}/retention | Gets the list of retention classes for the specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
+*NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
 
 
 ## Documentation For Models
 
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
+ - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)
  - [NamespaceServiceGetNamespacesResponse](docs/NamespaceServiceGetNamespacesResponse.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInner.md)
@@ -100,7 +105,10 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerVdc](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerVdc.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerVdcLink](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerVdcLink.md)
+ - [NamespaceServiceGetRetentionClassResponse](docs/NamespaceServiceGetRetentionClassResponse.md)
+ - [NamespaceServiceGetRetentionClassesResponse](docs/NamespaceServiceGetRetentionClassesResponse.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
+ - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
 
 
 ## Documentation For Authorization

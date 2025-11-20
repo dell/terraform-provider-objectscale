@@ -90,6 +90,16 @@ func TestAccNSRs(t *testing.T) {
 			// 	`,
 			// },
 			{
+				// update name error
+				Config: ProviderConfigForTesting + locals + `
+				resource"objectscale_namespace" "all" {
+					name                        = "testacc_namespace2"
+					default_data_services_vpool = local.rgs["rg3"]
+				}
+				`,
+				ExpectError: regexp.MustCompile(".*not[[:space:]]updatable.*"),
+			},
+			{
 				// update vpools
 				Config: ProviderConfigForTesting + locals + `
 				resource"objectscale_namespace" "all" {
@@ -140,6 +150,16 @@ func TestAccNSRsAll(t *testing.T) {
 						]
 					}]
 					external_group_admins = "admin1@foo,admin2@bar"
+					retention_classes = [
+						{
+							name = "testacc1"
+							period = 1000
+						},
+						{
+							name = "testacc2"
+							period = 2000
+						}
+					]
 				}
 				`,
 			},
@@ -171,6 +191,20 @@ func TestAccNSRsAll(t *testing.T) {
 					is_stale_allowed = true
 					is_object_lock_with_ado_allowed = true
 					# default_audit_delete_expiration = 3600
+					retention_classes = [
+						{
+							name = "testacc1"
+							period = 500
+						},
+						{
+							name = "testacc3"
+							period = 3000
+						},
+						{
+							name = "testacc2"
+							period = 2000
+						}
+					]
 				}
 				`,
 			},
@@ -195,6 +229,17 @@ func TestAccNSRsAll(t *testing.T) {
 					# default_audit_delete_expiration = 0
 				}
 				`,
+			},
+			// remove retention classes error
+			{
+				Config: ProviderConfigForTesting + locals + `
+				resource"objectscale_namespace" "all" {
+					name = "testacc_namespace"
+					default_data_services_vpool = local.rgs["rg3"]
+					retention_classes = []
+				}
+				`,
+				ExpectError: regexp.MustCompile(".*removal of retention classes.*"),
 			},
 			{
 				// remove all from lists 2
