@@ -16,3 +16,500 @@ limitations under the License.
 */
 
 package provider
+
+import (
+	"fmt"
+	"regexp"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+)
+
+var testingInputParams testingInputsForIAMInlinePolicyResource
+
+type testingInputsForIAMInlinePolicyResource struct {
+	Namespace              string
+	Username               string
+	Groupname              string
+	Rolename               string
+	PolicyName1            string
+	PolicyName2            string
+	PolicyName3            string
+	PolicyDocument1        string
+	PolicyDocument2        string
+	PolicyDocument2Updated string
+	PolicyDocument3        string
+}
+
+func init() {
+	testingInputParams = testingInputsForIAMInlinePolicyResource{
+		Namespace:   "ns1",
+		Username:    "userTest1",
+		Groupname:   "groupTest1",
+		Rolename:    "roleTest1",
+		PolicyName1: "inlinePolicyTest1",
+		PolicyName2: "inlinePolicyTest2",
+		PolicyName3: "inlinePolicyTest3",
+		PolicyDocument1: `{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicyVersion",
+        "iam:GetUser",
+        "iam:GetPolicy",
+        "iam:GetGroupPolicy",
+        "iam:GetRole",
+        "iam:GetAccessKeyLastUsed",
+        "iam:GetGroup",
+        "iam:GetUserPolicy",
+        "iam:GetSAMLProvider",
+        "iam:GetRolePolicy",
+        "iam:GetContextKeysForCustomPolicy",
+        "iam:GetContextKeysForPrincipalPolicy",
+        "iam:SimulateCustomPolicy",
+        "iam:SimulatePrincipalPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}`,
+		PolicyDocument2: `{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "iam:DeleteAccessKey",
+        "iam:UpdateSAMLProvider",
+        "iam:CreateRole",
+        "iam:RemoveUserFromGroup",
+        "iam:AddUserToGroup",
+        "iam:UpdateUser",
+        "iam:CreateAccessKey",
+        "iam:UpdateAccessKey",
+        "iam:CreateSAMLProvider",
+        "iam:DeleteRole",
+        "iam:UpdateRole",
+        "iam:DeleteGroup",
+        "iam:UpdateGroup",
+        "iam:CreateUser",
+        "iam:CreateGroup",
+        "iam:DeleteSAMLProvider",
+        "iam:DeleteUser"
+      ],
+      "Resource": "*"
+    }
+  ]
+}`,
+		PolicyDocument2Updated: `{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicyVersion",
+        "iam:GetUser",
+        "iam:GetPolicy",
+        "iam:GetGroupPolicy",
+        "iam:GetRole",
+        "iam:GetAccessKeyLastUsed",
+        "iam:GetGroup",
+        "iam:GetUserPolicy",
+        "iam:GetSAMLProvider",
+        "iam:GetRolePolicy",
+        "iam:GetContextKeysForCustomPolicy",
+        "iam:GetContextKeysForPrincipalPolicy",
+        "iam:SimulateCustomPolicy",
+        "iam:SimulatePrincipalPolicy",
+        "iam:DeleteAccessKey",
+        "iam:UpdateSAMLProvider",
+        "iam:CreateRole",
+        "iam:RemoveUserFromGroup",
+        "iam:AddUserToGroup",
+        "iam:UpdateUser",
+        "iam:CreateAccessKey",
+        "iam:UpdateAccessKey",
+        "iam:CreateSAMLProvider",
+        "iam:DeleteRole",
+        "iam:UpdateRole",
+        "iam:DeleteGroup",
+        "iam:UpdateGroup",
+        "iam:CreateUser",
+        "iam:CreateGroup",
+        "iam:DeleteSAMLProvider",
+        "iam:DeleteUser"
+      ],
+      "Resource": "*"
+    }
+  ]
+}`,
+		PolicyDocument3: `{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "iam:TagUser",
+        "iam:TagRole",
+        "iam:UntagUser",
+        "iam:UntagRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}`,
+	}
+}
+
+func TestAccIAMInlinePolicyForUserCRUD(t *testing.T) {
+	resourceName := "objectscale_iam_inline_policy.example"
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testProviderFactory,
+		Steps: []resource.TestStep{
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig1(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName1),
+					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName2),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig2(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
+					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig3(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "0"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccIAMInlinePolicyForGroupCRUD(t *testing.T) {
+	resourceName := "objectscale_iam_inline_policy.example"
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testProviderFactory,
+		Steps: []resource.TestStep{
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig1(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName1),
+					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName2),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig2(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
+					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig3(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "0"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccIAMInlinePolicyForRoleCRUD(t *testing.T) {
+	resourceName := "objectscale_iam_inline_policy.example"
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testProviderFactory,
+		Steps: []resource.TestStep{
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig1(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName1),
+					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName2),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig2(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
+					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig3(testingInputParams),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "policies.#", "0"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccIAMInlinePolicyErrorScenario(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testProviderFactory,
+		Steps: []resource.TestStep{
+			{
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyErrorConfig1(testingInputParams),
+				ExpectError: regexp.MustCompile("Validation Error"),
+			},
+			{
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyErrorConfig2(testingInputParams),
+				ExpectError: regexp.MustCompile("Validation Error"),
+			},
+		},
+	})
+}
+
+func testAccIAMInlinePolicyForUserConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    username  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = "%s"
+      },
+      {
+        name     = "%s"
+        document = "%s"
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Username,
+		testingInputParams.PolicyName1,
+		testingInputParams.PolicyDocument1,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2,
+	)
+}
+
+func testAccIAMInlinePolicyForUserConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    username  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = "%s"
+      },
+      {
+        name     = "%s"
+        document = "%s"
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Username,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2Updated,
+		testingInputParams.PolicyName3,
+		testingInputParams.PolicyDocument3,
+	)
+}
+
+func testAccIAMInlinePolicyForUserConfig3(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    username  = "%s"
+
+    policies = []
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Username,
+	)
+}
+
+func testAccIAMInlinePolicyForGroupConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    groupname  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = "%s"
+      },
+      {
+        name     = "%s"
+        document = "%s"
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Groupname,
+		testingInputParams.PolicyName1,
+		testingInputParams.PolicyDocument1,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2,
+	)
+}
+
+func testAccIAMInlinePolicyForGroupConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    groupname  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = "%s"
+      },
+      {
+        name     = "%s"
+        document = "%s"
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Groupname,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2Updated,
+		testingInputParams.PolicyName3,
+		testingInputParams.PolicyDocument3,
+	)
+}
+
+func testAccIAMInlinePolicyForGroupConfig3(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    groupname  = "%s"
+
+    policies = []
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Groupname,
+	)
+}
+
+func testAccIAMInlinePolicyForRoleConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    rolename  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = "%s"
+      },
+      {
+        name     = "%s"
+        document = "%s"
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Rolename,
+		testingInputParams.PolicyName1,
+		testingInputParams.PolicyDocument1,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2,
+	)
+}
+
+func testAccIAMInlinePolicyForRoleConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    rolename  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = "%s"
+      },
+      {
+        name     = "%s"
+        document = "%s"
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Rolename,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2Updated,
+		testingInputParams.PolicyName3,
+		testingInputParams.PolicyDocument3,
+	)
+}
+
+func testAccIAMInlinePolicyForRoleConfig3(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    rolename  = "%s"
+
+    policies = []
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Rolename,
+	)
+}
+
+func testAccIAMInlinePolicyErrorConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+
+    policies = []
+  }
+		`,
+		testingInputParams.Namespace,
+	)
+}
+
+func testAccIAMInlinePolicyErrorConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    username  = "%s"
+    groupname  = "%s"
+    rolename  = "%s"
+
+    policies = []
+  }
+		`,
+		testingInputParams.Namespace,
+		testingInputParams.Username,
+		testingInputParams.Groupname,
+		testingInputParams.Rolename,
+	)
+}
