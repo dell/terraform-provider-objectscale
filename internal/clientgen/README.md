@@ -83,10 +83,13 @@ Class | Method | HTTP request | Description
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 *NamespaceApi* | [**NamespaceServiceGetNamespace**](docs/NamespaceApi.md#namespaceservicegetnamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
+*NamespaceApi* | [**NamespaceServiceGetNamespaceQuota**](docs/NamespaceApi.md#namespaceservicegetnamespacequota) | **Get** /object/namespaces/namespace/{namespace}/quota | Gets the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceGetNamespaces**](docs/NamespaceApi.md#namespaceservicegetnamespaces) | **Get** /object/namespaces | Gets the list of all configured namespaces
 *NamespaceApi* | [**NamespaceServiceGetRetentionClass**](docs/NamespaceApi.md#namespaceservicegetretentionclass) | **Get** /object/namespaces/namespace/{namespace}/retention/{class} | Gets the retention period for the given namespace and retention class
 *NamespaceApi* | [**NamespaceServiceGetRetentionClasses**](docs/NamespaceApi.md#namespaceservicegetretentionclasses) | **Get** /object/namespaces/namespace/{namespace}/retention | Gets the list of retention classes for the specified namespace
+*NamespaceApi* | [**NamespaceServiceRemoveNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceremovenamespacequota) | **Delete** /object/namespaces/namespace/{namespace}/quota | Deletes the namespace quota for the specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
+*NamespaceApi* | [**NamespaceServiceUpdateNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceupdatenamespacequota) | **Put** /object/namespaces/namespace/{namespace}/quota | Updates the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
 
 
@@ -95,6 +98,7 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
+ - [NamespaceServiceGetNamespaceQuotaResponse](docs/NamespaceServiceGetNamespaceQuotaResponse.md)
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)
  - [NamespaceServiceGetNamespacesResponse](docs/NamespaceServiceGetNamespacesResponse.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInner.md)
@@ -107,6 +111,7 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerVdcLink](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerVdcLink.md)
  - [NamespaceServiceGetRetentionClassResponse](docs/NamespaceServiceGetRetentionClassResponse.md)
  - [NamespaceServiceGetRetentionClassesResponse](docs/NamespaceServiceGetRetentionClassesResponse.md)
+ - [NamespaceServiceUpdateNamespaceQuotaRequest](docs/NamespaceServiceUpdateNamespaceQuotaRequest.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
  - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
 

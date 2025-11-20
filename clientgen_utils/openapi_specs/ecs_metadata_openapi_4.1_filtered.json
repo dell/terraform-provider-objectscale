@@ -1313,6 +1313,220 @@
 					}
 				}
 			}
+		},
+		"/object/namespaces/namespace/{namespace}/quota": {
+			"put": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Updates the namespace quota for a specified namespace",
+				"description": "Updates the namespace quota for a specified namespace.",
+				"operationId": "NamespaceService_updateNamespaceQuota",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which namespace quota details need to be updated."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update namespace quota details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"namespace_quota_details": {
+												"blockSize": "2",
+												"notificationSize": "2"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_updateNamespaceQuotaRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the namespace quota for a specified namespace",
+				"description": "Gets the namespace quota for a specified namespace.",
+				"operationId": "NamespaceService_getNamespaceQuota",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which namespace quota details needs to retrieved."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response contains namespace quota details for the given namespace.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getNamespaceQuotaResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"namespace": "s3",
+											"blockSize": -1,
+											"notificationSize": -1
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Deletes the namespace quota for the specified namespace",
+				"description": "Deletes the namespace quota for the specified namespace.",
+				"operationId": "NamespaceService_removeNamespaceQuota",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which namespace quota details needs to deleted."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete namespace quota.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -2329,6 +2543,60 @@
 						"type": "integer",
 						"format": "int64",
 						"description": "A new period value for class in seconds"
+					}
+				}
+			},
+			"NamespaceService_updateNamespaceQuotaRequest": {
+				"type": "object",
+				"properties": {
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in GB."
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in GB."
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in Count."
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in Count."
+					}
+				}
+			},
+			"NamespaceService_getNamespaceQuotaResponse": {
+				"type": "object",
+				"properties": {
+					"namespace": {
+						"type": "string",
+						"description": "Gets Namespace"
+					},
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in GB."
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in GB."
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in count."
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in count."
 					}
 				}
 			}

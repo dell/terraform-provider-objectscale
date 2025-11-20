@@ -327,8 +327,8 @@ func (r *NamespaceResource) stringToBool(s *string) *bool {
 
 func (r *NamespaceResource) quotaJson(in models.NsResQuota) clientgen.NamespaceServiceGetNamespaceResponse {
 	return clientgen.NamespaceServiceGetNamespaceResponse{
-		NotificationSize: helper.ValueToPointer[int64](in.NotificationSize),
-		BlockSize:        helper.ValueToPointer[int64](in.BlockSize),
+		NotificationSize: helper.SetDefault(helper.ValueToPointer[int64](in.NotificationSize), -1),
+		BlockSize:        helper.SetDefault(helper.ValueToPointer[int64](in.BlockSize), -1),
 	}
 }
 
@@ -430,6 +430,13 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
+	// add quotas
+	err = r.manageQuotas(ctx, stateJson1, &planJson)
+	if err != nil {
+		resp.Diagnostics.AddError("Error adding quotas", err.Error())
+		return
+	}
+
 	// read data
 	stateJson2, _, err := r.client.GenClient.NamespaceApi.NamespaceServiceGetNamespace(ctx, *stateJson1.Id).Execute()
 	if err != nil {
@@ -441,6 +448,21 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 	data = r.getModel(stateJson2, types.StringNull())
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
+}
+
+func (r *NamespaceResource) manageQuotas(ctx context.Context, state, plan *clientgen.NamespaceServiceGetNamespaceResponse) error {
+	if *plan.NotificationSize == *state.NotificationSize &&
+		*plan.BlockSize == *state.BlockSize {
+		return nil
+	}
+	_, _, err := r.client.GenClient.NamespaceApi.
+		NamespaceServiceUpdateNamespaceQuota(ctx, *state.Id).
+		NamespaceServiceUpdateNamespaceQuotaRequest(clientgen.NamespaceServiceUpdateNamespaceQuotaRequest{
+			NotificationSize: plan.NotificationSize,
+			BlockSize:        plan.BlockSize,
+		}).
+		Execute()
+	return err
 }
 
 func (r *NamespaceResource) manageRetentionClasses(ctx context.Context, id string, state, plan map[string]int64) error {
@@ -662,6 +684,13 @@ func (r *NamespaceResource) Update(ctx context.Context, req resource.UpdateReque
 	err = r.manageRetentionClasses(ctx, *stateJson.Id, statercs, planrcs)
 	if err != nil {
 		resp.Diagnostics.AddError("Error adding retention classes", err.Error())
+		return
+	}
+
+	// update quotas
+	err = r.manageQuotas(ctx, &stateJson, &planJson)
+	if err != nil {
+		resp.Diagnostics.AddError("Error adding quota", err.Error())
 		return
 	}
 

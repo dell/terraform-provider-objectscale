@@ -160,6 +160,10 @@ func TestAccNSRsAll(t *testing.T) {
 							period = 2000
 						}
 					]
+					quota = {
+						notification_size = 100
+						block_size = 124
+					}
 				}
 				`,
 			},
@@ -205,6 +209,10 @@ func TestAccNSRsAll(t *testing.T) {
 							period = 2000
 						}
 					]
+					quota = {
+						notification_size = 90
+						block_size = 124
+					}
 				}
 				`,
 			},
@@ -227,6 +235,10 @@ func TestAccNSRsAll(t *testing.T) {
 					is_stale_allowed = false
 					is_object_lock_with_ado_allowed = false
 					# default_audit_delete_expiration = 0
+					quota = {
+						notification_size = 100
+						block_size = 224
+					}
 				}
 				`,
 			},
@@ -248,6 +260,10 @@ func TestAccNSRsAll(t *testing.T) {
 					name = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg3"]
 					user_mapping = []
+					quota = {
+						notification_size = -1
+						block_size = -1
+					}
 				}
 				`,
 			},

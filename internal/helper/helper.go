@@ -57,3 +57,10 @@ func StructToValuesReflection(s interface{}) map[string]attr.Value {
 
 	return result
 }
+
+func GetDiff[T comparable](plan, state T) *T {
+	if plan == state {
+		return nil
+	}
+	return &plan
+}
