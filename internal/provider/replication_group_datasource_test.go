@@ -29,7 +29,7 @@ func TestAccRGDs(t *testing.T) {
 	})
 }
 
-func TestAccClusterEmailDatasourceErrorGetAll(t *testing.T) {
+func TestAccRGDsErrorGetAll(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testProviderFactory,
