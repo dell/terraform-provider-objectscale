@@ -62017,61 +62017,47 @@
           }
         }
       },
-      "IamService_GetGroupResponse": {
-        "type": "object",
-        "properties": {
-          "GetGroupResult": {
-            "type": "object",
-            "properties": {
-              "Users": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "IsTruncated": {
-                "type": "boolean"
-              },
-              "Marker": {
-                "type": "string"
-              },
-              "Group": {
+    "IamService_GetGroupResponse": {
+      "type": "object",
+      "properties": {
+        "GetGroupResult": {
+          "type": "object",
+          "properties": {
+            "Users": {
+              "type": "array",
+              "items": {
                 "type": "object",
                 "properties": {
-                  "GroupName": {
-                    "type": "string",
-                    "description": "Simple name identifying the Group."
-                  },
-                  "Arn": {
-                    "type": "string",
-                    "description": "Arn that identifies the Group."
-                  },
-                  "GroupId": {
-                    "type": "string",
-                    "description": "Unique Id associated with the Group."
-                  },
-                  "Path": {
-                    "type": "string",
-                    "description": "The path to the IAM Group."
-                  },
-                  "CreateDate": {
-                    "type": "string",
-                    "description": "ISO 8601 format DateTime when group was created."
-                  }
+                  "UserName":   { "type": "string" },
+                  "UserId":     { "type": "string" },
+                  "Arn":        { "type": "string" },
+                  "Path":       { "type": "string" },
+                  "CreateDate": { "type": "string" }
                 }
               }
-            }
-          },
-          "ResponseMetadata": {
-            "type": "object",
-            "properties": {
-              "RequestId": {
-                "type": "string"
+            },
+            "IsTruncated": { "type": "boolean" },
+            "Marker":      { "type": "string" },
+            "Group": {
+              "type": "object",
+              "properties": {
+                "GroupName": { "type": "string", "description": "Simple name identifying the Group." },
+                "Arn":       { "type": "string", "description": "Arn that identifies the Group." },
+                "GroupId":   { "type": "string", "description": "Unique Id associated with the Group." },
+                "Path":      { "type": "string", "description": "The path to the IAM Group." },
+                "CreateDate":{ "type": "string", "description": "ISO 8601 format DateTime when group was created." }
               }
             }
           }
+        },
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": { "type": "string" }
+          }
         }
-      },
+      }
+    },
       "IamService_GetGroupPolicyResponse": {
         "type": "object",
         "properties": {
@@ -62367,28 +62353,30 @@
           "ListAccessKeysResult": {
             "type": "object",
             "properties": {
-              "AccessKeys": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+              "AccessKeyMetadata": {
+                "type": "object",
+                "properties": {
+                  "member": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "AccessKeyId": { "type": "string" },
+                        "CreateDate": { "type": "string" },
+                        "Status": { "type": "string" },
+                        "UserName": { "type": "string" }
+                      }
+                    }
+                  }
                 }
               },
-              "IsTruncated": {
-                "type": "boolean",
-                "description": "A flag that indicates whether there are more items to return."
-              },
-              "Marker": {
-                "type": "string",
-                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
-              }
+              "IsTruncated": { "type": "boolean" }
             }
           },
           "ResponseMetadata": {
             "type": "object",
             "properties": {
-              "RequestId": {
-                "type": "string"
-              }
+              "RequestId": { "type": "string" }
             }
           }
         }
@@ -62590,26 +62578,43 @@
               "Groups": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "Arn": {
+                      "type": "string",
+                      "description": "ARN of the group"
+                    },
+                    "GroupId": {
+                      "type": "string",
+                      "description": "Unique ID of the group"
+                    },
+                    "GroupName": {
+                      "type": "string",
+                      "description": "Name of the group"
+                    },
+                    "Path": {
+                      "type": "string",
+                      "description": "Path of the group"
+                    }
+                  },
+                  "required": ["Arn", "GroupId", "GroupName", "Path"]
                 },
-                "description": "Get groups"
+                "description": "List of groups the user belongs to"
               },
               "IsTruncated": {
                 "type": "boolean",
-                "description": "A flag that indicates whether there are more items to return."
+                "description": "Indicates if there are more items to return"
               },
               "Marker": {
                 "type": "string",
-                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+                "description": "Marker for pagination when IsTruncated is true"
               }
             }
           },
           "ResponseMetadata": {
             "type": "object",
             "properties": {
-              "RequestId": {
-                "type": "string"
-              }
+              "RequestId": { "type": "string" }
             }
           }
         }
@@ -62773,25 +62778,22 @@
           "ListUserPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "description": "Name of inline Policy."
-              },
-              "Marker": {
-                "type": "string",
-                "description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+              "IsTruncated": { "type": "boolean" },
+              "PolicyNames": {
+                "type": "object",
+                "properties": {
+                  "member": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
               }
             }
           },
           "ResponseMetadata": {
             "type": "object",
             "properties": {
-              "RequestId": {
-                "type": "string"
-              }
+              "RequestId": { "type": "string" }
             }
           }
         }
@@ -62802,24 +62804,28 @@
           "ListUserTagsResult": {
             "type": "object",
             "properties": {
-              "member": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+              "IsTruncated": { "type": "boolean" },
+              "Tags": {
+                "type": "object",
+                "properties": {
+                  "member": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "Key": { "type": "string" },
+                        "Value": { "type": "string" }
+                      }
+                    }
+                  }
                 }
-              },
-              "Marker": {
-                "type": "string",
-                "description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
               }
             }
           },
           "ResponseMetadata": {
             "type": "object",
             "properties": {
-              "RequestId": {
-                "type": "string"
-              }
+              "RequestId": { "type": "string" }
             }
           }
         }
@@ -62829,13 +62835,36 @@
         "properties": {
           "ListUsersResult": {
             "type": "object",
+            "description": "Get listUserResult",
             "properties": {
               "Users": {
                 "type": "array",
+                "description": "List of users",
                 "items": {
-                  "type": "string"
-                },
-                "description": "Get users"
+                  "type": "object",
+                  "properties": {
+                    "Arn": {
+                      "type": "string",
+                      "description": "The ARN of the user"
+                    },
+                    "CreateDate": {
+                      "type": "string",
+                      "description": "User creation timestamp"
+                    },
+                    "Path": {
+                      "type": "string",
+                      "description": "The path to the user"
+                    },
+                    "UserId": {
+                      "type": "string",
+                      "description": "Unique user ID"
+                    },
+                    "UserName": {
+                      "type": "string",
+                      "description": "Username"
+                    }
+                  }
+                }
               },
               "IsTruncated": {
                 "type": "boolean",
@@ -62843,10 +62872,9 @@
               },
               "Marker": {
                 "type": "string",
-                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests. when IsTruncated is true"
               }
-            },
-            "description": "Get listUserResult"
+            }
           },
           "ResponseMetadata": {
             "type": "object",

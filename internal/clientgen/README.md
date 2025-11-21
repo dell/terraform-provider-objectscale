@@ -79,6 +79,11 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
+*IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
+*IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
+*IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
+*IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 *NamespaceApi* | [**NamespaceServiceGetNamespace**](docs/NamespaceApi.md#namespaceservicegetnamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
@@ -88,6 +93,23 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
+ - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
+ - [IamServiceGetGroupResponseGetGroupResultGroup](docs/IamServiceGetGroupResponseGetGroupResultGroup.md)
+ - [IamServiceGetGroupResponseGetGroupResultUsersInner](docs/IamServiceGetGroupResponseGetGroupResultUsersInner.md)
+ - [IamServiceGetGroupResponseResponseMetadata](docs/IamServiceGetGroupResponseResponseMetadata.md)
+ - [IamServiceGetUserResponse](docs/IamServiceGetUserResponse.md)
+ - [IamServiceListAccessKeysResponse](docs/IamServiceListAccessKeysResponse.md)
+ - [IamServiceListAccessKeysResponseListAccessKeysResult](docs/IamServiceListAccessKeysResponseListAccessKeysResult.md)
+ - [IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadata](docs/IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadata.md)
+ - [IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataMemberInner](docs/IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataMemberInner.md)
+ - [IamServiceListUserTagsResponse](docs/IamServiceListUserTagsResponse.md)
+ - [IamServiceListUserTagsResponseListUserTagsResult](docs/IamServiceListUserTagsResponseListUserTagsResult.md)
+ - [IamServiceListUserTagsResponseListUserTagsResultTags](docs/IamServiceListUserTagsResponseListUserTagsResultTags.md)
+ - [IamServiceListUserTagsResponseListUserTagsResultTagsMemberInner](docs/IamServiceListUserTagsResponseListUserTagsResultTagsMemberInner.md)
+ - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
+ - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
+ - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)
