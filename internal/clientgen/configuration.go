@@ -99,7 +99,7 @@ func NewConfiguration() *Configuration {
 				URL:         "https://{host}:4443",
 				Description: "ObjectScale Management API",
 				Variables: map[string]ServerVariable{
-					"host": ServerVariable{
+					"host": {
 						Description:  "ObjectScale cluster hostname or IP",
 						DefaultValue: "objectscale.local",
 					},

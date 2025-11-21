@@ -22,6 +22,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -34,8 +35,7 @@ var endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3
 var username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
 var password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
 
-// var FunctionMocker *mockey.Mocker
-
+var FunctionMocker *mockey.Mocker
 var ProviderConfigForTesting = ``
 
 func init() {
