@@ -289,11 +289,15 @@ func testAccIAMInlinePolicyForUserConfig1(testingInputParams testingInputsForIAM
     policies = [
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       },
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       }
     ]
   }
@@ -316,11 +320,15 @@ func testAccIAMInlinePolicyForUserConfig2(testingInputParams testingInputsForIAM
     policies = [
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       },
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       }
     ]
   }
@@ -357,11 +365,15 @@ func testAccIAMInlinePolicyForGroupConfig1(testingInputParams testingInputsForIA
     policies = [
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       },
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       }
     ]
   }
@@ -384,11 +396,15 @@ func testAccIAMInlinePolicyForGroupConfig2(testingInputParams testingInputsForIA
     policies = [
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       },
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       }
     ]
   }
@@ -425,11 +441,15 @@ func testAccIAMInlinePolicyForRoleConfig1(testingInputParams testingInputsForIAM
     policies = [
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       },
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       }
     ]
   }
@@ -452,11 +472,15 @@ func testAccIAMInlinePolicyForRoleConfig2(testingInputParams testingInputsForIAM
     policies = [
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       },
       {
         name     = "%s"
-        document = "%s"
+        document = <<EOT
+%s
+EOT
       }
     ]
   }
