@@ -974,6 +974,1381 @@
 					}
 				}
 			}
+		},
+		"/iam?Action=AddUserToGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Add user to a group.",
+				"description": "Add user to a group.",
+				"operationId": "IamService_AddUserToGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to update."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to add."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_AddUserToGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:92b2:c8"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=AttachGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Attach a Managed Policy to Group.",
+				"description": "Attach a Managed Policy to Group.",
+				"operationId": "IamService_AttachGroupPolicy",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the policy to attach."
+					},
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the group to attach the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_AttachGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:97f4:ce"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=CreateGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Creates a new IAM Group.",
+				"description": "Creates a new IAM Group.",
+				"operationId": "IamService_CreateGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to create."
+					},
+					{
+						"name": "Path",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The path for the group. Optional, defaults to \"/\" and only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_CreateGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:19ea1:d"
+											},
+											"CreateGroupResult": {
+												"Group": {
+													"GroupName": "iamFinanceGroup",
+													"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup",
+													"GroupId": "AGPA6CBEB03207E74FF2",
+													"Path": "/",
+													"CreateDate": "2020-04-13T19:04:45Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete an IAM Group.",
+				"description": "Delete an IAM Group.",
+				"operationId": "IamService_DeleteGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to delete."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:96aa:354"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete specific inlinePolicy for IAM Group.",
+				"description": "Delete specific inlinePolicy for IAM Group.",
+				"operationId": "IamService_DeleteGroupPolicy",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the group to delete the inline policy."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the policy whose Policy Document needs to be deleted."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:9b49:9a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DetachGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Remove a Managed Policy attached to Group.",
+				"description": "Remove a Managed Policy attached to Group.",
+				"operationId": "IamService_DetachGroupPolicy",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the policy to remove."
+					},
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the group to remove the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DetachGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1ef40:46"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve list of users in IAM group.",
+				"description": "Retrieve list of users in IAM group.",
+				"operationId": "IamService_GetGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:108c7:f3"
+											},
+											"GetGroupResult": {
+												"Group": {
+													"GroupName": "FinanceGroup",
+													"Arn": "urn:ecs:iam::ns:group/FinanceGroup",
+													"GroupId": "AGPA11B2858814F35CA0",
+													"Path": "/",
+													"CreateDate": "2020-04-15T15:03:25Z"
+												},
+												"Users": [],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Get specific inlinePolicy for IAM Group.",
+				"description": "Get specific inlinePolicy for IAM Group.",
+				"operationId": "IamService_GetGroupPolicy",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the group to retrieve the inline policy."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the policy whose Policy Document needs to be retrieved."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1f275:30"
+											},
+											"GetGroupPolicyResult": {
+												"PolicyName": "InlinePolicy",
+												"PolicyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"VisualEditor0\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:ListAttachedGroupPolicies\",\n        \"iam:ListUsers\",\n        \"iam:ListPolicies\",\n        \"iam:ListUserPolicies\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+												"GroupName": "TestGroup"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListAttachedGroupPolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Managed Policies for IAM Group.",
+				"description": "List Managed Policies for IAM Group.",
+				"operationId": "IamService_ListAttachedGroupPolicies",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to list attached policies for."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListAttachedGroupPoliciesResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListGroupPolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Inline Policies for IAM Group.",
+				"description": "List Inline Policies for IAM Group.",
+				"operationId": "IamService_ListGroupPolicies",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to list attached policies for."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListGroupPoliciesResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1f40d:1a"
+											},
+											"ListGroupPoliciesResult": {
+												"PolicyNames": [
+													"InlinePolicy"
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListGroups": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the IAM groups.",
+				"description": "Lists the IAM groups.",
+				"operationId": "IamService_ListGroups",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListGroupsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1a5e4:13d"
+											},
+											"ListGroupsResult": {
+												"Groups": [
+													{
+														"GroupName": "iamFinanceGroup",
+														"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup",
+														"GroupId": "AGPA6CBEB03207E74FF2",
+														"Path": "/",
+														"CreateDate": "2020-04-13T19:04:45Z"
+													},
+													{
+														"GroupName": "iamFinanceGroup2",
+														"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup2",
+														"GroupId": "AGPAC470F6C1E9E196E1",
+														"Path": "/",
+														"CreateDate": "2020-04-13T19:56:39Z"
+													},
+													{
+														"GroupName": "iamFinanceGroup3",
+														"Arn": "urn:ecs:iam::ns:group/iamFinanceGroup3",
+														"GroupId": "AGPA78EE8690DC060154",
+														"Path": "/",
+														"CreateDate": "2020-04-13T19:58:22Z"
+													}
+												],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListGroupsForUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Groups for IAM User",
+				"description": "List Groups for IAM User",
+				"operationId": "IamService_ListGroupsForUser",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the user."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListGroupsForUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:8b9d:196"
+											},
+											"ListGroupsForUserResult": {
+												"Groups": [
+													{
+														"GroupName": "FinanceGroup",
+														"Arn": "urn:ecs:iam::ns:group/FinanceGroup",
+														"GroupId": "AGPA11B2858814F35CA0",
+														"Path": "/"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=PutGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Add or Update Inline Policy for IAM Group.",
+				"description": "Add or Update Inline Policy for IAM Group.",
+				"operationId": "IamService_PutGroupPolicy",
+				"parameters": [
+					{
+						"name": "PolicyDocument",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The policy document in JSON format."
+					},
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the group."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_PutGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:96aa:11a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=RemoveUserFromGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Remove User from a Group.",
+				"description": "Remove User from a Group.",
+				"operationId": "IamService_RemoveUserFromGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to update."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to be removed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_RemoveUserFromGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:9257:35"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -1931,6 +3306,349 @@
 				"required": [
 					"disallowed_vpools_list"
 				]
+			},
+			"IamService_AddUserToGroupResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_AttachGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_CreateGroupResponse": {
+				"type": "object",
+				"properties": {
+					"CreateGroupResult": {
+						"type": "object",
+						"properties": {
+							"Group": {
+								"type": "object",
+								"properties": {
+									"GroupName": {
+										"type": "string",
+										"description": "Simple name identifying the Group."
+									},
+									"Arn": {
+										"type": "string",
+										"description": "Arn that identifies the Group."
+									},
+									"GroupId": {
+										"type": "string",
+										"description": "Unique Id associated with the Group."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the IAM Group."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "ISO 8601 format DateTime when group was created."
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_DeleteGroupResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_DeleteGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_DetachGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetGroupResponse": {
+				"type": "object",
+				"properties": {
+					"GetGroupResult": {
+						"type": "object",
+						"properties": {
+							"Users": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean"
+							},
+							"Marker": {
+								"type": "string"
+							},
+							"Group": {
+								"type": "object",
+								"properties": {
+									"GroupName": {
+										"type": "string",
+										"description": "Simple name identifying the Group."
+									},
+									"Arn": {
+										"type": "string",
+										"description": "Arn that identifies the Group."
+									},
+									"GroupId": {
+										"type": "string",
+										"description": "Unique Id associated with the Group."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the IAM Group."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "ISO 8601 format DateTime when group was created."
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"GetGroupPolicyResult": {
+						"type": "object",
+						"properties": {
+							"GroupName": {
+								"type": "string",
+								"description": "Friendly name of the group."
+							},
+							"PolicyName": {
+								"type": "string",
+								"description": "Simple name identifying the policy."
+							},
+							"PolicyDocument": {
+								"type": "string",
+								"description": "The policy Document."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListAttachedGroupPoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListAttachedGroupPoliciesResult": {
+						"type": "object",
+						"properties": {
+							"member": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListGroupPoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListGroupPoliciesResult": {
+						"type": "object",
+						"properties": {
+							"member": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Name of inline Policy."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListGroupsResponse": {
+				"type": "object",
+				"properties": {
+					"ListGroupsResult": {
+						"type": "object",
+						"properties": {
+							"Groups": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Get groups."
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+							}
+						},
+						"description": "Get listGroupsResult"
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListGroupsForUserResponse": {
+				"type": "object",
+				"properties": {
+					"Result": {
+						"type": "object",
+						"properties": {
+							"Groups": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Get groups"
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_PutGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_RemoveUserFromGroupResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
 			}
 		},
 		"securitySchemes": {

@@ -79,6 +79,20 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*IamApi* | [**IamServiceAddUserToGroup**](docs/IamApi.md#iamserviceaddusertogroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
+*IamApi* | [**IamServiceAttachGroupPolicy**](docs/IamApi.md#iamserviceattachgrouppolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
+*IamApi* | [**IamServiceCreateGroup**](docs/IamApi.md#iamservicecreategroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
+*IamApi* | [**IamServiceDeleteGroup**](docs/IamApi.md#iamservicedeletegroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
+*IamApi* | [**IamServiceDeleteGroupPolicy**](docs/IamApi.md#iamservicedeletegrouppolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceDetachGroupPolicy**](docs/IamApi.md#iamservicedetachgrouppolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
+*IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
+*IamApi* | [**IamServiceGetGroupPolicy**](docs/IamApi.md#iamservicegetgrouppolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceListAttachedGroupPolicies**](docs/IamApi.md#iamservicelistattachedgrouppolicies) | **Post** /iam?Action&#x3D;ListAttachedGroupPolicies | List Managed Policies for IAM Group.
+*IamApi* | [**IamServiceListGroupPolicies**](docs/IamApi.md#iamservicelistgrouppolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
+*IamApi* | [**IamServiceListGroups**](docs/IamApi.md#iamservicelistgroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
+*IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
+*IamApi* | [**IamServicePutGroupPolicy**](docs/IamApi.md#iamserviceputgrouppolicy) | **Post** /iam?Action&#x3D;PutGroupPolicy | Add or Update Inline Policy for IAM Group.
+*IamApi* | [**IamServiceRemoveUserFromGroup**](docs/IamApi.md#iamserviceremoveuserfromgroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 *NamespaceApi* | [**NamespaceServiceGetNamespace**](docs/NamespaceApi.md#namespaceservicegetnamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
@@ -88,6 +102,29 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [IamServiceAddUserToGroupResponse](docs/IamServiceAddUserToGroupResponse.md)
+ - [IamServiceAddUserToGroupResponseResponseMetadata](docs/IamServiceAddUserToGroupResponseResponseMetadata.md)
+ - [IamServiceAttachGroupPolicyResponse](docs/IamServiceAttachGroupPolicyResponse.md)
+ - [IamServiceCreateGroupResponse](docs/IamServiceCreateGroupResponse.md)
+ - [IamServiceCreateGroupResponseCreateGroupResult](docs/IamServiceCreateGroupResponseCreateGroupResult.md)
+ - [IamServiceCreateGroupResponseCreateGroupResultGroup](docs/IamServiceCreateGroupResponseCreateGroupResultGroup.md)
+ - [IamServiceDeleteGroupPolicyResponse](docs/IamServiceDeleteGroupPolicyResponse.md)
+ - [IamServiceDeleteGroupResponse](docs/IamServiceDeleteGroupResponse.md)
+ - [IamServiceDetachGroupPolicyResponse](docs/IamServiceDetachGroupPolicyResponse.md)
+ - [IamServiceGetGroupPolicyResponse](docs/IamServiceGetGroupPolicyResponse.md)
+ - [IamServiceGetGroupPolicyResponseGetGroupPolicyResult](docs/IamServiceGetGroupPolicyResponseGetGroupPolicyResult.md)
+ - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
+ - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
+ - [IamServiceListAttachedGroupPoliciesResponse](docs/IamServiceListAttachedGroupPoliciesResponse.md)
+ - [IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult](docs/IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult.md)
+ - [IamServiceListGroupPoliciesResponse](docs/IamServiceListGroupPoliciesResponse.md)
+ - [IamServiceListGroupPoliciesResponseListGroupPoliciesResult](docs/IamServiceListGroupPoliciesResponseListGroupPoliciesResult.md)
+ - [IamServiceListGroupsForUserResponse](docs/IamServiceListGroupsForUserResponse.md)
+ - [IamServiceListGroupsForUserResponseResult](docs/IamServiceListGroupsForUserResponseResult.md)
+ - [IamServiceListGroupsResponse](docs/IamServiceListGroupsResponse.md)
+ - [IamServiceListGroupsResponseListGroupsResult](docs/IamServiceListGroupsResponseListGroupsResult.md)
+ - [IamServicePutGroupPolicyResponse](docs/IamServicePutGroupPolicyResponse.md)
+ - [IamServiceRemoveUserFromGroupResponse](docs/IamServiceRemoveUserFromGroupResponse.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)

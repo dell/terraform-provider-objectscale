@@ -50,6 +50,8 @@ type APIClient struct {
 
 	AuthenticationApi *AuthenticationApiService
 
+	IamApi *IamApiService
+
 	NamespaceApi *NamespaceApiService
 }
 
@@ -70,6 +72,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.AuthenticationApi = (*AuthenticationApiService)(&c.common)
+	c.IamApi = (*IamApiService)(&c.common)
 	c.NamespaceApi = (*NamespaceApiService)(&c.common)
 
 	return c
