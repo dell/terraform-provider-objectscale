@@ -1706,7 +1706,8 @@
 								"disallowed_vpools_list"
 							]
 						},
-						"description": "A list of namespaces"
+						"description": "A list of namespaces",
+						"x-is-paginated-resp": "true"
 					},
 					"MaxNamespaces": {
 						"type": "integer",
@@ -1724,7 +1725,8 @@
 						"type": "string",
 						"description": "link to get the next page."
 					}
-				}
+				},
+				"x-is-paginated": "true"
 			},
 			"NamespaceService_getNamespaceResponse": {
 				"type": "object",

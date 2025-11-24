@@ -23,3 +23,11 @@ type NamespaceServiceGetNamespacesResponse struct {
 	// link to get the next page.
 	NextPageLink *string `json:"NextPageLink,omitempty"`
 }
+
+func (a *NamespaceServiceGetNamespacesResponse) GetNextMarker() *string {
+	return a.NextMarker
+}
+
+func (o *NamespaceServiceGetNamespacesResponse) GetPaginatedResp() []NamespaceServiceGetNamespacesResponseNamespaceInner {
+	return o.Namespace
+}

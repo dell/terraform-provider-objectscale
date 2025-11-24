@@ -288,7 +288,8 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	allNsResp, _, err := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespaces(ctx).Execute()
+	dsreq := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespaces(ctx)
+	allNsResp, err := helper.GetAllInstances(dsreq)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error getting the list of namespaces",
@@ -297,7 +298,7 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	namespaceList := d.updateNamespaceState(allNsResp.Namespace)
+	namespaceList := d.updateNamespaceState(allNsResp)
 
 	// hardcoding a response value to save into the Terraform state.
 	data.ID = types.StringValue("namespace_datasource")
