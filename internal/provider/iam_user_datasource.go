@@ -165,88 +165,48 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return types.StringValue("")
 	}
 
-	// 0. Optional GROUP FILTER → preload usernames in group
-	groupUserSet := map[string]bool{}
-	if !data.Groupname.IsNull() {
-		groupName := data.Groupname.ValueString()
+	// CASE 1 — USERNAME PROVIDED → DIRECTLY CALL GetUser
+	if !data.Username.IsNull() {
+		username := data.Username.ValueString()
 
-		groupResp, httpResp, err := d.client.GenClient.IamApi.
-			IamServiceGetGroup(ctx).
-			GroupName(groupName).
+		getResp, httpResp, err := d.client.GenClient.IamApi.
+			IamServiceGetUser(ctx).
+			UserName(username).
 			XEmcNamespace(ns).
 			Execute()
 
 		if err != nil {
-			if httpResp != nil && httpResp.StatusCode == 404 {
-				resp.Diagnostics.AddError(
-					"IAM Group Not Found",
-					fmt.Sprintf("IAM Group %q does not exist in namespace %q", groupName, ns),
-				)
-				return
-			}
-			resp.Diagnostics.AddError("Error calling GetGroup", err.Error())
+			resp.Diagnostics.AddError(
+				"Error calling GetUser",
+				fmt.Sprintf("Failed retrieving user %q: %v", username, err),
+			)
 			return
 		}
-		if httpResp != nil && httpResp.StatusCode >= 400 {
+		if httpResp.StatusCode == 404 {
 			resp.Diagnostics.AddError(
-				"Error calling GetGroup",
-				fmt.Sprintf("HTTP %d returned for group %q", httpResp.StatusCode, groupName),
+				"IAM User Not Found",
+				fmt.Sprintf("User %q does not exist in namespace %q", username, ns),
 			)
 			return
 		}
 
-		if groupResp != nil && groupResp.GetGroupResult != nil {
-			for _, userObj := range groupResp.GetGroupResult.Users {
-				if userObj.UserName != nil {
-					groupUserSet[*userObj.UserName] = true
-				}
-			}
-		}
-	}
-
-	// 1. List all users in the namespace
-	listResp, _, err := d.client.GenClient.IamApi.
-		IamServiceListUsers(ctx).
-		XEmcNamespace(ns).
-		Execute()
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error listing IAM users", err.Error())
-		return
-	}
-	if listResp == nil || listResp.ListUsersResult == nil {
-		resp.Diagnostics.AddError("Invalid ListUsers response", "ListUsersResult is nil")
-		return
-	}
-
-	var finalUsers []models.IAMUser
-
-	// 2. Loop through each user and fetch tags & access keys
-	for _, u := range listResp.ListUsersResult.Users {
-		if u.UserName == nil {
-			continue
-		}
-		un := *u.UserName
-
-		// Optional username filter
-		if !data.Username.IsNull() && data.Username.ValueString() != un {
-			continue
+		if getResp == nil || getResp.GetUserResult == nil || getResp.GetUserResult.User == nil {
+			resp.Diagnostics.AddError("Invalid GetUserResponse", "Missing GetUserResult.User")
+			return
 		}
 
-		// Optional group filter
-		if len(groupUserSet) > 0 && !groupUserSet[un] {
-			continue
-		}
+		u := getResp.GetUserResult.User
 
-		// Fetch user tags
+		// ---- load tags ----
 		var tags []models.IAMUserTag
-		tagsResp, _, tErr := d.client.GenClient.IamApi.
+		tResp, _, _ := d.client.GenClient.IamApi.
 			IamServiceListUserTags(ctx).
-			UserName(un).
+			UserName(username).
 			XEmcNamespace(ns).
 			Execute()
-		if tErr == nil && tagsResp != nil && tagsResp.ListUserTagsResult != nil && tagsResp.ListUserTagsResult.Tags != nil {
-			for _, t := range tagsResp.ListUserTagsResult.Tags {
+
+		if tResp != nil && tResp.ListUserTagsResult != nil {
+			for _, t := range tResp.ListUserTagsResult.Tags {
 				tags = append(tags, models.IAMUserTag{
 					Key:   safe(t.Key),
 					Value: safe(t.Value),
@@ -254,41 +214,161 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			}
 		}
 
-		// Fetch access keys
+		// ---- load access keys ----
 		var accessKeys []models.IAMUserAccessKey
-		keysResp, _, kErr := d.client.GenClient.IamApi.
+		kResp, _, _ := d.client.GenClient.IamApi.
 			IamServiceListAccessKeys(ctx).
-			UserName(un).
+			UserName(username).
 			XEmcNamespace(ns).
 			Execute()
-		if kErr == nil && keysResp != nil && keysResp.ListAccessKeysResult != nil && keysResp.ListAccessKeysResult.AccessKeyMetadata != nil {
-			for _, key := range keysResp.ListAccessKeysResult.AccessKeyMetadata {
+
+		if kResp != nil && kResp.ListAccessKeysResult != nil {
+			for _, k := range kResp.ListAccessKeysResult.AccessKeyMetadata {
 				accessKeys = append(accessKeys, models.IAMUserAccessKey{
-					AccessKeyId: safe(key.AccessKeyId),
-					CreateDate:  safe(key.CreateDate),
-					Status:      safe(key.Status),
+					AccessKeyId: safe(k.AccessKeyId),
+					CreateDate:  safe(k.CreateDate),
+					Status:      safe(k.Status),
 				})
 			}
 		}
 
-		// Build final user object
+		// PermissionsBoundary safe handling
+		var pb types.String
+		if u.PermissionsBoundary != nil && u.PermissionsBoundary.PermissionsBoundaryArn != nil {
+			pb = types.StringValue(*u.PermissionsBoundary.PermissionsBoundaryArn)
+		} else {
+			pb = types.StringValue("")
+		}
+
+		// ---- final user object ----
 		userObj := models.IAMUser{
 			ID:                  safe(u.UserId),
 			UserName:            safe(u.UserName),
 			Arn:                 safe(u.Arn),
 			Path:                safe(u.Path),
 			CreateDate:          safe(u.CreateDate),
-			PermissionsBoundary: types.StringValue(""),
+			PermissionsBoundary: pb,
 			Tags:                tags,
 			AccessKeys:          accessKeys,
 		}
 
-		finalUsers = append(finalUsers, userObj)
+		// ---- save state ----
+		data.ID = types.StringValue("iam_user_datasource")
+		data.Users = []models.IAMUser{userObj}
+
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		return
 	}
 
-	// 3. Save final state
+	// CASE 2 — GROUP FILTER (preload usernames)
+
+	groupUserSet := map[string]bool{}
+
+	if !data.Groupname.IsNull() {
+		groupName := data.Groupname.ValueString()
+
+		gResp, hResp, err := d.client.GenClient.IamApi.
+			IamServiceGetGroup(ctx).
+			GroupName(groupName).
+			XEmcNamespace(ns).
+			Execute()
+
+		if err != nil || hResp.StatusCode >= 400 {
+			resp.Diagnostics.AddError(
+				"Error calling GetGroup",
+				fmt.Sprintf("Unable to retrieve IAM group %q: %v", groupName, err),
+			)
+			return
+		}
+
+		if gResp.GetGroupResult != nil {
+			for _, u := range gResp.GetGroupResult.Users {
+				if u.UserName != nil {
+					groupUserSet[*u.UserName] = true
+				}
+			}
+		}
+	}
+
+	// CASE 3 — LIST ALL USERS (when username not provided)
+
+	listResp, _, err := d.client.GenClient.IamApi.
+		IamServiceListUsers(ctx).
+		XEmcNamespace(ns).
+		Execute()
+
+	if err != nil || listResp == nil || listResp.ListUsersResult == nil {
+		resp.Diagnostics.AddError("Error listing IAM users", err.Error())
+		return
+	}
+
+	var finalUsers []models.IAMUser
+
+	for _, u := range listResp.ListUsersResult.Users {
+		if u.UserName == nil {
+			continue
+		}
+
+		username := *u.UserName
+
+		// apply group filter
+		if len(groupUserSet) > 0 && !groupUserSet[username] {
+			continue
+		}
+
+		// ---- fetch tags ----
+		var tags []models.IAMUserTag
+		tResp, _, _ := d.client.GenClient.IamApi.
+			IamServiceListUserTags(ctx).
+			UserName(username).
+			XEmcNamespace(ns).
+			Execute()
+
+		if tResp != nil && tResp.ListUserTagsResult != nil {
+			for _, t := range tResp.ListUserTagsResult.Tags {
+				tags = append(tags, models.IAMUserTag{
+					Key:   safe(t.Key),
+					Value: safe(t.Value),
+				})
+			}
+		}
+
+		// ---- fetch access keys ----
+		var accessKeys []models.IAMUserAccessKey
+		kResp, _, _ := d.client.GenClient.IamApi.
+			IamServiceListAccessKeys(ctx).
+			UserName(username).
+			XEmcNamespace(ns).
+			Execute()
+
+		if kResp != nil && kResp.ListAccessKeysResult != nil {
+			for _, k := range kResp.ListAccessKeysResult.AccessKeyMetadata {
+				accessKeys = append(accessKeys, models.IAMUserAccessKey{
+					AccessKeyId: safe(k.AccessKeyId),
+					CreateDate:  safe(k.CreateDate),
+					Status:      safe(k.Status),
+				})
+			}
+		}
+
+		// listUsers does NOT return permissions boundary → empty
+		pb := types.StringValue("")
+
+		// ---- build final user struct ----
+		finalUsers = append(finalUsers, models.IAMUser{
+			ID:                  safe(u.UserId),
+			UserName:            safe(u.UserName),
+			Arn:                 safe(u.Arn),
+			Path:                safe(u.Path),
+			CreateDate:          safe(u.CreateDate),
+			PermissionsBoundary: pb,
+			Tags:                tags,
+			AccessKeys:          accessKeys,
+		})
+	}
+
+	// save state
 	data.ID = types.StringValue("iam_user_datasource")
 	data.Users = finalUsers
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -30,7 +30,7 @@ import (
 var testProvider provider.Provider
 var testProviderFactory map[string]func() (tfprotov6.ProviderServer, error)
 
-var endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3003/api/rest")
+var endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3007")
 var username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
 var password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
 

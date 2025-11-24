@@ -2574,6 +2574,56 @@
 								"type": "string"
 							}
 						}
+					},
+					"GetUserResult": {
+						"type": "object",
+						"properties": {
+							"User": {
+								"type": "object",
+								"properties": {
+									"Arn": {
+										"type": "string"
+									},
+									"CreateDate": {
+										"type": "string"
+									},
+									"Path": {
+										"type": "string"
+									},
+									"UserId": {
+										"type": "string"
+									},
+									"UserName": {
+										"type": "string"
+									},
+									"PermissionsBoundary": {
+										"type": "object",
+										"properties": {
+											"PermissionsBoundaryArn": {
+												"type": "string"
+											},
+											"PermissionsBoundaryType": {
+												"type": "string"
+											}
+										}
+									},
+									"Tags": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"Key": {
+													"type": "string"
+												},
+												"Value": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			},

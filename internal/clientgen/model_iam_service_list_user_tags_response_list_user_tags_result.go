@@ -12,7 +12,7 @@ package clientgen
 
 // IamServiceListUserTagsResponseListUserTagsResult struct for IamServiceListUserTagsResponseListUserTagsResult
 type IamServiceListUserTagsResponseListUserTagsResult struct {
-	IsTruncated *bool                                                       `json:"IsTruncated,omitempty"`
-	Marker      *string                                                     `json:"Marker,omitempty"`
-	Tags        []IamServiceListUserTagsResponseListUserTagsResultTagsInner `json:"Tags,omitempty"`
+	IsTruncated *bool                                                 `json:"IsTruncated,omitempty"`
+	Marker      *string                                               `json:"Marker,omitempty"`
+	Tags        []IamServiceGetUserResponseGetUserResultUserTagsInner `json:"Tags,omitempty"`
 }

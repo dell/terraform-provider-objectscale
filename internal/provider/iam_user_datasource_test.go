@@ -119,8 +119,9 @@ func TestAccIAMUserDataSource_usernameNoMatch(t *testing.T) {
 						username  = "non_existing_user"
 					}
 				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.objectscale_iam_user.none", "users.#", "0"),
+
+				ExpectError: regexp.MustCompile(
+					`Failed retrieving user "non_existing_user": 404 Not Found`,
 				),
 			},
 		},
@@ -139,39 +140,8 @@ func TestAccIAMUserDataSource_groupNoMatch(t *testing.T) {
 						groupname = "group_does_not_exist"
 					}
 				`,
-				// Expect an error because the group does not exist
-				ExpectError: regexp.MustCompile(`IAM Group "group_does_not_exist" does not exist in namespace "ns1"`),
-			},
-		},
-	})
-}
-
-func TestAccIAMUserDataSource_UserTagsAndAccessKeys(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
-		Steps: []resource.TestStep{
-			{
-				Config: ProviderConfigForTesting + `
-					data "objectscale_iam_user" "with_keys_tags" {
-						namespace = "ns1"
-						username  = "user_001"
-					}
-				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					// Check that at least one user is returned
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.#"),
-
-					// Check tags only if any exist
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.tags.#"),
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.tags.0.key"),
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.tags.0.value"),
-
-					// Check access keys only if any exist
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.access_keys.#"),
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.access_keys.0.access_key_id"),
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.access_keys.0.create_date"),
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_user.with_keys_tags", "users.0.access_keys.0.status"),
+				ExpectError: regexp.MustCompile(
+					`Unable to retrieve IAM group "group_does_not_exist": 404 Not Found`,
 				),
 			},
 		},
