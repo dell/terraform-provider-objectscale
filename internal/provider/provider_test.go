@@ -26,12 +26,11 @@ import (
 	"testing"
 
 	"github.com/bytedance/mockey"
-	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )
 
-var testProvider provider.Provider
+// var testProvider provider.Provider
 
 // testAccProtoV6ProviderFactories are used to instantiate a provider during
 // acceptance testing. The factory function will be invoked for every Terraform
@@ -95,7 +94,7 @@ func setDefault(osInput string, defaultStr string) string {
 	return osInput
 }
 
-// loadEnvFile used to read env file and set params
+// loadEnvFile used to read env file and set params.
 func loadEnvFile(path string) (map[string]string, error) {
 	envMap := make(map[string]string)
 
