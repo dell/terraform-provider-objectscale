@@ -64,3 +64,13 @@ func GetDiff[T comparable](plan, state T) *T {
 	}
 	return &plan
 }
+
+// check if a value is known
+func IsKnown(in attr.Value) bool {
+	return !in.IsUnknown() && !in.IsNull()
+}
+
+// check if a value is changed
+func IsChangedNN(plan, state attr.Value) bool {
+	return IsKnown(plan) && (state.IsNull() || !plan.Equal(state))
+}

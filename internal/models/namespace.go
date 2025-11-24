@@ -155,6 +155,8 @@ type NamespaceResourceModel struct {
 	RootUserName types.String `tfsdk:"root_user_name"`
 	// root user password.
 	RootUserPassword types.String `tfsdk:"root_user_password"`
+	// current root user password
+	CurrentRootUserPassword types.String `tfsdk:"current_root_user_password"`
 }
 
 type NsResQuota struct {

@@ -77,18 +77,6 @@ func TestAccNSRs(t *testing.T) {
 				ExpectError:   regexp.MustCompile(".*Error reading namespace.*"),
 				ImportStateId: "invalid-id",
 			},
-
-			// TODO: something wrong with default_audit_delete_expiration update
-			// {
-			// 	// update default audit delete expiration
-			// 	Config: ProviderConfigForTesting + locals + `
-			// 	resource"objectscale_namespace" "all" {
-			// 		name                        = "testacc_namespace"
-			// 		default_data_services_vpool = local.rgs["rg1"]
-			// 		default_audit_delete_expiration = 1200
-			// 	}
-			// 	`,
-			// },
 			{
 				// update name error
 				Config: ProviderConfigForTesting + locals + `
@@ -107,8 +95,6 @@ func TestAccNSRs(t *testing.T) {
 					default_data_services_vpool = local.rgs["rg3"]
 					allowed_vpools_list         = [local.rgs["rg3"]]
 					disallowed_vpools_list      = [local.rgs["rg2"]]
-					# TODO: something wrong with default_audit_delete_expiration update
-					# default_audit_delete_expiration = 0
 				}
 				`,
 			},
@@ -213,6 +199,7 @@ func TestAccNSRsAll(t *testing.T) {
 						notification_size = 90
 						block_size = 124
 					}
+					root_user_password = "password1"
 				}
 				`,
 			},
@@ -239,6 +226,8 @@ func TestAccNSRsAll(t *testing.T) {
 						notification_size = 100
 						block_size = 224
 					}
+					root_user_password = "password2"
+					current_root_user_password = "password1"
 				}
 				`,
 			},

@@ -25,6 +25,7 @@ import (
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -234,6 +235,12 @@ func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Sensitive:           true,
 				Optional:            true,
 			},
+			"current_root_user_password": schema.StringAttribute{
+				Description:         "Current root user password. Only to be provided when updating the root user password.",
+				MarkdownDescription: "Current root user password. Only to be provided when updating the root user password.",
+				Sensitive:           true,
+				Optional:            true,
+			},
 		},
 	}
 	resp.Schema.Attributes = fillSchemaWithUseState(resp.Schema.Attributes)
@@ -349,7 +356,6 @@ func (r *NamespaceResource) modelToJson(plan models.NamespaceResourceModel) clie
 		IsObjectLockWithAdoAllowed:   helper.ValueToPointer[bool](plan.IsObjectLockWithAdoAllowed),
 		IsComplianceEnabled:          helper.ValueToPointer[bool](plan.IsComplianceEnabled),
 		DefaultAuditDeleteExpiration: helper.ValueToPointer[int64](plan.DefaultAuditDeleteExpiration),
-		RootUserPassword:             helper.ValueToPointer[string](plan.RootUserPassword),
 		RetentionClasses: &clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses{
 			RetentionClass: helper.ValueListTransform(plan.RetentionClasses, r.rcListJson),
 		},
@@ -392,6 +398,7 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 			IsObjectLockWithAdoAllowed:   planJson.IsObjectLockWithAdoAllowed,
 			ComplianceEnabled:            planJson.IsComplianceEnabled,
 			DefaultAuditDeleteExpiration: planJson.DefaultAuditDeleteExpiration,
+			RootUserPassword:             helper.ValueToPointer[string](plan.RootUserPassword),
 		}).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating namespace", err.Error())
@@ -416,8 +423,9 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 		DefaultAuditDeleteExpiration: namespace.DefaultAuditDeleteExpiration,
 		NotificationSize:             namespace.NotificationSize,
 		BlockSize:                    namespace.BlockSize,
+		RootUserName:                 namespace.RootUserName,
 	}
-	data := r.getModel(stateJson1, plan.RootUserPassword)
+	data := r.getModel(stateJson1, plan.RootUserPassword, plan.CurrentRootUserPassword)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -445,7 +453,7 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 	}
 
 	// Save data into Terraform state
-	data = r.getModel(stateJson2, types.StringNull())
+	data = r.getModel(stateJson2, plan.RootUserPassword, plan.CurrentRootUserPassword)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
 }
@@ -528,14 +536,14 @@ func (r *NamespaceResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	data := r.getModel(namespace, state.RootUserPassword)
+	data := r.getModel(namespace, state.RootUserPassword, state.CurrentRootUserPassword)
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *NamespaceResource) getModel(
 	namespace *clientgen.NamespaceServiceGetNamespaceResponse,
-	rootpwd types.String) models.NamespaceResourceModel {
+	rootpwd, crootpwd types.String) models.NamespaceResourceModel {
 	IsEncryptionEnabled := false
 	if namespace.IsEncryptionEnabled != nil && *namespace.IsEncryptionEnabled == "true" {
 		IsEncryptionEnabled = true
@@ -581,6 +589,7 @@ func (r *NamespaceResource) getModel(
 		DefaultAuditDeleteExpiration: helper.TfInt64NN(namespace.DefaultAuditDeleteExpiration),
 		RootUserName:                 helper.TfStringNN(namespace.RootUserName),
 		RootUserPassword:             rootpwd,
+		CurrentRootUserPassword:      crootpwd,
 	}
 }
 
@@ -635,14 +644,10 @@ func (r *NamespaceResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 
 	var currpass, newpass *string
-	if planJson.RootUserPassword != nil {
-		currpass = planJson.RootUserPassword
-		if stateJson.RootUserPassword == nil {
-			resp.Diagnostics.AddError(
-				"Error updating namespace",
-				"Field `root_user_password` state is missing")
-		}
-		newpass = planJson.RootUserPassword
+	// if root password is changing
+	if helper.IsChangedNN(plan.RootUserPassword, state.RootUserPassword) {
+		currpass = helper.ValueToPointer[string](plan.CurrentRootUserPassword)
+		newpass = helper.ValueToPointer[string](plan.RootUserPassword)
 	}
 
 	ureq := r.client.GenClient.NamespaceApi.NamespaceServiceUpdateNamespace(ctx, state.Id.ValueString())
@@ -702,7 +707,7 @@ func (r *NamespaceResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 
 	// Save updated data into Terraform state
-	data := r.getModel(namespace, types.StringNull())
+	data := r.getModel(namespace, plan.RootUserPassword, plan.CurrentRootUserPassword)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -728,17 +733,5 @@ func (r *NamespaceResource) Delete(ctx context.Context, req resource.DeleteReque
 }
 
 func (r *NamespaceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	tflog.Info(ctx, "importing namespace")
-	id := req.ID
-
-	namespace, _, err := r.client.GenClient.NamespaceApi.NamespaceServiceGetNamespace(ctx, id).Execute()
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading namespace", err.Error())
-		return
-	}
-
-	data := r.getModel(namespace, types.StringNull())
-	// Save updated plan into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
