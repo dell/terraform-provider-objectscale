@@ -21,6 +21,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+type DiagError struct {
+	Summary string
+	Detail  string
+}
+
 type NamespaceDatasourceModel struct {
 	ID         types.String      `tfsdk:"id"`
 	Namespaces []NamespaceEntity `tfsdk:"namespaces"`

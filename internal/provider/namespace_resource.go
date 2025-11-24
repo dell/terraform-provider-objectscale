@@ -430,25 +430,10 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
-	// add retention classes
-	statercs, planrcs := r.getRCMap(stateJson1), r.getRCMap(&planJson)
-	err = r.manageRetentionClasses(ctx, *stateJson1.Id, statercs, planrcs)
-	if err != nil {
-		resp.Diagnostics.AddError("Error adding retention classes", err.Error())
-		return
-	}
-
-	// add quotas
-	err = r.manageQuotas(ctx, stateJson1, &planJson)
-	if err != nil {
-		resp.Diagnostics.AddError("Error adding quotas", err.Error())
-		return
-	}
-
-	// read data
-	stateJson2, _, err := r.client.GenClient.NamespaceApi.NamespaceServiceGetNamespace(ctx, *stateJson1.Id).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading namespace after adding retention classes", err.Error())
+	// update common workflow
+	stateJson2, errd := r.updateCommon(ctx, &planJson, stateJson1)
+	if errd != nil {
+		resp.Diagnostics.AddError(errd.Summary, errd.Detail)
 		return
 	}
 
@@ -456,6 +441,38 @@ func (r *NamespaceResource) Create(ctx context.Context, req resource.CreateReque
 	data = r.getModel(stateJson2, plan.RootUserPassword, plan.CurrentRootUserPassword)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
+}
+
+func (r *NamespaceResource) updateCommon(ctx context.Context, plan, state *clientgen.NamespaceServiceGetNamespaceResponse) (*clientgen.NamespaceServiceGetNamespaceResponse, *models.DiagError) {
+	// update retention classes
+	statercs, planrcs := r.getRCMap(state), r.getRCMap(plan)
+	err := r.manageRetentionClasses(ctx, *state.Id, statercs, planrcs)
+	if err != nil {
+		return nil, &models.DiagError{
+			Summary: "Error adding retention classes",
+			Detail:  err.Error(),
+		}
+	}
+
+	// add quotas
+	err = r.manageQuotas(ctx, state, plan)
+	if err != nil {
+		return nil, &models.DiagError{
+			Summary: "Error adding quotas",
+			Detail:  err.Error(),
+		}
+	}
+
+	// read data
+	state2, _, err := r.client.GenClient.NamespaceApi.NamespaceServiceGetNamespace(ctx, *state.Id).Execute()
+	if err != nil {
+		return nil, &models.DiagError{
+			Summary: "Error reading namespace after adding retention classes",
+			Detail:  err.Error(),
+		}
+	}
+
+	return state2, nil
 }
 
 func (r *NamespaceResource) manageQuotas(ctx context.Context, state, plan *clientgen.NamespaceServiceGetNamespaceResponse) error {
@@ -685,24 +702,10 @@ func (r *NamespaceResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	// update retention classes
-	err = r.manageRetentionClasses(ctx, *stateJson.Id, statercs, planrcs)
-	if err != nil {
-		resp.Diagnostics.AddError("Error adding retention classes", err.Error())
-		return
-	}
-
-	// update quotas
-	err = r.manageQuotas(ctx, &stateJson, &planJson)
-	if err != nil {
-		resp.Diagnostics.AddError("Error adding quota", err.Error())
-		return
-	}
-
-	// refresh state
-	namespace, _, err := r.client.GenClient.NamespaceApi.NamespaceServiceGetNamespace(ctx, state.Id.ValueString()).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading namespace", err.Error())
+	// update common workflow
+	namespace, errd := r.updateCommon(ctx, &planJson, &stateJson)
+	if errd != nil {
+		resp.Diagnostics.AddError(errd.Summary, errd.Detail)
 		return
 	}
 
