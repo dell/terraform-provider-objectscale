@@ -218,7 +218,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
 			return
 		}
-		policyNames = listResp.ListUserPoliciesResult.Member
+		policyNames = listResp.ListUserPoliciesResult.PolicyNames
 
 	case "Group":
 		listResp, _, err := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
@@ -229,7 +229,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
 			return
 		}
-		policyNames = listResp.ListGroupPoliciesResult.Member
+		policyNames = listResp.ListGroupPoliciesResult.PolicyNames
 
 	case "Role":
 		listResp, _, err := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
@@ -240,7 +240,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
 			return
 		}
-		policyNames = listResp.ListRolePoliciesResult.Member
+		policyNames = listResp.ListRolePoliciesResult.PolicyNames
 	}
 
 	// Step 2: For each policy name, call Get<entity>Policy API
@@ -289,6 +289,9 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			Name:     types.StringValue(policyName),
 			Document: types.StringValue(policyDoc),
 		})
+	}
+	if policies == nil {
+		policies = []models.IAMInlinePolicyModel{}
 	}
 
 	// Update state
@@ -363,7 +366,7 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 		if err != nil {
 			return plan, fmt.Errorf("failed to list policies: %w", err)
 		}
-		currentPolicies = listResp.ListUserPoliciesResult.Member
+		currentPolicies = listResp.ListUserPoliciesResult.PolicyNames
 
 	case "Group":
 		listResp, _, err := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
@@ -373,7 +376,7 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 		if err != nil {
 			return plan, fmt.Errorf("failed to list policies: %w", err)
 		}
-		currentPolicies = listResp.ListGroupPoliciesResult.Member
+		currentPolicies = listResp.ListGroupPoliciesResult.PolicyNames
 
 	case "Role":
 		listResp, _, err := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
@@ -383,7 +386,7 @@ func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models
 		if err != nil {
 			return plan, fmt.Errorf("failed to list policies: %w", err)
 		}
-		currentPolicies = listResp.ListRolePoliciesResult.Member
+		currentPolicies = listResp.ListRolePoliciesResult.PolicyNames
 	}
 
 	// Convert desired policies to map for quick lookup
