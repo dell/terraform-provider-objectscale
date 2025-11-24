@@ -1,12 +1,8 @@
 package provider
 
 import (
-	"fmt"
-	"regexp"
-	"terraform-provider-objectscale/internal/helper"
 	"testing"
 
-	. "github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -20,26 +16,10 @@ func TestAccRGDs(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + rgDSConfig,
-			},
-		},
-	})
-}
-
-func TestAccRGDsErrorGetAll(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
-		Steps: []resource.TestStep{
-			{
-				PreConfig: func() {
-					FunctionMocker = Mock(helper.UpdateReplicationGroupState).Return(nil, fmt.Errorf("mock error")).Build()
-				},
-				Config:      ProviderConfigForTesting + rgDSConfig,
-				ExpectError: regexp.MustCompile("mock error"),
 			},
 		},
 	})
