@@ -12,6 +12,6 @@ package clientgen
 
 // IamServiceListAccessKeysResponseListAccessKeysResult struct for IamServiceListAccessKeysResponseListAccessKeysResult
 type IamServiceListAccessKeysResponseListAccessKeysResult struct {
-	AccessKeyMetadata *IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadata `json:"AccessKeyMetadata,omitempty"`
-	IsTruncated       *bool                                                                  `json:"IsTruncated,omitempty"`
+	AccessKeyMetadata []IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner `json:"AccessKeyMetadata,omitempty"`
+	IsTruncated       *bool                                                                        `json:"IsTruncated,omitempty"`
 }

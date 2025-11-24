@@ -165,9 +165,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return types.StringValue("")
 	}
 
-	// -------------------------------------------------------------------
 	// 0. Optional GROUP FILTER → preload usernames in group
-	// -------------------------------------------------------------------
 	groupUserSet := map[string]bool{}
 	if !data.Groupname.IsNull() {
 		groupName := data.Groupname.ValueString()
@@ -206,9 +204,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		}
 	}
 
-	// -------------------------------------------------------------------
 	// 1. List all users in the namespace
-	// -------------------------------------------------------------------
 	listResp, _, err := d.client.GenClient.IamApi.
 		IamServiceListUsers(ctx).
 		XEmcNamespace(ns).
@@ -225,9 +221,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	var finalUsers []models.IAMUser
 
-	// -------------------------------------------------------------------
 	// 2. Loop through each user and fetch tags & access keys
-	// -------------------------------------------------------------------
 	for _, u := range listResp.ListUsersResult.Users {
 		if u.UserName == nil {
 			continue
@@ -244,9 +238,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			continue
 		}
 
-		// -------------------------------
-		// 2a. Fetch user tags
-		// -------------------------------
+		// Fetch user tags
 		var tags []models.IAMUserTag
 		tagsResp, _, tErr := d.client.GenClient.IamApi.
 			IamServiceListUserTags(ctx).
@@ -254,7 +246,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			XEmcNamespace(ns).
 			Execute()
 		if tErr == nil && tagsResp != nil && tagsResp.ListUserTagsResult != nil && tagsResp.ListUserTagsResult.Tags != nil {
-			for _, t := range tagsResp.ListUserTagsResult.Tags.Member {
+			for _, t := range tagsResp.ListUserTagsResult.Tags {
 				tags = append(tags, models.IAMUserTag{
 					Key:   safe(t.Key),
 					Value: safe(t.Value),
@@ -262,9 +254,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			}
 		}
 
-		// -------------------------------
-		// 2b. Fetch access keys
-		// -------------------------------
+		// Fetch access keys
 		var accessKeys []models.IAMUserAccessKey
 		keysResp, _, kErr := d.client.GenClient.IamApi.
 			IamServiceListAccessKeys(ctx).
@@ -272,7 +262,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			XEmcNamespace(ns).
 			Execute()
 		if kErr == nil && keysResp != nil && keysResp.ListAccessKeysResult != nil && keysResp.ListAccessKeysResult.AccessKeyMetadata != nil {
-			for _, key := range keysResp.ListAccessKeysResult.AccessKeyMetadata.Member {
+			for _, key := range keysResp.ListAccessKeysResult.AccessKeyMetadata {
 				accessKeys = append(accessKeys, models.IAMUserAccessKey{
 					AccessKeyId: safe(key.AccessKeyId),
 					CreateDate:  safe(key.CreateDate),
@@ -281,9 +271,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			}
 		}
 
-		// -------------------------------
 		// Build final user object
-		// -------------------------------
 		userObj := models.IAMUser{
 			ID:                  safe(u.UserId),
 			UserName:            safe(u.UserName),
@@ -298,9 +286,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		finalUsers = append(finalUsers, userObj)
 	}
 
-	// -------------------------------------------------------------------
 	// 3. Save final state
-	// -------------------------------------------------------------------
 	data.ID = types.StringValue("iam_user_datasource")
 	data.Users = finalUsers
 

@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataMemberInner struct for IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataMemberInner
-type IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataMemberInner struct {
+// IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner struct for IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner
+type IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner struct {
 	AccessKeyId *string `json:"AccessKeyId,omitempty"`
 	CreateDate  *string `json:"CreateDate,omitempty"`
 	Status      *string `json:"Status,omitempty"`

@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceListUserTagsResponseListUserTagsResultTagsMemberInner struct for IamServiceListUserTagsResponseListUserTagsResultTagsMemberInner
-type IamServiceListUserTagsResponseListUserTagsResultTagsMemberInner struct {
+// IamServiceListUserTagsResponseListUserTagsResultTagsInner struct for IamServiceListUserTagsResponseListUserTagsResultTagsInner
+type IamServiceListUserTagsResponseListUserTagsResultTagsInner struct {
 	Key   *string `json:"Key,omitempty"`
 	Value *string `json:"Value,omitempty"`
 }

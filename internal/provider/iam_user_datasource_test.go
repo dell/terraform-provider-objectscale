@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
+// user_001,sample_user_1 and group_008 are assumed to exist in the test ObjectScale cluster.
 func TestAccIAMUserDataSource_basic(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -59,7 +60,7 @@ func TestAccIAMUserDataSource_withGroupnameFilter(t *testing.T) {
 				Config: ProviderConfigForTesting + `
 				data "objectscale_iam_user" "by_group" {
 					namespace  = "ns1"
-					groupname  = "sak_test_do_not_delete"
+					groupname  = "group_008"
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(

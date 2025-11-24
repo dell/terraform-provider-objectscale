@@ -62347,40 +62347,35 @@
           }
         }
       },
-      "IamService_ListAccessKeysResponse": {
-        "type": "object",
-        "properties": {
-          "ListAccessKeysResult": {
-            "type": "object",
-            "properties": {
-              "AccessKeyMetadata": {
+    "IamService_ListAccessKeysResponse": {
+      "type": "object",
+      "properties": {
+        "ListAccessKeysResult": {
+          "type": "object",
+          "properties": {
+            "AccessKeyMetadata": {
+              "type": "array",
+              "items": {
                 "type": "object",
                 "properties": {
-                  "member": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "AccessKeyId": { "type": "string" },
-                        "CreateDate": { "type": "string" },
-                        "Status": { "type": "string" },
-                        "UserName": { "type": "string" }
-                      }
-                    }
-                  }
+                  "AccessKeyId": { "type": "string" },
+                  "CreateDate": { "type": "string" },
+                  "Status": { "type": "string" },
+                  "UserName": { "type": "string" }
                 }
-              },
-              "IsTruncated": { "type": "boolean" }
-            }
-          },
-          "ResponseMetadata": {
-            "type": "object",
-            "properties": {
-              "RequestId": { "type": "string" }
-            }
+              }
+            },
+            "IsTruncated": { "type": "boolean" }
+          }
+        },
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": { "type": "string" }
           }
         }
-      },
+      }
+    },
       "IamService_ListAttachedGroupPoliciesResponse": {
         "type": "object",
         "properties": {
@@ -62805,18 +62800,14 @@
             "type": "object",
             "properties": {
               "IsTruncated": { "type": "boolean" },
+              "Marker": { "type": "string" },
               "Tags": {
-                "type": "object",
-                "properties": {
-                  "member": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "Key": { "type": "string" },
-                        "Value": { "type": "string" }
-                      }
-                    }
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Key": { "type": "string" },
+                    "Value": { "type": "string" }
                   }
                 }
               }
