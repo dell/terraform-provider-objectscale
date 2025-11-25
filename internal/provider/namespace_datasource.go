@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
@@ -40,6 +41,11 @@ func (d *NamespaceDataSource) Schema(ctx context.Context, req datasource.SchemaR
 				Description:         "Identifier",
 				MarkdownDescription: "Identifier",
 				Computed:            true,
+			},
+			"name": schema.StringAttribute{
+				Description:         "Name or name prefix (ending with a '*') of namespace(s) to be fetched.",
+				MarkdownDescription: "Name or name prefix (ending with a '*') of namespace(s) to be fetched.",
+				Optional:            true,
 			},
 			"namespaces": schema.ListNestedAttribute{
 				Description:         "List of Namespaces",
@@ -247,11 +253,6 @@ func (d *NamespaceDataSource) Schema(ctx context.Context, req datasource.SchemaR
 							MarkdownDescription: "root user name.",
 							Computed:            true,
 						},
-						"root_user_password": schema.StringAttribute{
-							Description:         "root user password.",
-							MarkdownDescription: "root user password.",
-							Computed:            true,
-						},
 					},
 				},
 			},
@@ -288,11 +289,53 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	dsreq := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespaces(ctx)
-	allNsResp, err := helper.GetAllInstances(dsreq)
+	name := helper.ValueToPointer[string](data.Name)
+	var err error
+	var allNsResp []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner
+
+	if name == nil {
+		dsreq := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespaces(ctx)
+		allNsResp, err = helper.GetAllInstances(dsreq)
+	} else if strings.HasSuffix(*name, "*") {
+		dsreq := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespaces(ctx).Name(*name)
+		allNsResp, err = helper.GetAllInstances(dsreq)
+	} else {
+		NsResp, _, verr := d.client.GenClient.NamespaceApi.NamespaceServiceGetNamespace(ctx, *name).Execute()
+		err = verr
+		if err == nil {
+			allNsResp = append(allNsResp, clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner{
+				DefaultDataServicesVpool:     NsResp.DefaultDataServicesVpool,
+				AllowedVpoolsList:            NsResp.AllowedVpoolsList,
+				DisallowedVpoolsList:         NsResp.DisallowedVpoolsList,
+				NamespaceAdmins:              NsResp.NamespaceAdmins,
+				IsEncryptionEnabled:          NsResp.IsEncryptionEnabled,
+				UserMapping:                  NsResp.UserMapping,
+				DefaultBucketBlockSize:       NsResp.DefaultBucketBlockSize,
+				ExternalGroupAdmins:          NsResp.ExternalGroupAdmins,
+				IsStaleAllowed:               NsResp.IsStaleAllowed,
+				IsObjectLockWithAdoAllowed:   NsResp.IsObjectLockWithAdoAllowed,
+				IsComplianceEnabled:          NsResp.IsComplianceEnabled,
+				NotificationSize:             NsResp.NotificationSize,
+				BlockSize:                    NsResp.BlockSize,
+				RetentionClasses:             NsResp.RetentionClasses,
+				DefaultAuditDeleteExpiration: NsResp.DefaultAuditDeleteExpiration,
+				RootUserName:                 NsResp.RootUserName,
+				Name:                         NsResp.Name,
+				Id:                           NsResp.Id,
+				Link:                         NsResp.Link,
+				CreationTime:                 NsResp.CreationTime,
+				Inactive:                     NsResp.Inactive,
+				Global:                       NsResp.Global,
+				Remote:                       NsResp.Remote,
+				Vdc:                          NsResp.Vdc,
+				Internal:                     NsResp.Internal,
+			})
+		}
+	}
+
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error getting the list of namespaces",
+			"Error getting namespaces",
 			err.Error(),
 		)
 		return
@@ -312,7 +355,7 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (d *NamespaceDataSource) updateNamespaceState(namespaces []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) []models.NamespaceEntity {
+func (d NamespaceDataSource) updateNamespaceState(namespaces []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) []models.NamespaceEntity {
 	return helper.SliceTransform(namespaces, func(v clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) models.NamespaceEntity {
 		IsEncryptionEnabled := v.IsEncryptionEnabled != nil && *v.IsEncryptionEnabled == "true"
 
@@ -335,13 +378,13 @@ func (d *NamespaceDataSource) updateNamespaceState(namespaces []clientgen.Namesp
 			UserMapping: helper.SliceTransform(v.UserMapping, func(vi clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner) models.UserMapping {
 				return models.UserMapping{
 					Domain: types.StringValue(vi.Domain),
-					Attributes: helper.SliceTransform(vi.Attribute, func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner) models.Attribute {
+					Attributes: helper.SliceTransform(vi.Attributes, func(via clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner) models.Attribute {
 						return models.Attribute{
 							Key:   types.StringValue(via.Key),
 							Value: helper.SliceTransform(via.Value, types.StringValue),
 						}
 					}),
-					Groups: helper.SliceTransform(vi.Group, types.StringValue),
+					Groups: helper.SliceTransform(vi.Groups, types.StringValue),
 				}
 			}),
 			IsEncryptionEnabled:          types.BoolValue(IsEncryptionEnabled),
@@ -356,15 +399,19 @@ func (d *NamespaceDataSource) updateNamespaceState(namespaces []clientgen.Namesp
 			BlockSizeInCount:             helper.TfInt64(v.BlockSizeInCount),
 			DefaultAuditDeleteExpiration: helper.TfInt64(v.DefaultAuditDeleteExpiration),
 			RetentionClasses: models.RetentionClasses{
-				RetentionClass: helper.SliceTransform(v.RetentionClasses.RetentionClass, func(vr clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner) models.RetentionClass {
+				RetentionClass: helper.SliceTransform(func(in *clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner {
+					if in.RetentionClasses == nil {
+						return make([]clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner, 0)
+					}
+					return in.RetentionClasses.RetentionClass
+				}(&v), func(vr clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner) models.RetentionClass {
 					return models.RetentionClass{
 						Name:   helper.TfString(vr.Name),
 						Period: helper.TfInt64(vr.Period),
 					}
 				}),
 			},
-			RootUserName:     helper.TfString(v.RootUserName),
-			RootUserPassword: helper.TfString(v.RootUserPassword),
+			RootUserName: helper.TfString(v.RootUserName),
 		}
 	})
 }
