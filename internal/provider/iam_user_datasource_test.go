@@ -4,14 +4,14 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 // user_001,sample_user_1 and group_008 are assumed to exist in the test ObjectScale cluster.
 func TestAccIAMUserDataSource_basic(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
@@ -34,7 +34,7 @@ func TestAccIAMUserDataSource_basic(t *testing.T) {
 func TestAccIAMUserDataSource_withUsernameFilter(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
@@ -54,7 +54,7 @@ func TestAccIAMUserDataSource_withUsernameFilter(t *testing.T) {
 func TestAccIAMUserDataSource_withGroupnameFilter(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
@@ -76,7 +76,7 @@ func TestAccIAMUserDataSource_withGroupnameFilter(t *testing.T) {
 func TestAccIAMUserDataSource_missingNamespace(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
@@ -91,7 +91,7 @@ func TestAccIAMUserDataSource_missingNamespace(t *testing.T) {
 func TestAccIAMUserDataSource_usernameNoMatch(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
@@ -112,7 +112,7 @@ func TestAccIAMUserDataSource_usernameNoMatch(t *testing.T) {
 func TestAccIAMUserDataSource_groupNoMatch(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
@@ -132,7 +132,7 @@ func TestAccIAMUserDataSource_groupNoMatch(t *testing.T) {
 func TestAccIAMUserDataSource_UserTagsAndAccessKeys(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
