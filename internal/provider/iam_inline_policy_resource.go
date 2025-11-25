@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"strings"
 	"terraform-provider-objectscale/internal/client"
+	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
@@ -311,7 +312,7 @@ func (r *IAMInlinePolicyResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	updatedModel, err := r.applyPolicies(ctx, plan)
+	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError("Apply Error", err.Error())
 		return
@@ -330,7 +331,7 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	updatedModel, err := r.applyPolicies(ctx, plan)
+	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError("Apply Error", err.Error())
 		return
@@ -338,144 +339,6 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 
 	diags = resp.State.Set(ctx, updatedModel)
 	resp.Diagnostics.Append(diags...)
-}
-
-func (r *IAMInlinePolicyResource) applyPolicies(ctx context.Context, plan models.IAMInlinePolicyResourceModel) (models.IAMInlinePolicyResourceModel, error) {
-	// Determine namespace
-	namespace := plan.Namespace.ValueString()
-
-	// Determine entity type and name
-	var entityType, entityName string
-	if !plan.Username.IsNull() && !plan.Username.IsUnknown() {
-		entityType = "User"
-		entityName = plan.Username.ValueString()
-	} else if !plan.Groupname.IsNull() && !plan.Groupname.IsUnknown() {
-		entityType = "Group"
-		entityName = plan.Groupname.ValueString()
-	} else if !plan.Rolename.IsNull() && !plan.Rolename.IsUnknown() {
-		entityType = "Role"
-		entityName = plan.Rolename.ValueString()
-	}
-
-	// Step 1: Get current policies from ObjectScale
-	var currentPolicies []string
-	switch entityType {
-	case "User":
-		listResp, _, err := r.client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
-			XEmcNamespace(namespace).
-			UserName(entityName).
-			Execute()
-		if err != nil {
-			return plan, fmt.Errorf("failed to list policies: %w", err)
-		}
-		currentPolicies = listResp.ListUserPoliciesResult.PolicyNames
-
-	case "Group":
-		listResp, _, err := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
-			XEmcNamespace(namespace).
-			GroupName(entityName).
-			Execute()
-		if err != nil {
-			return plan, fmt.Errorf("failed to list policies: %w", err)
-		}
-		currentPolicies = listResp.ListGroupPoliciesResult.PolicyNames
-
-	case "Role":
-		listResp, _, err := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
-			XEmcNamespace(namespace).
-			RoleName(entityName).
-			Execute()
-		if err != nil {
-			return plan, fmt.Errorf("failed to list policies: %w", err)
-		}
-		currentPolicies = listResp.ListRolePoliciesResult.PolicyNames
-	}
-
-	// Convert desired policies to map for quick lookup
-	desiredMap := make(map[string]string)
-	for _, p := range plan.Policies {
-		desiredMap[p.Name.ValueString()] = p.Document.ValueString()
-	}
-
-	// Step 2: Delete policies not in desired config
-	for _, existing := range currentPolicies {
-		if _, found := desiredMap[existing]; !found {
-			switch entityType {
-			case "User":
-				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteUserPolicy(ctx).
-					XEmcNamespace(namespace).
-					UserName(entityName).
-					PolicyName(existing).
-					Execute()
-				if err != nil {
-					return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
-				}
-
-			case "Group":
-				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteGroupPolicy(ctx).
-					XEmcNamespace(namespace).
-					GroupName(entityName).
-					PolicyName(existing).
-					Execute()
-				if err != nil {
-					return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
-				}
-
-			case "Role":
-				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteRolePolicy(ctx).
-					XEmcNamespace(namespace).
-					RoleName(entityName).
-					PolicyName(existing).
-					Execute()
-				if err != nil {
-					return plan, fmt.Errorf("failed to delete policy %s: %w", existing, err)
-				}
-			}
-		}
-	}
-
-	// Step 3: Create or Update desired policies
-	for name, doc := range desiredMap {
-		switch entityType {
-		case "User":
-			_, _, err := r.client.GenClient.IamApi.IamServicePutUserPolicy(ctx).
-				XEmcNamespace(namespace).
-				UserName(entityName).
-				PolicyName(name).
-				PolicyDocument(doc).
-				Execute()
-			if err != nil {
-				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
-			}
-
-		case "Group":
-			_, _, err := r.client.GenClient.IamApi.IamServicePutGroupPolicy(ctx).
-				XEmcNamespace(namespace).
-				GroupName(entityName).
-				PolicyName(name).
-				PolicyDocument(doc).
-				Execute()
-			if err != nil {
-				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
-			}
-
-		case "Role":
-			_, _, err := r.client.GenClient.IamApi.IamServicePutRolePolicy(ctx).
-				XEmcNamespace(namespace).
-				RoleName(entityName).
-				PolicyName(name).
-				PolicyDocument(doc).
-				Execute()
-			if err != nil {
-				return plan, fmt.Errorf("failed to apply policy %s: %w", name, err)
-			}
-		}
-	}
-
-	// Set ID - format: <namespace>:<entity_type>:<entity_name>
-	plan.ID = types.StringValue(fmt.Sprintf("%s:%s:%s", namespace, strings.ToLower(entityType), entityName))
-
-	return plan, nil
 }
 
 // Delete deletes the resource and removes the Terraform state.
