@@ -1527,6 +1527,503 @@
 					}
 				}
 			}
+		},
+		"/vdc/data-service/vpools": {
+			"get": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Lists all configured replication groups",
+				"description": "Lists all configured replication groups.",
+				"operationId": "DataServiceVpoolService_getDataServiceVpools",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of the replication groups in the system",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataServiceVpoolService_getDataServiceVpoolsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"data_service_vpool": [
+												{
+													"name": "sanity-rg1",
+													"id": "urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global",
+													"inactive": false,
+													"global": null,
+													"remote": null,
+													"vdc": null,
+													"tags": [],
+													"description": "sanity-rg1",
+													"varrayMappings": [
+														{
+															"name": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+															"value": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804"
+														}
+													],
+													"creation_time": 1425247577149,
+													"isAllowAllNamespaces": true
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)",
+				"description": "Creates a replication group that includes the specified storage pools (VDC:storage pool tuple).",
+				"operationId": "DataServiceVpoolService_createDataServiceVpool",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataServiceVpoolService_createDataServiceVpoolResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_createDataServiceVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools/{id}": {
+			"get": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Gets the details for the specified replication group",
+				"description": "Gets the details for the specified replication group.",
+				"operationId": "DataServiceVpoolService_getDataServiceStore",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which details needs to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Details of object virtual pools for the given identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataServiceVpoolService_getDataServiceStoreResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "sanity-rg1",
+											"id": "urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global",
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"tags": [],
+											"description": "sanity-rg1",
+											"varrayMappings": [
+												{
+													"name": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+													"value": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804"
+												}
+											],
+											"creation_time": 1425247812781,
+											"isAllowAllNamespaces": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Updates the name and description for a replication group",
+				"description": "Updates the name and description for a replication group.",
+				"operationId": "DataServiceVpoolService_putDataServiceVpool",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which details needs to be updated"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"name": "sanity-rg1",
+											"description": "sanity-rg1",
+											"allowAllNamespaces": "true"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_putDataServiceVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools/{id}/addvarrays": {
+			"put": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group",
+				"description": "Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group.",
+				"operationId": "DataServiceVpoolService_addToVpool",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which storage pool needs to be added"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to add virtual array to replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"data_service_vpool_varrays": {
+												"mappings": {
+													"name": "vdc_id",
+													"value": "StoragePool_Id"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_addToVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools/{id}/removevarrays": {
+			"put": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Deletes a storage pool (VDC:storage pool tuple) from a specified replication group",
+				"description": "Deletes a storage pool (VDC:storage pool tuple) from a specified replication group.",
+				"operationId": "DataServiceVpoolService_removeFromVpool",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which storage pool needs to be removed"
+					},
+					{
+						"name": "skipBootstrapCheck",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": ""
+					},
+					{
+						"name": "forcePSOzones",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": ""
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete virtual array from replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"data_service_vpool_varrays": {
+												"mappings": {
+													"name": "vdc_id",
+													"value": "StoragePool_Id"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_removeFromVpoolRequest"
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -2597,6 +3094,491 @@
 						"type": "integer",
 						"format": "int64",
 						"description": "Notification size in count."
+					}
+				}
+			},
+			"DataServiceVpoolService_getDataServiceVpoolsResponse": {
+				"type": "object",
+				"properties": {
+					"data_service_vpool": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"description": {
+									"type": "string",
+									"description": "Description of the replication group"
+								},
+								"name": {
+									"type": "string",
+									"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+								},
+								"varrayMappings": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string",
+												"description": "Virtual data center id"
+											},
+											"value": {
+												"type": "string",
+												"description": "Storage pool id"
+											},
+											"is_replication_target": {
+												"type": "boolean",
+												"description": "is replication target"
+											}
+										}
+									}
+								},
+								"enable_rebalancing": {
+									"type": "boolean",
+									"description": "Parameter to check if the rebalancing is enabled"
+								},
+								"isAllowAllNamespaces": {
+									"type": "boolean",
+									"description": "Parameter to check if the Vpool can access all Namespace"
+								},
+								"isFullRep": {
+									"type": "boolean",
+									"description": "Parameter to check for full replication"
+								},
+								"use_replication_target": {
+									"type": "boolean"
+								},
+								"id": {
+									"type": "string",
+									"format": "uri",
+									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+								},
+								"link": {
+									"type": "object",
+									"properties": {
+										"rel": {
+											"type": "string",
+											"description": "Relationship type of the hyperlink"
+										},
+										"href": {
+											"type": "string",
+											"description": "Hyperlink URL to the related resource"
+										}
+									},
+									"description": "Hyperlink to the details for this resource"
+								},
+								"creation_time": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Timestamp that shows when this resource was created in ECS"
+								},
+								"inactive": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+								},
+								"global": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is global."
+								},
+								"remote": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is remote."
+								},
+								"vdc": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uri",
+											"description": "ECS Id of the related object"
+										},
+										"link": {
+											"type": "object",
+											"properties": {
+												"rel": {
+													"type": "string",
+													"description": "Relationship type of the hyperlink"
+												},
+												"href": {
+													"type": "string",
+													"description": "Hyperlink URL to the related resource"
+												}
+											},
+											"description": "Hyperlink to the related object"
+										}
+									}
+								},
+								"internal": {
+									"type": "boolean",
+									"description": "Indicated whether the resource is an internal resource"
+								}
+							}
+						},
+						"description": "A list of dataservice vpools"
+					}
+				},
+				"required": [
+					"data_service_vpool"
+				]
+			},
+			"DataServiceVpoolService_getDataServiceStoreResponse": {
+				"type": "object",
+				"properties": {
+					"description": {
+						"type": "string",
+						"description": "Description of the replication group"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"varrayMappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "Parameter to check if the rebalancing is enabled"
+					},
+					"isAllowAllNamespaces": {
+						"type": "boolean",
+						"description": "Parameter to check if the Vpool can access all Namespace"
+					},
+					"isFullRep": {
+						"type": "boolean",
+						"description": "Parameter to check for full replication"
+					},
+					"use_replication_target": {
+						"type": "boolean"
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
+					}
+				}
+			},
+			"DataServiceVpoolService_putDataServiceVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "New name fro the replication group"
+					},
+					"description": {
+						"type": "string",
+						"description": "New description for the replication group"
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "set if geo rebalancing is enabled"
+					},
+					"allowAllNamespaces": {
+						"type": "boolean",
+						"description": "AllowAllNamespaces to update"
+					}
+				},
+				"required": [
+					"name"
+				]
+			},
+			"DataServiceVpoolService_addToVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"mappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					}
+				},
+				"required": [
+					"mappings"
+				]
+			},
+			"DataServiceVpoolService_removeFromVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"mappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					}
+				},
+				"required": [
+					"mappings"
+				]
+			},
+			"DataServiceVpoolService_createDataServiceVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identifier for this replication group"
+					},
+					"name": {
+						"type": "string",
+						"description": "Unique name identifying this classification of replication group"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description of this replication group"
+					},
+					"zone_mappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						},
+						"description": "List of varrayId-zoneId tuples with are associated with the same vpool created under data-services"
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "set if geo rebalancing is enabled"
+					},
+					"isAllowAllNamespaces": {
+						"type": "boolean",
+						"description": "set if Vpool Allows access to all Namespaces for dataservices"
+					},
+					"isFullRep": {
+						"type": "boolean",
+						"description": "set full replication flag"
+					},
+					"use_replication_target": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				]
+			},
+			"DataServiceVpoolService_createDataServiceVpoolResponse": {
+				"type": "object",
+				"properties": {
+					"description": {
+						"type": "string",
+						"description": "Description of the replication group"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"varrayMappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "Parameter to check if the rebalancing is enabled"
+					},
+					"isAllowAllNamespaces": {
+						"type": "boolean",
+						"description": "Parameter to check if the Vpool can access all Namespace"
+					},
+					"isFullRep": {
+						"type": "boolean",
+						"description": "Parameter to check for full replication"
+					},
+					"use_replication_target": {
+						"type": "boolean"
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
 					}
 				}
 			}

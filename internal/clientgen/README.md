@@ -79,6 +79,12 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*DataVpoolApi* | [**DataServiceVpoolServiceAddToVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceaddtovpool) | **Put** /vdc/data-service/vpools/{id}/addvarrays | Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group
+*DataVpoolApi* | [**DataServiceVpoolServiceCreateDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolservicecreatedataservicevpool) | **Post** /vdc/data-service/vpools | Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)
+*DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceStore**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicestore) | **Get** /vdc/data-service/vpools/{id} | Gets the details for the specified replication group
+*DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceVpools**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicevpools) | **Get** /vdc/data-service/vpools | Lists all configured replication groups
+*DataVpoolApi* | [**DataServiceVpoolServicePutDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceputdataservicevpool) | **Put** /vdc/data-service/vpools/{id} | Updates the name and description for a replication group
+*DataVpoolApi* | [**DataServiceVpoolServiceRemoveFromVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceremovefromvpool) | **Put** /vdc/data-service/vpools/{id}/removevarrays | Deletes a storage pool (VDC:storage pool tuple) from a specified replication group
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
@@ -95,6 +101,15 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [DataServiceVpoolServiceAddToVpoolRequest](docs/DataServiceVpoolServiceAddToVpoolRequest.md)
+ - [DataServiceVpoolServiceCreateDataServiceVpoolRequest](docs/DataServiceVpoolServiceCreateDataServiceVpoolRequest.md)
+ - [DataServiceVpoolServiceCreateDataServiceVpoolResponse](docs/DataServiceVpoolServiceCreateDataServiceVpoolResponse.md)
+ - [DataServiceVpoolServiceGetDataServiceStoreResponse](docs/DataServiceVpoolServiceGetDataServiceStoreResponse.md)
+ - [DataServiceVpoolServiceGetDataServiceVpoolsResponse](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponse.md)
+ - [DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInner](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInner.md)
+ - [DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner.md)
+ - [DataServiceVpoolServicePutDataServiceVpoolRequest](docs/DataServiceVpoolServicePutDataServiceVpoolRequest.md)
+ - [DataServiceVpoolServiceRemoveFromVpoolRequest](docs/DataServiceVpoolServiceRemoveFromVpoolRequest.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)

@@ -561,10 +561,8 @@ func (r *NamespaceResource) Read(ctx context.Context, req resource.ReadRequest, 
 func (r *NamespaceResource) getModel(
 	namespace *clientgen.NamespaceServiceGetNamespaceResponse,
 	rootpwd, crootpwd types.String) models.NamespaceResourceModel {
-	IsEncryptionEnabled := false
-	if namespace.IsEncryptionEnabled != nil && *namespace.IsEncryptionEnabled == "true" {
-		IsEncryptionEnabled = true
-	}
+	IsEncryptionEnabled := namespace.IsEncryptionEnabled != nil && *namespace.IsEncryptionEnabled == "true"
+
 	return models.NamespaceResourceModel{
 		Id:                       helper.TfStringNN(namespace.Id),
 		Name:                     helper.TfStringNN(namespace.Name),
@@ -610,7 +608,7 @@ func (r *NamespaceResource) getModel(
 	}
 }
 
-// computes the difference between two string sets (lists)
+// computes the difference between two string sets (lists).
 func (r *NamespaceResource) vpoolDiff(first, second []string) []string {
 	var diff []string
 	smap := make(map[string]struct{}, len(second))

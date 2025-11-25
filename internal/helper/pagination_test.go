@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Test Mock Fetch Paginated Namespaces
+// Test Mock Fetch Paginated Namespaces.
 func TestMockPagination(t *testing.T) {
 	times := 0
 	values := []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner{
@@ -63,7 +63,7 @@ func TestMockPagination(t *testing.T) {
 	FunctionMocker.UnPatch()
 }
 
-// Test Mock Fetch Paginated Namespaces Error
+// Test Mock Fetch Paginated Namespaces Error.
 func TestMockPaginationError(t *testing.T) {
 	FunctionMocker := mockey.Mock(clientgen.ApiNamespaceServiceGetNamespacesRequest.Execute).
 		Return(nil, nil, fmt.Errorf("mock error")).Build()
