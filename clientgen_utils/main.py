@@ -18,7 +18,6 @@ import json
 
 from requiredApis import RequiredAPIs
 from commonUtils import ProcessOpenapiSpec
-# from powerStoreUtils import AddPowerStoreOpIds, AddPowerStoreFlexibleQuery
 
 parser = argparse.ArgumentParser(description='Process PowerStore OpenAPI spec.')
 parser.add_argument('--input', help='Input PowerStore OpenAPI spec file path.', required=True)
@@ -29,9 +28,24 @@ args = parser.parse_args()
 # common processing of OpenAPI spec
 filtered_json = ProcessOpenapiSpec(args.input, RequiredAPIs)
 
-# powerstore specific processing
-# filtered_json = AddPowerStoreOpIds(filtered_json)
-# filtered_json = AddPowerStoreFlexibleQuery(filtered_json)
+# ObjectScale specific processing
+def AddObjectScaleMarker(json_obj: dict) -> dict:
+    """
+    Add ObjectScale specific marker to the OpenAPI spec.
+    Adds 'x-is-paginated' to any model with 'NextMarker' object.
+    Adds 'x-is-paginated-resp' to any property of type array within the paginated model.
+    These are later used to add pagination related getters in the generated code.
+    """
+    for _, obj in json_obj['components']['schemas'].items():
+        if 'NextMarker' in obj['properties']:
+            obj['x-is-paginated'] = "true"
+            for _, prop in obj['properties'].items():
+                if prop['type'] == 'array':
+                    prop['x-is-paginated-resp'] = 'true'
+    return json_obj
+
+
+filtered_json = AddObjectScaleMarker(filtered_json)
 
 # write to file
 with open(args.output, 'w') as outfile:
