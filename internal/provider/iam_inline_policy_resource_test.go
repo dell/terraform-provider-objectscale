@@ -167,14 +167,18 @@ func init() {
 	}
 }
 
-func TestAccIAMInlinePolicyForUserCRUD(t *testing.T) {
+func TestAccIAMInlinePolicyResourceForUserCRUD(t *testing.T) {
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig1(testingInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForInvalidUserConfig(testingInputParams),
+				ExpectError: regexp.MustCompile("Create Error"),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyResourceForUserConfig1(testingInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName1),
@@ -182,25 +186,33 @@ func TestAccIAMInlinePolicyForUserCRUD(t *testing.T) {
 				),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig2(testingInputParams),
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyResourceForUserConfig2(testingInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
 					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
 				),
 			},
+			{
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForInvalidUserConfig(testingInputParams),
+				ExpectError: regexp.MustCompile("Update Error"),
+			},
 		},
 	})
 }
 
-func TestAccIAMInlinePolicyForGroupCRUD(t *testing.T) {
+func TestAccIAMInlinePolicyResourceForGroupCRUD(t *testing.T) {
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig1(testingInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForInvalidGroupConfig(testingInputParams),
+				ExpectError: regexp.MustCompile("Create Error"),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyResourceForGroupConfig1(testingInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName1),
@@ -208,25 +220,33 @@ func TestAccIAMInlinePolicyForGroupCRUD(t *testing.T) {
 				),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig2(testingInputParams),
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyResourceForGroupConfig2(testingInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
 					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
 				),
 			},
+			{
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForInvalidGroupConfig(testingInputParams),
+				ExpectError: regexp.MustCompile("Update Error"),
+			},
 		},
 	})
 }
 
-func TestAccIAMInlinePolicyForRoleCRUD(t *testing.T) {
+func TestAccIAMInlinePolicyResourceForRoleCRUD(t *testing.T) {
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig1(testingInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForInvalidRoleConfig(testingInputParams),
+				ExpectError: regexp.MustCompile("Create Error"),
+			},
+			{
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyResourceForRoleConfig1(testingInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName1),
@@ -234,32 +254,45 @@ func TestAccIAMInlinePolicyForRoleCRUD(t *testing.T) {
 				),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig2(testingInputParams),
+				Config: ProviderConfigForTesting + testAccIAMInlinePolicyResourceForRoleConfig2(testingInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
 					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
 				),
 			},
+			{
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForInvalidRoleConfig(testingInputParams),
+				ExpectError: regexp.MustCompile("Update Error"),
+			},
 		},
 	})
 }
 
-func TestAccIAMInlinePolicyErrorScenarios(t *testing.T) {
-	resourceName := "objectscale_iam_inline_policy.example"
-
+func TestAccIAMInlinePolicyResourceForErrorScenarios(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyErrorConfig1(testingInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForErrorConfig1(testingInputParams),
 				ExpectError: regexp.MustCompile("Validation Error"),
 			},
 			{
-				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyErrorConfig2(testingInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForErrorConfig2(testingInputParams),
 				ExpectError: regexp.MustCompile("Validation Error"),
 			},
+		},
+	})
+}
+
+func TestAccIAMInlinePolicyResourceForImport(t *testing.T) {
+	resourceName := "objectscale_iam_inline_policy.example"
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
 			{
 				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
 				ResourceName:  resourceName,
@@ -267,17 +300,13 @@ func TestAccIAMInlinePolicyErrorScenarios(t *testing.T) {
 				ImportStateId: fmt.Sprintf("%s:%s", testingInputParams.Namespace, testingInputParams.Username),
 				ExpectError:   regexp.MustCompile("Invalid import ID format"),
 			},
-		},
-	})
-}
-
-func TestAccIAMInlinePolicyImport(t *testing.T) {
-	resourceName := "objectscale_iam_inline_policy.example"
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			{
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
+				ResourceName:  resourceName,
+				ImportState:   true,
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingInputParams.Namespace, "invalid_type", testingInputParams.Username),
+				ExpectError:   regexp.MustCompile("Invalid entity type"),
+			},
 			{
 				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
 				ResourceName:  resourceName,
@@ -303,7 +332,7 @@ func TestAccIAMInlinePolicyImport(t *testing.T) {
 	})
 }
 
-func testAccIAMInlinePolicyForUserConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForUserConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -334,7 +363,7 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForUserConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForUserConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -365,7 +394,7 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForGroupConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForGroupConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -396,7 +425,7 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForGroupConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForGroupConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -427,7 +456,7 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForRoleConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForRoleConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -458,7 +487,7 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForRoleConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForRoleConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -489,7 +518,7 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyErrorConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForErrorConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -501,7 +530,7 @@ func testAccIAMInlinePolicyErrorConfig1(testingInputParams testingInputsForIAMIn
 	)
 }
 
-func testAccIAMInlinePolicyErrorConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+func testAccIAMInlinePolicyResourceForErrorConfig2(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
     namespace = "%s"
@@ -516,5 +545,98 @@ func testAccIAMInlinePolicyErrorConfig2(testingInputParams testingInputsForIAMIn
 		testingInputParams.Username,
 		testingInputParams.Groupname,
 		testingInputParams.Rolename,
+	)
+}
+
+func testAccIAMInlinePolicyResourceForInvalidUserConfig(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    username  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = <<EOT
+%s
+EOT
+      },
+      {
+        name     = "%s"
+        document = <<EOT
+%s
+EOT
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		"INVALID_USERNAME",
+		testingInputParams.PolicyName1,
+		testingInputParams.PolicyDocument1,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2,
+	)
+}
+
+func testAccIAMInlinePolicyResourceForInvalidGroupConfig(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    groupname  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = <<EOT
+%s
+EOT
+      },
+      {
+        name     = "%s"
+        document = <<EOT
+%s
+EOT
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		"INVALID_GROUPNAME",
+		testingInputParams.PolicyName1,
+		testingInputParams.PolicyDocument1,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2,
+	)
+}
+
+func testAccIAMInlinePolicyResourceForInvalidRoleConfig(testingInputParams testingInputsForIAMInlinePolicyResource) string {
+	return fmt.Sprintf(`
+	resource "objectscale_iam_inline_policy" "example" {
+    namespace = "%s"
+    rolename  = "%s"
+
+    policies = [
+      {
+        name     = "%s"
+        document = <<EOT
+%s
+EOT
+      },
+      {
+        name     = "%s"
+        document = <<EOT
+%s
+EOT
+      }
+    ]
+  }
+		`,
+		testingInputParams.Namespace,
+		"INVALID_ROLENAME",
+		testingInputParams.PolicyName1,
+		testingInputParams.PolicyDocument1,
+		testingInputParams.PolicyName2,
+		testingInputParams.PolicyDocument2,
 	)
 }
