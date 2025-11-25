@@ -28,6 +28,7 @@ type DiagError struct {
 
 type NamespaceDatasourceModel struct {
 	ID         types.String      `tfsdk:"id"`
+	Name       types.String      `tfsdk:"name"`
 	Namespaces []NamespaceEntity `tfsdk:"namespaces"`
 }
 
@@ -84,8 +85,6 @@ type NamespaceEntity struct {
 	RetentionClasses RetentionClasses `tfsdk:"retention_classes"`
 	// root user name
 	RootUserName types.String `tfsdk:"root_user_name"`
-	// root user password.
-	RootUserPassword types.String `tfsdk:"root_user_password"`
 }
 
 type TenancyLink struct {
