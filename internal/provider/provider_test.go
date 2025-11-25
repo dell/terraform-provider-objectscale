@@ -107,7 +107,7 @@ func setDefault(osInput string, defaultStr string) string {
 	return osInput
 }
 
-// loadEnvFile used to read env file and set params
+// loadEnvFile used to read env file and set params.
 func loadEnvFile(path string) (map[string]string, error) {
 	envMap := make(map[string]string)
 
