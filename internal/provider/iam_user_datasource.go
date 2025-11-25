@@ -169,7 +169,7 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	if !data.Username.IsNull() {
 		username := data.Username.ValueString()
 
-		getResp, httpResp, err := d.client.GenClient.IamApi.
+		getResp, _, err := d.client.GenClient.IamApi.
 			IamServiceGetUser(ctx).
 			UserName(username).
 			XEmcNamespace(ns).
@@ -179,13 +179,6 @@ func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			resp.Diagnostics.AddError(
 				"Error calling GetUser",
 				fmt.Sprintf("Failed retrieving user %q: %v", username, err),
-			)
-			return
-		}
-		if httpResp.StatusCode == 404 {
-			resp.Diagnostics.AddError(
-				"IAM User Not Found",
-				fmt.Sprintf("User %q does not exist in namespace %q", username, ns),
 			)
 			return
 		}
