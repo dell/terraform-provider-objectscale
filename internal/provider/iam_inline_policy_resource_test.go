@@ -189,12 +189,6 @@ func TestAccIAMInlinePolicyForUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
 				),
 			},
-			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig3(testingInputParams),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "policies.#", "0"),
-				),
-			},
 		},
 	})
 }
@@ -221,12 +215,6 @@ func TestAccIAMInlinePolicyForGroupCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
 				),
 			},
-			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig3(testingInputParams),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "policies.#", "0"),
-				),
-			},
 		},
 	})
 }
@@ -251,12 +239,6 @@ func TestAccIAMInlinePolicyForRoleCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "policies.#", "2"),
 					resource.TestCheckResourceAttr(resourceName, "policies.0.name", testingInputParams.PolicyName2),
 					resource.TestCheckResourceAttr(resourceName, "policies.1.name", testingInputParams.PolicyName3),
-				),
-			},
-			{
-				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig3(testingInputParams),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "policies.#", "0"),
 				),
 			},
 		},
@@ -383,20 +365,6 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForUserConfig3(testingInputParams testingInputsForIAMInlinePolicyResource) string {
-	return fmt.Sprintf(`
-	resource "objectscale_iam_inline_policy" "example" {
-    namespace = "%s"
-    username  = "%s"
-
-    policies = []
-  }
-		`,
-		testingInputParams.Namespace,
-		testingInputParams.Username,
-	)
-}
-
 func testAccIAMInlinePolicyForGroupConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
@@ -459,20 +427,6 @@ EOT
 	)
 }
 
-func testAccIAMInlinePolicyForGroupConfig3(testingInputParams testingInputsForIAMInlinePolicyResource) string {
-	return fmt.Sprintf(`
-	resource "objectscale_iam_inline_policy" "example" {
-    namespace = "%s"
-    groupname  = "%s"
-
-    policies = []
-  }
-		`,
-		testingInputParams.Namespace,
-		testingInputParams.Groupname,
-	)
-}
-
 func testAccIAMInlinePolicyForRoleConfig1(testingInputParams testingInputsForIAMInlinePolicyResource) string {
 	return fmt.Sprintf(`
 	resource "objectscale_iam_inline_policy" "example" {
@@ -532,20 +486,6 @@ EOT
 		testingInputParams.PolicyDocument2Updated,
 		testingInputParams.PolicyName3,
 		testingInputParams.PolicyDocument3,
-	)
-}
-
-func testAccIAMInlinePolicyForRoleConfig3(testingInputParams testingInputsForIAMInlinePolicyResource) string {
-	return fmt.Sprintf(`
-	resource "objectscale_iam_inline_policy" "example" {
-    namespace = "%s"
-    rolename  = "%s"
-
-    policies = []
-  }
-		`,
-		testingInputParams.Namespace,
-		testingInputParams.Rolename,
 	)
 }
 

@@ -314,7 +314,7 @@ func (r *IAMInlinePolicyResource) Create(ctx context.Context, req resource.Creat
 
 	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan)
 	if err != nil {
-		resp.Diagnostics.AddError("Apply Error", err.Error())
+		resp.Diagnostics.AddError("Create Error", err.Error())
 		return
 	}
 
@@ -333,7 +333,7 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 
 	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan)
 	if err != nil {
-		resp.Diagnostics.AddError("Apply Error", err.Error())
+		resp.Diagnostics.AddError("Update Error", err.Error())
 		return
 	}
 
@@ -343,18 +343,26 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 
 // Delete deletes the resource and removes the Terraform state.
 func (r *IAMInlinePolicyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	tflog.Info(ctx, "Deleting IAM Inline Policy resource (no API call, just removing state)")
+	tflog.Info(ctx, "Deleting IAM Inline Policy resource")
 
 	var state models.IAMInlinePolicyResourceModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	state.Policies = []models.IAMInlinePolicyModel{}
+	_, err := helper.ApplyPolicies(r.client, ctx, state)
+	if err != nil {
+		resp.Diagnostics.AddError("Delete Error", err.Error())
 		return
 	}
 
 	// Remove resource from Terraform state
 	resp.State.RemoveResource(ctx)
 
-	tflog.Info(ctx, "Done with Deleting IAM Inline Policy resource")
+	tflog.Info(ctx, "Done with deleting IAM Inline Policy resource")
 }
 
 // ImportState imports the existing resource into the Terraform state.
