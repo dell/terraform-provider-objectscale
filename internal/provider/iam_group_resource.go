@@ -183,42 +183,8 @@ func (r *IAMGroupResource) getModel(
 }
 
 func (r *IAMGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-
-	// resp.Diagnostics.AddError("[Update] Update operation is not available.", "Update operation is not available.")
-	tflog.Info(ctx, "updating group")
-	// TODO: Add update logic
-	var plan, state models.IAMGroupResourceModel
-
-	// Read Terraform plan and state data into the models
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	// To prevent the non-updatable fields from being changed
-	if !plan.GroupName.Equal(state.GroupName) {
-		resp.Diagnostics.AddError("Error updating group", "Fields of `name`, `arn` and `create_date` are not updatable")
-		return
-	}
-
-	iam_group, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(state.GroupName.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading group", err.Error())
-		return
-	}
-
-	data := r.getModel(&clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
-		GroupId:    iam_group.GetGroupResult.Group.GroupId,
-		GroupName:  iam_group.GetGroupResult.Group.GroupName,
-		Arn:        iam_group.GetGroupResult.Group.Arn,
-		CreateDate: iam_group.GetGroupResult.Group.CreateDate,
-		Path:       iam_group.GetGroupResult.Group.Path,
-	}, state.Namespace)
-	// Save updated plan into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-
+	// Update operation is not supported
+	resp.Diagnostics.AddError("[POST /iam?Action=UpdateGroup] UpdateGroup operation is not supported.", "Update operation is not supported.")
 }
 
 func (r *IAMGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -265,5 +231,4 @@ func (r *IAMGroupResource) ImportState(ctx context.Context, req resource.ImportS
 	}, types.StringValue(namespace))
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-	// resp.Diagnostics.AddError("[Import] Import operation is not available.", "Import operation is not available.")
 }
