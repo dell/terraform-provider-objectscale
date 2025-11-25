@@ -15,34 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-terraform {
-  required_providers {
-    objectscale = {
-      source = "registry.terraform.io/dell/objectscale"
-    }
-  }
+data "objectscale_replication_group" "all" {
 }
 
-variable "username" {
-  type = string
-}
-
-variable "password" {
-  type = string
-}
-
-variable "endpoint" {
-  type = string
-}
-
-variable "insecure" {
-  type = bool
-}
-
-provider "objectscale" {
-  username = var.username
-  password = var.password
-  endpoint = var.endpoint
-  insecure = var.insecure
-  timeout  = 120
+output "objectscale_replication_group" {
+  value = data.objectscale_replication_group.all
 }

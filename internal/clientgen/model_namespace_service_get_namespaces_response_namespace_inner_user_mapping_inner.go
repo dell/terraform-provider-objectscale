@@ -13,7 +13,7 @@ package clientgen
 // NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner struct for NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner
 type NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner struct {
 	// A single-valued attribute indicating the user's IDP domain
-	Domain    string                                                                              `json:"domain"`
-	Attribute []NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner `json:"attribute,omitempty"`
-	Group     []string                                                                            `json:"group,omitempty"`
+	Domain     string                                                                               `json:"domain"`
+	Attributes []NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner `json:"attributes,omitempty"`
+	Groups     []string                                                                             `json:"groups,omitempty"`
 }

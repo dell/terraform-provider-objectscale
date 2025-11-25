@@ -18,23 +18,49 @@ limitations under the License.
 # Available actions: Create, Update, Delete and Import
 # After `terraform apply` of this example file it will create a new namespace with the name set in `name` attribute on the ObjectScale
 
-resource "objectscale_namespace" "namespace" {
-  name                        = "test_namespace"
-  default_data_services_vpool = "urn:storageos:ReplicationGroupInfo:0e953ad1-94a5-4eb1-825a-d58d29e85434:global"
-  retention_classes = {
-    retention_class = [{
-      name   = "r1"
-      period = 1
-    }]
-  }
+resource "objectscale_namespace" "all" {
+  name                        = "namespace1"
+  default_data_services_vpool = "urn:storageos:ReplicationGroupInfo:55ca12b2-e908-4bac-a5fe-3fdaa975e3eb:global"
+  allowed_vpools_list = [
+    "urn:storageos:ReplicationGroupInfo:cd8bffcb-7a99-4023-82a8-982054fd73c2:global"
+  ]
+  disallowed_vpools_list = [
+    "urn:storageos:ReplicationGroupInfo:e0b539a3-6ddd-4412-b4d0-ce08049f64cd:global"
+  ]
+  namespace_admins = "admin2,admin3"
   user_mapping = [{
-    attributes = [{
-      key   = "key1"
-      value = ["value1"]
-    }]
-    domain = "domain"
-    groups = ["group"]
+    domain = "domain2"
+    groups = ["group3", "group4"]
+    attributes = [
+      {
+        key   = "key3"
+        value = ["value5", "value6"]
+      },
+      {
+        key   = "key4"
+        value = ["value7", "value8"]
+      }
+    ]
   }]
+  default_bucket_block_size       = 1024
+  external_group_admins           = "admin3@foo,admin4@bar"
+  is_stale_allowed                = true
+  is_object_lock_with_ado_allowed = true
+  retention_classes = [
+    {
+      name   = "class1"
+      period = 500
+    },
+    {
+      name   = "class2"
+      period = 2000
+    }
+  ]
+  quota = {
+    notification_size = 90
+    block_size        = 124
+  }
+  root_user_password = "password1"
 }
 
 # After the execution of above resource block, namespace would have been created on the ObjectScale array. For more information, Please check the terraform state file. 

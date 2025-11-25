@@ -25,4 +25,11 @@ RequiredAPIs = [
     "/iam?Action=ListUsers",
     "/iam?Action=ListUserTags",
     "/iam?Action=ListAccessKeys",
+    "/object/namespaces/namespace/{namespace}/retention*",
+    "/object/namespaces/namespace/{namespace}/quota",
+    "/vdc/data-service/vpools",
+    "/vdc/data-service/vpools/{id}",
+    "/vdc/data-service/vpools/{id}/addvarrays",
+    "/vdc/data-service/vpools/{id}/removevarrays",
+    "/vdc/data-service/vpools",
 ]

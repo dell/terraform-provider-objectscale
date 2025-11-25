@@ -147,6 +147,7 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 	return []func() datasource.DataSource{
 		NewNamespaceDataSource,
 		NewIAMUserDataSource,
+		NewReplicationGroupDataSource,
 	}
 }
 

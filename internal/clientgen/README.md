@@ -79,20 +79,42 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*DataVpoolApi* | [**DataServiceVpoolServiceAddToVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceaddtovpool) | **Put** /vdc/data-service/vpools/{id}/addvarrays | Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group
+*DataVpoolApi* | [**DataServiceVpoolServiceCreateDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolservicecreatedataservicevpool) | **Post** /vdc/data-service/vpools | Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)
+*DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceStore**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicestore) | **Get** /vdc/data-service/vpools/{id} | Gets the details for the specified replication group
+*DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceVpools**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicevpools) | **Get** /vdc/data-service/vpools | Lists all configured replication groups
+*DataVpoolApi* | [**DataServiceVpoolServicePutDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceputdataservicevpool) | **Put** /vdc/data-service/vpools/{id} | Updates the name and description for a replication group
+*DataVpoolApi* | [**DataServiceVpoolServiceRemoveFromVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceremovefromvpool) | **Put** /vdc/data-service/vpools/{id}/removevarrays | Deletes a storage pool (VDC:storage pool tuple) from a specified replication group
 *IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 *IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 *IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
 *IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 *IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
+*NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
 *NamespaceApi* | [**NamespaceServiceGetNamespace**](docs/NamespaceApi.md#namespaceservicegetnamespace) | **Get** /object/namespaces/namespace/{id} | Gets the details for the specified namespace
+*NamespaceApi* | [**NamespaceServiceGetNamespaceQuota**](docs/NamespaceApi.md#namespaceservicegetnamespacequota) | **Get** /object/namespaces/namespace/{namespace}/quota | Gets the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceGetNamespaces**](docs/NamespaceApi.md#namespaceservicegetnamespaces) | **Get** /object/namespaces | Gets the list of all configured namespaces
+*NamespaceApi* | [**NamespaceServiceGetRetentionClass**](docs/NamespaceApi.md#namespaceservicegetretentionclass) | **Get** /object/namespaces/namespace/{namespace}/retention/{class} | Gets the retention period for the given namespace and retention class
+*NamespaceApi* | [**NamespaceServiceGetRetentionClasses**](docs/NamespaceApi.md#namespaceservicegetretentionclasses) | **Get** /object/namespaces/namespace/{namespace}/retention | Gets the list of retention classes for the specified namespace
+*NamespaceApi* | [**NamespaceServiceRemoveNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceremovenamespacequota) | **Delete** /object/namespaces/namespace/{namespace}/quota | Deletes the namespace quota for the specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
+*NamespaceApi* | [**NamespaceServiceUpdateNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceupdatenamespacequota) | **Put** /object/namespaces/namespace/{namespace}/quota | Updates the namespace quota for a specified namespace
+*NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
 
 
 ## Documentation For Models
 
+ - [DataServiceVpoolServiceAddToVpoolRequest](docs/DataServiceVpoolServiceAddToVpoolRequest.md)
+ - [DataServiceVpoolServiceCreateDataServiceVpoolRequest](docs/DataServiceVpoolServiceCreateDataServiceVpoolRequest.md)
+ - [DataServiceVpoolServiceCreateDataServiceVpoolResponse](docs/DataServiceVpoolServiceCreateDataServiceVpoolResponse.md)
+ - [DataServiceVpoolServiceGetDataServiceStoreResponse](docs/DataServiceVpoolServiceGetDataServiceStoreResponse.md)
+ - [DataServiceVpoolServiceGetDataServiceVpoolsResponse](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponse.md)
+ - [DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInner](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInner.md)
+ - [DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner.md)
+ - [DataServiceVpoolServicePutDataServiceVpoolRequest](docs/DataServiceVpoolServicePutDataServiceVpoolRequest.md)
+ - [DataServiceVpoolServiceRemoveFromVpoolRequest](docs/DataServiceVpoolServiceRemoveFromVpoolRequest.md)
  - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
  - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
  - [IamServiceGetGroupResponseGetGroupResultGroup](docs/IamServiceGetGroupResponseGetGroupResultGroup.md)
@@ -113,6 +135,8 @@ Class | Method | HTTP request | Description
  - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
+ - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
+ - [NamespaceServiceGetNamespaceQuotaResponse](docs/NamespaceServiceGetNamespaceQuotaResponse.md)
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)
  - [NamespaceServiceGetNamespacesResponse](docs/NamespaceServiceGetNamespacesResponse.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInner.md)
@@ -120,10 +144,14 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner.md)
- - [NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner.md)
+ - [NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerVdc](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerVdc.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerVdcLink](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerVdcLink.md)
+ - [NamespaceServiceGetRetentionClassResponse](docs/NamespaceServiceGetRetentionClassResponse.md)
+ - [NamespaceServiceGetRetentionClassesResponse](docs/NamespaceServiceGetRetentionClassesResponse.md)
+ - [NamespaceServiceUpdateNamespaceQuotaRequest](docs/NamespaceServiceUpdateNamespaceQuotaRequest.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
+ - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
 
 
 ## Documentation For Authorization
