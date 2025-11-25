@@ -25,12 +25,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )
 
-var testProvider provider.Provider
+// var testProvider provider.Provider
 
 // testAccProtoV6ProviderFactories are used to instantiate a provider during
 // acceptance testing. The factory function will be invoked for every Terraform
@@ -52,7 +51,7 @@ func init() {
 		return
 	}
 
-	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3003/api/rest")
+	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3007")
 	username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
 	password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
 	insecure := "true"

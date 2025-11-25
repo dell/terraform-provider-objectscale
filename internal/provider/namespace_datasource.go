@@ -314,10 +314,8 @@ func (d *NamespaceDataSource) Read(ctx context.Context, req datasource.ReadReque
 
 func (d *NamespaceDataSource) updateNamespaceState(namespaces []clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) []models.NamespaceEntity {
 	return helper.SliceTransform(namespaces, func(v clientgen.NamespaceServiceGetNamespacesResponseNamespaceInner) models.NamespaceEntity {
-		IsEncryptionEnabled := false
-		if v.IsEncryptionEnabled != nil && *v.IsEncryptionEnabled == "true" {
-			IsEncryptionEnabled = true
-		}
+		IsEncryptionEnabled := v.IsEncryptionEnabled != nil && *v.IsEncryptionEnabled == "true"
+
 		return models.NamespaceEntity{
 			Name:   helper.TfString(v.Name),
 			Id:     helper.TfString(v.Id),
