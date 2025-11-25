@@ -16,16 +16,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var locals = `
-locals {
-  rgs = {
-    "rg1": "urn:storageos:ReplicationGroupInfo:55ca12b2-e908-4bac-a5fe-3fdaa975e3eb:global",
-    "rg2": "urn:storageos:ReplicationGroupInfo:cd8bffcb-7a99-4023-82a8-982054fd73c2:global",
-    "rg3": "urn:storageos:ReplicationGroupInfo:e0b539a3-6ddd-4412-b4d0-ce08049f64cd:global",
-  }
-}
-`
-
 // Test to Fetch Namespaces
 func TestAccNSRs(t *testing.T) {
 	if os.Getenv("TF_ACC") == "" {
@@ -38,7 +28,7 @@ func TestAccNSRs(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				// create
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -51,7 +41,7 @@ func TestAccNSRs(t *testing.T) {
 			},
 			{
 				// import
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -66,7 +56,7 @@ func TestAccNSRs(t *testing.T) {
 			},
 			{
 				// import error
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -83,7 +73,7 @@ func TestAccNSRs(t *testing.T) {
 			},
 			{
 				// update name error
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -93,7 +83,7 @@ func TestAccNSRs(t *testing.T) {
 			},
 			{
 				// update vpools
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -119,7 +109,7 @@ func TestAccNSRsAll(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				// create
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -160,7 +150,7 @@ func TestAccNSRsAll(t *testing.T) {
 			},
 			{
 				// update vpools
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -209,7 +199,7 @@ func TestAccNSRsAll(t *testing.T) {
 			},
 			{
 				// remove from lists
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -236,7 +226,7 @@ func TestAccNSRsAll(t *testing.T) {
 			},
 			// remove retention classes error
 			{
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -247,7 +237,7 @@ func TestAccNSRsAll(t *testing.T) {
 			},
 			{
 				// remove all from lists 2
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -265,7 +255,7 @@ func TestAccNSRsAll(t *testing.T) {
 					upM = mockey.Mock((*clientgen.NamespaceApiService).NamespaceServiceUpdateNamespaceExecute).
 						Return(nil, nil, fmt.Errorf("error")).Build()
 				},
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = "dummy"
@@ -282,7 +272,7 @@ func TestAccNSRsAll(t *testing.T) {
 					rcUpdateM = mockey.Mock((*clientgen.NamespaceApiService).NamespaceServiceCreateRetentionClassExecute).
 						Return(nil, nil, fmt.Errorf("{}")).Build()
 				},
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg3"]
@@ -447,7 +437,7 @@ func TestAccNsRsCreateError(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				// create error
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -464,7 +454,7 @@ func TestAccNsRsCreateError(t *testing.T) {
 							Id: getpointer("todo"),
 						}, nil, nil).Build()
 				},
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource"objectscale_namespace" "all" {
 					name                        = "testacc_namespace2"
 					default_data_services_vpool = local.rgs["rg1"]

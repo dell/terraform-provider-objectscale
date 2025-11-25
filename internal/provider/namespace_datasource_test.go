@@ -26,7 +26,7 @@ func TestAccNSDs(t *testing.T) {
 			},
 			{
 				// fetch invalid
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				data "objectscale_namespace" "all" {
 					name = "invalid-id"
 				}
@@ -35,7 +35,7 @@ func TestAccNSDs(t *testing.T) {
 			},
 			{
 				// fetch one
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource "objectscale_namespace" "preq" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -47,7 +47,7 @@ func TestAccNSDs(t *testing.T) {
 			},
 			{
 				// fetch all by prefix
-				Config: ProviderConfigForTesting + locals + `
+				Config: ProviderConfigForTesting + rgs + `
 				resource "objectscale_namespace" "preq" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]
