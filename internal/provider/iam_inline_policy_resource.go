@@ -24,6 +24,7 @@ import (
 	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/models"
 
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -137,6 +138,7 @@ func (r *IAMInlinePolicyResource) Schema(_ context.Context, _ resource.SchemaReq
 							Description:         "Policy document in JSON format.",
 							MarkdownDescription: "Policy document in JSON format.",
 							Required:            true,
+							CustomType:          jsontypes.NormalizedType{},
 						},
 					},
 				},
@@ -287,7 +289,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 
 		policies = append(policies, models.IAMInlinePolicyModel{
 			Name:     types.StringValue(policyName),
-			Document: types.StringValue(policyDoc),
+			Document: jsontypes.NewNormalizedValue(policyDoc),
 		})
 	}
 	if policies == nil {
@@ -495,6 +497,8 @@ func (r *IAMInlinePolicyResource) Delete(ctx context.Context, req resource.Delet
 // ImportState imports the existing resource into the Terraform state.
 func (r *IAMInlinePolicyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Expected format: <namespace>:<entity_type>:<entity_name>
+	// Retrieve import ID and save to id attribute
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 	parts := strings.Split(req.ID, ":")
 	if len(parts) != 3 {
 		resp.Diagnostics.AddError(

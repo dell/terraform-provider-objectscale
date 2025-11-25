@@ -263,7 +263,9 @@ func TestAccIAMInlinePolicyForRoleCRUD(t *testing.T) {
 	})
 }
 
-func TestAccIAMInlinePolicyErrorScenario(t *testing.T) {
+func TestAccIAMInlinePolicyErrorScenarios(t *testing.T) {
+	resourceName := "objectscale_iam_inline_policy.example"
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testProviderFactory,
@@ -275,6 +277,45 @@ func TestAccIAMInlinePolicyErrorScenario(t *testing.T) {
 			{
 				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyErrorConfig2(testingInputParams),
 				ExpectError: regexp.MustCompile("Validation Error"),
+			},
+			{
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
+				ResourceName:  resourceName,
+				ImportState:   true,
+				ImportStateId: fmt.Sprintf("%s:%s", testingInputParams.Namespace, testingInputParams.Username),
+				ExpectError:   regexp.MustCompile("Invalid import ID format"),
+			},
+		},
+	})
+}
+
+func TestAccIAMInlinePolicyImport(t *testing.T) {
+	resourceName := "objectscale_iam_inline_policy.example"
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testProviderFactory,
+		Steps: []resource.TestStep{
+			{
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
+				ResourceName:  resourceName,
+				ImportState:   true,
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingInputParams.Namespace, "user", testingInputParams.Username),
+				ExpectError:   nil,
+			},
+			{
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
+				ResourceName:  resourceName,
+				ImportState:   true,
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingInputParams.Namespace, "group", testingInputParams.Groupname),
+				ExpectError:   nil,
+			},
+			{
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
+				ResourceName:  resourceName,
+				ImportState:   true,
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingInputParams.Namespace, "role", testingInputParams.Rolename),
+				ExpectError:   nil,
 			},
 		},
 	})

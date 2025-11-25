@@ -18,6 +18,7 @@ limitations under the License.
 package models
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -35,6 +36,6 @@ type IAMInlinePolicyResourceModel struct {
 
 // IAMInlinePolicyModel maps an individual IAM Inline Policy data.
 type IAMInlinePolicyModel struct {
-	Name     types.String `tfsdk:"name"`
-	Document types.String `tfsdk:"document"`
+	Name     types.String         `tfsdk:"name"`
+	Document jsontypes.Normalized `tfsdk:"document"`
 }
