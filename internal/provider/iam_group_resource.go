@@ -6,10 +6,12 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
+	"terraform-provider-objectscale/internal/models"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -30,15 +32,7 @@ type IAMGroupResource struct {
 	client *client.Client
 }
 
-// IAMGroupResourceModel describes the resource data model.
-type IAMGroupResourceModel struct {
-	GroupName  types.String `tfsdk:"name"`
-	GroupId    types.String `tfsdk:"id"`
-	Arn        types.String `tfsdk:"arn"`
-	Path       types.String `tfsdk:"path"`
-	CreateDate types.String `tfsdk:"create_date"`
-	Namespace  types.String `tfsdk:"namespace"`
-}
+// models.IAMGroupResourceModel describes the resource data model.
 
 func (r *IAMGroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_iam_group"
@@ -105,7 +99,7 @@ func (r *IAMGroupResource) Configure(ctx context.Context, req resource.Configure
 	r.client = client
 }
 
-func (r *IAMGroupResource) modelToJson(plan IAMGroupResourceModel) clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup {
+func (r *IAMGroupResource) modelToJson(plan models.IAMGroupResourceModel) clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup {
 	return clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
 		GroupName:  helper.ValueToPointer[string](plan.GroupName),
 		GroupId:    helper.ValueToPointer[string](plan.GroupId),
@@ -117,7 +111,7 @@ func (r *IAMGroupResource) modelToJson(plan IAMGroupResourceModel) clientgen.Iam
 
 func (r *IAMGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	tflog.Info(ctx, "creating group")
-	var plan IAMGroupResourceModel
+	var plan models.IAMGroupResourceModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -145,7 +139,7 @@ func (r *IAMGroupResource) Create(ctx context.Context, req resource.CreateReques
 }
 
 func (r *IAMGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state IAMGroupResourceModel
+	var state models.IAMGroupResourceModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -175,9 +169,9 @@ func (r *IAMGroupResource) Read(ctx context.Context, req resource.ReadRequest, r
 
 func (r *IAMGroupResource) getModel(
 	iam_group *clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup,
-	namespace types.String) IAMGroupResourceModel {
+	namespace types.String) models.IAMGroupResourceModel {
 
-	return IAMGroupResourceModel{
+	return models.IAMGroupResourceModel{
 
 		GroupId:    helper.TfStringNN(iam_group.GroupId),
 		GroupName:  helper.TfStringNN(iam_group.GroupName),
@@ -193,7 +187,7 @@ func (r *IAMGroupResource) Update(ctx context.Context, req resource.UpdateReques
 	// resp.Diagnostics.AddError("[Update] Update operation is not available.", "Update operation is not available.")
 	tflog.Info(ctx, "updating group")
 	// TODO: Add update logic
-	var plan, state IAMGroupResourceModel
+	var plan, state models.IAMGroupResourceModel
 
 	// Read Terraform plan and state data into the models
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -229,7 +223,7 @@ func (r *IAMGroupResource) Update(ctx context.Context, req resource.UpdateReques
 
 func (r *IAMGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	tflog.Info(ctx, "deleting IAM Group")
-	var state IAMGroupResourceModel
+	var state models.IAMGroupResourceModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -249,18 +243,27 @@ func (r *IAMGroupResource) Delete(ctx context.Context, req resource.DeleteReques
 }
 
 func (r *IAMGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// tflog.Info(ctx, "importing IAM user")
-
-	// iam_user, _, err := r.client.GenClient.IamApi.IamServiceGetUser(ctx).UserName(req.ID.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
-
-	// if err != nil {
-	// 	resp.Diagnostics.AddError("Error reading user", err.Error())
-	// 	return
-	// }
-
-	// data := r.getModel(namespace, types.StringNull())
-	// // Save updated plan into Terraform state
-	// resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-	resp.Diagnostics.AddError("[Import] Import operation is not available.", "Import operation is not available.")
-
+	tflog.Info(ctx, "importing IAM Group")
+	parts := strings.SplitN(req.ID, ":", 2)
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError("Error importing IAM user", "invalid format: expected 'group_name:namespace'")
+	}
+	group_name := parts[0]
+	namespace := parts[1]
+	iam_group, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(group_name).XEmcNamespace(namespace).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading user", err.Error())
+		return
+	}
+	// data := r.getModel(iam_user)
+	data := r.getModel(&clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
+		GroupId:    iam_group.GetGroupResult.Group.GroupId,
+		GroupName:  iam_group.GetGroupResult.Group.GroupName,
+		Arn:        iam_group.GetGroupResult.Group.Arn,
+		CreateDate: iam_group.GetGroupResult.Group.CreateDate,
+		Path:       iam_group.GetGroupResult.Group.Path,
+	}, types.StringValue(namespace))
+	// Save updated plan into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	// resp.Diagnostics.AddError("[Import] Import operation is not available.", "Import operation is not available.")
 }
