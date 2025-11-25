@@ -22,7 +22,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 var testingInputParams testingInputsForIAMInlinePolicyResource
@@ -171,7 +171,7 @@ func TestAccIAMInlinePolicyForUserCRUD(t *testing.T) {
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForUserConfig1(testingInputParams),
@@ -203,7 +203,7 @@ func TestAccIAMInlinePolicyForGroupCRUD(t *testing.T) {
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForGroupConfig1(testingInputParams),
@@ -235,7 +235,7 @@ func TestAccIAMInlinePolicyForRoleCRUD(t *testing.T) {
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + testAccIAMInlinePolicyForRoleConfig1(testingInputParams),
@@ -268,7 +268,7 @@ func TestAccIAMInlinePolicyErrorScenarios(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyErrorConfig1(testingInputParams),
@@ -294,7 +294,7 @@ func TestAccIAMInlinePolicyImport(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testProviderFactory,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config:        ProviderConfigForTesting + `resource "objectscale_iam_inline_policy" "example" {}`,
