@@ -19,7 +19,7 @@ func TestAccNSDs(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + `
-				data "objectscale_replication_group" "all" {
+				data "objectscale_namespace" "all" {
 				}
 				`,
 			},
