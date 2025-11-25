@@ -23,7 +23,7 @@ resource "objectscale_iam_inline_policy" "example" {
   namespace = "ns1"
 
   # Exactly one of username, groupname, or rolename must be provided
-  username  = "userTest1"
+  username = "userTest1"
   # groupname = "groupTest1"
   # rolename  = "roleTest1"
 
