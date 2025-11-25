@@ -21,11 +21,11 @@
 # <entity_name>: The name of the user, group, or role.
 # Examples:
 # Import inline policies for a user
-# terraform import objectscale_iam_inline_policy.example ns1:user:User123
+# terraform import objectscale_iam_inline_policy.example ns1:user:userTest1
 # Import inline policies for a group
-# terraform import objectscale_iam_inline_policy.example ns1:group:GroupABC
+# terraform import objectscale_iam_inline_policy.example ns1:group:groupTest1
 # Import inline policies for a role
-# terraform import objectscale_iam_inline_policy.example ns1:role:Role001
+# terraform import objectscale_iam_inline_policy.example ns1:role:roleTest1
 
 # after running this command, populate the policies field and other required parameters in the config file to start managing this resource.
 # Note: running "terraform show" after importing shows the current config/state of the resource. You can copy/paste that config to make it easier to manage the resource.
