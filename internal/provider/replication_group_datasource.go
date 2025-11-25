@@ -32,8 +32,8 @@ func (d *ReplicationGroupDataSource) Metadata(ctx context.Context, req datasourc
 func (d *ReplicationGroupDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.",
-		Description:         "ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.",
+		MarkdownDescription: "ObjectScale Replication Group Data Source to get all replication groups details.",
+		Description:         "ObjectScale Replication Group Data Source to get all replication groups details.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier",
@@ -41,8 +41,8 @@ func (d *ReplicationGroupDataSource) Schema(ctx context.Context, req datasource.
 				Computed:            true,
 			},
 			"replication_groups": schema.ListNestedAttribute{
-				Description:         "List of Namespaces",
-				MarkdownDescription: "List of Namespaces",
+				Description:         "List of Replication Groups",
+				MarkdownDescription: "List of Replication Groups",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -62,8 +62,8 @@ func (d *ReplicationGroupDataSource) Schema(ctx context.Context, req datasource.
 							Computed:            true,
 						},
 						"is_allow_all_namespaces": schema.BoolAttribute{
-							Description:         "Indicates if the Vpool can access all namespaces.",
-							MarkdownDescription: "Indicates if the Vpool can access all namespaces.",
+							Description:         "Indicates if the replication group can access all namespaces.",
+							MarkdownDescription: "Indicates if the replication group can access all namespaces.",
 							Computed:            true,
 						},
 						"is_full_rep": schema.BoolAttribute{
