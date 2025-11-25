@@ -22,7 +22,6 @@ RequiredAPIs = [
     "/object/namespaces/namespace/{namespace}/deactivate",
     "/vdc/data-service/vpools",
     "/vdc/data-service/vpools/{id}",
-    "/vdc/data-service/vpools/{id}",
     "/vdc/data-service/vpools/{id}/addvarrays",
     "/vdc/data-service/vpools/{id}/removevarrays",
     "/vdc/data-service/vpools"
