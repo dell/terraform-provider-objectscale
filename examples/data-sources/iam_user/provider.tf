@@ -44,5 +44,5 @@ provider "objectscale" {
   password = var.password
   endpoint = var.endpoint
   insecure = var.insecure
-  timeout = 120
+  timeout  = 120
 }

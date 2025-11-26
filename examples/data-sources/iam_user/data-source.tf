@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 data "objectscale_iam_user" "all" {
-    namespace = "ns1"
+  namespace = "ns1"
 }
 
 output "objectscale_namespace_all" {
