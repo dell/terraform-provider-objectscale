@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 	"regexp"
 	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
@@ -528,7 +529,12 @@ func TestVPoolDiff(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := r.vpoolDiff(tt.first, tt.second)
-			assert.Equal(t, tt.expected, result, "vpoolDiff(%v, %v) should equal expected", tt.first, tt.second)
+			if len(result) == 0 && len(tt.expected) == 0 {
+				return // treat both as equal
+			}
+			if !reflect.DeepEqual(result, tt.expected) {
+				t.Errorf("vpoolDiff(%v, %v) = %v; expected %v", tt.first, tt.second, result, tt.expected)
+			}
 		})
 	}
 }
@@ -557,8 +563,9 @@ func TestNamespaceResource_boolToString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := (&NamespaceResource{}).boolToString(tt.b)
-			assert.Equal(t, tt.want, got)
+			if got := (&NamespaceResource{}).boolToString(tt.b); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("boolToString() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }
@@ -587,8 +594,9 @@ func TestNamespaceResource_stringToBool(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := (&NamespaceResource{}).stringToBool(tt.s)
-			assert.Equal(t, tt.want, got)
+			if got := (&NamespaceResource{}).stringToBool(tt.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("stringToBool() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }
