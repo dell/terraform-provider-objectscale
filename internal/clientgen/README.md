@@ -85,6 +85,11 @@ Class | Method | HTTP request | Description
 *DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceVpools**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicevpools) | **Get** /vdc/data-service/vpools | Lists all configured replication groups
 *DataVpoolApi* | [**DataServiceVpoolServicePutDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceputdataservicevpool) | **Put** /vdc/data-service/vpools/{id} | Updates the name and description for a replication group
 *DataVpoolApi* | [**DataServiceVpoolServiceRemoveFromVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceremovefromvpool) | **Put** /vdc/data-service/vpools/{id}/removevarrays | Deletes a storage pool (VDC:storage pool tuple) from a specified replication group
+*IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
+*IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
+*IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
+*IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
+*IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
@@ -110,6 +115,24 @@ Class | Method | HTTP request | Description
  - [DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner.md)
  - [DataServiceVpoolServicePutDataServiceVpoolRequest](docs/DataServiceVpoolServicePutDataServiceVpoolRequest.md)
  - [DataServiceVpoolServiceRemoveFromVpoolRequest](docs/DataServiceVpoolServiceRemoveFromVpoolRequest.md)
+ - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
+ - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
+ - [IamServiceGetGroupResponseGetGroupResultGroup](docs/IamServiceGetGroupResponseGetGroupResultGroup.md)
+ - [IamServiceGetGroupResponseGetGroupResultUsersInner](docs/IamServiceGetGroupResponseGetGroupResultUsersInner.md)
+ - [IamServiceGetGroupResponseResponseMetadata](docs/IamServiceGetGroupResponseResponseMetadata.md)
+ - [IamServiceGetUserResponse](docs/IamServiceGetUserResponse.md)
+ - [IamServiceGetUserResponseGetUserResult](docs/IamServiceGetUserResponseGetUserResult.md)
+ - [IamServiceGetUserResponseGetUserResultUser](docs/IamServiceGetUserResponseGetUserResultUser.md)
+ - [IamServiceGetUserResponseGetUserResultUserPermissionsBoundary](docs/IamServiceGetUserResponseGetUserResultUserPermissionsBoundary.md)
+ - [IamServiceGetUserResponseGetUserResultUserTagsInner](docs/IamServiceGetUserResponseGetUserResultUserTagsInner.md)
+ - [IamServiceListAccessKeysResponse](docs/IamServiceListAccessKeysResponse.md)
+ - [IamServiceListAccessKeysResponseListAccessKeysResult](docs/IamServiceListAccessKeysResponseListAccessKeysResult.md)
+ - [IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner](docs/IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner.md)
+ - [IamServiceListUserTagsResponse](docs/IamServiceListUserTagsResponse.md)
+ - [IamServiceListUserTagsResponseListUserTagsResult](docs/IamServiceListUserTagsResponseListUserTagsResult.md)
+ - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
+ - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
+ - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)

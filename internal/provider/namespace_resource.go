@@ -325,10 +325,8 @@ func (r *NamespaceResource) stringToBool(s *string) *bool {
 	if s == nil {
 		return nil
 	}
-	ret := false
-	if *s == "true" {
-		ret = true
-	}
+	ret := *s == "true"
+
 	return &ret
 }
 

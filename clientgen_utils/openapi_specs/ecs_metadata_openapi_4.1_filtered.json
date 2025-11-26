@@ -2024,6 +2024,568 @@
 					}
 				}
 			}
+		},
+		"/iam?Action=GetGroup": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve list of users in IAM group.",
+				"description": "Retrieve list of users in IAM group.",
+				"operationId": "IamService_GetGroup",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetGroupResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:108c7:f3"
+											},
+											"GetGroupResult": {
+												"Group": {
+													"GroupName": "FinanceGroup",
+													"Arn": "urn:ecs:iam::ns:group/FinanceGroup",
+													"GroupId": "AGPA11B2858814F35CA0",
+													"Path": "/",
+													"CreateDate": "2020-04-15T15:03:25Z"
+												},
+												"Users": [],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve IAM user.",
+				"description": "Retrieve IAM user.",
+				"operationId": "IamService_GetUser",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to retrieve."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:a8f9:0"
+											},
+											"GetUserResult": {
+												"User": {
+													"Arn": "urn:ecs:iam::ns:user/User1",
+													"CreateDate": "2020-04-15T15:17:15Z",
+													"Path": "/",
+													"PermissionsBoundary": {
+														"PermissionsBoundaryArn": "urn:ecs:iam:::policy/IAMReadOnlyAccess",
+														"PermissionsBoundaryType": "Policy"
+													},
+													"Tags": [],
+													"UserId": "AIDA7079A32D6242C3A4",
+													"UserName": "User1"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListAccessKeys": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List AccessKeys for a user.",
+				"description": "List AccessKeys for a user.",
+				"operationId": "IamService_ListAccessKeys",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the user to list accesskeys."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListAccessKeysResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:8acd:0"
+											},
+											"ListAccessKeysResult": {
+												"AccessKeyMetadata": [
+													{
+														"AccessKeyId": "AKIA681EB7D2520E6455",
+														"CreateDate": "2020-04-15T14:14:37Z",
+														"Status": "Active",
+														"UserName": "tt1"
+													},
+													{
+														"AccessKeyId": "AKIAFE4086C4F2E286DD",
+														"CreateDate": "2020-04-15T14:15:29Z",
+														"Status": "Active",
+														"UserName": "tt1"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListUserTags": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the tags that are attached to the specified IAM User.",
+				"description": "Lists the tags that are attached to the specified IAM User.",
+				"operationId": "IamService_ListUserTags",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the user."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListUserTagsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:ca11:23"
+											},
+											"ListUserTagsResult": {
+												"Tags": [
+													{
+														"Key": "Department",
+														"Value": "Finance"
+													},
+													{
+														"Key": "Region",
+														"Value": "East"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListUsers": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the IAM users.",
+				"description": "Lists the IAM users.",
+				"operationId": "IamService_ListUsers",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListUsersResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1ad3a:18"
+											},
+											"ListUsersResult": {
+												"Users": [
+													{
+														"Arn": "urn:ecs:iam::ns:user/payroll1",
+														"CreateDate": "2020-04-13T18:59:45Z",
+														"Path": "/",
+														"UserId": "AIDA4E6FD3D4A86F3768",
+														"UserName": "payroll1"
+													},
+													{
+														"Arn": "urn:ecs:iam::ns:user/payroll2",
+														"CreateDate": "2020-04-13T19:54:30Z",
+														"Path": "/",
+														"UserId": "AIDA21BCE6940A8DE1EC",
+														"UserName": "payroll2"
+													}
+												],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -3579,6 +4141,276 @@
 					"internal": {
 						"type": "boolean",
 						"description": "Indicated whether the resource is an internal resource"
+					}
+				}
+			},
+			"IamService_GetGroupResponse": {
+				"type": "object",
+				"properties": {
+					"GetGroupResult": {
+						"type": "object",
+						"properties": {
+							"Users": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"UserName": {
+											"type": "string"
+										},
+										"UserId": {
+											"type": "string"
+										},
+										"Arn": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string"
+										}
+									}
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean"
+							},
+							"Marker": {
+								"type": "string"
+							},
+							"Group": {
+								"type": "object",
+								"properties": {
+									"GroupName": {
+										"type": "string",
+										"description": "Simple name identifying the Group."
+									},
+									"Arn": {
+										"type": "string",
+										"description": "Arn that identifies the Group."
+									},
+									"GroupId": {
+										"type": "string",
+										"description": "Unique Id associated with the Group."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the IAM Group."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "ISO 8601 format DateTime when group was created."
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetUserResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					},
+					"GetUserResult": {
+						"type": "object",
+						"properties": {
+							"User": {
+								"type": "object",
+								"properties": {
+									"Arn": {
+										"type": "string"
+									},
+									"CreateDate": {
+										"type": "string"
+									},
+									"Path": {
+										"type": "string"
+									},
+									"UserId": {
+										"type": "string"
+									},
+									"UserName": {
+										"type": "string"
+									},
+									"PermissionsBoundary": {
+										"type": "object",
+										"properties": {
+											"PermissionsBoundaryArn": {
+												"type": "string"
+											},
+											"PermissionsBoundaryType": {
+												"type": "string"
+											}
+										}
+									},
+									"Tags": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"Key": {
+													"type": "string"
+												},
+												"Value": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListAccessKeysResponse": {
+				"type": "object",
+				"properties": {
+					"ListAccessKeysResult": {
+						"type": "object",
+						"properties": {
+							"AccessKeyMetadata": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"AccessKeyId": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string"
+										},
+										"Status": {
+											"type": "string"
+										},
+										"UserName": {
+											"type": "string"
+										}
+									}
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean"
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListUserTagsResponse": {
+				"type": "object",
+				"properties": {
+					"ListUserTagsResult": {
+						"type": "object",
+						"properties": {
+							"IsTruncated": {
+								"type": "boolean"
+							},
+							"Marker": {
+								"type": "string"
+							},
+							"Tags": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Key": {
+											"type": "string"
+										},
+										"Value": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListUsersResponse": {
+				"type": "object",
+				"properties": {
+					"ListUsersResult": {
+						"type": "object",
+						"description": "Get listUserResult",
+						"properties": {
+							"Users": {
+								"type": "array",
+								"description": "List of users",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Arn": {
+											"type": "string",
+											"description": "The ARN of the user"
+										},
+										"CreateDate": {
+											"type": "string",
+											"description": "User creation timestamp"
+										},
+										"Path": {
+											"type": "string",
+											"description": "The path to the user"
+										},
+										"UserId": {
+											"type": "string",
+											"description": "Unique user ID"
+										},
+										"UserName": {
+											"type": "string",
+											"description": "Username"
+										}
+									}
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests. when IsTruncated is true"
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
 					}
 				}
 			}
