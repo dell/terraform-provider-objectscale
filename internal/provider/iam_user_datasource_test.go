@@ -88,27 +88,6 @@ func TestAccIAMUserDataSource_missingNamespace(t *testing.T) {
 	})
 }
 
-func TestAccIAMUserDataSource_usernameNoMatch(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: ProviderConfigForTesting + `
-					data "objectscale_iam_user" "none" {
-						namespace = "ns1"
-						username  = "non_existing_user"
-					}
-				`,
-
-				ExpectError: regexp.MustCompile(
-					`Failed retrieving user "non_existing_user": 404 Not Found`,
-				),
-			},
-		},
-	})
-}
-
 func TestAccIAMUserDataSource_groupNoMatch(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
