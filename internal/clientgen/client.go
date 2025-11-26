@@ -457,6 +457,12 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 		if err != nil {
 			return
 		}
+		defer func() {
+			if f != nil {
+				(f).Close()
+				os.Remove((f).Name())
+			}
+		}()
 		_, err = f.Write(b)
 		if err != nil {
 			return
