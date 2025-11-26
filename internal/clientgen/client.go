@@ -153,7 +153,7 @@ func parameterValueToString(obj interface{}, key string) string {
 func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix string, obj interface{}, collectionType string) {
 	var v = reflect.ValueOf(obj)
 	var value = ""
-	if v == reflect.ValueOf(nil) {
+	if !v.IsValid() {
 		value = "null"
 	} else {
 		switch v.Kind() {
@@ -175,32 +175,36 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 			}
 			value = v.Type().String() + " value"
 		case reflect.Slice:
-			var indValue = reflect.ValueOf(obj)
-			if indValue == reflect.ValueOf(nil) {
+			// use the already obtained reflect.Value and guard against nil slices
+			if v.IsNil() {
 				return
 			}
-			var lenIndValue = indValue.Len()
+			var lenIndValue = v.Len()
 			for i := 0; i < lenIndValue; i++ {
-				var arrayValue = indValue.Index(i)
+				var arrayValue = v.Index(i)
 				parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, arrayValue.Interface(), collectionType)
 			}
 			return
 
 		case reflect.Map:
-			var indValue = reflect.ValueOf(obj)
-			if indValue == reflect.ValueOf(nil) {
+			// use the already obtained reflect.Value and guard against nil maps
+			if v.IsNil() {
 				return
 			}
-			iter := indValue.MapRange()
+			iter := v.MapRange()
 			for iter.Next() {
-				k, v := iter.Key(), iter.Value()
-				parameterAddToHeaderOrQuery(headerOrQueryParams, fmt.Sprintf("%s[%s]", keyPrefix, k.String()), v.Interface(), collectionType)
+				k, mv := iter.Key(), iter.Value()
+				parameterAddToHeaderOrQuery(headerOrQueryParams, fmt.Sprintf("%s[%s]", keyPrefix, k.String()), mv.Interface(), collectionType)
 			}
 			return
 
 		case reflect.Interface:
 			fallthrough
 		case reflect.Ptr:
+			// guard against nil interfaces/pointers
+			if v.IsNil() {
+				return
+			}
 			parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, v.Elem().Interface(), collectionType)
 			return
 
@@ -251,7 +255,8 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("\n%s\n", string(dump))
+		sanitizedDump := strings.ReplaceAll(strings.ReplaceAll(string(dump), "\n", ""), "\r", "")
+		log.Printf("%s", sanitizedDump)
 	}
 
 	resp, err := c.cfg.HTTPClient.Do(request)
@@ -264,7 +269,8 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 		if err != nil {
 			return resp, err
 		}
-		log.Printf("\n%s\n", string(dump))
+		sanitizedDump := strings.ReplaceAll(strings.ReplaceAll(string(dump), "\n", ""), "\r", "")
+		log.Printf("%s", sanitizedDump)
 	}
 	return resp, err
 }
@@ -410,7 +416,9 @@ func (c *APIClient) prepareRequest(
 	}
 
 	// Add the user agent to the request.
-	localVarRequest.Header.Add("User-Agent", c.cfg.UserAgent)
+	// Sanitize User-Agent to prevent log forging
+	sanitizedUserAgent := strings.ReplaceAll(strings.ReplaceAll(c.cfg.UserAgent, "\n", ""), "\r", "")
+	localVarRequest.Header.Add("User-Agent", sanitizedUserAgent)
 
 	if ctx != nil {
 		// add context to the request
@@ -420,7 +428,12 @@ func (c *APIClient) prepareRequest(
 
 		// Basic HTTP Authentication
 		if auth, ok := ctx.Value(ContextBasicAuth).(BasicAuth); ok {
-			localVarRequest.SetBasicAuth(auth.UserName, auth.Password)
+			// Only send basic auth over HTTPS to prevent credential exposure
+			if localVarRequest.URL.Scheme == "https" {
+				localVarRequest.SetBasicAuth(auth.UserName, auth.Password)
+			} else {
+				return nil, errors.New("basic authentication requires HTTPS")
+			}
 		}
 
 	}
@@ -456,6 +469,12 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 		if err != nil {
 			return
 		}
+		defer func() {
+			if *f != nil {
+				(*f).Close()
+				os.Remove((*f).Name())
+			}
+		}()
 		_, err = (*f).Write(b)
 		if err != nil {
 			return
