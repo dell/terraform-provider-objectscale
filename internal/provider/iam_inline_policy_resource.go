@@ -184,7 +184,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			UserName(entityName).
 			Execute()
 		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
+			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
 			return
 		}
 		policyNames = listResp.ListUserPoliciesResult.PolicyNames
@@ -195,7 +195,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			GroupName(entityName).
 			Execute()
 		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
+			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
 			return
 		}
 		policyNames = listResp.ListGroupPoliciesResult.PolicyNames
@@ -206,7 +206,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 			RoleName(entityName).
 			Execute()
 		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err))
+			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
 			return
 		}
 		policyNames = listResp.ListRolePoliciesResult.PolicyNames
@@ -224,7 +224,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 				PolicyName(policyName).
 				Execute()
 			if err != nil {
-				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err.Error()))
 				return
 			}
 			policyDoc = *getResp.GetUserPolicyResult.PolicyDocument
@@ -236,7 +236,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 				PolicyName(policyName).
 				Execute()
 			if err != nil {
-				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err.Error()))
 				return
 			}
 			policyDoc = *getResp.GetGroupPolicyResult.PolicyDocument
@@ -248,7 +248,7 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 				PolicyName(policyName).
 				Execute()
 			if err != nil {
-				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err))
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to get policy %s: %s", policyName, err.Error()))
 				return
 			}
 			policyDoc = *getResp.GetRolePolicyResult.PolicyDocument
