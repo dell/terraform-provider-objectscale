@@ -219,10 +219,10 @@ func (d *IAMGroupsDataSource) listGroupsForUser(ctx context.Context, namespace, 
 		if resp.ListGroupsForUserResult != nil {
 			for _, g := range resp.ListGroupsForUserResult.Groups {
 				out = append(out, models.IAMGroupModel{
-					GroupName:  helper.TfString(g.GroupName),
-					GroupId:    helper.TfString(g.GroupId),
-					Arn:        helper.TfString(g.Arn),
-					Path:       helper.TfString(g.Path),
+					GroupName: helper.TfString(g.GroupName),
+					GroupId:   helper.TfString(g.GroupId),
+					Arn:       helper.TfString(g.Arn),
+					Path:      helper.TfString(g.Path),
 				})
 			}
 
@@ -241,19 +241,41 @@ func (d *IAMGroupsDataSource) listGroupsForUser(ctx context.Context, namespace, 
 }
 
 func (d *IAMGroupsDataSource) getGroupByName(ctx context.Context, namespace, groupName string) ([]models.IAMGroupModel, error) {
-
-	// First list all groups
-	all, err := d.listAllGroups(ctx, namespace)
-	if err != nil {
-		return nil, err
-	}
-
-	// Filter
 	var out []models.IAMGroupModel
-	for _, g := range all {
-		if g.GroupName.ValueString() == groupName {
-			out = append(out, g)
+	var marker *string
+
+	for {
+		req := d.client.GenClient.IamApi.IamServiceGetGroup(ctx).
+			GroupName(groupName).
+			XEmcNamespace(namespace)
+
+		if marker != nil {
+			req = req.Marker(*marker)
 		}
+
+		resp, _, err := req.Execute()
+		if err != nil {
+			return nil, fmt.Errorf("GetGroup API failed for %s: %w", groupName, err)
+		}
+
+		if resp.GetGroupResult != nil && resp.GetGroupResult.Group != nil {
+			group := models.IAMGroupModel{
+				GroupName:  types.StringValue(*resp.GetGroupResult.Group.GroupName),
+				GroupId:    types.StringValue(*resp.GetGroupResult.Group.GroupId),
+				Arn:        types.StringValue(*resp.GetGroupResult.Group.Arn),
+				Path:       types.StringValue(*resp.GetGroupResult.Group.Path),
+				CreateDate: types.StringValue(*resp.GetGroupResult.Group.CreateDate),
+			}
+
+			out = append(out, group)
+
+			if resp.GetGroupResult.IsTruncated != nil && *resp.GetGroupResult.IsTruncated && resp.GetGroupResult.Marker != nil {
+				marker = resp.GetGroupResult.Marker
+				continue
+			}
+		}
+
+		break
 	}
 
 	return out, nil
@@ -300,4 +322,3 @@ func (d *IAMGroupsDataSource) listAllGroups(ctx context.Context, namespace strin
 
 	return out, nil
 }
-
