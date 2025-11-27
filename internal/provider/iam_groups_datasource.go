@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"terraform-provider-objectscale/internal/client"
+	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -199,126 +199,58 @@ func (d *IAMGroupsDataSource) Read(ctx context.Context, req datasource.ReadReque
 }
 
 func (d *IAMGroupsDataSource) listGroupsForUser(ctx context.Context, namespace, userName string) ([]models.IAMGroupModel, error) {
-	var out []models.IAMGroupModel
-	var marker *string
+	req := d.client.GenClient.IamApi.IamServiceListGroupsForUser(ctx).
+		UserName(userName).
+		XEmcNamespace(namespace)
 
-	for {
-		req := d.client.GenClient.IamApi.IamServiceListGroupsForUser(ctx).
-			UserName(userName).
-			XEmcNamespace(namespace)
-
-		if marker != nil {
-			req = req.Marker(*marker)
-		}
-
-		resp, _, err := req.Execute()
-		if err != nil {
-			return nil, err
-		}
-
-		if resp.ListGroupsForUserResult != nil {
-			for _, g := range resp.ListGroupsForUserResult.Groups {
-				out = append(out, models.IAMGroupModel{
-					GroupName: helper.TfString(g.GroupName),
-					GroupId:   helper.TfString(g.GroupId),
-					Arn:       helper.TfString(g.Arn),
-					Path:      helper.TfString(g.Path),
-				})
-			}
-
-			if resp.ListGroupsForUserResult.IsTruncated != nil &&
-				*resp.ListGroupsForUserResult.IsTruncated &&
-				resp.ListGroupsForUserResult.Marker != nil {
-				marker = resp.ListGroupsForUserResult.Marker
-				continue
-			}
-		}
-
-		break
+	items, err := helper.GetAllInstances(req)
+	if err != nil {
+		return nil, err
 	}
 
-	return out, nil
+	return helper.SliceTransform(items, func(v clientgen.IamServiceListGroupsForUserResponseListGroupsForUserResultGroupsInner) models.IAMGroupModel {
+		return models.IAMGroupModel{
+			GroupName: helper.TfString(v.GroupName),
+			GroupId:   helper.TfString(v.GroupId),
+			Arn:       helper.TfString(v.Arn),
+			Path:      helper.TfString(v.Path),
+		}
+	}), nil
 }
 
 func (d *IAMGroupsDataSource) getGroupByName(ctx context.Context, namespace, groupName string) ([]models.IAMGroupModel, error) {
-	var out []models.IAMGroupModel
-	var marker *string
-
-	for {
-		req := d.client.GenClient.IamApi.IamServiceGetGroup(ctx).
-			GroupName(groupName).
-			XEmcNamespace(namespace)
-
-		if marker != nil {
-			req = req.Marker(*marker)
-		}
-
-		resp, _, err := req.Execute()
-		if err != nil {
-			return nil, fmt.Errorf("GetGroup API failed for %s: %w", groupName, err)
-		}
-
-		if resp.GetGroupResult != nil && resp.GetGroupResult.Group != nil {
-			group := models.IAMGroupModel{
-				GroupName:  types.StringValue(*resp.GetGroupResult.Group.GroupName),
-				GroupId:    types.StringValue(*resp.GetGroupResult.Group.GroupId),
-				Arn:        types.StringValue(*resp.GetGroupResult.Group.Arn),
-				Path:       types.StringValue(*resp.GetGroupResult.Group.Path),
-				CreateDate: types.StringValue(*resp.GetGroupResult.Group.CreateDate),
-			}
-
-			out = append(out, group)
-
-			if resp.GetGroupResult.IsTruncated != nil && *resp.GetGroupResult.IsTruncated && resp.GetGroupResult.Marker != nil {
-				marker = resp.GetGroupResult.Marker
-				continue
-			}
-		}
-
-		break
+	v, _, err := d.client.GenClient.IamApi.IamServiceGetGroup(ctx).
+		GroupName(groupName).
+		XEmcNamespace(namespace).Execute()
+	if err != nil {
+		return nil, err
 	}
 
-	return out, nil
+	return []models.IAMGroupModel{
+		{
+			GroupName: helper.TfString(v.GetGroupResult.Group.GroupName),
+			GroupId:   helper.TfString(v.GetGroupResult.Group.GroupId),
+			Arn:       helper.TfString(v.GetGroupResult.Group.Arn),
+			Path:      helper.TfString(v.GetGroupResult.Group.Path),
+		},
+	}, nil
 }
 
 func (d *IAMGroupsDataSource) listAllGroups(ctx context.Context, namespace string) ([]models.IAMGroupModel, error) {
-	var out []models.IAMGroupModel
-	var marker *string
+	req := d.client.GenClient.IamApi.IamServiceListGroups(ctx).
+		XEmcNamespace(namespace)
 
-	for {
-		req := d.client.GenClient.IamApi.IamServiceListGroups(ctx).
-			XEmcNamespace(namespace)
-
-		if marker != nil {
-			req = req.Marker(*marker)
-		}
-
-		resp, _, err := req.Execute()
-		if err != nil {
-			return nil, err
-		}
-
-		if resp.ListGroupsResult != nil {
-			for _, g := range resp.ListGroupsResult.Groups {
-				out = append(out, models.IAMGroupModel{
-					GroupName:  types.StringValue(g.GroupName),
-					GroupId:    types.StringValue(g.GroupId),
-					Arn:        types.StringValue(g.Arn),
-					Path:       types.StringValue(g.Path),
-					CreateDate: types.StringValue(g.CreateDate.Format(time.RFC3339)),
-				})
-			}
-
-			if resp.ListGroupsResult.IsTruncated != nil &&
-				*resp.ListGroupsResult.IsTruncated &&
-				resp.ListGroupsResult.Marker != nil {
-				marker = resp.ListGroupsResult.Marker
-				continue
-			}
-		}
-
-		break
+	items, err := helper.GetAllInstances(req)
+	if err != nil {
+		return nil, err
 	}
 
-	return out, nil
+	return helper.SliceTransform(items, func(v clientgen.IamServiceListGroupsResponseListGroupsResultGroupsInner) models.IAMGroupModel {
+		return models.IAMGroupModel{
+			GroupName: types.StringValue(v.GroupName),
+			GroupId:   types.StringValue(v.GroupId),
+			Arn:       types.StringValue(v.Arn),
+			Path:      types.StringValue(v.Path),
+		}
+	}), nil
 }

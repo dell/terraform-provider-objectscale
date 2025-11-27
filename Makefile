@@ -70,8 +70,7 @@ build_spec:
 	python3 clientgen_utils/main.py --input ${OPENAPI_FULL_PATH} --output ${OPENAPI_FILTERED_PATH}
 
 build_client: build_spec
-	rm -rf ${OPENAPI_GEN_DIR}
-	mkdir -p ${OPENAPI_GEN_DIR}
+	find ${OPENAPI_GEN_DIR} -mindepth 1 ! -name '*_manual.go' -exec rm -rf {} +
 	${OPENAPI_CMD} generate -i ${OPENAPI_FILTERED_PATH} \
 		-g go --type-mappings integer+unsigned64=uint64  -o ${OPENAPI_GEN_DIR} \
 		--global-property apis,models,supportingFiles=client.go:README.md:configuration.go:response.go:utils.go,modelTests=false,apiTests=false,modelDocs=false \
