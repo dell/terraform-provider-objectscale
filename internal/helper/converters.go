@@ -22,7 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // TfString - Converts *string to types.String, returns types.StringNull if input is nil.
@@ -131,7 +133,21 @@ func ValueToList[T GoTypes](in types.List) []T {
 	return ret
 }
 
-func ValueListTransform[T any, Tf any](in types.List, transform func(Tf) T) []T {
+func ValueObjectTransform[T any, Tf any](in types.Object, transform func(Tf) T) T {
+	var ret Tf
+	in.As(context.Background(), &ret, basetypes.ObjectAsOptions{
+		UnhandledNullAsEmpty:    true,
+		UnhandledUnknownAsEmpty: true,
+	})
+	return transform(ret)
+}
+
+type TfCollection interface {
+	attr.Value
+	ElementsAs(context.Context, interface{}, bool) diag.Diagnostics
+}
+
+func ValueListTransform[T any, Tf any](in TfCollection, transform func(Tf) T) []T {
 	if in.IsNull() || in.IsUnknown() {
 		return nil
 	}
@@ -159,6 +175,19 @@ func ListTransform[T any, V attr.Value](in []T, transform func(T) V) types.List 
 		return types.ListNull(transform(dummy).Type(context.Background()))
 	}
 	return types.ListValueMust(
+		transform(dummy).Type(context.Background()),
+		SliceTransform(in, func(x T) attr.Value {
+			return transform(x)
+		}),
+	)
+}
+
+func SetNotNull[T any, V attr.Value](in []T, transform func(T) V) types.Set {
+	var dummy T
+	if in == nil {
+		in = make([]T, 0)
+	}
+	return types.SetValueMust(
 		transform(dummy).Type(context.Background()),
 		SliceTransform(in, func(x T) attr.Value {
 			return transform(x)

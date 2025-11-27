@@ -46479,7 +46479,7 @@
                         "type": "string",
                         "description": "A single-valued attribute indicating the user's IDP domain"
                       },
-                      "attribute": {
+                      "attributes": {
                         "type": "array",
                         "items": {
                           "type": "object",
@@ -46502,7 +46502,7 @@
                           ]
                         }
                       },
-                      "group": {
+                      "groups": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -46725,7 +46725,7 @@
                   "type": "string",
                   "description": "A single-valued attribute indicating the user's IDP domain"
                 },
-                "attribute": {
+                "attributes": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -46748,7 +46748,7 @@
                     ]
                   }
                 },
-                "group": {
+                "groups": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -46963,7 +46963,7 @@
                   "type": "string",
                   "description": "A single-valued attribute indicating the user's IDP domain"
                 },
-                "attribute": {
+                "attributes": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -46986,7 +46986,7 @@
                     ]
                   }
                 },
-                "group": {
+                "groups": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -47084,7 +47084,7 @@
                   "type": "string",
                   "description": "A single-valued attribute indicating the user's IDP domain"
                 },
-                "attribute": {
+                "attributes": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -47107,7 +47107,7 @@
                     ]
                   }
                 },
-                "group": {
+                "groups": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -47200,7 +47200,7 @@
                   "type": "string",
                   "description": "A single-valued attribute indicating the user's IDP domain"
                 },
-                "attribute": {
+                "attributes": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -47223,7 +47223,7 @@
                     ]
                   }
                 },
-                "group": {
+                "groups": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -62304,19 +62304,65 @@
           }
         }
       },
-      "IamService_GetUserResponse": {
-        "type": "object",
-        "properties": {
-          "ResponseMetadata": {
-            "type": "object",
-            "properties": {
-              "RequestId": {
-                "type": "string"
+    "IamService_GetUserResponse": {
+      "type": "object",
+      "properties": {
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": {
+              "type": "string"
+            }
+          }
+        },
+        "GetUserResult": {
+          "type": "object",
+          "properties": {
+            "User": {
+              "type": "object",
+              "properties": {
+                "Arn": {
+                  "type": "string"
+                },
+                "CreateDate": {
+                  "type": "string"
+                },
+                "Path": {
+                  "type": "string"
+                },
+                "UserId": {
+                  "type": "string"
+                },
+                "UserName": {
+                  "type": "string"
+                },
+                "PermissionsBoundary": {
+                  "type": "object",
+                  "properties": {
+                    "PermissionsBoundaryArn": {
+                      "type": "string"
+                    },
+                    "PermissionsBoundaryType": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "Tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Key": { "type": "string" },
+                      "Value": { "type": "string" }
+                    }
+                  }
+                }
               }
             }
           }
         }
-      },
+      }
+    },
       "IamService_GetUserPolicyResponse": {
         "type": "object",
         "properties": {
@@ -62347,38 +62393,35 @@
           }
         }
       },
-      "IamService_ListAccessKeysResponse": {
-        "type": "object",
-        "properties": {
-          "ListAccessKeysResult": {
-            "type": "object",
-            "properties": {
-              "AccessKeys": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+    "IamService_ListAccessKeysResponse": {
+      "type": "object",
+      "properties": {
+        "ListAccessKeysResult": {
+          "type": "object",
+          "properties": {
+            "AccessKeyMetadata": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "AccessKeyId": { "type": "string" },
+                  "CreateDate": { "type": "string" },
+                  "Status": { "type": "string" },
+                  "UserName": { "type": "string" }
                 }
-              },
-              "IsTruncated": {
-                "type": "boolean",
-                "description": "A flag that indicates whether there are more items to return."
-              },
-              "Marker": {
-                "type": "string",
-                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
               }
-            }
-          },
-          "ResponseMetadata": {
-            "type": "object",
-            "properties": {
-              "RequestId": {
-                "type": "string"
-              }
-            }
+            },
+            "IsTruncated": { "type": "boolean" }
+          }
+        },
+        "ResponseMetadata": {
+          "type": "object",
+          "properties": {
+            "RequestId": { "type": "string" }
           }
         }
-      },
+      }
+    },
       "IamService_ListAttachedGroupPoliciesResponse": {
         "type": "object",
         "properties": {
@@ -62817,24 +62860,24 @@
           "ListUserTagsResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "IsTruncated": { "type": "boolean" },
+              "Marker": { "type": "string" },
+              "Tags": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "Key": { "type": "string" },
+                    "Value": { "type": "string" }
+                  }
                 }
-              },
-              "Marker": {
-                "type": "string",
-                "description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
               }
             }
           },
           "ResponseMetadata": {
             "type": "object",
             "properties": {
-              "RequestId": {
-                "type": "string"
-              }
+              "RequestId": { "type": "string" }
             }
           }
         }
@@ -62844,13 +62887,36 @@
         "properties": {
           "ListUsersResult": {
             "type": "object",
+            "description": "Get listUserResult",
             "properties": {
               "Users": {
                 "type": "array",
+                "description": "List of users",
                 "items": {
-                  "type": "string"
-                },
-                "description": "Get users"
+                  "type": "object",
+                  "properties": {
+                    "Arn": {
+                      "type": "string",
+                      "description": "The ARN of the user"
+                    },
+                    "CreateDate": {
+                      "type": "string",
+                      "description": "User creation timestamp"
+                    },
+                    "Path": {
+                      "type": "string",
+                      "description": "The path to the user"
+                    },
+                    "UserId": {
+                      "type": "string",
+                      "description": "Unique user ID"
+                    },
+                    "UserName": {
+                      "type": "string",
+                      "description": "Username"
+                    }
+                  }
+                }
               },
               "IsTruncated": {
                 "type": "boolean",
@@ -62858,10 +62924,9 @@
               },
               "Marker": {
                 "type": "string",
-                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests. when IsTruncated is true"
               }
-            },
-            "description": "Get listUserResult"
+            }
           },
           "ResponseMetadata": {
             "type": "object",
