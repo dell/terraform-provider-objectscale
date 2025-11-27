@@ -2286,7 +2286,24 @@
 							"Users": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"type": "object",
+									"properties": {
+										"UserName": {
+											"type": "string"
+										},
+										"UserId": {
+											"type": "string"
+										},
+										"Arn": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string"
+										}
+									}
 								}
 							},
 							"IsTruncated": {

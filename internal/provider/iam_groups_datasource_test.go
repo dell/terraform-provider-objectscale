@@ -20,7 +20,7 @@ func TestAccIAMGroupsDataSource_PositiveScenarios(t *testing.T) {
 				Config: ProviderConfigForTesting + `
 					data "objectscale_iam_groups" "one" {
 						namespace  = "ns1"
-						group_name = "sak_test_do_not_delete"
+						group_name = "group_008"
 					}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -94,7 +94,7 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
 				Config: ProviderConfigForTesting + `
                     data "objectscale_iam_groups" "bad_ns" {
                         namespace  = "invalid-namespace-xyz"
-                        group_name = "sak_test_do_not_delete"
+                        group_name = "group_008"
                     }
                 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -138,7 +138,7 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
                         user_name  = "nonexistent_user_12345"
                     }
                 `,
-				ExpectError: regexp.MustCompile(`Error Listing IAM Groups for User`),
+				ExpectError: regexp.MustCompile(`(?i)Error listing groups for user`),
 			},
 		},
 	})

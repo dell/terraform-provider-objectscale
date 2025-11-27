@@ -94,6 +94,7 @@ Class | Method | HTTP request | Description
  - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
  - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
  - [IamServiceGetGroupResponseGetGroupResultGroup](docs/IamServiceGetGroupResponseGetGroupResultGroup.md)
+ - [IamServiceGetGroupResponseGetGroupResultUsersInner](docs/IamServiceGetGroupResponseGetGroupResultUsersInner.md)
  - [IamServiceGetGroupResponseResponseMetadata](docs/IamServiceGetGroupResponseResponseMetadata.md)
  - [IamServiceListGroupsForUserResponse](docs/IamServiceListGroupsForUserResponse.md)
  - [IamServiceListGroupsForUserResponseListGroupsForUserResult](docs/IamServiceListGroupsForUserResponseListGroupsForUserResult.md)

@@ -12,8 +12,8 @@ package clientgen
 
 // IamServiceGetGroupResponseGetGroupResult struct for IamServiceGetGroupResponseGetGroupResult
 type IamServiceGetGroupResponseGetGroupResult struct {
-	Users       []string                                       `json:"Users,omitempty"`
-	IsTruncated *bool                                          `json:"IsTruncated,omitempty"`
-	Marker      *string                                        `json:"Marker,omitempty"`
-	Group       *IamServiceGetGroupResponseGetGroupResultGroup `json:"Group,omitempty"`
+	Users       []IamServiceGetGroupResponseGetGroupResultUsersInner `json:"Users,omitempty"`
+	IsTruncated *bool                                                `json:"IsTruncated,omitempty"`
+	Marker      *string                                              `json:"Marker,omitempty"`
+	Group       *IamServiceGetGroupResponseGetGroupResultGroup       `json:"Group,omitempty"`
 }
