@@ -276,11 +276,11 @@ func TestAccIAMInlinePolicyResourceForErrorScenarios(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForErrorConfig1(testingInputParams),
-				ExpectError: regexp.MustCompile("Validation Error"),
+				ExpectError: regexp.MustCompile("Invalid Attribute Combination"),
 			},
 			{
 				Config:      ProviderConfigForTesting + testAccIAMInlinePolicyResourceForErrorConfig2(testingInputParams),
-				ExpectError: regexp.MustCompile("Validation Error"),
+				ExpectError: regexp.MustCompile("Invalid Attribute Combination"),
 			},
 		},
 	})

@@ -148,40 +148,6 @@ func (r *IAMInlinePolicyResource) Schema(_ context.Context, _ resource.SchemaReq
 	}
 }
 
-// ValidateConfig validates the resource configuration.
-func (r *IAMInlinePolicyResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var config models.IAMInlinePolicyResourceModel
-
-	diags := req.Config.Get(ctx, &config)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	count := 0
-	if !config.Username.IsNull() && !config.Username.IsUnknown() {
-		count++
-	}
-	if !config.Groupname.IsNull() && !config.Groupname.IsUnknown() {
-		count++
-	}
-	if !config.Rolename.IsNull() && !config.Rolename.IsUnknown() {
-		count++
-	}
-
-	if count == 0 {
-		resp.Diagnostics.AddError(
-			"Validation Error",
-			"Exactly one of username, groupname, or rolename must be provided.",
-		)
-	} else if count > 1 {
-		resp.Diagnostics.AddError(
-			"Validation Error",
-			"Only one of username, groupname, or rolename can be provided.",
-		)
-	}
-}
-
 // Read refreshes the Terraform state with the latest data.
 func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state models.IAMInlinePolicyResourceModel
