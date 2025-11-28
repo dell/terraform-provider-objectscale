@@ -2025,6 +2025,276 @@
 				}
 			}
 		},
+		"/iam?Action=DeleteGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete specific inlinePolicy for IAM Group.",
+				"description": "Delete specific inlinePolicy for IAM Group.",
+				"operationId": "IamService_DeleteGroupPolicy",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the group to delete the inline policy."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the policy whose Policy Document needs to be deleted."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:9b49:9a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteRolePolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Deletes the specified inline policy that is embedded in the specified IAM role.",
+				"description": "Deletes the specified inline policy that is embedded in the specified IAM role.",
+				"operationId": "IamService_DeleteRolePolicy",
+				"parameters": [
+					{
+						"name": "RoleName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the role."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteRolePolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:d95a:3a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteUserPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete specific inlinePolicy for IAM User.",
+				"description": "Delete specific inlinePolicy for IAM User.",
+				"operationId": "IamService_DeleteUserPolicy",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the user to delete the inline policy."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the policy whose Policy Document needs to be deleted."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteUserPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:9b49:9a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=GetGroup": {
 			"post": {
 				"tags": [
@@ -2096,6 +2366,196 @@
 												"Users": [],
 												"IsTruncated": false,
 												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetGroupPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Get specific inlinePolicy for IAM Group.",
+				"description": "Get specific inlinePolicy for IAM Group.",
+				"operationId": "IamService_GetGroupPolicy",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the group to retrieve the inline policy."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the policy whose Policy Document needs to be retrieved."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetGroupPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1f275:30"
+											},
+											"GetGroupPolicyResult": {
+												"PolicyName": "InlinePolicy",
+												"PolicyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"VisualEditor0\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:ListAttachedGroupPolicies\",\n        \"iam:ListUsers\",\n        \"iam:ListPolicies\",\n        \"iam:ListUserPolicies\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+												"GroupName": "TestGroup"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetRolePolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Gets tthe specified inline policy document that is embedded with the specified IAM role.",
+				"description": "Gets tthe specified inline policy document that is embedded with the specified IAM role.",
+				"operationId": "IamService_GetRolePolicy",
+				"parameters": [
+					{
+						"name": "RoleName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the role."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetRolePolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:dbe1:34"
+											},
+											"GetRolePolicyResult": {
+												"PolicyName": "InlineRolePolicy",
+												"PolicyDocument": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"iam:TagUser\",\"iam:TagRole\",\"iam:UntagUser\",\"iam:UntagRole\"],\"Resource\":\"*\",\"Effect\":\"Allow\",\"Sid\":\"VisualEditor0\"}]}",
+												"RoleName": "FinanceRole"
 											}
 										}
 									}
@@ -2231,6 +2691,101 @@
 				}
 			}
 		},
+		"/iam?Action=GetUserPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Get specific inlinePolicy for IAM User.",
+				"description": "Get specific inlinePolicy for IAM User.",
+				"operationId": "IamService_GetUserPolicy",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the user to retrieve the inline policy."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the policy whose Policy Document needs to be retrieved."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetUserPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:ad1d:66"
+											},
+											"GetUserPolicyResult": {
+												"PolicyName": "UserPolicy",
+												"PolicyDocument": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"iam:GetUser\",\"iam:GetPolicy\",\"iam:GetGroupPolicy\",\"iam:GetRole\",\"iam:GetAccessKeyLastUsed\"],\"Resource\":\"*\",\"Effect\":\"Allow\",\"Sid\":\"VisualEditor0\"}]}",
+												"UserName": "User1"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=ListAccessKeys": {
 			"post": {
 				"tags": [
@@ -2314,6 +2869,111 @@
 														"Status": "Active",
 														"UserName": "tt1"
 													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListGroupPolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Inline Policies for IAM Group.",
+				"description": "List Inline Policies for IAM Group.",
+				"operationId": "IamService_ListGroupPolicies",
+				"parameters": [
+					{
+						"name": "GroupName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the group to list attached policies for."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListGroupPoliciesResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1f40d:1a"
+											},
+											"ListGroupPoliciesResult": {
+												"PolicyNames": [
+													"InlinePolicy"
 												],
 												"IsTruncated": false
 											}
@@ -2592,6 +3252,201 @@
 				}
 			}
 		},
+		"/iam?Action=ListRolePolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the names of the inline policies that are embedded in the specified IAM role.",
+				"description": "Lists the names of the inline policies that are embedded in the specified IAM role.",
+				"operationId": "IamService_ListRolePolicies",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "RoleName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the role."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListRolePoliciesResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListUserPolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Inline Policies for IAM User.",
+				"description": "List Inline Policies for IAM User.",
+				"operationId": "IamService_ListUserPolicies",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to list attached policies for."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListUserPoliciesResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:953a:1df"
+											},
+											"ListUserPoliciesResult": {
+												"PolicyNames": [
+													"InlinePolicy"
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=ListUserTags": {
 			"post": {
 				"tags": [
@@ -2783,861 +3638,6 @@
 												],
 												"IsTruncated": false,
 												"Marker": ""
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=DeleteGroupPolicy": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Delete specific inlinePolicy for IAM Group.",
-				"description": "Delete specific inlinePolicy for IAM Group.",
-				"operationId": "IamService_DeleteGroupPolicy",
-				"parameters": [
-					{
-						"name": "GroupName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the group to delete the inline policy."
-					},
-					{
-						"name": "PolicyName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the policy whose Policy Document needs to be deleted."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteGroupPolicyResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:9b49:9a"
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=DeleteRolePolicy": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Deletes the specified inline policy that is embedded in the specified IAM role.",
-				"description": "Deletes the specified inline policy that is embedded in the specified IAM role.",
-				"operationId": "IamService_DeleteRolePolicy",
-				"parameters": [
-					{
-						"name": "RoleName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Simple name identifying the role."
-					},
-					{
-						"name": "PolicyName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Simple name identifying the policy."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteRolePolicyResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:d95a:3a"
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=DeleteUserPolicy": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Delete specific inlinePolicy for IAM User.",
-				"description": "Delete specific inlinePolicy for IAM User.",
-				"operationId": "IamService_DeleteUserPolicy",
-				"parameters": [
-					{
-						"name": "UserName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the user to delete the inline policy."
-					},
-					{
-						"name": "PolicyName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the policy whose Policy Document needs to be deleted."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteUserPolicyResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:9b49:9a"
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=GetGroupPolicy": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Get specific inlinePolicy for IAM Group.",
-				"description": "Get specific inlinePolicy for IAM Group.",
-				"operationId": "IamService_GetGroupPolicy",
-				"parameters": [
-					{
-						"name": "GroupName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the group to retrieve the inline policy."
-					},
-					{
-						"name": "PolicyName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the policy whose Policy Document needs to be retrieved."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_GetGroupPolicyResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:1f275:30"
-											},
-											"GetGroupPolicyResult": {
-												"PolicyName": "InlinePolicy",
-												"PolicyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"VisualEditor0\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:ListAttachedGroupPolicies\",\n        \"iam:ListUsers\",\n        \"iam:ListPolicies\",\n        \"iam:ListUserPolicies\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
-												"GroupName": "TestGroup"
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=GetRolePolicy": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Gets tthe specified inline policy document that is embedded with the specified IAM role.",
-				"description": "Gets tthe specified inline policy document that is embedded with the specified IAM role.",
-				"operationId": "IamService_GetRolePolicy",
-				"parameters": [
-					{
-						"name": "RoleName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Simple name identifying the role."
-					},
-					{
-						"name": "PolicyName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Simple name identifying the policy."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_GetRolePolicyResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:dbe1:34"
-											},
-											"GetRolePolicyResult": {
-												"PolicyName": "InlineRolePolicy",
-												"PolicyDocument": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"iam:TagUser\",\"iam:TagRole\",\"iam:UntagUser\",\"iam:UntagRole\"],\"Resource\":\"*\",\"Effect\":\"Allow\",\"Sid\":\"VisualEditor0\"}]}",
-												"RoleName": "FinanceRole"
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=GetUserPolicy": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Get specific inlinePolicy for IAM User.",
-				"description": "Get specific inlinePolicy for IAM User.",
-				"operationId": "IamService_GetUserPolicy",
-				"parameters": [
-					{
-						"name": "UserName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the user to retrieve the inline policy."
-					},
-					{
-						"name": "PolicyName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Name of the policy whose Policy Document needs to be retrieved."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_GetUserPolicyResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:ad1d:66"
-											},
-											"GetUserPolicyResult": {
-												"PolicyName": "UserPolicy",
-												"PolicyDocument": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"iam:GetUser\",\"iam:GetPolicy\",\"iam:GetGroupPolicy\",\"iam:GetRole\",\"iam:GetAccessKeyLastUsed\"],\"Resource\":\"*\",\"Effect\":\"Allow\",\"Sid\":\"VisualEditor0\"}]}",
-												"UserName": "User1"
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=ListGroupPolicies": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "List Inline Policies for IAM Group.",
-				"description": "List Inline Policies for IAM Group.",
-				"operationId": "IamService_ListGroupPolicies",
-				"parameters": [
-					{
-						"name": "GroupName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "The name of the group to list attached policies for."
-					},
-					{
-						"name": "Marker",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
-					},
-					{
-						"name": "MaxItems",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "integer"
-						},
-						"description": "Indicates the maximum number of elements to be returned in the response."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_ListGroupPoliciesResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:1f40d:1a"
-											},
-											"ListGroupPoliciesResult": {
-												"PolicyNames": [
-													"InlinePolicy"
-												],
-												"IsTruncated": false
-											}
-										}
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=ListRolePolicies": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "Lists the names of the inline policies that are embedded in the specified IAM role.",
-				"description": "Lists the names of the inline policies that are embedded in the specified IAM role.",
-				"operationId": "IamService_ListRolePolicies",
-				"parameters": [
-					{
-						"name": "Marker",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
-					},
-					{
-						"name": "MaxItems",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "integer"
-						},
-						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
-					},
-					{
-						"name": "RoleName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Simple name identifying the role."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_ListRolePoliciesResponse"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad Request",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/iam?Action=ListUserPolicies": {
-			"post": {
-				"tags": [
-					"Iam"
-				],
-				"summary": "List Inline Policies for IAM User.",
-				"description": "List Inline Policies for IAM User.",
-				"operationId": "IamService_ListUserPolicies",
-				"parameters": [
-					{
-						"name": "UserName",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "The name of the user to list attached policies for."
-					},
-					{
-						"name": "Marker",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
-					},
-					{
-						"name": "MaxItems",
-						"in": "query",
-						"required": false,
-						"schema": {
-							"type": "integer"
-						},
-						"description": "Indicates the maximum number of elements to be returned in the response."
-					},
-					{
-						"name": "x-emc-namespace",
-						"in": "header",
-						"required": false,
-						"schema": {
-							"type": "string"
-						},
-						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IamService_ListUserPoliciesResponse"
-								},
-								"examples": {
-									"example_1": {
-										"value": {
-											"ResponseMetadata": {
-												"RequestId": "0af9f5b8:17178fe9282:953a:1df"
-											},
-											"ListUserPoliciesResult": {
-												"PolicyNames": [
-													"InlinePolicy"
-												],
-												"IsTruncated": false
 											}
 										}
 									}
@@ -5532,6 +5532,45 @@
 					}
 				}
 			},
+			"IamService_DeleteGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_DeleteRolePolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_DeleteUserPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_GetGroupResponse": {
 				"type": "object",
 				"properties": {
@@ -5591,6 +5630,66 @@
 										"description": "ISO 8601 format DateTime when group was created."
 									}
 								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetGroupPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"GetGroupPolicyResult": {
+						"type": "object",
+						"properties": {
+							"GroupName": {
+								"type": "string",
+								"description": "Friendly name of the group."
+							},
+							"PolicyName": {
+								"type": "string",
+								"description": "Simple name identifying the policy."
+							},
+							"PolicyDocument": {
+								"type": "string",
+								"description": "The policy Document."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetRolePolicyResponse": {
+				"type": "object",
+				"properties": {
+					"GetRolePolicyResult": {
+						"type": "object",
+						"properties": {
+							"RoleName": {
+								"type": "string",
+								"description": "Simple name identifying the role."
+							},
+							"PolicyName": {
+								"type": "string",
+								"description": "Simple name identifying the policy."
+							},
+							"PolicyDocument": {
+								"type": "string",
+								"description": "The policy Document."
 							}
 						}
 					},
@@ -5667,6 +5766,36 @@
 					}
 				}
 			},
+			"IamService_GetUserPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"GetUserPolicyResult": {
+						"type": "object",
+						"properties": {
+							"UserName": {
+								"type": "string",
+								"description": "Friendly name of the user."
+							},
+							"PolicyName": {
+								"type": "string",
+								"description": "Simple name identifying the policy."
+							},
+							"PolicyDocument": {
+								"type": "string",
+								"description": "The policy Document."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_ListAccessKeysResponse": {
 				"type": "object",
 				"properties": {
@@ -5695,6 +5824,35 @@
 							},
 							"IsTruncated": {
 								"type": "boolean"
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListGroupPoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListGroupPoliciesResult": {
+						"type": "object",
+						"properties": {
+							"PolicyNames": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Name of inline Policy."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
 							}
 						}
 					},
@@ -5814,6 +5972,64 @@
 					}
 				}
 			},
+			"IamService_ListRolePoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListRolePoliciesResult": {
+						"type": "object",
+						"properties": {
+							"PolicyNames": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Name of inline Policy."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListUserPoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListUserPoliciesResult": {
+						"type": "object",
+						"properties": {
+							"PolicyNames": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Name of inline Policy."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_ListUserTagsResponse": {
 				"type": "object",
 				"properties": {
@@ -5895,222 +6111,6 @@
 							"Marker": {
 								"type": "string",
 								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests. when IsTruncated is true"
-							}
-						}
-					},
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteGroupPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteUserPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_GetGroupPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"GetGroupPolicyResult": {
-						"type": "object",
-						"properties": {
-							"GroupName": {
-								"type": "string",
-								"description": "Friendly name of the group."
-							},
-							"PolicyName": {
-								"type": "string",
-								"description": "Simple name identifying the policy."
-							},
-							"PolicyDocument": {
-								"type": "string",
-								"description": "The policy Document."
-							}
-						}
-					},
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_GetRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"GetRolePolicyResult": {
-						"type": "object",
-						"properties": {
-							"RoleName": {
-								"type": "string",
-								"description": "Simple name identifying the role."
-							},
-							"PolicyName": {
-								"type": "string",
-								"description": "Simple name identifying the policy."
-							},
-							"PolicyDocument": {
-								"type": "string",
-								"description": "The policy Document."
-							}
-						}
-					},
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_GetUserPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"GetUserPolicyResult": {
-						"type": "object",
-						"properties": {
-							"UserName": {
-								"type": "string",
-								"description": "Friendly name of the user."
-							},
-							"PolicyName": {
-								"type": "string",
-								"description": "Simple name identifying the policy."
-							},
-							"PolicyDocument": {
-								"type": "string",
-								"description": "The policy Document."
-							}
-						}
-					},
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_ListGroupPoliciesResponse": {
-				"type": "object",
-				"properties": {
-					"ListGroupPoliciesResult": {
-						"type": "object",
-						"properties": {
-							"PolicyNames": {
-								"type": "array",
-								"items": {
-									"type": "string"
-								},
-								"description": "Name of inline Policy."
-							},
-							"Marker": {
-								"type": "string",
-								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
-							}
-						}
-					},
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_ListRolePoliciesResponse": {
-				"type": "object",
-				"properties": {
-					"ListRolePoliciesResult": {
-						"type": "object",
-						"properties": {
-							"PolicyNames": {
-								"type": "array",
-								"items": {
-									"type": "string"
-								},
-								"description": "Name of inline Policy."
-							},
-							"Marker": {
-								"type": "string",
-								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
-							}
-						}
-					},
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_ListUserPoliciesResponse": {
-				"type": "object",
-				"properties": {
-					"ListUserPoliciesResult": {
-						"type": "object",
-						"properties": {
-							"PolicyNames": {
-								"type": "array",
-								"items": {
-									"type": "string"
-								},
-								"description": "Name of inline Policy."
-							},
-							"Marker": {
-								"type": "string",
-								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
 							}
 						}
 					},
