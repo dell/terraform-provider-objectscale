@@ -27,3 +27,20 @@ type IAMGroupResourceModel struct {
 	CreateDate types.String `tfsdk:"create_date"`
 	Namespace  types.String `tfsdk:"namespace"`
 }
+
+type IAMGroupsDatasourceModel struct {
+	ID        types.String    `tfsdk:"id"`
+	Namespace types.String    `tfsdk:"namespace"`
+	GroupName types.String    `tfsdk:"group_name"`
+	UserName  types.String    `tfsdk:"user_name"`
+	Groups    []IAMGroupModel `tfsdk:"groups"`
+}
+
+type IAMGroupModel struct {
+	GroupName  types.String   `tfsdk:"group_name"`
+	GroupId    types.String   `tfsdk:"group_id"`
+	Arn        types.String   `tfsdk:"arn"`
+	Path       types.String   `tfsdk:"path"`
+	CreateDate types.String   `tfsdk:"create_date"`
+	Users      []types.String `tfsdk:"users"`
+}

@@ -10,12 +10,12 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceListGroupsForUserResponseResult struct for IamServiceListGroupsForUserResponseResult
-type IamServiceListGroupsForUserResponseResult struct {
-	// Get groups
-	Groups []string `json:"Groups,omitempty"`
+// IamServiceListGroupsForUserResponseListGroupsForUserResult struct for IamServiceListGroupsForUserResponseListGroupsForUserResult
+type IamServiceListGroupsForUserResponseListGroupsForUserResult struct {
+	// List of groups the user belongs to.
+	Groups []IamServiceListGroupsForUserResponseListGroupsForUserResultGroupsInner `json:"Groups,omitempty"`
 	// A flag that indicates whether there are more items to return.
 	IsTruncated *bool `json:"IsTruncated,omitempty"`
-	// When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests.
+	// Marker for pagination if IsTruncated is true.
 	Marker *string `json:"Marker,omitempty"`
 }

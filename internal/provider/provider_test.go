@@ -25,12 +25,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )
 
-var testProvider provider.Provider
+// var testProvider provider.Provider
 
 // testAccProtoV6ProviderFactories are used to instantiate a provider during
 // acceptance testing. The factory function will be invoked for every Terraform
@@ -43,7 +42,7 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 // var FunctionMocker *mockey.Mocker
 
 var ProviderConfigForTesting = ``
-var username, password, endpoint string
+var username, password, endpoint, rgs string
 
 func init() {
 	_, err := loadEnvFile("objectscale.env")
@@ -55,6 +54,20 @@ func init() {
 	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3007")
 	username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
 	password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
+	rgs = fmt.Sprintf(`
+		locals {
+			rgs = {
+				"rg1": "%s",
+				"rg2": "%s",
+				"rg3": "%s",
+			}
+		}
+		`,
+		setDefault(os.Getenv("OBJECTSCALE_RG1"), "urn:storageos:ReplicationGroupInfo:55ca12b2-e908-4bac-a5fe-3fdaa975e3eb:global"),
+		setDefault(os.Getenv("OBJECTSCALE_RG2"), "urn:storageos:ReplicationGroupInfo:cd8bffcb-7a99-4023-82a8-982054fd73c2:global"),
+		setDefault(os.Getenv("OBJECTSCALE_RG3"), "urn:storageos:ReplicationGroupInfo:e0b539a3-6ddd-4412-b4d0-ce08049f64cd:global"),
+	)
+
 	insecure := "true"
 
 	ProviderConfigForTesting = fmt.Sprintf(`
@@ -94,7 +107,7 @@ func setDefault(osInput string, defaultStr string) string {
 	return osInput
 }
 
-// loadEnvFile used to read env file and set params
+// loadEnvFile used to read env file and set params.
 func loadEnvFile(path string) (map[string]string, error) {
 	envMap := make(map[string]string)
 

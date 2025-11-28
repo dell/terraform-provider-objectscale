@@ -975,6 +975,1056 @@
 				}
 			}
 		},
+		"/object/namespaces/namespace/{namespace}/retention/{class}": {
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the retention period for the given namespace and retention class",
+				"description": "Gets the retention period for the given namespace and retention class.",
+				"operationId": "NamespaceService_getRetentionClass",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for which retention period needs to retrieved"
+					},
+					{
+						"name": "class",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Class name for which retention period needs to retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retention period for the given namespace and retention class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getRetentionClassResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "class_9cc8777c-bce0-11e4-8580-0050569c6fd7",
+											"period": 2
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Updates the retention class details for a specified retention class for a namespace",
+				"description": "Updates the retention class details for a specified retention class for a namespace.",
+				"operationId": "NamespaceService_updateRetentionClass",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which retention class needs to retrieved."
+					},
+					{
+						"name": "class",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Retention class for which details needs to updated."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update retention class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"retention_class_update": {
+												"period": "2"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_updateRetentionClassRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace/{namespace}/retention": {
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the list of retention classes for the specified namespace",
+				"description": "Gets the list of retention classes for the specified namespace.",
+				"operationId": "NamespaceService_getRetentionClasses",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which retention classes needs to retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retention class list for the given Namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getRetentionClassesResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"retention_class": [
+												{
+													"name": "class_9cc8777c-bce0-11e4-8580-0050569c6fd7",
+													"period": 2
+												},
+												{
+													"name": "class_9cc8777d-bce0-11e4-8580-0050569c6fd7",
+													"period": 3
+												},
+												{
+													"name": "class_9e350b48-bce0-11e4-8580-0050569c6fd7",
+													"period": 4
+												},
+												{
+													"name": "class_9e350b49-bce0-11e4-8580-0050569c6fd7",
+													"period": 5
+												},
+												{
+													"name": "class_9fa0b612-bce0-11e4-8580-0050569c6fd7",
+													"period": 6
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Creates a retention class for the specified namespace",
+				"description": "Creates a retention class for the specified namespace. The method payload specifies the retention class details\n which define a name for the class and a retention period.",
+				"operationId": "NamespaceService_createRetentionClass",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which retention class needs to created."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to create retention class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"name": "s31",
+											"period": "1"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_createRetentionClassRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/namespaces/namespace/{namespace}/quota": {
+			"put": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Updates the namespace quota for a specified namespace",
+				"description": "Updates the namespace quota for a specified namespace.",
+				"operationId": "NamespaceService_updateNamespaceQuota",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which namespace quota details need to be updated."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update namespace quota details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"namespace_quota_details": {
+												"blockSize": "2",
+												"notificationSize": "2"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NamespaceService_updateNamespaceQuotaRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Gets the namespace quota for a specified namespace",
+				"description": "Gets the namespace quota for a specified namespace.",
+				"operationId": "NamespaceService_getNamespaceQuota",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which namespace quota details needs to retrieved."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response contains namespace quota details for the given namespace.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NamespaceService_getNamespaceQuotaResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"namespace": "s3",
+											"blockSize": -1,
+											"notificationSize": -1
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"Namespace"
+				],
+				"summary": "Deletes the namespace quota for the specified namespace",
+				"description": "Deletes the namespace quota for the specified namespace.",
+				"operationId": "NamespaceService_removeNamespaceQuota",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace identifier for which namespace quota details needs to deleted."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete namespace quota.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools": {
+			"get": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Lists all configured replication groups",
+				"description": "Lists all configured replication groups.",
+				"operationId": "DataServiceVpoolService_getDataServiceVpools",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of the replication groups in the system",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataServiceVpoolService_getDataServiceVpoolsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"data_service_vpool": [
+												{
+													"name": "sanity-rg1",
+													"id": "urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global",
+													"inactive": false,
+													"global": null,
+													"remote": null,
+													"vdc": null,
+													"tags": [],
+													"description": "sanity-rg1",
+													"varrayMappings": [
+														{
+															"name": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+															"value": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804"
+														}
+													],
+													"creation_time": 1425247577149,
+													"isAllowAllNamespaces": true
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)",
+				"description": "Creates a replication group that includes the specified storage pools (VDC:storage pool tuple).",
+				"operationId": "DataServiceVpoolService_createDataServiceVpool",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataServiceVpoolService_createDataServiceVpoolResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_createDataServiceVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools/{id}": {
+			"get": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Gets the details for the specified replication group",
+				"description": "Gets the details for the specified replication group.",
+				"operationId": "DataServiceVpoolService_getDataServiceStore",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which details needs to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Details of object virtual pools for the given identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataServiceVpoolService_getDataServiceStoreResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "sanity-rg1",
+											"id": "urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global",
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"tags": [],
+											"description": "sanity-rg1",
+											"varrayMappings": [
+												{
+													"name": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+													"value": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804"
+												}
+											],
+											"creation_time": 1425247812781,
+											"isAllowAllNamespaces": true
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Updates the name and description for a replication group",
+				"description": "Updates the name and description for a replication group.",
+				"operationId": "DataServiceVpoolService_putDataServiceVpool",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which details needs to be updated"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"name": "sanity-rg1",
+											"description": "sanity-rg1",
+											"allowAllNamespaces": "true"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_putDataServiceVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools/{id}/addvarrays": {
+			"put": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group",
+				"description": "Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group.",
+				"operationId": "DataServiceVpoolService_addToVpool",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which storage pool needs to be added"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to add virtual array to replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"data_service_vpool_varrays": {
+												"mappings": {
+													"name": "vdc_id",
+													"value": "StoragePool_Id"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_addToVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-service/vpools/{id}/removevarrays": {
+			"put": {
+				"tags": [
+					"Data Vpool"
+				],
+				"summary": "Deletes a storage pool (VDC:storage pool tuple) from a specified replication group",
+				"description": "Deletes a storage pool (VDC:storage pool tuple) from a specified replication group.",
+				"operationId": "DataServiceVpoolService_removeFromVpool",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Replication group identifier for which storage pool needs to be removed"
+					},
+					{
+						"name": "skipBootstrapCheck",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": ""
+					},
+					{
+						"name": "forcePSOzones",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": ""
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete virtual array from replication group",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"data_service_vpool_varrays": {
+												"mappings": {
+													"name": "vdc_id",
+													"value": "StoragePool_Id"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DataServiceVpoolService_removeFromVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=AddUserToGroup": {
 			"post": {
 				"tags": [
@@ -1721,6 +2771,226 @@
 				}
 			}
 		},
+		"/iam?Action=GetUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve IAM user.",
+				"description": "Retrieve IAM user.",
+				"operationId": "IamService_GetUser",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to retrieve."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:a8f9:0"
+											},
+											"GetUserResult": {
+												"User": {
+													"Arn": "urn:ecs:iam::ns:user/User1",
+													"CreateDate": "2020-04-15T15:17:15Z",
+													"Path": "/",
+													"PermissionsBoundary": {
+														"PermissionsBoundaryArn": "urn:ecs:iam:::policy/IAMReadOnlyAccess",
+														"PermissionsBoundaryType": "Policy"
+													},
+													"Tags": [],
+													"UserId": "AIDA7079A32D6242C3A4",
+													"UserName": "User1"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListAccessKeys": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List AccessKeys for a user.",
+				"description": "List AccessKeys for a user.",
+				"operationId": "IamService_ListAccessKeys",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the user to list accesskeys."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListAccessKeysResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:8acd:0"
+											},
+											"ListAccessKeysResult": {
+												"AccessKeyMetadata": [
+													{
+														"AccessKeyId": "AKIA681EB7D2520E6455",
+														"CreateDate": "2020-04-15T14:14:37Z",
+														"Status": "Active",
+														"UserName": "tt1"
+													},
+													{
+														"AccessKeyId": "AKIAFE4086C4F2E286DD",
+														"CreateDate": "2020-04-15T14:15:29Z",
+														"Status": "Active",
+														"UserName": "tt1"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=ListAttachedGroupPolicies": {
 			"post": {
 				"tags": [
@@ -2161,6 +3431,237 @@
 				}
 			}
 		},
+		"/iam?Action=ListUserTags": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the tags that are attached to the specified IAM User.",
+				"description": "Lists the tags that are attached to the specified IAM User.",
+				"operationId": "IamService_ListUserTags",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the user."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListUserTagsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:ca11:23"
+											},
+											"ListUserTagsResult": {
+												"Tags": [
+													{
+														"Key": "Department",
+														"Value": "Finance"
+													},
+													{
+														"Key": "Region",
+														"Value": "East"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListUsers": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the IAM users.",
+				"description": "Lists the IAM users.",
+				"operationId": "IamService_ListUsers",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListUsersResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1ad3a:18"
+											},
+											"ListUsersResult": {
+												"Users": [
+													{
+														"Arn": "urn:ecs:iam::ns:user/payroll1",
+														"CreateDate": "2020-04-13T18:59:45Z",
+														"Path": "/",
+														"UserId": "AIDA4E6FD3D4A86F3768",
+														"UserName": "payroll1"
+													},
+													{
+														"Arn": "urn:ecs:iam::ns:user/payroll2",
+														"CreateDate": "2020-04-13T19:54:30Z",
+														"Path": "/",
+														"UserId": "AIDA21BCE6940A8DE1EC",
+														"UserName": "payroll2"
+													}
+												],
+												"IsTruncated": false,
+												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=PutGroupPolicy": {
 			"post": {
 				"tags": [
@@ -2399,7 +3900,7 @@
 												"type": "string",
 												"description": "A single-valued attribute indicating the user's IDP domain"
 											},
-											"attribute": {
+											"attributes": {
 												"type": "array",
 												"items": {
 													"type": "object",
@@ -2422,7 +3923,7 @@
 													]
 												}
 											},
-											"group": {
+											"groups": {
 												"type": "array",
 												"items": {
 													"type": "string"
@@ -2647,7 +4148,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -2670,7 +4171,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -2885,7 +4386,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -2908,7 +4409,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -3006,7 +4507,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -3029,7 +4530,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -3122,7 +4623,7 @@
 									"type": "string",
 									"description": "A single-valued attribute indicating the user's IDP domain"
 								},
-								"attribute": {
+								"attributes": {
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -3145,7 +4646,7 @@
 										]
 									}
 								},
-								"group": {
+								"groups": {
 									"type": "array",
 									"items": {
 										"type": "string"
@@ -3307,6 +4808,606 @@
 					"disallowed_vpools_list"
 				]
 			},
+			"NamespaceService_getRetentionClassResponse": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Name of the retention class"
+					},
+					"period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Period of the retention class in seconds"
+					}
+				}
+			},
+			"NamespaceService_getRetentionClassesResponse": {
+				"type": "object",
+				"properties": {
+					"retention_class": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Name of the retention class"
+								},
+								"period": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Period of the retention class in seconds"
+								}
+							}
+						},
+						"description": "List of retention classes"
+					}
+				}
+			},
+			"NamespaceService_createRetentionClassRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Name of the retention class"
+					},
+					"period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Period of the retention class in seconds"
+					}
+				}
+			},
+			"NamespaceService_updateRetentionClassRequest": {
+				"type": "object",
+				"properties": {
+					"period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "A new period value for class in seconds"
+					}
+				}
+			},
+			"NamespaceService_updateNamespaceQuotaRequest": {
+				"type": "object",
+				"properties": {
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in GB."
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in GB."
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in Count."
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in Count."
+					}
+				}
+			},
+			"NamespaceService_getNamespaceQuotaResponse": {
+				"type": "object",
+				"properties": {
+					"namespace": {
+						"type": "string",
+						"description": "Gets Namespace"
+					},
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in GB."
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in GB."
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in count."
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in count."
+					}
+				}
+			},
+			"DataServiceVpoolService_getDataServiceVpoolsResponse": {
+				"type": "object",
+				"properties": {
+					"data_service_vpool": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"description": {
+									"type": "string",
+									"description": "Description of the replication group"
+								},
+								"name": {
+									"type": "string",
+									"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+								},
+								"varrayMappings": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string",
+												"description": "Virtual data center id"
+											},
+											"value": {
+												"type": "string",
+												"description": "Storage pool id"
+											},
+											"is_replication_target": {
+												"type": "boolean",
+												"description": "is replication target"
+											}
+										}
+									}
+								},
+								"enable_rebalancing": {
+									"type": "boolean",
+									"description": "Parameter to check if the rebalancing is enabled"
+								},
+								"isAllowAllNamespaces": {
+									"type": "boolean",
+									"description": "Parameter to check if the Vpool can access all Namespace"
+								},
+								"isFullRep": {
+									"type": "boolean",
+									"description": "Parameter to check for full replication"
+								},
+								"use_replication_target": {
+									"type": "boolean"
+								},
+								"id": {
+									"type": "string",
+									"format": "uri",
+									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+								},
+								"link": {
+									"type": "object",
+									"properties": {
+										"rel": {
+											"type": "string",
+											"description": "Relationship type of the hyperlink"
+										},
+										"href": {
+											"type": "string",
+											"description": "Hyperlink URL to the related resource"
+										}
+									},
+									"description": "Hyperlink to the details for this resource"
+								},
+								"creation_time": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Timestamp that shows when this resource was created in ECS"
+								},
+								"inactive": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+								},
+								"global": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is global."
+								},
+								"remote": {
+									"type": "boolean",
+									"description": "Indicates whether the resource is remote."
+								},
+								"vdc": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uri",
+											"description": "ECS Id of the related object"
+										},
+										"link": {
+											"type": "object",
+											"properties": {
+												"rel": {
+													"type": "string",
+													"description": "Relationship type of the hyperlink"
+												},
+												"href": {
+													"type": "string",
+													"description": "Hyperlink URL to the related resource"
+												}
+											},
+											"description": "Hyperlink to the related object"
+										}
+									}
+								},
+								"internal": {
+									"type": "boolean",
+									"description": "Indicated whether the resource is an internal resource"
+								}
+							}
+						},
+						"description": "A list of dataservice vpools"
+					}
+				},
+				"required": [
+					"data_service_vpool"
+				]
+			},
+			"DataServiceVpoolService_getDataServiceStoreResponse": {
+				"type": "object",
+				"properties": {
+					"description": {
+						"type": "string",
+						"description": "Description of the replication group"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"varrayMappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "Parameter to check if the rebalancing is enabled"
+					},
+					"isAllowAllNamespaces": {
+						"type": "boolean",
+						"description": "Parameter to check if the Vpool can access all Namespace"
+					},
+					"isFullRep": {
+						"type": "boolean",
+						"description": "Parameter to check for full replication"
+					},
+					"use_replication_target": {
+						"type": "boolean"
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
+					}
+				}
+			},
+			"DataServiceVpoolService_putDataServiceVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "New name fro the replication group"
+					},
+					"description": {
+						"type": "string",
+						"description": "New description for the replication group"
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "set if geo rebalancing is enabled"
+					},
+					"allowAllNamespaces": {
+						"type": "boolean",
+						"description": "AllowAllNamespaces to update"
+					}
+				},
+				"required": [
+					"name"
+				]
+			},
+			"DataServiceVpoolService_addToVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"mappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					}
+				},
+				"required": [
+					"mappings"
+				]
+			},
+			"DataServiceVpoolService_removeFromVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"mappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					}
+				},
+				"required": [
+					"mappings"
+				]
+			},
+			"DataServiceVpoolService_createDataServiceVpoolRequest": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identifier for this replication group"
+					},
+					"name": {
+						"type": "string",
+						"description": "Unique name identifying this classification of replication group"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description of this replication group"
+					},
+					"zone_mappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						},
+						"description": "List of varrayId-zoneId tuples with are associated with the same vpool created under data-services"
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "set if geo rebalancing is enabled"
+					},
+					"isAllowAllNamespaces": {
+						"type": "boolean",
+						"description": "set if Vpool Allows access to all Namespaces for dataservices"
+					},
+					"isFullRep": {
+						"type": "boolean",
+						"description": "set full replication flag"
+					},
+					"use_replication_target": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				]
+			},
+			"DataServiceVpoolService_createDataServiceVpoolResponse": {
+				"type": "object",
+				"properties": {
+					"description": {
+						"type": "string",
+						"description": "Description of the replication group"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"varrayMappings": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Virtual data center id"
+								},
+								"value": {
+									"type": "string",
+									"description": "Storage pool id"
+								},
+								"is_replication_target": {
+									"type": "boolean",
+									"description": "is replication target"
+								}
+							}
+						}
+					},
+					"enable_rebalancing": {
+						"type": "boolean",
+						"description": "Parameter to check if the rebalancing is enabled"
+					},
+					"isAllowAllNamespaces": {
+						"type": "boolean",
+						"description": "Parameter to check if the Vpool can access all Namespace"
+					},
+					"isFullRep": {
+						"type": "boolean",
+						"description": "Parameter to check for full replication"
+					},
+					"use_replication_target": {
+						"type": "boolean"
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
+					}
+				}
+			},
 			"IamService_AddUserToGroupResponse": {
 				"type": "object",
 				"properties": {
@@ -3424,7 +5525,24 @@
 							"Users": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"type": "object",
+									"properties": {
+										"UserName": {
+											"type": "string"
+										},
+										"UserId": {
+											"type": "string"
+										},
+										"Arn": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string"
+										}
+									}
 								}
 							},
 							"IsTruncated": {
@@ -3487,6 +5605,110 @@
 							"PolicyDocument": {
 								"type": "string",
 								"description": "The policy Document."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetUserResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					},
+					"GetUserResult": {
+						"type": "object",
+						"properties": {
+							"User": {
+								"type": "object",
+								"properties": {
+									"Arn": {
+										"type": "string"
+									},
+									"CreateDate": {
+										"type": "string"
+									},
+									"Path": {
+										"type": "string"
+									},
+									"UserId": {
+										"type": "string"
+									},
+									"UserName": {
+										"type": "string"
+									},
+									"PermissionsBoundary": {
+										"type": "object",
+										"properties": {
+											"PermissionsBoundaryArn": {
+												"type": "string"
+											},
+											"PermissionsBoundaryType": {
+												"type": "string"
+											}
+										}
+									},
+									"Tags": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"Key": {
+													"type": "string"
+												},
+												"Value": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListAccessKeysResponse": {
+				"type": "object",
+				"properties": {
+					"ListAccessKeysResult": {
+						"type": "object",
+						"properties": {
+							"AccessKeyMetadata": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"AccessKeyId": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string"
+										},
+										"Status": {
+											"type": "string"
+										},
+										"UserName": {
+											"type": "string"
+										}
+									}
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean"
 							}
 						}
 					},
@@ -3565,10 +5787,35 @@
 						"properties": {
 							"Groups": {
 								"type": "array",
+								"description": "Get groups.",
 								"items": {
-									"type": "string"
-								},
-								"description": "Get groups."
+									"type": "object",
+									"properties": {
+										"Arn": {
+											"type": "string"
+										},
+										"CreateDate": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"GroupId": {
+											"type": "string"
+										},
+										"GroupName": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"Arn",
+										"CreateDate",
+										"GroupId",
+										"GroupName",
+										"Path"
+									]
+								}
 							},
 							"IsTruncated": {
 								"type": "boolean",
@@ -3594,15 +5841,29 @@
 			"IamService_ListGroupsForUserResponse": {
 				"type": "object",
 				"properties": {
-					"Result": {
+					"ListGroupsForUserResult": {
 						"type": "object",
 						"properties": {
 							"Groups": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"type": "object",
+									"properties": {
+										"Arn": {
+											"type": "string"
+										},
+										"GroupId": {
+											"type": "string"
+										},
+										"GroupName": {
+											"type": "string"
+										},
+										"Path": {
+											"type": "string"
+										}
+									}
 								},
-								"description": "Get groups"
+								"description": "List of groups the user belongs to."
 							},
 							"IsTruncated": {
 								"type": "boolean",
@@ -3610,7 +5871,101 @@
 							},
 							"Marker": {
 								"type": "string",
-								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+								"description": "Marker for pagination if IsTruncated is true."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListUserTagsResponse": {
+				"type": "object",
+				"properties": {
+					"ListUserTagsResult": {
+						"type": "object",
+						"properties": {
+							"IsTruncated": {
+								"type": "boolean"
+							},
+							"Marker": {
+								"type": "string"
+							},
+							"Tags": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Key": {
+											"type": "string"
+										},
+										"Value": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListUsersResponse": {
+				"type": "object",
+				"properties": {
+					"ListUsersResult": {
+						"type": "object",
+						"description": "Get listUserResult",
+						"properties": {
+							"Users": {
+								"type": "array",
+								"description": "List of users",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Arn": {
+											"type": "string",
+											"description": "The ARN of the user"
+										},
+										"CreateDate": {
+											"type": "string",
+											"description": "User creation timestamp"
+										},
+										"Path": {
+											"type": "string",
+											"description": "The path to the user"
+										},
+										"UserId": {
+											"type": "string",
+											"description": "Unique user ID"
+										},
+										"UserName": {
+											"type": "string",
+											"description": "Username"
+										}
+									}
+								}
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests. when IsTruncated is true"
 							}
 						}
 					},

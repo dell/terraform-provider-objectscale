@@ -16,12 +16,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-// Client type is to hold objectscale client
+// Client type is to hold objectscale client.
 type Client struct {
 	GenClient *clientgen.APIClient
 }
 
-// NewClient returns the objectscale client
+// NewClient returns the objectscale client.
 func NewClient(endpoint string, username string, password string, insecure bool, timeout int64) (*Client, error) {
 	genClient, err := newClientGen(context.Background(), endpoint, username, password, insecure, timeout)
 	if err != nil {
@@ -34,7 +34,7 @@ func NewClient(endpoint string, username string, password string, insecure bool,
 	return &client, nil
 }
 
-// newClientGen returns the generated objectscale client
+// newClientGen returns the generated objectscale client.
 func newClientGen(ctx context.Context, endpoint string, username string, password string, insecure bool, timeout int64) (*clientgen.APIClient, error) {
 
 	// Setup a User-Agent for your API client (replace the provider name for yours):
