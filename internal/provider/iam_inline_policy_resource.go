@@ -278,7 +278,7 @@ func (r *IAMInlinePolicyResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan)
+	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("Create Error", err.Error())
 		return
@@ -297,7 +297,14 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan)
+	var state models.IAMInlinePolicyResourceModel
+	diags = req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan, &state)
 	if err != nil {
 		resp.Diagnostics.AddError("Update Error", err.Error())
 		return
@@ -319,7 +326,7 @@ func (r *IAMInlinePolicyResource) Delete(ctx context.Context, req resource.Delet
 	}
 
 	state.Policies = []models.IAMInlinePolicyModel{}
-	_, err := helper.ApplyPolicies(r.client, ctx, state)
+	_, err := helper.ApplyPolicies(r.client, ctx, state, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("Delete Error", err.Error())
 		return

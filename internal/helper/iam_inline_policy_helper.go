@@ -27,7 +27,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func ApplyPolicies(client *client.Client, ctx context.Context, plan models.IAMInlinePolicyResourceModel) (models.IAMInlinePolicyResourceModel, error) {
+func ApplyPolicies(client *client.Client, ctx context.Context, plan models.IAMInlinePolicyResourceModel, currentState *models.IAMInlinePolicyResourceModel) (models.IAMInlinePolicyResourceModel, error) {
 	// Determine namespace
 	namespace := plan.Namespace.ValueString()
 
@@ -44,49 +44,64 @@ func ApplyPolicies(client *client.Client, ctx context.Context, plan models.IAMIn
 		entityName = plan.Rolename.ValueString()
 	}
 
-	// Step 1: Get current policies from ObjectScale
-	var currentPolicies []string
-	switch entityType {
-	case "User":
-		listResp, _, err := client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
-			XEmcNamespace(namespace).
-			UserName(entityName).
-			Execute()
-		if err != nil {
-			return plan, fmt.Errorf("failed to list policies: %w", err)
+	// Step 1: Get the current policies
+	var currentPoliciesMap map[string]string
+	if currentState != nil {
+		// Use state for Update functionality
+		currentPoliciesMap = make(map[string]string)
+		for _, p := range currentState.Policies {
+			currentPoliciesMap[p.Name.ValueString()] = p.Document.ValueString()
 		}
-		currentPolicies = listResp.ListUserPoliciesResult.PolicyNames
+	} else {
+		currentPoliciesMap = make(map[string]string)
+		switch entityType {
+		case "User":
+			listResp, _, err := client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
+				XEmcNamespace(namespace).
+				UserName(entityName).
+				Execute()
+			if err != nil {
+				return plan, fmt.Errorf("failed to list policies: %w", err)
+			}
+			for _, name := range listResp.ListUserPoliciesResult.PolicyNames {
+				currentPoliciesMap[name] = ""
+			}
 
-	case "Group":
-		listResp, _, err := client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
-			XEmcNamespace(namespace).
-			GroupName(entityName).
-			Execute()
-		if err != nil {
-			return plan, fmt.Errorf("failed to list policies: %w", err)
-		}
-		currentPolicies = listResp.ListGroupPoliciesResult.PolicyNames
+		case "Group":
+			listResp, _, err := client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
+				XEmcNamespace(namespace).
+				GroupName(entityName).
+				Execute()
+			if err != nil {
+				return plan, fmt.Errorf("failed to list policies: %w", err)
+			}
+			for _, name := range listResp.ListGroupPoliciesResult.PolicyNames {
+				currentPoliciesMap[name] = ""
+			}
 
-	case "Role":
-		listResp, _, err := client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
-			XEmcNamespace(namespace).
-			RoleName(entityName).
-			Execute()
-		if err != nil {
-			return plan, fmt.Errorf("failed to list policies: %w", err)
+		case "Role":
+			listResp, _, err := client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
+				XEmcNamespace(namespace).
+				RoleName(entityName).
+				Execute()
+			if err != nil {
+				return plan, fmt.Errorf("failed to list policies: %w", err)
+			}
+			for _, name := range listResp.ListRolePoliciesResult.PolicyNames {
+				currentPoliciesMap[name] = ""
+			}
 		}
-		currentPolicies = listResp.ListRolePoliciesResult.PolicyNames
 	}
 
-	// Convert desired policies to map for quick lookup
-	desiredMap := make(map[string]string)
+	// Step 2: Get the desired policies from the plan
+	desiredPoliciesMap := make(map[string]string)
 	for _, p := range plan.Policies {
-		desiredMap[p.Name.ValueString()] = p.Document.ValueString()
+		desiredPoliciesMap[p.Name.ValueString()] = p.Document.ValueString()
 	}
 
-	// Step 2: Delete policies not in desired config
-	for _, existing := range currentPolicies {
-		if _, found := desiredMap[existing]; !found {
+	// Step 3: Delete policies not in desired
+	for existing := range currentPoliciesMap {
+		if _, found := desiredPoliciesMap[existing]; !found {
 			switch entityType {
 			case "User":
 				_, _, err := client.GenClient.IamApi.IamServiceDeleteUserPolicy(ctx).
@@ -121,8 +136,16 @@ func ApplyPolicies(client *client.Client, ctx context.Context, plan models.IAMIn
 		}
 	}
 
-	// Step 3: Create or Update desired policies
-	for name, doc := range desiredMap {
+	// Step 4: Create or Update as per desired
+	for name, doc := range desiredPoliciesMap {
+		if currentDoc, exists := currentPoliciesMap[name]; exists {
+			// Policy exists, so check if document changed
+			if currentDoc == doc {
+				// No change needed
+				continue
+			}
+		}
+		// Either new policy or updated document
 		switch entityType {
 		case "User":
 			_, _, err := client.GenClient.IamApi.IamServicePutUserPolicy(ctx).
