@@ -15,10 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-data "objectscale_iam_groups" "groupname" {
+data "objectscale_iam_groups" "all" {
   namespace = "ns1"
 }
 
-output "objectscale_iam_groups_groupname" {
-  value = data.objectscale_iam_groups.groupname
+output "objectscale_iam_groups_all" {
+  value = data.objectscale_iam_groups.all
 }

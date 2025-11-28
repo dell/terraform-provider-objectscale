@@ -27,3 +27,21 @@ func (a *IamServiceListGroupsResponse) GetNextMarker() *string {
 func (o *IamServiceListGroupsResponse) GetPaginatedResp() []IamServiceListGroupsResponseListGroupsResultGroupsInner {
 	return o.ListGroupsResult.Groups
 }
+
+// List All Users pagination helper methods
+func (a *IamServiceListUsersResponse) GetNextMarker() *string {
+	return a.ListUsersResult.Marker
+}
+
+func (o *IamServiceListUsersResponse) GetPaginatedResp() []IamServiceListUsersResponseListUsersResultUsersInner {
+	return o.ListUsersResult.Users
+}
+
+// List Users By Group pagination helper methods
+func (a *IamServiceGetGroupResponse) GetNextMarker() *string {
+	return a.GetGroupResult.Marker
+}
+
+func (o *IamServiceGetGroupResponse) GetPaginatedResp() []IamServiceGetGroupResponseGetGroupResultUsersInner {
+	return o.GetGroupResult.Users
+}
