@@ -99,16 +99,6 @@ func (r *IAMGroupResource) Configure(ctx context.Context, req resource.Configure
 	r.client = client
 }
 
-func (r *IAMGroupResource) modelToJson(plan models.IAMGroupResourceModel) clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup {
-	return clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
-		GroupName:  helper.ValueToPointer[string](plan.GroupName),
-		GroupId:    helper.ValueToPointer[string](plan.GroupId),
-		Path:       helper.ValueToPointer[string](plan.Path),
-		CreateDate: helper.ValueToPointer[string](plan.CreateDate),
-		Arn:        helper.ValueToPointer[string](plan.Arn),
-	}
-}
-
 func (r *IAMGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	tflog.Info(ctx, "creating group")
 	var plan models.IAMGroupResourceModel
@@ -212,16 +202,16 @@ func (r *IAMGroupResource) ImportState(ctx context.Context, req resource.ImportS
 	tflog.Info(ctx, "importing IAM Group")
 	parts := strings.SplitN(req.ID, ":", 2)
 	if len(parts) != 2 {
-		resp.Diagnostics.AddError("Error importing IAM user", "invalid format: expected 'group_name:namespace'")
+		resp.Diagnostics.AddError("Error importing IAM Group", "invalid format: expected 'group_name:namespace'")
+		return
 	}
 	group_name := parts[0]
 	namespace := parts[1]
 	iam_group, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(group_name).XEmcNamespace(namespace).Execute()
 	if err != nil {
-		resp.Diagnostics.AddError("Error reading user", err.Error())
+		resp.Diagnostics.AddError("Error reading Group", err.Error())
 		return
 	}
-	// data := r.getModel(iam_user)
 	data := r.getModel(&clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
 		GroupId:    iam_group.GetGroupResult.Group.GroupId,
 		GroupName:  iam_group.GetGroupResult.Group.GroupName,

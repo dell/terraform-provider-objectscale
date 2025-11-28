@@ -52,7 +52,7 @@ func init() {
 		return
 	}
 
-	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3003/api/rest")
+	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3007")
 	username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
 	password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
 	insecure := "true"
