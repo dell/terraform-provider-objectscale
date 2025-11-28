@@ -20,6 +20,8 @@ RequiredAPIs = [
     "/object/namespaces/namespace",
     "/object/namespaces/namespace/{namespace}",
     "/object/namespaces/namespace/{namespace}/deactivate",
+    "/iam?Action=ListGroups",
+    "/iam?Action=ListGroupsForUser",
     "/iam?Action=GetUser",
     "/iam?Action=GetGroup",
     "/iam?Action=ListUsers",

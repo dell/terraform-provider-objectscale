@@ -88,6 +88,8 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 *IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 *IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
+*IamApi* | [**IamServiceListGroups**](docs/IamApi.md#iamservicelistgroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
+*IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
 *IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 *IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
@@ -128,6 +130,12 @@ Class | Method | HTTP request | Description
  - [IamServiceListAccessKeysResponse](docs/IamServiceListAccessKeysResponse.md)
  - [IamServiceListAccessKeysResponseListAccessKeysResult](docs/IamServiceListAccessKeysResponseListAccessKeysResult.md)
  - [IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner](docs/IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner.md)
+ - [IamServiceListGroupsForUserResponse](docs/IamServiceListGroupsForUserResponse.md)
+ - [IamServiceListGroupsForUserResponseListGroupsForUserResult](docs/IamServiceListGroupsForUserResponseListGroupsForUserResult.md)
+ - [IamServiceListGroupsForUserResponseListGroupsForUserResultGroupsInner](docs/IamServiceListGroupsForUserResponseListGroupsForUserResultGroupsInner.md)
+ - [IamServiceListGroupsResponse](docs/IamServiceListGroupsResponse.md)
+ - [IamServiceListGroupsResponseListGroupsResult](docs/IamServiceListGroupsResponseListGroupsResult.md)
+ - [IamServiceListGroupsResponseListGroupsResultGroupsInner](docs/IamServiceListGroupsResponseListGroupsResultGroupsInner.md)
  - [IamServiceListUserTagsResponse](docs/IamServiceListUserTagsResponse.md)
  - [IamServiceListUserTagsResponseListUserTagsResult](docs/IamServiceListUserTagsResponseListUserTagsResult.md)
  - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
