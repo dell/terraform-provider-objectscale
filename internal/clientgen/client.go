@@ -175,7 +175,6 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 			}
 			value = v.Type().String() + " value"
 		case reflect.Slice:
-			// use the already obtained reflect.Value and guard against nil slices
 			if v.IsNil() {
 				return
 			}
@@ -187,7 +186,6 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 			return
 
 		case reflect.Map:
-			// use the already obtained reflect.Value and guard against nil maps
 			if v.IsNil() {
 				return
 			}
@@ -201,7 +199,6 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 		case reflect.Interface:
 			fallthrough
 		case reflect.Ptr:
-			// guard against nil interfaces/pointers
 			if v.IsNil() {
 				return
 			}
