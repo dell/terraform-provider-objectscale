@@ -31,12 +31,12 @@ resource "objectscale_iam_inline_policy" "example" {
   # Ensure that you provide a valid JSON for the policy documents
   policies = [
     {
-      name     = "inlinePolicyTest1"
+      name = "inlinePolicyTest1"
       document = jsonencode({
         Version = "2012-10-17",
         Statement = [
           {
-            Sid = "VisualEditor0",
+            Sid    = "VisualEditor0",
             Effect = "Allow",
             Action = [
               "iam:GetPolicyVersion",
@@ -60,12 +60,12 @@ resource "objectscale_iam_inline_policy" "example" {
       })
     },
     {
-      name     = "inlinePolicyTest2"
+      name = "inlinePolicyTest2"
       document = jsonencode({
         Version = "2012-10-17",
         Statement = [
           {
-            Sid = "VisualEditor0",
+            Sid    = "VisualEditor0",
             Effect = "Allow",
             Action = [
               "iam:DeleteAccessKey",
