@@ -2065,8 +2065,18 @@ func (a *IamApiService) IamServiceUntagUserExecute(r ApiIamServiceUntagUserReque
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.tagKeys != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "TagKeys", r.tagKeys, "")
+	// if r.tagKeys != nil {
+	// 	parameterAddToHeaderOrQuery(localVarQueryParams, "TagKeys", r.tagKeys, "")
+	// }
+	if r.tagKeys != nil && len(r.tagKeys.Keys) > 0 {
+		//tagsCopy := append(IamServiceUntagUserTagKeysParameter, *r.tagKeys...) // copy to avoid mutation issues
+		for i, tag := range r.tagKeys.Keys {
+			key := tag.Key
+			
+			keyParam := fmt.Sprintf("TagKeys.member.%d", i+1)
+
+			parameterAddToHeaderOrQuery(localVarQueryParams, keyParam, key, "")
+		}
 	}
 	if r.userName != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")

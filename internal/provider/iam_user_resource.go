@@ -26,10 +26,9 @@ import (
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -104,10 +103,6 @@ func (r *IAMUserResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: "Tags associated to the user. Default: []. Updatable.",
 				Optional:            true,
 				Computed:            true,
-				Default: listdefault.StaticValue(types.ListValueMust(types.ObjectType{AttrTypes: map[string]attr.Type{
-					"key":   types.StringType,
-					"value": types.StringType,
-				}}, []attr.Value{})),
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"key": schema.StringAttribute{
@@ -149,32 +144,6 @@ func (r *IAMUserResource) Configure(ctx context.Context, req resource.ConfigureR
 	r.client = client
 }
 
-// func (r *IAMUserResource) userMappingJson(u models.NsResUserMapping) clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner {
-// 	return clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner{
-// 		Domain:    u.Domain.ValueString(),
-// 		Attribute: helper.ValueListTransform(u.Attributes, r.userMappingAttrJson),
-// 		Group:     helper.ValueToList[string](u.Groups),
-// 	}
-// }
-
-// func (r *IAMUserResource) userMappingAttrJson(a models.NsResUserMappingAttr) clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner {
-// 	return clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner{
-// 		Key:   a.Key.ValueString(),
-// 		Value: helper.ValueToList[string](a.Value),
-// 	}
-// }
-
-func (r *IAMUserResource) modelToJson(plan models.IAMUserResourceModel) clientgen.IamServiceCreateUserResponseCreateUserResultUser {
-	return clientgen.IamServiceCreateUserResponseCreateUserResultUser{
-		UserName:   helper.ValueToPointer[string](plan.Name),
-		UserId:     helper.ValueToPointer[string](plan.Id),
-		Arn:        helper.ValueToPointer[string](plan.Arn),
-		CreateDate: helper.ValueToPointer[string](plan.CreateDate),
-		Path:       helper.ValueToPointer[string](plan.Path),
-		// PermissionsBoundaryArn:  helper.ValueToPointer[string](plan.PermissionsBoundaryArn),
-		// PermissionsBoundaryType: helper.ValueToPointer[string](plan.PermissionsBoundaryType),
-	}
-}
 
 func (r *IAMUserResource) tagJson(a models.Tags) clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner {
 	return clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner{
@@ -210,7 +179,6 @@ func (r *IAMUserResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	iam_user, _, err := r.client.GenClient.IamApi.IamServiceGetUser(ctx).UserName(plan.Name.ValueString()).XEmcNamespace(plan.Namespace.ValueString()).Execute()
-	// data := r.getModel(iam_user)
 	data := r.getModel(&clientgen.IamServiceCreateUserResponseCreateUserResultUser{
 		UserId:              iam_user.GetUserResult.User.UserId,
 		UserName:            iam_user.GetUserResult.User.UserName,
@@ -243,7 +211,6 @@ func (r *IAMUserResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	// data := r.getModel(iam_user)
 	data := r.getModel(&clientgen.IamServiceCreateUserResponseCreateUserResultUser{
 		UserId:              iam_user.GetUserResult.User.UserId,
 		UserName:            iam_user.GetUserResult.User.UserName,
@@ -258,7 +225,6 @@ func (r *IAMUserResource) Read(ctx context.Context, req resource.ReadRequest, re
 }
 
 func (r *IAMUserResource) getModel(
-	// iam_user *clientgen.IamServiceCreateUserResponseCreateUserResultUser,
 	iam_user *clientgen.IamServiceCreateUserResponseCreateUserResultUser,
 	namespace types.String) models.IAMUserResourceModel {
 	var permissionsBoundaryArn, permissionsBoundaryType basetypes.StringValue
@@ -295,70 +261,6 @@ func (r *IAMUserResource) getModel(
 	}
 }
 
-// // computes the difference between two string sets (lists)
-// func (r *IAMUserResource) vpoolDiff(first, second []string) []string {
-// 	var diff []string
-// 	smap := make(map[string]struct{}, len(second))
-// 	for _, v := range second {
-// 		smap[v] = struct{}{}
-// 	}
-// 	for _, v := range first {
-// 		if _, ok := smap[v]; !ok {
-// 			diff = append(diff, v)
-// 		}
-// 	}
-// 	return diff
-// }
-
-// func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-
-// 	// resp.Diagnostics.AddError("[Update] Update operation is not available.", "Update operation is not available.")
-// 	tflog.Info(ctx, "updating user")
-// 	// TODO: Add update logic
-// 	var plan, state models.IAMUserResourceModel
-
-// 	// Read Terraform plan and state data into the models
-// 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-// 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-// 	if resp.Diagnostics.HasError() {
-// 		return
-// 	}
-
-// 	// To prevent the non-updatable fields from being changed
-// 	if !plan.Name.Equal(state.Name) {
-// 		resp.Diagnostics.AddError("Error updating user", "Fields of `name`, `arn` and `create_date` are not updatable")
-// 		return
-// 	}
-
-// 	// planJson, stateJson := r.modelToJson(plan), r.modelToJson(state)
-
-// 	// ureq := r.client.GenClient.NamespaceApi.NamespaceServiceUpdateNamespace(ctx, state.Id.ValueString())
-// 	_, _, err := r.client.GenClient.IamApi.IamServicePutUserPermissionsBoundary(ctx).UserName(plan.Name.ValueString()).XEmcNamespace(plan.Namespace.ValueString()).PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).Execute()
-// 	if err != nil {
-// 		resp.Diagnostics.AddError("Error updating the permission boundary of the user", err.Error())
-// 		return
-// 	}
-
-// 	iam_user, _, err := r.client.GenClient.IamApi.IamServiceGetUser(ctx).UserName(state.Name.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
-
-// 	if err != nil {
-// 		resp.Diagnostics.AddError("Error reading user", err.Error())
-// 		return
-// 	}
-
-// 	data := r.getModel(&clientgen.IamServiceCreateUserResponseCreateUserResultUser{
-// 		UserId:              iam_user.GetUserResult.User.UserId,
-// 		UserName:            iam_user.GetUserResult.User.UserName,
-// 		Arn:                 iam_user.GetUserResult.User.Arn,
-// 		CreateDate:          iam_user.GetUserResult.User.CreateDate,
-// 		Path:                iam_user.GetUserResult.User.Path,
-// 		PermissionsBoundary: iam_user.GetUserResult.User.PermissionsBoundary,
-// 		Tags:                iam_user.GetUserResult.User.Tags,
-// 	}, state.Namespace)
-// 	// Save updated plan into Terraform state
-// 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-
-// }
 func strPtr(s string) *string {
 	return &s
 }
@@ -377,113 +279,80 @@ func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	// Prevent non-updatable fields from being changed
 	if !plan.Name.Equal(state.Name) {
-		resp.Diagnostics.AddError("Error updating user", "Fields `name`, `arn`, and `create_date` are not updatable")
+		resp.Diagnostics.AddError("Error updating user", "Name is not updatable")
 		return
 	}
 
-	// // Compare Tags: plan.Tags (B) vs state.Tags (A)
-	// inPlanNotState, inStateNotPlan := compareTags(plan.Tags, state.Tags)
+	if !plan.Tags.IsNull() || !plan.Tags.IsUnknown() {
+		tags_plan := helper.ValueListTransform(plan.Tags, r.tagJson) // returns []clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner
+		var tagsMap_plan []map[string]interface{}
+		for _, t := range tags_plan {
+			tagsMap_plan = append(tagsMap_plan, map[string]interface{}{
+				"key":   t.Key,
+				"value": t.Value,
+			})
+		}
 
-	// tflog.Debug(ctx, fmt.Sprintf("Tags to add/update: %v", inPlanNotState))
-	// tflog.Debug(ctx, fmt.Sprintf("Tags to remove: %v", inStateNotPlan))
+		tags_state := helper.ValueListTransform(state.Tags, r.tagJson) // returns []clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner
+		var tagsMap_state []map[string]interface{}
+		var tag_state_keys []clientgen.IamServiceUntagUserTagKeysParameterKeysInner
+		for _, t := range tags_state {
+			tagsMap_state = append(tagsMap_state, map[string]interface{}{
+				"key":   t.Key,
+				"value": t.Value,
+			})
+			tag_state_keys = append(tag_state_keys, clientgen.IamServiceUntagUserTagKeysParameterKeysInner{
+				Key: strPtr(t.Key),
+			})
+		}
 
-	// // Example: Apply tag changes via API (pseudo-code)
-	// if len(inPlanNotState) > 0 {
-	//     // Call API to add/update tags
-	//     _, _, err := r.client.GenClient.IamApi.IamServiceTagUser(ctx).
-	//         UserName(plan.Name.ValueString()).
-	//         XEmcNamespace(plan.Namespace.ValueString()).
-	//         TagsMemberN(inPlanNotState).
-	//         Execute()
-	//     if err != nil {
-	//         resp.Diagnostics.AddError("Error adding/updating tags", err.Error())
-	//         return
-	//     }
-	// }
+		var untagKeysParam clientgen.IamServiceUntagUserTagKeysParameter
+		untagKeysParam = clientgen.IamServiceUntagUserTagKeysParameter{Keys: tag_state_keys}
 
-	// if len(inStateNotPlan) > 0 {
-	//     // Call API to remove tags
-	//     // _, _, err := r.client.GenClient.IamApi.IamServiceUntagUser(ctx).
-	//     //     UserName(plan.Name.ValueString()).
-	//     //     XEmcNamespace(plan.Namespace.ValueString()).
-	//     //     TagKeys(extractKeys(inStateNotPlan)).
-	//     //     Execute()
-	//     // if err != nil {
-	//     //     resp.Diagnostics.AddError("Error removing tags", err.Error())
-	//     //     return
-	//     // }
+		_, _, err_untag := r.client.GenClient.IamApi.IamServiceUntagUser(ctx).
+			UserName(plan.Name.ValueString()).
+			XEmcNamespace(plan.Namespace.ValueString()).
+			TagKeys(untagKeysParam).
+			Execute()
+		if err_untag != nil {
+			resp.Diagnostics.AddError("Error removing user tags", err_untag.Error())
+			return
+		}
 
-	// 	keys := extractKeys(inStateNotPlan)
-	// 	var tagKeysParam []clientgen.IamServiceUntagUserTagKeysParameter
-	// 	for _, k := range keys {
-	// 		tagKeysParam = append(tagKeysParam, clientgen.IamServiceUntagUserTagKeysParameter(k))
-	// 	}
-
-	// 	_, _, err := r.client.GenClient.IamApi.IamServiceUntagUser(ctx).
-	// 		UserName(plan.Name.ValueString()).
-	// 		XEmcNamespace(plan.Namespace.ValueString()).
-	// 		TagKeys(tagKeysParam).
-	// 		Execute()
-	// 	if err != nil {
-	//         resp.Diagnostics.AddError("Error removing tags", err.Error())
-	//         return
-	// 	}
-	// }
-	tags_plan := helper.ValueListTransform(plan.Tags, r.tagJson) // returns []clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner
-	var tagsMap_plan []map[string]interface{}
-	for _, t := range tags_plan {
-		tagsMap_plan = append(tagsMap_plan, map[string]interface{}{
-			"key":   t.Key,
-			"value": t.Value,
-		})
-	}
-
-	tags_state := helper.ValueListTransform(state.Tags, r.tagJson) // returns []clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner
-	var tagsMap_state []map[string]interface{}
-	var tag_state_keys []clientgen.IamServiceUntagUserTagKeysParameterKeysInner
-	for _, t := range tags_state {
-		tagsMap_state = append(tagsMap_state, map[string]interface{}{
-			"key":   t.Key,
-			"value": t.Value,
-		})
-		tag_state_keys = append(tag_state_keys, clientgen.IamServiceUntagUserTagKeysParameterKeysInner{
-			Key: strPtr(t.Key),
-		})
-	}
-
-	// var untagKeysParam clientgen.IamServiceUntagUserTagKeysParameter
-	// untagKeysParam = clientgen.IamServiceUntagUserTagKeysParameter{Keys: tag_state_keys}
-
-	// _, _, err_untag := r.client.GenClient.IamApi.IamServiceUntagUser(ctx).
-	// 	UserName(plan.Name.ValueString()).
-	// 	XEmcNamespace(plan.Namespace.ValueString()).
-	// 	TagKeys(untagKeysParam).
-	// 	Execute()
-	// if err_untag != nil {
-	// 	resp.Diagnostics.AddError("Error removing tags", err_untag.Error())
-	// 	return
-	// }
-
-	_, _, err_tag := r.client.GenClient.IamApi.IamServiceTagUser(ctx).
-		UserName(plan.Name.ValueString()).
-		XEmcNamespace(plan.Namespace.ValueString()).
-		TagsMemberN(tagsMap_plan).
-		Execute()
-	if err_tag != nil {
-		resp.Diagnostics.AddError("Error removing tags", err_tag.Error())
-		return
+		_, _, err_tag := r.client.GenClient.IamApi.IamServiceTagUser(ctx).
+			UserName(plan.Name.ValueString()).
+			XEmcNamespace(plan.Namespace.ValueString()).
+			TagsMemberN(tagsMap_plan).
+			Execute()
+		if err_tag != nil {
+			resp.Diagnostics.AddError("Error updating user tags", err_tag.Error())
+			return
+		}
 	}
 	// Update permission boundary
-	_, _, err := r.client.GenClient.IamApi.IamServicePutUserPermissionsBoundary(ctx).
-		UserName(plan.Name.ValueString()).
-		XEmcNamespace(plan.Namespace.ValueString()).
-		PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).
-		Execute()
-	if err != nil {
-		resp.Diagnostics.AddError("Error updating permission boundary", err.Error())
-		return
-	}
 
+	if !plan.PermissionsBoundaryArn.IsNull() {
+		if plan.PermissionsBoundaryArn.ValueString() == "" {
+			_, _, err := r.client.GenClient.IamApi.IamServiceDeleteUserPermissionsBoundary(ctx).
+				UserName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error deleting permission boundary", err.Error())
+				return
+			}
+		} else {
+			_, _, err := r.client.GenClient.IamApi.IamServicePutUserPermissionsBoundary(ctx).
+				UserName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error updating permission boundary", err.Error())
+				return
+			}
+		}
+    }
 	// Refresh user data
 	iam_user, _, err := r.client.GenClient.IamApi.IamServiceGetUser(ctx).
 		UserName(state.Name.ValueString()).
@@ -507,43 +376,6 @@ func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// // Helper: Compare Tags
-// func compareTags(listB, listA []models.Tags) ([]models.Tags, []models.Tags) {
-//     mapA := make(map[string]string)
-//     mapB := make(map[string]string)
-
-//     for _, t := range listA {
-//         mapA[t.Key] = t.Value
-//     }
-//     for _, t := range listB {
-//         mapB[t.Key] = t.Value
-//     }
-
-//     var inBNotA []models.Tag
-//     for _, t := range listB {
-//         if val, exists := mapA[t.Key]; !exists || val != t.Value {
-//             inBNotA = append(inBNotA, t)
-//         }
-//     }
-
-//     var inANotB []models.Tag
-//     for _, t := range listA {
-//         if val, exists := mapB[t.Key]; !exists || val != t.Value {
-//             inANotB = append(inANotB, t)
-//         }
-//     }
-
-//     return inBNotA, inANotB
-// }
-
-// // Helper: Extract keys for untagging
-// func extractKeys(tags []models.Tag) []string {
-//     keys := make([]string, len(tags))
-//     for i, t := range tags {
-//         keys[i] = t.Key
-//     }
-//     return keys
-// }
 
 func (r *IAMUserResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	tflog.Info(ctx, "deleting IAM user")
@@ -572,6 +404,7 @@ func (r *IAMUserResource) ImportState(ctx context.Context, req resource.ImportSt
 	parts := strings.SplitN(req.ID, ":", 2)
 	if len(parts) != 2 {
 		resp.Diagnostics.AddError("Error importing IAM user", "invalid format: expected 'username:namespace'")
+		return
 	}
 	username := parts[0]
 	namespace := parts[1]
@@ -583,7 +416,6 @@ func (r *IAMUserResource) ImportState(ctx context.Context, req resource.ImportSt
 		return
 	}
 
-	// data := r.getModel(iam_user)
 	data := r.getModel(&clientgen.IamServiceCreateUserResponseCreateUserResultUser{
 		UserId:              iam_user.GetUserResult.User.UserId,
 		UserName:            iam_user.GetUserResult.User.UserName,
@@ -595,6 +427,5 @@ func (r *IAMUserResource) ImportState(ctx context.Context, req resource.ImportSt
 	}, types.StringValue(namespace))
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-	// resp.Diagnostics.AddError("[Import] Import operation is not available.", "Import operation is not available.")
 
 }
