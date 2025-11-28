@@ -26,7 +26,7 @@ import (
 )
 
 // Test to Fetch Namespaces
-func TestAccIamGroupResource(t *testing.T) {
+func TestAccIAMGroupResource(t *testing.T) {
 	if os.Getenv("TF_ACC") == "" {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
@@ -34,8 +34,18 @@ func TestAccIamGroupResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		// create and read testing
 		Steps: []resource.TestStep{
+			// invalid config testing
+			{
+				Config: ProviderConfigForTesting + `
+				resource "objectscale_iam_group" "test" {
+					// name is missing
+					namespace = "ns1"
+				}
+				`,
+				ExpectError: regexp.MustCompile(".*The argument \"name\" is required, but no definition was found.*"),
+			},
+			// create and read testing
 			{
 				Config: ProviderConfigForTesting + `
 				resource"objectscale_iam_group" "test" {
