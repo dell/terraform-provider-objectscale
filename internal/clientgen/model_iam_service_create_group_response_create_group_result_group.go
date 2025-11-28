@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceGetGroupResponseGetGroupResultGroup struct for IamServiceGetGroupResponseGetGroupResultGroup
-type IamServiceGetGroupResponseGetGroupResultGroup struct {
+// IamServiceCreateGroupResponseCreateGroupResultGroup struct for IamServiceCreateGroupResponseCreateGroupResultGroup
+type IamServiceCreateGroupResponseCreateGroupResultGroup struct {
 	// Simple name identifying the Group.
 	GroupName *string `json:"GroupName,omitempty"`
 	// Arn that identifies the Group.

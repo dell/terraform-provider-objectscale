@@ -15,5 +15,5 @@ type IamServiceGetGroupResponseGetGroupResult struct {
 	Users       []IamServiceGetGroupResponseGetGroupResultUsersInner `json:"Users,omitempty"`
 	IsTruncated *bool                                                `json:"IsTruncated,omitempty"`
 	Marker      *string                                              `json:"Marker,omitempty"`
-	Group       *IamServiceGetGroupResponseGetGroupResultGroup       `json:"Group,omitempty"`
+	Group       *IamServiceCreateGroupResponseCreateGroupResultGroup `json:"Group,omitempty"`
 }
