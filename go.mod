@@ -1,6 +1,6 @@
 module terraform-provider-objectscale
 
-go 1.25.3
+go 1.25.4
 
 require (
 	github.com/bytedance/mockey v1.2.17
