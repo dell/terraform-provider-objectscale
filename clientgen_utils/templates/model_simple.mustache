@@ -25,7 +25,20 @@ type {{classname}} struct {
 {{#isAdditionalPropertiesTrue}}
 	AdditionalProperties map[string]interface{}
 {{/isAdditionalPropertiesTrue}}
+}{{#vendorExtensions.x-is-paginated}}
+
+func (a *{{classname}}) GetNextMarker() *string {
+  return a.NextMarker
 }
+
+{{#vars}}
+{{#vendorExtensions.x-is-paginated-resp}}
+func (o *{{classname}}) GetPaginatedResp() {{{dataType}}} {
+	return o.{{name}}
+}
+{{/vendorExtensions.x-is-paginated-resp}}
+{{/vars}}
+{{/vendorExtensions.x-is-paginated}}
 
 {{#isAdditionalPropertiesTrue}}
 type _{{{classname}}} {{{classname}}}

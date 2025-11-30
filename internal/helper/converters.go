@@ -22,10 +22,12 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-// TfString - Converts *string to types.String, returns types.StringNull if input is nil
+// TfString - Converts *string to types.String, returns types.StringNull if input is nil.
 func TfString[T ~string](in *T) types.String {
 	if in == nil {
 		return types.StringNull()
@@ -40,7 +42,7 @@ func TfStringNN[T ~string](in *T) types.String {
 	return types.StringValue(string(*in))
 }
 
-// TfStringFromPTime - Converts *time.Time to types.String, returns types.StringNull if input is nil
+// TfStringFromPTime - Converts *time.Time to types.String, returns types.StringNull if input is nil.
 func TfStringFromPTime(in *time.Time) types.String {
 	if in == nil {
 		return types.StringNull()
@@ -48,7 +50,7 @@ func TfStringFromPTime(in *time.Time) types.String {
 	return types.StringValue((*in).String())
 }
 
-// TfBool - Converts *bool to types.Bool, returns types.BoolNull if input is nil
+// TfBool - Converts *bool to types.Bool, returns types.BoolNull if input is nil.
 func TfBool(in *bool) types.Bool {
 	if in == nil {
 		return types.BoolNull()
@@ -63,7 +65,7 @@ func TfBoolNN(in *bool) types.Bool {
 	return types.BoolValue(*in)
 }
 
-// TfInt64 - Converts *int64 to types.Int64, returns types.Int64Null if input is nil
+// TfInt64 - Converts *int64 to types.Int64, returns types.Int64Null if input is nil.
 func TfInt64(in *int64) types.Int64 {
 	if in == nil {
 		return types.Int64Null()
@@ -78,7 +80,7 @@ func TfInt64NN(in *int64) types.Int64 {
 	return types.Int64Value(*in)
 }
 
-// TfObject - Converts input using the transform transform function, returns empty output if input is nil
+// TfObject - Converts input using the transform transform function, returns empty output if input is nil.
 func TfObject[tfT any, jT any](in *jT, transform func(jT) tfT) tfT {
 	if in == nil {
 		var ret tfT
@@ -131,7 +133,21 @@ func ValueToList[T GoTypes](in types.List) []T {
 	return ret
 }
 
-func ValueListTransform[T any, Tf any](in types.List, transform func(Tf) T) []T {
+func ValueObjectTransform[T any, Tf any](in types.Object, transform func(Tf) T) T {
+	var ret Tf
+	in.As(context.Background(), &ret, basetypes.ObjectAsOptions{
+		UnhandledNullAsEmpty:    true,
+		UnhandledUnknownAsEmpty: true,
+	})
+	return transform(ret)
+}
+
+type TfCollection interface {
+	attr.Value
+	ElementsAs(context.Context, interface{}, bool) diag.Diagnostics
+}
+
+func ValueListTransform[T any, Tf any](in TfCollection, transform func(Tf) T) []T {
 	if in.IsNull() || in.IsUnknown() {
 		return nil
 	}
@@ -144,7 +160,7 @@ func ValueListTransform[T any, Tf any](in types.List, transform func(Tf) T) []T 
 	return ret
 }
 
-// SliceTransform - Applies the transform function to each element in a slice
+// SliceTransform - Applies the transform function to each element in a slice.
 func SliceTransform[tfT any, jT any](in []jT, transform func(jT) tfT) []tfT {
 	ret := make([]tfT, len(in))
 	for i, v := range in {
@@ -166,6 +182,19 @@ func ListTransform[T any, V attr.Value](in []T, transform func(T) V) types.List 
 	)
 }
 
+func SetNotNull[T any, V attr.Value](in []T, transform func(T) V) types.Set {
+	var dummy T
+	if in == nil {
+		in = make([]T, 0)
+	}
+	return types.SetValueMust(
+		transform(dummy).Type(context.Background()),
+		SliceTransform(in, func(x T) attr.Value {
+			return transform(x)
+		}),
+	)
+}
+
 func ListNotNull[T any, V attr.Value](in []T, transform func(T) V) types.List {
 	if in == nil {
 		in = make([]T, 0)
@@ -173,7 +202,7 @@ func ListNotNull[T any, V attr.Value](in []T, transform func(T) V) types.List {
 	return ListTransform(in, transform)
 }
 
-// SetDefault - Returns pointer to default value if input is nil, otherwise returns input
+// SetDefault - Returns pointer to default value if input is nil, otherwise returns input.
 func SetDefault[T any](in *T, defaultVal T) *T {
 	if in != nil {
 		return in

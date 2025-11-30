@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner struct for NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner
-type NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributeInner struct {
+// NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner struct for NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner
+type NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInnerAttributesInner struct {
 	// Lookup string for this key-value pair
 	Key string `json:"key"`
 	// Lookup result for this key-value pair

@@ -18,31 +18,56 @@ limitations under the License.
 package provider
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"os"
+	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )
 
-var testProvider provider.Provider
-var testProviderFactory map[string]func() (tfprotov6.ProviderServer, error)
+// var testProvider provider.Provider
 
-var endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3003/api/rest")
-var username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
-var password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
+// testAccProtoV6ProviderFactories are used to instantiate a provider during
+// acceptance testing. The factory function will be invoked for every Terraform
+// CLI command executed to create a provider server to which the CLI can
+// reattach.
+var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
+	"objectscale": providerserver.NewProtocol6WithError(New("test")()),
+}
 
 // var FunctionMocker *mockey.Mocker
 
 var ProviderConfigForTesting = ``
+var username, password, endpoint, rgs string
 
 func init() {
+	_, err := loadEnvFile("objectscale.env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+		return
+	}
 
-	username := username
-	password := password
-	endpoint := endpoint
+	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3007")
+	username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
+	password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
+	rgs = fmt.Sprintf(`
+		locals {
+			rgs = {
+				"rg1": "%s",
+				"rg2": "%s",
+				"rg3": "%s",
+			}
+		}
+		`,
+		setDefault(os.Getenv("OBJECTSCALE_RG1"), "urn:storageos:ReplicationGroupInfo:55ca12b2-e908-4bac-a5fe-3fdaa975e3eb:global"),
+		setDefault(os.Getenv("OBJECTSCALE_RG2"), "urn:storageos:ReplicationGroupInfo:cd8bffcb-7a99-4023-82a8-982054fd73c2:global"),
+		setDefault(os.Getenv("OBJECTSCALE_RG3"), "urn:storageos:ReplicationGroupInfo:e0b539a3-6ddd-4412-b4d0-ce08049f64cd:global"),
+	)
+
 	insecure := "true"
 
 	ProviderConfigForTesting = fmt.Sprintf(`
@@ -54,11 +79,6 @@ func init() {
 			timeout = 120
 		}
 	`, username, password, endpoint, insecure)
-
-	testProvider = New("test")()
-	testProviderFactory = map[string]func() (tfprotov6.ProviderServer, error){
-		"objectscale": providerserver.NewProtocol6WithError(testProvider),
-	}
 }
 
 func testAccPreCheck(t *testing.T) {
@@ -85,4 +105,40 @@ func setDefault(osInput string, defaultStr string) string {
 		return defaultStr
 	}
 	return osInput
+}
+
+// loadEnvFile used to read env file and set params.
+func loadEnvFile(path string) (map[string]string, error) {
+	envMap := make(map[string]string)
+
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if len(line) == 0 || line[0] == '#' {
+			continue
+		}
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) != 2 {
+			continue
+		}
+		key := strings.TrimSpace(parts[0])
+		value := strings.TrimSpace(parts[1])
+		envMap[key] = value
+		// Set the environment variable for system access
+		if err := os.Setenv(key, value); err != nil {
+			return nil, fmt.Errorf("error setting environment variable %s: %w", key, err)
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return envMap, nil
 }

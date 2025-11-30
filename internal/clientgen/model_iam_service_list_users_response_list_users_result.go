@@ -12,10 +12,10 @@ package clientgen
 
 // IamServiceListUsersResponseListUsersResult Get listUserResult
 type IamServiceListUsersResponseListUsersResult struct {
-	// Get users
-	Users []string `json:"Users,omitempty"`
+	// List of users
+	Users []IamServiceListUsersResponseListUsersResultUsersInner `json:"Users,omitempty"`
 	// A flag that indicates whether there are more items to return.
 	IsTruncated *bool `json:"IsTruncated,omitempty"`
-	// When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests.
+	// When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests. when IsTruncated is true
 	Marker *string `json:"Marker,omitempty"`
 }
