@@ -34,4 +34,11 @@ RequiredAPIs = [
     "/vdc/data-service/vpools/{id}/addvarrays",
     "/vdc/data-service/vpools/{id}/removevarrays",
     "/vdc/data-service/vpools",
+    "/iam?Action=CreateUser",
+    "/iam?Action=DeleteUser",
+    "/iam?Action=GetUser",
+    "/iam?Action=UntagUser",
+    "/iam?Action=TagUser",
+    "/iam?Action=PutUserPermissionsBoundary",
+    "/iam?Action=DeleteUserPermissionsBoundary",
 ]
