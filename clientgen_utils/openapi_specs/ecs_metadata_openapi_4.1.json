@@ -62553,7 +62553,7 @@
           "ListGroupPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "PolicyNames": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -62742,7 +62742,7 @@
           "ListRolePoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "PolicyNames": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -62831,7 +62831,7 @@
           "ListUserPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "PolicyNames": {
                 "type": "array",
                 "items": {
                   "type": "string"

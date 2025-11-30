@@ -10,7 +10,7 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceGetGroupResponseResponseMetadata struct for IamServiceGetGroupResponseResponseMetadata
-type IamServiceGetGroupResponseResponseMetadata struct {
-	RequestId *string `json:"RequestId,omitempty"`
+// IamServiceDeleteGroupPolicyResponse struct for IamServiceDeleteGroupPolicyResponse
+type IamServiceDeleteGroupPolicyResponse struct {
+	ResponseMetadata *IamServiceDeleteGroupPolicyResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
 }
