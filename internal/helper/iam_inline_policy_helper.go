@@ -54,42 +54,85 @@ func ApplyPolicies(client *client.Client, ctx context.Context, plan models.IAMIn
 		}
 	} else {
 		currentPoliciesMap = make(map[string]string)
+
+		// Call List<entity>Policies API
+		var policyNames []string
+		var marker string
+
 		switch entityType {
 		case "User":
-			listResp, _, err := client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
-				XEmcNamespace(namespace).
-				UserName(entityName).
-				Execute()
-			if err != nil {
-				return plan, fmt.Errorf("failed to list policies: %w", err)
-			}
-			for _, name := range listResp.ListUserPoliciesResult.PolicyNames {
-				currentPoliciesMap[name] = ""
-			}
+			for {
+				listReq := client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
+					XEmcNamespace(namespace).
+					UserName(entityName)
 
+				if marker != "" {
+					listReq = listReq.Marker(marker)
+				}
+
+				listResp, _, err := listReq.Execute()
+				if err != nil {
+					return plan, fmt.Errorf("failed to list policies: %w", err)
+				}
+
+				policyNames = append(policyNames, listResp.ListUserPoliciesResult.PolicyNames...)
+
+				markerPtr := listResp.ListUserPoliciesResult.Marker
+				if markerPtr == nil || *markerPtr == "" {
+					break
+				}
+				marker = *markerPtr
+			}
 		case "Group":
-			listResp, _, err := client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
-				XEmcNamespace(namespace).
-				GroupName(entityName).
-				Execute()
-			if err != nil {
-				return plan, fmt.Errorf("failed to list policies: %w", err)
-			}
-			for _, name := range listResp.ListGroupPoliciesResult.PolicyNames {
-				currentPoliciesMap[name] = ""
-			}
+			for {
+				listReq := client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
+					XEmcNamespace(namespace).
+					GroupName(entityName)
 
+				if marker != "" {
+					listReq = listReq.Marker(marker)
+				}
+
+				listResp, _, err := listReq.Execute()
+				if err != nil {
+					return plan, fmt.Errorf("failed to list policies: %w", err)
+				}
+
+				policyNames = append(policyNames, listResp.ListGroupPoliciesResult.PolicyNames...)
+
+				markerPtr := listResp.ListGroupPoliciesResult.Marker
+				if markerPtr == nil || *markerPtr == "" {
+					break
+				}
+				marker = *markerPtr
+			}
 		case "Role":
-			listResp, _, err := client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
-				XEmcNamespace(namespace).
-				RoleName(entityName).
-				Execute()
-			if err != nil {
-				return plan, fmt.Errorf("failed to list policies: %w", err)
+			for {
+				listReq := client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
+					XEmcNamespace(namespace).
+					RoleName(entityName)
+
+				if marker != "" {
+					listReq = listReq.Marker(marker)
+				}
+
+				listResp, _, err := listReq.Execute()
+				if err != nil {
+					return plan, fmt.Errorf("failed to list policies: %w", err)
+				}
+
+				policyNames = append(policyNames, listResp.ListRolePoliciesResult.PolicyNames...)
+
+				markerPtr := listResp.ListRolePoliciesResult.Marker
+				if markerPtr == nil || *markerPtr == "" {
+					break
+				}
+				marker = *markerPtr
 			}
-			for _, name := range listResp.ListRolePoliciesResult.PolicyNames {
-				currentPoliciesMap[name] = ""
-			}
+		}
+
+		for _, name := range policyNames {
+			currentPoliciesMap[name] = ""
 		}
 	}
 

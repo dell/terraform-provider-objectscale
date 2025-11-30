@@ -177,39 +177,81 @@ func (r *IAMInlinePolicyResource) Read(ctx context.Context, req resource.ReadReq
 
 	// Step 1: Call List<entity>Policies API
 	var policyNames []string
+	var marker string
+
 	switch entityType {
 	case "User":
-		listResp, _, err := r.client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
-			XEmcNamespace(namespace).
-			UserName(entityName).
-			Execute()
-		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
-			return
-		}
-		policyNames = listResp.ListUserPoliciesResult.PolicyNames
+		for {
+			listReq := r.client.GenClient.IamApi.IamServiceListUserPolicies(ctx).
+				XEmcNamespace(namespace).
+				UserName(entityName)
 
+			if marker != "" {
+				listReq = listReq.Marker(marker)
+			}
+
+			listResp, _, err := listReq.Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
+				return
+			}
+
+			policyNames = append(policyNames, listResp.ListUserPoliciesResult.PolicyNames...)
+
+			markerPtr := listResp.ListUserPoliciesResult.Marker
+			if markerPtr == nil || *markerPtr == "" {
+				break
+			}
+			marker = *markerPtr
+		}
 	case "Group":
-		listResp, _, err := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
-			XEmcNamespace(namespace).
-			GroupName(entityName).
-			Execute()
-		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
-			return
-		}
-		policyNames = listResp.ListGroupPoliciesResult.PolicyNames
+		for {
+			listReq := r.client.GenClient.IamApi.IamServiceListGroupPolicies(ctx).
+				XEmcNamespace(namespace).
+				GroupName(entityName)
 
-	case "Role":
-		listResp, _, err := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
-			XEmcNamespace(namespace).
-			RoleName(entityName).
-			Execute()
-		if err != nil {
-			resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
-			return
+			if marker != "" {
+				listReq = listReq.Marker(marker)
+			}
+
+			listResp, _, err := listReq.Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
+				return
+			}
+
+			policyNames = append(policyNames, listResp.ListGroupPoliciesResult.PolicyNames...)
+
+			markerPtr := listResp.ListGroupPoliciesResult.Marker
+			if markerPtr == nil || *markerPtr == "" {
+				break
+			}
+			marker = *markerPtr
 		}
-		policyNames = listResp.ListRolePoliciesResult.PolicyNames
+	case "Role":
+		for {
+			listReq := r.client.GenClient.IamApi.IamServiceListRolePolicies(ctx).
+				XEmcNamespace(namespace).
+				RoleName(entityName)
+
+			if marker != "" {
+				listReq = listReq.Marker(marker)
+			}
+
+			listResp, _, err := listReq.Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Read Error", fmt.Sprintf("Failed to list policies: %s", err.Error()))
+				return
+			}
+
+			policyNames = append(policyNames, listResp.ListRolePoliciesResult.PolicyNames...)
+
+			markerPtr := listResp.ListRolePoliciesResult.Marker
+			if markerPtr == nil || *markerPtr == "" {
+				break
+			}
+			marker = *markerPtr
+		}
 	}
 
 	// Step 2: For each policy name, call Get<entity>Policy API
