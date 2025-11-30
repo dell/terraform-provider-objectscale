@@ -12,6 +12,6 @@ package clientgen
 
 // IamServiceGetUserResponse struct for IamServiceGetUserResponse
 type IamServiceGetUserResponse struct {
-	GetUserResult   *IamServiceGetUserResponseGetUserResult      `json:"GetUserResult,omitempty"`
-	ResponseMetadata *IamServiceCreateGroupResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
+	GetUserResult *IamServiceGetUserResponseGetUserResult `json:"GetUserResult,omitempty"`
+	ResponseMetadata *IamServiceGetUserResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
 }

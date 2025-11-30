@@ -259,6 +259,7 @@ func (r *IAMUserResource) getModel(
 					Value: types.StringValue(v.Value),
 				})
 			}),
+		
 	}
 }
 

@@ -12,5 +12,5 @@ package clientgen
 
 // IamServiceDeleteUserResponse struct for IamServiceDeleteUserResponse
 type IamServiceDeleteUserResponse struct {
-	ResponseMetadata *IamServiceCreateGroupResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
+	ResponseMetadata *IamServiceCreateUserResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
 }

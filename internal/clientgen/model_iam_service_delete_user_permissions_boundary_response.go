@@ -12,5 +12,5 @@ package clientgen
 
 // IamServiceDeleteUserPermissionsBoundaryResponse struct for IamServiceDeleteUserPermissionsBoundaryResponse
 type IamServiceDeleteUserPermissionsBoundaryResponse struct {
-	ResponseMetadata *IamServiceCreateGroupResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
+	ResponseMetadata *IamServiceCreateUserResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
 }
