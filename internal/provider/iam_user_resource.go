@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"reflect"
 	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
@@ -265,6 +266,69 @@ func strPtr(s string) *string {
 	return &s
 }
 
+func FindMissingKeys(
+    tagPlanKeys []clientgen.IamServiceUntagUserTagKeysParameterKeysInner,
+    tagStateKeys []clientgen.IamServiceUntagUserTagKeysParameterKeysInner,
+) []clientgen.IamServiceUntagUserTagKeysParameterKeysInner {
+
+    // Create a map for quick lookup of plan keys
+    planKeyMap := make(map[string]bool)
+    for _, k := range tagPlanKeys {
+        if k.Key != nil {
+            planKeyMap[*k.Key] = true
+        }
+    }
+
+    // Collect keys that are in state but not in plan
+    var missingKeys []clientgen.IamServiceUntagUserTagKeysParameterKeysInner
+    for _, k := range tagStateKeys {
+        if k.Key != nil && !planKeyMap[*k.Key] {
+            missingKeys = append(missingKeys, clientgen.IamServiceUntagUserTagKeysParameterKeysInner{
+                Key: strPtr(*k.Key),
+            })
+        }
+    }
+
+    return missingKeys
+}
+
+
+
+func DiffTagsMap(
+    tagsMapPlan []map[string]interface{},
+    tagsMapState []map[string]interface{},
+) []map[string]interface{} {
+
+    // Build a map from state for quick lookup of key -> value
+    stateMap := make(map[string]interface{})
+    for _, tag := range tagsMapState {
+        if key, ok := tag["key"].(string); ok {
+            stateMap[key] = tag["value"]
+        }
+    }
+
+    var diff []map[string]interface{}
+    for _, tag := range tagsMapPlan {
+        key, keyOk := tag["key"].(string)
+        value := tag["value"]
+
+        if keyOk {
+            stateValue, exists := stateMap[key]
+            // Condition: key not in state OR value differs
+            if !exists || !reflect.DeepEqual(stateValue, value) {
+                diff = append(diff, map[string]interface{}{
+                    "key":   key,
+                    "value": value,
+                })
+            }
+        }
+    }
+
+    return diff
+}
+
+
+
 func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	tflog.Info(ctx, "updating user")
 
@@ -283,13 +347,17 @@ func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	if !plan.Tags.IsNull() || !plan.Tags.IsUnknown() {
+	if !plan.Tags.IsNull() || !plan.Tags.IsUnknown() || len(plan.Tags.Elements()) != 0 {
 		tags_plan := helper.ValueListTransform(plan.Tags, r.tagJson) // returns []clientgen.IamServiceCreateUserResponseCreateUserResultUserTagsInner
 		var tagsMap_plan []map[string]interface{}
+		var tag_plan_keys []clientgen.IamServiceUntagUserTagKeysParameterKeysInner
 		for _, t := range tags_plan {
 			tagsMap_plan = append(tagsMap_plan, map[string]interface{}{
 				"key":   t.Key,
 				"value": t.Value,
+			})
+			tag_plan_keys = append(tag_plan_keys, clientgen.IamServiceUntagUserTagKeysParameterKeysInner{
+				Key: strPtr(t.Key),
 			})
 		}
 
@@ -306,33 +374,40 @@ func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest
 			})
 		}
 
-		var untagKeysParam clientgen.IamServiceUntagUserTagKeysParameter
-		untagKeysParam = clientgen.IamServiceUntagUserTagKeysParameter{Keys: tag_state_keys}
+        missing := FindMissingKeys(tag_plan_keys, tag_state_keys)
+		final_tags := DiffTagsMap(tagsMap_plan, tagsMap_state)
 
-		_, _, err_untag := r.client.GenClient.IamApi.IamServiceUntagUser(ctx).
-			UserName(plan.Name.ValueString()).
-			XEmcNamespace(plan.Namespace.ValueString()).
-			TagKeys(untagKeysParam).
-			Execute()
-		if err_untag != nil {
-			resp.Diagnostics.AddError("Error removing user tags", err_untag.Error())
-			return
+		var untagKeysParam clientgen.IamServiceUntagUserTagKeysParameter
+		untagKeysParam = clientgen.IamServiceUntagUserTagKeysParameter{Keys: missing}
+
+		if len(missing) != 0 {
+			_, _, err_untag := r.client.GenClient.IamApi.IamServiceUntagUser(ctx).
+				UserName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				TagKeys(untagKeysParam).
+				Execute()
+			if err_untag != nil {
+				resp.Diagnostics.AddError("Error removing user tags", err_untag.Error())
+				return
+			}
 		}
 
-		_, _, err_tag := r.client.GenClient.IamApi.IamServiceTagUser(ctx).
-			UserName(plan.Name.ValueString()).
-			XEmcNamespace(plan.Namespace.ValueString()).
-			TagsMemberN(tagsMap_plan).
-			Execute()
-		if err_tag != nil {
-			resp.Diagnostics.AddError("Error updating user tags", err_tag.Error())
-			return
+		if len(final_tags) != 0 {
+			_, _, err_tag := r.client.GenClient.IamApi.IamServiceTagUser(ctx).
+				UserName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				TagsMemberN(final_tags).
+				Execute()
+			if err_tag != nil {
+				resp.Diagnostics.AddError("Error updating user tags", err_tag.Error())
+				return
+			}
 		}
 	}
 	// Update permission boundary
 
 	if !plan.PermissionsBoundaryArn.IsNull() {
-		if plan.PermissionsBoundaryArn.ValueString() == "" {
+		if plan.PermissionsBoundaryArn.ValueString() == "" && state.PermissionsBoundaryArn.ValueString() != "" {
 			_, _, err := r.client.GenClient.IamApi.IamServiceDeleteUserPermissionsBoundary(ctx).
 				UserName(plan.Name.ValueString()).
 				XEmcNamespace(plan.Namespace.ValueString()).
