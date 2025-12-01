@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceListAccessKeysResponse struct for IamServiceListAccessKeysResponse
-type IamServiceListAccessKeysResponse struct {
-	ListAccessKeysResult *IamServiceListAccessKeysResponseListAccessKeysResult `json:"ListAccessKeysResult,omitempty"`
+// IamServiceGetGroupPolicyResponse struct for IamServiceGetGroupPolicyResponse
+type IamServiceGetGroupPolicyResponse struct {
+	GetGroupPolicyResult *IamServiceGetGroupPolicyResponseGetGroupPolicyResult `json:"GetGroupPolicyResult,omitempty"`
 	ResponseMetadata     *IamServiceAddUserToGroupResponseResponseMetadata     `json:"ResponseMetadata,omitempty"`
 }
