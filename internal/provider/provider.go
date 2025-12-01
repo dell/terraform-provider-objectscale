@@ -140,6 +140,7 @@ func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.R
 	return []func() resource.Resource{
 		NewNamespaceResource,
 		NewIAMInlinePolicyResource,
+		NewIAMGroupResource,
 	}
 }
 
