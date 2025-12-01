@@ -12,5 +12,5 @@ package clientgen
 
 // IamServicePutGroupPolicyResponse struct for IamServicePutGroupPolicyResponse
 type IamServicePutGroupPolicyResponse struct {
-	ResponseMetadata *IamServiceDeleteGroupPolicyResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
+	ResponseMetadata *IamServiceAddUserToGroupResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
 }

@@ -13,5 +13,5 @@ package clientgen
 // IamServiceListAccessKeysResponse struct for IamServiceListAccessKeysResponse
 type IamServiceListAccessKeysResponse struct {
 	ListAccessKeysResult *IamServiceListAccessKeysResponseListAccessKeysResult `json:"ListAccessKeysResult,omitempty"`
-	ResponseMetadata     *IamServiceDeleteGroupPolicyResponseResponseMetadata  `json:"ResponseMetadata,omitempty"`
+	ResponseMetadata     *IamServiceAddUserToGroupResponseResponseMetadata     `json:"ResponseMetadata,omitempty"`
 }

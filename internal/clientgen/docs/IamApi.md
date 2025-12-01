@@ -4,15 +4,21 @@ All URIs are relative to *https://objectscale.local:4443*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**IamServiceAddUserToGroup**](IamApi.md#IamServiceAddUserToGroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
+[**IamServiceAttachGroupPolicy**](IamApi.md#IamServiceAttachGroupPolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
+[**IamServiceCreateGroup**](IamApi.md#IamServiceCreateGroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
+[**IamServiceDeleteGroup**](IamApi.md#IamServiceDeleteGroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 [**IamServiceDeleteGroupPolicy**](IamApi.md#IamServiceDeleteGroupPolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
 [**IamServiceDeleteRolePolicy**](IamApi.md#IamServiceDeleteRolePolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
 [**IamServiceDeleteUserPolicy**](IamApi.md#IamServiceDeleteUserPolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
+[**IamServiceDetachGroupPolicy**](IamApi.md#IamServiceDetachGroupPolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
 [**IamServiceGetGroup**](IamApi.md#IamServiceGetGroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 [**IamServiceGetGroupPolicy**](IamApi.md#IamServiceGetGroupPolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
 [**IamServiceGetRolePolicy**](IamApi.md#IamServiceGetRolePolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 [**IamServiceGetUser**](IamApi.md#IamServiceGetUser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 [**IamServiceGetUserPolicy**](IamApi.md#IamServiceGetUserPolicy) | **Post** /iam?Action&#x3D;GetUserPolicy | Get specific inlinePolicy for IAM User.
 [**IamServiceListAccessKeys**](IamApi.md#IamServiceListAccessKeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
+[**IamServiceListAttachedGroupPolicies**](IamApi.md#IamServiceListAttachedGroupPolicies) | **Post** /iam?Action&#x3D;ListAttachedGroupPolicies | List Managed Policies for IAM Group.
 [**IamServiceListGroupPolicies**](IamApi.md#IamServiceListGroupPolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
 [**IamServiceListGroups**](IamApi.md#IamServiceListGroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 [**IamServiceListGroupsForUser**](IamApi.md#IamServiceListGroupsForUser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
@@ -23,7 +29,286 @@ Method | HTTP request | Description
 [**IamServicePutGroupPolicy**](IamApi.md#IamServicePutGroupPolicy) | **Post** /iam?Action&#x3D;PutGroupPolicy | Add or Update Inline Policy for IAM Group.
 [**IamServicePutRolePolicy**](IamApi.md#IamServicePutRolePolicy) | **Post** /iam?Action&#x3D;PutRolePolicy | Adds or updates an inline policy document that is embedded in the specified IAM role.
 [**IamServicePutUserPolicy**](IamApi.md#IamServicePutUserPolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
+[**IamServiceRemoveUserFromGroup**](IamApi.md#IamServiceRemoveUserFromGroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
 
+
+
+## IamServiceAddUserToGroup
+
+> IamServiceAddUserToGroupResponse IamServiceAddUserToGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Add user to a group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    groupName := "groupName_example" // string | The name of the group to update. (optional)
+    userName := "userName_example" // string | The name of the user to add. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceAddUserToGroup(context.Background()).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAddUserToGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceAddUserToGroup`: IamServiceAddUserToGroupResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAddUserToGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceAddUserToGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupName** | **string** | The name of the group to update. | 
+ **userName** | **string** | The name of the user to add. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceAddUserToGroupResponse**](IamServiceAddUserToGroupResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceAttachGroupPolicy
+
+> IamServiceAttachGroupPolicyResponse IamServiceAttachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+
+Attach a Managed Policy to Group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to attach. (optional)
+    groupName := "groupName_example" // string | Name of the group to attach the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceAttachGroupPolicy(context.Background()).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachGroupPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceAttachGroupPolicy`: IamServiceAttachGroupPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachGroupPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceAttachGroupPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to attach. | 
+ **groupName** | **string** | Name of the group to attach the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceAttachGroupPolicyResponse**](IamServiceAttachGroupPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceCreateGroup
+
+> IamServiceCreateGroupResponse IamServiceCreateGroup(ctx).GroupName(groupName).Path(path).XEmcNamespace(xEmcNamespace).Execute()
+
+Creates a new IAM Group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    groupName := "groupName_example" // string | The name of the group to create. (optional)
+    path := "path_example" // string | The path for the group. Optional, defaults to \"/\" and only \"/\" is allowed. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreateGroup(context.Background()).GroupName(groupName).Path(path).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreateGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreateGroup`: IamServiceCreateGroupResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreateGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreateGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupName** | **string** | The name of the group to create. | 
+ **path** | **string** | The path for the group. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreateGroupResponse**](IamServiceCreateGroupResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteGroup
+
+> IamServiceDeleteGroupResponse IamServiceDeleteGroup(ctx).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete an IAM Group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    groupName := "groupName_example" // string | The name of the group to delete. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteGroup(context.Background()).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteGroup`: IamServiceDeleteGroupResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupName** | **string** | The name of the group to delete. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceDeleteGroupResponse**](IamServiceDeleteGroupResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## IamServiceDeleteGroupPolicy
@@ -221,6 +506,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceDeleteUserPolicyResponse**](IamServiceDeleteUserPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDetachGroupPolicy
+
+> IamServiceDetachGroupPolicyResponse IamServiceDetachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+
+Remove a Managed Policy attached to Group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to remove. (optional)
+    groupName := "groupName_example" // string | Name of the group to remove the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDetachGroupPolicy(context.Background()).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachGroupPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDetachGroupPolicy`: IamServiceDetachGroupPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachGroupPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDetachGroupPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to remove. | 
+ **groupName** | **string** | Name of the group to remove the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceDetachGroupPolicyResponse**](IamServiceDetachGroupPolicyResponse.md)
 
 ### Authorization
 
@@ -645,6 +1000,80 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceListAccessKeysResponse**](IamServiceListAccessKeysResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceListAttachedGroupPolicies
+
+> IamServiceListAttachedGroupPoliciesResponse IamServiceListAttachedGroupPolicies(ctx).GroupName(groupName).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+
+List Managed Policies for IAM Group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    groupName := "groupName_example" // string | The name of the group to list attached policies for. (optional)
+    marker := "marker_example" // string | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. (optional)
+    maxItems := int32(56) // int32 | Indicates the maximum number of elements to be returned in the response. (optional)
+    pathPrefix := "pathPrefix_example" // string | Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListAttachedGroupPolicies(context.Background()).GroupName(groupName).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListAttachedGroupPolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListAttachedGroupPolicies`: IamServiceListAttachedGroupPoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListAttachedGroupPolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListAttachedGroupPoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupName** | **string** | The name of the group to list attached policies for. | 
+ **marker** | **string** | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. | 
+ **maxItems** | **int32** | Indicates the maximum number of elements to be returned in the response. | 
+ **pathPrefix** | **string** | Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListAttachedGroupPoliciesResponse**](IamServiceListAttachedGroupPoliciesResponse.md)
 
 ### Authorization
 
@@ -1365,6 +1794,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServicePutUserPolicyResponse**](IamServicePutUserPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceRemoveUserFromGroup
+
+> IamServiceRemoveUserFromGroupResponse IamServiceRemoveUserFromGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Remove User from a Group.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    groupName := "groupName_example" // string | The name of the group to update. (optional)
+    userName := "userName_example" // string | The name of the user to be removed. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceRemoveUserFromGroup(context.Background()).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceRemoveUserFromGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceRemoveUserFromGroup`: IamServiceRemoveUserFromGroupResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceRemoveUserFromGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceRemoveUserFromGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupName** | **string** | The name of the group to update. | 
+ **userName** | **string** | The name of the user to be removed. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceRemoveUserFromGroupResponse**](IamServiceRemoveUserFromGroupResponse.md)
 
 ### Authorization
 

@@ -12,6 +12,6 @@ package clientgen
 
 // IamServiceGetRolePolicyResponse struct for IamServiceGetRolePolicyResponse
 type IamServiceGetRolePolicyResponse struct {
-	GetRolePolicyResult *IamServiceGetRolePolicyResponseGetRolePolicyResult  `json:"GetRolePolicyResult,omitempty"`
-	ResponseMetadata    *IamServiceDeleteGroupPolicyResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
+	GetRolePolicyResult *IamServiceGetRolePolicyResponseGetRolePolicyResult `json:"GetRolePolicyResult,omitempty"`
+	ResponseMetadata    *IamServiceAddUserToGroupResponseResponseMetadata   `json:"ResponseMetadata,omitempty"`
 }
