@@ -106,4 +106,16 @@ RequiredAPIs = [
     "/object/bucket/{bucketName}/set-local-object-metadata-reads",
     "/object/bucket/{bucketName}/versioning",
     "/object/bucket/{bucketName}/notification",
+    
+    # Access Key API endpoints
+    "/iam?Action=CreateAccessKey",
+    "/iam?Action=DeleteAccessKey",
+    "/iam?Action=UpdateAccessKey"
+    
+    # Policy API endpoints
+    "/iam?Action=GetPolicy",
+    "/iam?Action=ListPolicies",
+    "/iam?Action=ListAttachedGroupPolicies",
+    "/iam?Action=ListAttachedRolePolicies",
+    "/iam?Action=ListAttachedUserPolicies"
 ]

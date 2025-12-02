@@ -7,8 +7,10 @@ Method | HTTP request | Description
 [**IamServiceAddUserToGroup**](IamApi.md#IamServiceAddUserToGroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
 [**IamServiceAttachGroupPolicy**](IamApi.md#IamServiceAttachGroupPolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
 [**IamServiceAttachRolePolicy**](IamApi.md#IamServiceAttachRolePolicy) | **Post** /iam?Action&#x3D;AttachRolePolicy | Attaches the specified managed policy to the specified IAM role.
+[**IamServiceCreateAccessKey**](IamApi.md#IamServiceCreateAccessKey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 [**IamServiceCreateGroup**](IamApi.md#IamServiceCreateGroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
 [**IamServiceCreateRole**](IamApi.md#IamServiceCreateRole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+[**IamServiceDeleteAccessKey**](IamApi.md#IamServiceDeleteAccessKey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 [**IamServiceDeleteGroup**](IamApi.md#IamServiceDeleteGroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 [**IamServiceDeleteGroupPolicy**](IamApi.md#IamServiceDeleteGroupPolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
 [**IamServiceDeleteRole**](IamApi.md#IamServiceDeleteRole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
@@ -26,9 +28,11 @@ Method | HTTP request | Description
 [**IamServiceListAccessKeys**](IamApi.md#IamServiceListAccessKeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
 [**IamServiceListAttachedGroupPolicies**](IamApi.md#IamServiceListAttachedGroupPolicies) | **Post** /iam?Action&#x3D;ListAttachedGroupPolicies | List Managed Policies for IAM Group.
 [**IamServiceListAttachedRolePolicies**](IamApi.md#IamServiceListAttachedRolePolicies) | **Post** /iam?Action&#x3D;ListAttachedRolePolicies | Lists all managed policies that are attached to the specified IAM Role.
+[**IamServiceListAttachedUserPolicies**](IamApi.md#IamServiceListAttachedUserPolicies) | **Post** /iam?Action&#x3D;ListAttachedUserPolicies | List Managed Policies for IAM User.
 [**IamServiceListGroupPolicies**](IamApi.md#IamServiceListGroupPolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
 [**IamServiceListGroups**](IamApi.md#IamServiceListGroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 [**IamServiceListGroupsForUser**](IamApi.md#IamServiceListGroupsForUser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
+[**IamServiceListPolicies**](IamApi.md#IamServiceListPolicies) | **Post** /iam?Action&#x3D;ListPolicies | Lists the IAM users.
 [**IamServiceListRolePolicies**](IamApi.md#IamServiceListRolePolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
 [**IamServiceListRoleTags**](IamApi.md#IamServiceListRoleTags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
 [**IamServiceListRoles**](IamApi.md#IamServiceListRoles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
@@ -257,6 +261,74 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceCreateAccessKey
+
+> IamServiceCreateAccessKeyResponse IamServiceCreateAccessKey(ctx).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Create AccessKey for User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | The name of the user that new AccessKey belongs to. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreateAccessKey(context.Background()).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreateAccessKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreateAccessKey`: IamServiceCreateAccessKeyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreateAccessKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreateAccessKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | The name of the user that new AccessKey belongs to. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreateAccessKeyResponse**](IamServiceCreateAccessKeyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceCreateGroup
 
 > IamServiceCreateGroupResponse IamServiceCreateGroup(ctx).GroupName(groupName).Path(path).XEmcNamespace(xEmcNamespace).Execute()
@@ -392,6 +464,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceCreateRoleResponse**](IamServiceCreateRoleResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteAccessKey
+
+> IamServiceDeleteAccessKeyResponse IamServiceDeleteAccessKey(ctx).AccessKeyId(accessKeyId).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete access key.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    accessKeyId := "accessKeyId_example" // string | The access key ID for the access key ID and secret access key you want to delete. (optional)
+    userName := "userName_example" // string | Name of the user to delete accesskeys. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteAccessKey(context.Background()).AccessKeyId(accessKeyId).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteAccessKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteAccessKey`: IamServiceDeleteAccessKeyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteAccessKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteAccessKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accessKeyId** | **string** | The access key ID for the access key ID and secret access key you want to delete. | 
+ **userName** | **string** | Name of the user to delete accesskeys. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceDeleteAccessKeyResponse**](IamServiceDeleteAccessKeyResponse.md)
 
 ### Authorization
 
@@ -1601,6 +1743,80 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceListAttachedUserPolicies
+
+> IamServiceListAttachedUserPoliciesResponse IamServiceListAttachedUserPolicies(ctx).UserName(userName).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+
+List Managed Policies for IAM User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | The name of the user to list attached policies for. (optional)
+    marker := "marker_example" // string | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. (optional)
+    maxItems := int32(56) // int32 | Indicates the maximum number of elements to be returned in the response. (optional)
+    pathPrefix := "pathPrefix_example" // string | Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListAttachedUserPolicies(context.Background()).UserName(userName).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListAttachedUserPolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListAttachedUserPolicies`: IamServiceListAttachedUserPoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListAttachedUserPolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListAttachedUserPoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | The name of the user to list attached policies for. | 
+ **marker** | **string** | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. | 
+ **maxItems** | **int32** | Indicates the maximum number of elements to be returned in the response. | 
+ **pathPrefix** | **string** | Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListAttachedUserPoliciesResponse**](IamServiceListAttachedUserPoliciesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceListGroupPolicies
 
 > IamServiceListGroupPoliciesResponse IamServiceListGroupPolicies(ctx).GroupName(groupName).Marker(marker).MaxItems(maxItems).XEmcNamespace(xEmcNamespace).Execute()
@@ -1802,6 +2018,84 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceListGroupsForUserResponse**](IamServiceListGroupsForUserResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceListPolicies
+
+> IamServiceListPoliciesResponse IamServiceListPolicies(ctx).Marker(marker).MaxItems(maxItems).OnlyAttached(onlyAttached).PathPrefix(pathPrefix).PolicyUsageFilter(policyUsageFilter).PolicyScope(policyScope).XEmcNamespace(xEmcNamespace).Execute()
+
+Lists the IAM users.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. (optional)
+    maxItems := int32(56) // int32 | Indicates the maximum number of elements to be returned in the response. (optional)
+    onlyAttached := true // bool | A flag to filter the results to only the attached policies. (optional)
+    pathPrefix := "pathPrefix_example" // string | Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed. (optional)
+    policyUsageFilter := "policyUsageFilter_example" // string | The policy usage method to use for filtering the results. Values {PermissionsPolicy, PermissionsBoundary} (optional)
+    policyScope := "policyScope_example" // string | The scope to use for filtering the results. One of {All, ECS, AWS, Local} (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListPolicies(context.Background()).Marker(marker).MaxItems(maxItems).OnlyAttached(onlyAttached).PathPrefix(pathPrefix).PolicyUsageFilter(policyUsageFilter).PolicyScope(policyScope).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListPolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListPolicies`: IamServiceListPoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListPolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListPoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. | 
+ **maxItems** | **int32** | Indicates the maximum number of elements to be returned in the response. | 
+ **onlyAttached** | **bool** | A flag to filter the results to only the attached policies. | 
+ **pathPrefix** | **string** | Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed. | 
+ **policyUsageFilter** | **string** | The policy usage method to use for filtering the results. Values {PermissionsPolicy, PermissionsBoundary} | 
+ **policyScope** | **string** | The scope to use for filtering the results. One of {All, ECS, AWS, Local} | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListPoliciesResponse**](IamServiceListPoliciesResponse.md)
 
 ### Authorization
 

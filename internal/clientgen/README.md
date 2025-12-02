@@ -133,8 +133,10 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceAddUserToGroup**](docs/IamApi.md#iamserviceaddusertogroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
 *IamApi* | [**IamServiceAttachGroupPolicy**](docs/IamApi.md#iamserviceattachgrouppolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
 *IamApi* | [**IamServiceAttachRolePolicy**](docs/IamApi.md#iamserviceattachrolepolicy) | **Post** /iam?Action&#x3D;AttachRolePolicy | Attaches the specified managed policy to the specified IAM role.
+*IamApi* | [**IamServiceCreateAccessKey**](docs/IamApi.md#iamservicecreateaccesskey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 *IamApi* | [**IamServiceCreateGroup**](docs/IamApi.md#iamservicecreategroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
 *IamApi* | [**IamServiceCreateRole**](docs/IamApi.md#iamservicecreaterole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+*IamApi* | [**IamServiceDeleteAccessKey**](docs/IamApi.md#iamservicedeleteaccesskey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 *IamApi* | [**IamServiceDeleteGroup**](docs/IamApi.md#iamservicedeletegroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 *IamApi* | [**IamServiceDeleteGroupPolicy**](docs/IamApi.md#iamservicedeletegrouppolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
 *IamApi* | [**IamServiceDeleteRole**](docs/IamApi.md#iamservicedeleterole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
@@ -152,9 +154,11 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
 *IamApi* | [**IamServiceListAttachedGroupPolicies**](docs/IamApi.md#iamservicelistattachedgrouppolicies) | **Post** /iam?Action&#x3D;ListAttachedGroupPolicies | List Managed Policies for IAM Group.
 *IamApi* | [**IamServiceListAttachedRolePolicies**](docs/IamApi.md#iamservicelistattachedrolepolicies) | **Post** /iam?Action&#x3D;ListAttachedRolePolicies | Lists all managed policies that are attached to the specified IAM Role.
+*IamApi* | [**IamServiceListAttachedUserPolicies**](docs/IamApi.md#iamservicelistattacheduserpolicies) | **Post** /iam?Action&#x3D;ListAttachedUserPolicies | List Managed Policies for IAM User.
 *IamApi* | [**IamServiceListGroupPolicies**](docs/IamApi.md#iamservicelistgrouppolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
 *IamApi* | [**IamServiceListGroups**](docs/IamApi.md#iamservicelistgroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 *IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
+*IamApi* | [**IamServiceListPolicies**](docs/IamApi.md#iamservicelistpolicies) | **Post** /iam?Action&#x3D;ListPolicies | Lists the IAM users.
 *IamApi* | [**IamServiceListRolePolicies**](docs/IamApi.md#iamservicelistrolepolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
 *IamApi* | [**IamServiceListRoleTags**](docs/IamApi.md#iamservicelistroletags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
 *IamApi* | [**IamServiceListRoles**](docs/IamApi.md#iamservicelistroles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
@@ -250,6 +254,9 @@ Class | Method | HTTP request | Description
  - [IamServiceAddUserToGroupResponseResponseMetadata](docs/IamServiceAddUserToGroupResponseResponseMetadata.md)
  - [IamServiceAttachGroupPolicyResponse](docs/IamServiceAttachGroupPolicyResponse.md)
  - [IamServiceAttachRolePolicyResponse](docs/IamServiceAttachRolePolicyResponse.md)
+ - [IamServiceCreateAccessKeyResponse](docs/IamServiceCreateAccessKeyResponse.md)
+ - [IamServiceCreateAccessKeyResponseCreateAccessKeyResult](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResult.md)
+ - [IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey.md)
  - [IamServiceCreateGroupResponse](docs/IamServiceCreateGroupResponse.md)
  - [IamServiceCreateGroupResponseCreateGroupResult](docs/IamServiceCreateGroupResponseCreateGroupResult.md)
  - [IamServiceCreateGroupResponseCreateGroupResultGroup](docs/IamServiceCreateGroupResponseCreateGroupResultGroup.md)
@@ -257,6 +264,7 @@ Class | Method | HTTP request | Description
  - [IamServiceCreateRoleResponseResult](docs/IamServiceCreateRoleResponseResult.md)
  - [IamServiceCreateRoleResponseResultRole](docs/IamServiceCreateRoleResponseResultRole.md)
  - [IamServiceCreateRoleResponseResultRolePermissionsBoundary](docs/IamServiceCreateRoleResponseResultRolePermissionsBoundary.md)
+ - [IamServiceDeleteAccessKeyResponse](docs/IamServiceDeleteAccessKeyResponse.md)
  - [IamServiceDeleteGroupPolicyResponse](docs/IamServiceDeleteGroupPolicyResponse.md)
  - [IamServiceDeleteGroupResponse](docs/IamServiceDeleteGroupResponse.md)
  - [IamServiceDeleteRolePermissionsBoundaryResponse](docs/IamServiceDeleteRolePermissionsBoundaryResponse.md)
@@ -286,6 +294,7 @@ Class | Method | HTTP request | Description
  - [IamServiceListAttachedGroupPoliciesResponse](docs/IamServiceListAttachedGroupPoliciesResponse.md)
  - [IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult](docs/IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult.md)
  - [IamServiceListAttachedRolePoliciesResponse](docs/IamServiceListAttachedRolePoliciesResponse.md)
+ - [IamServiceListAttachedUserPoliciesResponse](docs/IamServiceListAttachedUserPoliciesResponse.md)
  - [IamServiceListGroupPoliciesResponse](docs/IamServiceListGroupPoliciesResponse.md)
  - [IamServiceListGroupPoliciesResponseListGroupPoliciesResult](docs/IamServiceListGroupPoliciesResponseListGroupPoliciesResult.md)
  - [IamServiceListGroupsForUserResponse](docs/IamServiceListGroupsForUserResponse.md)
@@ -294,6 +303,8 @@ Class | Method | HTTP request | Description
  - [IamServiceListGroupsResponse](docs/IamServiceListGroupsResponse.md)
  - [IamServiceListGroupsResponseListGroupsResult](docs/IamServiceListGroupsResponseListGroupsResult.md)
  - [IamServiceListGroupsResponseListGroupsResultGroupsInner](docs/IamServiceListGroupsResponseListGroupsResultGroupsInner.md)
+ - [IamServiceListPoliciesResponse](docs/IamServiceListPoliciesResponse.md)
+ - [IamServiceListPoliciesResponseListPoliciesResult](docs/IamServiceListPoliciesResponseListPoliciesResult.md)
  - [IamServiceListRolePoliciesResponse](docs/IamServiceListRolePoliciesResponse.md)
  - [IamServiceListRoleTagsResponse](docs/IamServiceListRoleTagsResponse.md)
  - [IamServiceListRolesResponse](docs/IamServiceListRolesResponse.md)

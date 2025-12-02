@@ -5950,6 +5950,96 @@
 				}
 			}
 		},
+		"/iam?Action=CreateAccessKey": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Create AccessKey for User.",
+				"description": "Create AccessKey for User.",
+				"operationId": "IamService_CreateAccessKey",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user that new AccessKey belongs to."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_CreateAccessKeyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:87b5:42"
+											},
+											"CreateAccessKeyResult": {
+												"AccessKey": {
+													"AccessKeyId": "AKIA681EB7D2520E6455",
+													"CreateDate": "2020-04-15T14:49:22Z",
+													"SecretAccessKey": "6q6IH9cntQV6vcF1y6MP7dQmmSItrnq6aS5pOafu",
+													"Status": "Active",
+													"UserName": "tt1"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=CreateGroup": {
 			"post": {
 				"tags": [
@@ -6162,6 +6252,96 @@
 														}
 													]
 												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteAccessKey": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete access key.",
+				"description": "Delete access key.",
+				"operationId": "IamService_DeleteAccessKey",
+				"parameters": [
+					{
+						"name": "AccessKeyId",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The access key ID for the access key ID and secret access key you want to delete."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the user to delete accesskeys."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteAccessKeyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:8b9d:b1"
 											}
 										}
 									}
@@ -7830,6 +8010,105 @@
 				}
 			}
 		},
+		"/iam?Action=ListAttachedUserPolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List Managed Policies for IAM User.",
+				"description": "List Managed Policies for IAM User.",
+				"operationId": "IamService_ListAttachedUserPolicies",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to list attached policies for."
+					},
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListAttachedUserPoliciesResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=ListGroupPolicies": {
 			"post": {
 				"tags": [
@@ -8131,6 +8410,242 @@
 													}
 												],
 												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListPolicies": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Lists the IAM users.",
+				"description": "Lists the IAM users.",
+				"operationId": "IamService_ListPolicies",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Indicates the maximum number of elements to be returned in the response."
+					},
+					{
+						"name": "OnlyAttached",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						},
+						"description": "A flag to filter the results to only the attached policies."
+					},
+					{
+						"name": "PathPrefix",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed."
+					},
+					{
+						"name": "PolicyUsageFilter",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The policy usage method to use for filtering the results. Values {PermissionsPolicy, PermissionsBoundary}"
+					},
+					{
+						"name": "PolicyScope",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The scope to use for filtering the results. One of {All, ECS, AWS, Local}"
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListPoliciesResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1b440:75"
+											},
+											"ListPoliciesResult": {
+												"Policies": [
+													{
+														"Arn": "urn:ecs:iam::ns:policy/CustomFInancePolicy1",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T20:07:53Z",
+														"DefaultVersionId": "v3",
+														"Description": "For the Finance team.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPA2DF3E77DE8703D43",
+														"PolicyName": "CustomFInancePolicy1",
+														"UpdateDate": "2020-04-13T20:35:01Z"
+													},
+													{
+														"Arn": "urn:ecs:iam:::policy/ECSDenyAll",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T18:57:20Z",
+														"DefaultVersionId": "v1",
+														"Description": "Deny all access.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPA8CDF8A406EFDD7E7",
+														"PolicyName": "ECSDenyAll",
+														"UpdateDate": "2020-04-13T18:57:20Z"
+													},
+													{
+														"Arn": "urn:ecs:iam:::policy/ECSS3FullAccess",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T18:57:21Z",
+														"DefaultVersionId": "v1",
+														"Description": "Provides full access to all buckets.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPA4B7C846859110BF9",
+														"PolicyName": "ECSS3FullAccess",
+														"UpdateDate": "2020-04-13T18:57:21Z"
+													},
+													{
+														"Arn": "urn:ecs:iam:::policy/ECSS3ReadOnlyAccess",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T18:57:20Z",
+														"DefaultVersionId": "v1",
+														"Description": "Provides read only access to all buckets.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPAC6E7CC2BE0DF58BA",
+														"PolicyName": "ECSS3ReadOnlyAccess",
+														"UpdateDate": "2020-04-13T18:57:20Z"
+													},
+													{
+														"Arn": "urn:ecs:iam::ns:policy/FinanceTeamPolicy",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T20:22:53Z",
+														"DefaultVersionId": "v1",
+														"Description": "Policy_for_the_finaince_team.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPA3A9A5604CF9266D2",
+														"PolicyName": "FinanceTeamPolicy",
+														"UpdateDate": "2020-04-13T20:22:53Z"
+													},
+													{
+														"Arn": "urn:ecs:iam::ns:policy/FinanceTeamPolicy2",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T20:26:34Z",
+														"DefaultVersionId": "v1",
+														"Description": "Policy_for_the_finaince_team.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPAF7171284F0D2D45D",
+														"PolicyName": "FinanceTeamPolicy2",
+														"UpdateDate": "2020-04-13T20:26:34Z"
+													},
+													{
+														"Arn": "urn:ecs:iam:::policy/IAMFullAccess",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T18:57:20Z",
+														"DefaultVersionId": "v1",
+														"Description": "Provides full access to IAM.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPA7C8D35751A80D39B",
+														"PolicyName": "IAMFullAccess",
+														"UpdateDate": "2020-04-13T18:57:20Z"
+													},
+													{
+														"Arn": "urn:ecs:iam:::policy/IAMReadOnlyAccess",
+														"AttachmentCount": 0,
+														"CreateDate": "2020-04-13T18:57:20Z",
+														"DefaultVersionId": "v1",
+														"Description": "Provides read only access to IAM.",
+														"IsAttachable": true,
+														"Path": "/",
+														"PermissionsBoundaryUsageCount": 0,
+														"PolicyId": "ANPA3013E53883B9AB0F",
+														"PolicyName": "IAMReadOnlyAccess",
+														"UpdateDate": "2020-04-13T18:57:20Z"
+													}
+												],
+												"IsTruncated": false,
+												"Marker": ""
 											}
 										}
 									}
@@ -13214,6 +13729,53 @@
 					}
 				}
 			},
+			"IamService_CreateAccessKeyResponse": {
+				"type": "object",
+				"properties": {
+					"CreateAccessKeyResult": {
+						"type": "object",
+						"properties": {
+							"AccessKey": {
+								"type": "object",
+								"properties": {
+									"AccessKeyId": {
+										"type": "string",
+										"description": "The Id of this access key"
+									},
+									"AccessKeySelector": {
+										"type": "string",
+										"description": "The access key selector"
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "The date and time, in the format of YYYY-MM-DDTHH:mm:ssZ, when the access key was created."
+									},
+									"SecretAccessKey": {
+										"type": "string",
+										"description": "The secret key"
+									},
+									"Status": {
+										"type": "string",
+										"description": "The status of the access key {Active | Inactive}"
+									},
+									"UserName": {
+										"type": "string",
+										"description": "The name of the user that the access key is associated with."
+									}
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_CreateGroupResponse": {
 				"type": "object",
 				"properties": {
@@ -13323,6 +13885,19 @@
 							}
 						}
 					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_DeleteAccessKeyResponse": {
+				"type": "object",
+				"properties": {
 					"ResponseMetadata": {
 						"type": "object",
 						"properties": {
@@ -13835,6 +14410,34 @@
 					}
 				}
 			},
+			"IamService_ListAttachedUserPoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListAttachedUserPoliciesResult": {
+						"type": "object",
+						"properties": {
+							"member": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_ListGroupPoliciesResponse": {
 				"type": "object",
 				"properties": {
@@ -13959,6 +14562,40 @@
 								"description": "Marker for pagination if IsTruncated is true."
 							}
 						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_ListPoliciesResponse": {
+				"type": "object",
+				"properties": {
+					"ListPoliciesResult": {
+						"type": "object",
+						"properties": {
+							"Policies": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"description": "Get policies"
+							},
+							"IsTruncated": {
+								"type": "boolean",
+								"description": "A flag that indicates whether there are more items to return."
+							},
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker\n parameter in a subsequent pagination request."
+							}
+						},
+						"description": "Get listPoliciesResult"
 					},
 					"ResponseMetadata": {
 						"type": "object",
