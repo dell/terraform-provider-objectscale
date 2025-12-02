@@ -50,6 +50,8 @@ type APIClient struct {
 
 	AuthenticationApi *AuthenticationApiService
 
+	BucketApi *BucketApiService
+
 	DataVpoolApi *DataVpoolApiService
 
 	IamApi *IamApiService
@@ -74,6 +76,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.AuthenticationApi = (*AuthenticationApiService)(&c.common)
+	c.BucketApi = (*BucketApiService)(&c.common)
 	c.DataVpoolApi = (*DataVpoolApiService)(&c.common)
 	c.IamApi = (*IamApiService)(&c.common)
 	c.NamespaceApi = (*NamespaceApiService)(&c.common)

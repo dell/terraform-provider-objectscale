@@ -2025,6 +2025,246 @@
 				}
 			}
 		},
+		"/object/bucket": {
+			"post": {
+				"tags": [
+					"Bucket"
+				],
+				"summary": "Creates a bucket in which users can create objects",
+				"description": "Creates a bucket in which users can create objects.\n The bucket is created in a storage pool associated with the specified replication group.\n <ul>\n     <li><p>Current user will become the bucket owner.</p></li>\n     <li><p>If namespace to this bucket creation does not exist, user's namespace is used</p></li>\n     <li><p>For non SYSTEM_ADMIN user, namespace should be current user's namespace</p></li>\n </ul>",
+				"operationId": "BucketService_createBucket",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Indicating <b>success</b> or <b>failure</b> of the bucket create operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BucketService_createBucketResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "bucket5",
+											"id": "s3.bucket5",
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"tags": [],
+											"search_metadata": {
+												"metadata": [
+													{
+														"type": "User",
+														"datatype": "integer",
+														"name": "x-amz-meta-custom"
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BucketService_createBucketRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Bucket"
+				],
+				"summary": "Gets the list of buckets for the specified namespace",
+				"description": "Gets the list of buckets for the specified namespace. If namespace to this bucket creation does not exist\n then user's namespace is used.",
+				"operationId": "BucketService_getBuckets",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Namespace for which buckets should be listed."
+					},
+					{
+						"name": "marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "reference to last object returned."
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "number of objects requested in current fetch."
+					},
+					{
+						"name": "name",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Case sensitive prefix of the Bucket name with a wild card(*) Ex : any_prefix_string*"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of buckets associated with the given namespace.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BucketService_getBucketsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"object_bucket": [
+												{
+													"name": "f4cb8ba2-c11e-11e4-8580-0050569c6fd7",
+													"global": null,
+													"remote": null,
+													"vdc": null,
+													"tags": [],
+													"namespace": "s3",
+													"locked": false,
+													"created": "2015-03-02T20:51:28.034Z",
+													"vpool": "urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global",
+													"fs_access_enabled": false,
+													"is_stale_allowed": false,
+													"default_retention": -2,
+													"block_size": -1,
+													"notification_size": -1,
+													"owner": "wuser1@sanity.local",
+													"api_type": "S3",
+													"search_metadata": {
+														"search_enabled": true,
+														"metadata": [
+															{
+																"datatype": "integer",
+																"name": "x-amz-meta-custom",
+																"type": "User"
+															}
+														]
+													}
+												},
+												{
+													"name": "standalone-bucket",
+													"global": null,
+													"remote": null,
+													"vdc": null,
+													"tags": [],
+													"namespace": "s3",
+													"locked": false,
+													"created": "2015-03-02T19:44:29.283Z",
+													"vpool": "urn:storageos:ReplicationGroupInfo:b3bf2d47-d732-457c-bb9b-d260eb53a76b:global",
+													"fs_access_enabled": false,
+													"is_stale_allowed": false,
+													"default_retention": -2,
+													"block_size": -1,
+													"notification_size": -1,
+													"owner": "wuser1@sanity.local",
+													"api_type": "S3",
+													"search_metadata": {
+														"metadata": [
+															{
+																"datatype": "integer",
+																"name": "SomeKey"
+															},
+															{
+																"datatype": "decimal",
+																"name": "SomeKey2"
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=AddUserToGroup": {
 			"post": {
 				"tags": [
@@ -5407,6 +5647,700 @@
 						"description": "Indicated whether the resource is an internal resource"
 					}
 				}
+			},
+			"BucketService_createBucketRequest": {
+				"type": "object",
+				"properties": {
+					"blockSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Block size in GB. Cannot be less than 1GB or use decimal values.\n Can be set to -1 to indicate quota value not defined."
+					},
+					"notificationSize": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Notification size in GB. Cannot be less than 1GB or use decimal values.\n Can be set to -1 to indicate quota value not defined."
+					},
+					"name": {
+						"type": "string",
+						"description": "Bucket name"
+					},
+					"vpool": {
+						"type": "string",
+						"format": "uri",
+						"description": "Replication group identifier"
+					},
+					"filesystem_enabled": {
+						"type": "boolean",
+						"description": "flag indicating whether file-system is enabled for this bucket"
+					},
+					"head_type": {
+						"type": "string",
+						"description": "HeadType indicates the object head type that is allowed to access the bucket. If the bucket has FS-Enabled,\n then the FS heads are implicitly allowed to access this bucket"
+					},
+					"namespace": {
+						"type": "string",
+						"description": "Namespace associated with the user/tenant that is allowed to access the bucket"
+					},
+					"Tag": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"Key": {
+									"type": "string",
+									"description": "The key of a tag"
+								},
+								"Value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Tags - list of tags set for the Bucket"
+					},
+					"is_encryption_enabled": {
+						"type": "boolean",
+						"description": "tag to enable encryption for the bucket"
+					},
+					"default_group_file_read_permission": {
+						"type": "boolean",
+						"description": "Flag indicating the Read permission for default group"
+					},
+					"default_group_file_write_permission": {
+						"type": "boolean",
+						"description": "Flag indicating the file write permission for default group"
+					},
+					"default_group_file_execute_permission": {
+						"type": "boolean",
+						"description": "Flag indicating the file execute permission for default group"
+					},
+					"default_group_dir_read_permission": {
+						"type": "boolean",
+						"description": "Flag indicating the directory read permission for default group. This is only applicable to folders created\n within the Filesystem-Enabled bucket. It is not applicable to files/objects"
+					},
+					"default_group_dir_write_permission": {
+						"type": "boolean",
+						"description": "Flag indicating the directory write permission for default group. This is only applicable to folders created\n within the Filesystem-Enabled bucket. It is not applicable to files/objects"
+					},
+					"default_group_dir_execute_permission": {
+						"type": "boolean",
+						"description": "Flag indicating the directory execute permission for default group. This is only applicable to folders created\n within the Filesystem-Enabled bucket. It is not applicable to files/objects"
+					},
+					"default_group": {
+						"type": "string",
+						"description": "Default group for Filesystem-enabled buckets"
+					},
+					"autocommit_period": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default autocommit period in seconds"
+					},
+					"retention": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Default retention period in seconds"
+					},
+					"is_stale_allowed": {
+						"type": "boolean",
+						"description": "tag to allow stale data in bucket"
+					},
+					"is_object_lock_with_ado_allowed": {
+						"type": "boolean",
+						"description": "permanently sets flag on the bucket to allow Object Lock and ADO to be enabled together."
+					},
+					"is_tso_read_only": {
+						"type": "boolean",
+						"description": "enable the Access During Outage option, which allows read access"
+					},
+					"metadata": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"description": "The meta key type."
+								},
+								"name": {
+									"type": "string",
+									"description": "The meta key name."
+								},
+								"datatype": {
+									"type": "string",
+									"description": "The meta key data type."
+								}
+							}
+						},
+						"description": "Searchable tags assigned to objects created within the bucket."
+					},
+					"metadata_tokens": {
+						"type": "boolean",
+						"description": "metadata search: whether to treat metadata value as array of values (true) or single value (false)"
+					},
+					"owner": {
+						"type": "string",
+						"description": "Bucket owner"
+					},
+					"min_max_governor": {
+						"type": "object",
+						"properties": {
+							"enforce_retention": {
+								"type": "boolean"
+							},
+							"minimum_fixed_retention": {
+								"type": "integer",
+								"format": "int64"
+							},
+							"maximum_fixed_retention": {
+								"type": "integer",
+								"format": "int64"
+							},
+							"minimum_variable_retention": {
+								"type": "integer",
+								"format": "int64"
+							},
+							"maximum_variable_retention": {
+								"type": "integer",
+								"format": "int64"
+							}
+						},
+						"description": "Retention Min Max Governor"
+					},
+					"audited_delete_expiration": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Audit delete expiration time in seconds"
+					},
+					"is_object_lock_enabled": {
+						"type": "boolean",
+						"description": "Enables object lock for existing bucket."
+					},
+					"storage_policy": {
+						"type": "string"
+					},
+					"blockSizeInCount": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"notificationSizeInCount": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"copy_policy": {
+						"type": "object",
+						"properties": {
+							"days_after_last_write": {
+								"type": "integer",
+								"format": "int64"
+							},
+							"minimum_size": {
+								"type": "integer",
+								"format": "int64"
+							},
+							"external_endpoint": {
+								"type": "string",
+								"format": "uri"
+							},
+							"target_region": {
+								"type": "string"
+							},
+							"target_bucket": {
+								"type": "string"
+							},
+							"target_access_key": {
+								"type": "string"
+							},
+							"target_secret_key": {
+								"type": "string"
+							},
+							"target_account": {
+								"type": "string"
+							},
+							"target_role": {
+								"type": "string"
+							},
+							"tag_filter": {
+								"type": "string"
+							},
+							"policy_type": {
+								"type": "string"
+							},
+							"backup_read_target": {
+								"type": "boolean"
+							},
+							"sse_s3_enabled": {
+								"type": "boolean"
+							},
+							"detailed_log_enabled": {
+								"type": "boolean"
+							},
+							"detailed_log_errors_only": {
+								"type": "boolean"
+							},
+							"detailed_log_bucket": {
+								"type": "string"
+							},
+							"detailed_log_prefix": {
+								"type": "string"
+							},
+							"external_certs": {
+								"type": "string"
+							}
+						}
+					},
+					"enableAdvancedMetadataSearch": {
+						"type": "boolean"
+					},
+					"advancedMetadataSearchTargetName": {
+						"type": "string"
+					},
+					"advancedMetadataSearchTargetStream": {
+						"type": "string"
+					},
+					"local_object_metadata_reads": {
+						"type": "boolean",
+						"description": "Local object metadata reads bucket flag."
+					},
+					"versioning_status": {
+						"type": "string",
+						"description": "versioning status for the bucket"
+					}
+				},
+				"required": [
+					"name"
+				]
+			},
+			"BucketService_createBucketResponse": {
+				"type": "object",
+				"properties": {
+					"error_message": {
+						"type": "string",
+						"description": "Message returned by the server indicating the reason for create bucket failure (if any)"
+					},
+					"Tag": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"Key": {
+									"type": "string",
+									"description": "The key of a tag"
+								},
+								"Value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Keywords and labels that can be added by a user to a resource\n to make it easy to find when doing a search."
+					},
+					"metaData": {
+						"type": "object",
+						"properties": {
+							"metadata": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"type": {
+											"type": "string",
+											"description": "The meta key type."
+										},
+										"name": {
+											"type": "string",
+											"description": "The meta key name."
+										},
+										"datatype": {
+											"type": "string",
+											"description": "The meta key data type."
+										}
+									}
+								},
+								"description": "Getter for the metadata."
+							},
+							"isEnabled": {
+								"type": "boolean",
+								"description": "Getter for the enabled flag."
+							},
+							"mdTokens": {
+								"type": "boolean",
+								"description": "Getter for the mdTokens flag."
+							},
+							"maxKeys": {
+								"type": "integer",
+								"description": "Getter for maxKeys."
+							}
+						},
+						"description": "Getter for the metadata."
+					},
+					"advancedMetadataSearchEnabled": {
+						"type": "boolean"
+					},
+					"advancedMetadataSearchTargetName": {
+						"type": "string"
+					},
+					"advancedMetadataSearchTargetStream": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "Hyperlink to the details for this resource"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
+					}
+				}
+			},
+			"BucketService_getBucketsResponse": {
+				"type": "object",
+				"properties": {
+					"object_bucket": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+								},
+								"id": {
+									"type": "string",
+									"format": "uri",
+									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+								},
+								"link": {
+									"type": "object",
+									"properties": {
+										"rel": {
+											"type": "string",
+											"description": "Relationship type of the hyperlink"
+										},
+										"href": {
+											"type": "string",
+											"description": "Hyperlink URL to the related resource"
+										}
+									},
+									"description": "Hyperlink to the details for this resource"
+								},
+								"created": {
+									"type": "string",
+									"description": "Bucket creation time"
+								},
+								"softquota": {
+									"type": "string",
+									"description": "Bucket soft quota"
+								},
+								"fs_access_enabled": {
+									"type": "boolean",
+									"description": "Bucket \"file system access enabled\" status"
+								},
+								"locked": {
+									"type": "boolean",
+									"description": "\"Locked\" status of a bucket"
+								},
+								"vpool": {
+									"type": "string",
+									"description": "Replication group id"
+								},
+								"namespace": {
+									"type": "string",
+									"description": "Namespace"
+								},
+								"owner": {
+									"type": "string",
+									"description": "Bucket owner"
+								},
+								"is_stale_allowed": {
+									"type": "boolean",
+									"description": "Bucket isStaleAllowed flag"
+								},
+								"is_object_lock_with_ado_allowed": {
+									"type": "boolean",
+									"description": "If true Object Lock and ADO can be enabled together.  See the Admin Guide for more information."
+								},
+								"is_tso_read_only": {
+									"type": "boolean",
+									"description": "Bucket isStaleAllowed flag"
+								},
+								"is_object_lock_enabled": {
+									"type": "boolean",
+									"description": "Bucket isObjectLockEnabled flag"
+								},
+								"default_object_lock_retention_mode": {
+									"type": "string",
+									"description": "Default object lock retention mode"
+								},
+								"default_object_lock_retention_years": {
+									"type": "integer",
+									"description": "Default object lock retention years"
+								},
+								"default_object_lock_retention_days": {
+									"type": "integer",
+									"description": "Default object lock retention days"
+								},
+								"is_encryption_enabled": {
+									"type": "string",
+									"description": "D@RE\n Bucket isEncryptionEnabled flag"
+								},
+								"default_retention": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Default bucket retention"
+								},
+								"block_size": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Block size in GB"
+								},
+								"auto_commit_period": {
+									"type": "integer",
+									"format": "int64",
+									"description": "auto-commit interval"
+								},
+								"notification_size": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Notification size in GB"
+								},
+								"api_type": {
+									"type": "string",
+									"description": "API type"
+								},
+								"Tag": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"Key": {
+												"type": "string",
+												"description": "The key of a tag"
+											},
+											"Value": {
+												"type": "string",
+												"description": "The value of a tag"
+											}
+										}
+									},
+									"description": "Keywords and labels that can be added by a user to a resource\n to make it easy to find when doing a search."
+								},
+								"retention": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Default retention value for the bucket."
+								},
+								"default_group_file_read_permission": {
+									"type": "boolean",
+									"description": "Flag indicating the Read permission for default group"
+								},
+								"default_group_file_write_permission": {
+									"type": "boolean",
+									"description": "Flag indicating the file write permission for default group"
+								},
+								"default_group_file_execute_permission": {
+									"type": "boolean",
+									"description": "Flag indicating the file execute permission for default group"
+								},
+								"default_group_dir_read_permission": {
+									"type": "boolean",
+									"description": "Flag indicating the directory read permission for default group. This is only applicable to folders created\n within the Filesystem-Enabled bucket. It is not applicable to files/objects"
+								},
+								"default_group_dir_write_permission": {
+									"type": "boolean",
+									"description": "Flag indicating the directory write permission for default group. This is only applicable to folders created\n within the Filesystem-Enabled bucket. It is not applicable to files/objects"
+								},
+								"default_group_dir_execute_permission": {
+									"type": "boolean",
+									"description": "Flag indicating the directory execute permission for default group. This is only applicable to folders created\n within the Filesystem-Enabled bucket. It is not applicable to files/objects"
+								},
+								"default_group": {
+									"type": "string",
+									"description": "Bucket's default group"
+								},
+								"search_metadata": {
+									"type": "object",
+									"properties": {
+										"metadata": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"type": {
+														"type": "string",
+														"description": "The meta key type."
+													},
+													"name": {
+														"type": "string",
+														"description": "The meta key name."
+													},
+													"datatype": {
+														"type": "string",
+														"description": "The meta key data type."
+													}
+												}
+											},
+											"description": "Getter for the metadata."
+										},
+										"isEnabled": {
+											"type": "boolean",
+											"description": "Getter for the enabled flag."
+										},
+										"mdTokens": {
+											"type": "boolean",
+											"description": "Getter for the mdTokens flag."
+										},
+										"maxKeys": {
+											"type": "integer",
+											"description": "Getter for maxKeys."
+										}
+									},
+									"description": "Metadata keys associated with the bucket."
+								},
+								"min_max_governor": {
+									"type": "object",
+									"properties": {
+										"enforce_retention": {
+											"type": "boolean"
+										},
+										"minimum_fixed_retention": {
+											"type": "integer",
+											"format": "int64"
+										},
+										"maximum_fixed_retention": {
+											"type": "integer",
+											"format": "int64"
+										},
+										"minimum_variable_retention": {
+											"type": "integer",
+											"format": "int64"
+										},
+										"maximum_variable_retention": {
+											"type": "integer",
+											"format": "int64"
+										}
+									}
+								},
+								"audit_delete_expiration": {
+									"type": "integer",
+									"format": "int64",
+									"description": "Bucket audit delete expiration in seconds"
+								},
+								"is_empty_bucket_in_progress": {
+									"type": "boolean",
+									"description": "Optional.  If true the bucket is in the process of being deleted.  The bucket will be read only and no changes will be allowed on the bucket\n  until the operation completes."
+								},
+								"blockSizeInCount": {
+									"type": "integer",
+									"format": "int64"
+								},
+								"notificationSizeInCount": {
+									"type": "integer",
+									"format": "int64"
+								},
+								"enableAdvancedMetadataSearch": {
+									"type": "boolean"
+								},
+								"advancedMetadataSearchTargetName": {
+									"type": "string"
+								},
+								"advancedMetadataSearchTargetStream": {
+									"type": "string"
+								},
+								"local_object_metadata_reads": {
+									"type": "boolean",
+									"description": "Local object metadata reads bucket flag."
+								},
+								"versioning_status": {
+									"type": "string",
+									"description": "Bucket versioning status."
+								}
+							}
+						},
+						"description": "A list of buckets",
+						"x-is-paginated-resp": "true"
+					},
+					"MaxBuckets": {
+						"type": "integer",
+						"description": "Number of buckets requested."
+					},
+					"NextMarker": {
+						"type": "string",
+						"description": "Reference object to retrieve next set of objects."
+					},
+					"Filter": {
+						"type": "string",
+						"description": "filter used to get the objects."
+					},
+					"NextPageLink": {
+						"type": "string",
+						"description": "link to get the next page."
+					}
+				},
+				"required": [
+					"object_bucket"
+				],
+				"x-is-paginated": "true"
 			},
 			"IamService_AddUserToGroupResponse": {
 				"type": "object",

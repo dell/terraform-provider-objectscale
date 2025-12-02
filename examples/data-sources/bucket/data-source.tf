@@ -15,10 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-data "objectscale_iam_user" "all" {
+data "objectscale_bucket" "all" {
   namespace = "ns1"
+
+  bucket_name_prefix = "1"
 }
 
-output "objectscale_namespace_all" {
-  value = data.objectscale_iam_user.all
+output "objectscale_buckets_all" {
+  value = data.objectscale_bucket.all
 }

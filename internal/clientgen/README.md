@@ -79,6 +79,8 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*BucketApi* | [**BucketServiceCreateBucket**](docs/BucketApi.md#bucketservicecreatebucket) | **Post** /object/bucket | Creates a bucket in which users can create objects
+*BucketApi* | [**BucketServiceGetBuckets**](docs/BucketApi.md#bucketservicegetbuckets) | **Get** /object/bucket | Gets the list of buckets for the specified namespace
 *DataVpoolApi* | [**DataServiceVpoolServiceAddToVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceaddtovpool) | **Put** /vdc/data-service/vpools/{id}/addvarrays | Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group
 *DataVpoolApi* | [**DataServiceVpoolServiceCreateDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolservicecreatedataservicevpool) | **Post** /vdc/data-service/vpools | Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)
 *DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceStore**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicestore) | **Get** /vdc/data-service/vpools/{id} | Gets the details for the specified replication group
@@ -119,6 +121,17 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [BucketServiceCreateBucketRequest](docs/BucketServiceCreateBucketRequest.md)
+ - [BucketServiceCreateBucketRequestCopyPolicy](docs/BucketServiceCreateBucketRequestCopyPolicy.md)
+ - [BucketServiceCreateBucketRequestMetadataInner](docs/BucketServiceCreateBucketRequestMetadataInner.md)
+ - [BucketServiceCreateBucketRequestMinMaxGovernor](docs/BucketServiceCreateBucketRequestMinMaxGovernor.md)
+ - [BucketServiceCreateBucketRequestTagInner](docs/BucketServiceCreateBucketRequestTagInner.md)
+ - [BucketServiceCreateBucketResponse](docs/BucketServiceCreateBucketResponse.md)
+ - [BucketServiceCreateBucketResponseMetaData](docs/BucketServiceCreateBucketResponseMetaData.md)
+ - [BucketServiceGetBucketsResponse](docs/BucketServiceGetBucketsResponse.md)
+ - [BucketServiceGetBucketsResponseObjectBucketInner](docs/BucketServiceGetBucketsResponseObjectBucketInner.md)
+ - [BucketServiceGetBucketsResponseObjectBucketInnerMinMaxGovernor](docs/BucketServiceGetBucketsResponseObjectBucketInnerMinMaxGovernor.md)
+ - [BucketServiceGetBucketsResponseObjectBucketInnerSearchMetadata](docs/BucketServiceGetBucketsResponseObjectBucketInnerSearchMetadata.md)
  - [DataServiceVpoolServiceAddToVpoolRequest](docs/DataServiceVpoolServiceAddToVpoolRequest.md)
  - [DataServiceVpoolServiceCreateDataServiceVpoolRequest](docs/DataServiceVpoolServiceCreateDataServiceVpoolRequest.md)
  - [DataServiceVpoolServiceCreateDataServiceVpoolResponse](docs/DataServiceVpoolServiceCreateDataServiceVpoolResponse.md)

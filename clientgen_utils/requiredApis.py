@@ -48,5 +48,6 @@ RequiredAPIs = [
     "/iam?Action=DeleteGroupPolicy",
     "/iam?Action=DetachGroupPolicy",
     "/iam?Action=DeleteGroup",
-    "/iam?Action=RemoveUserFromGroup"
+    "/iam?Action=RemoveUserFromGroup",
+    "/object/bucket",
 ]
