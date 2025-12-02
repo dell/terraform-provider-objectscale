@@ -16,83 +16,71 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
-// IamApiService IamApi service
-type IamApiService service
+// BucketApiService BucketApi service
+type BucketApiService service
 
-type ApiIamServiceAddUserToGroupRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	userName      *string
-	xEmcNamespace *string
+type ApiBucketServiceActivateAdvancedMetadataSearchRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// The name of the group to update.
-func (r ApiIamServiceAddUserToGroupRequest) GroupName(groupName string) ApiIamServiceAddUserToGroupRequest {
-	r.groupName = &groupName
+// Namespace associated. If it is null, then current user&#39;s namespace is                    used.
+func (r ApiBucketServiceActivateAdvancedMetadataSearchRequest) Namespace(namespace string) ApiBucketServiceActivateAdvancedMetadataSearchRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// The name of the user to add.
-func (r ApiIamServiceAddUserToGroupRequest) UserName(userName string) ApiIamServiceAddUserToGroupRequest {
-	r.userName = &userName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceAddUserToGroupRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceAddUserToGroupRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceAddUserToGroupRequest) Execute() (*IamServiceAddUserToGroupResponse, *http.Response, error) {
-	return r.ApiService.IamServiceAddUserToGroupExecute(r)
+func (r ApiBucketServiceActivateAdvancedMetadataSearchRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceActivateAdvancedMetadataSearchExecute(r)
 }
 
 /*
-IamServiceAddUserToGroup Add user to a group.
+BucketServiceActivateAdvancedMetadataSearch Enables advanced metadata search functionality for a bucket.
 
-Add user to a group.
+Enables advanced metadata search functionality for a bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceAddUserToGroupRequest
+	@param bucketName Bucket name for which advanced metadata search will be enabled.
+	@return ApiBucketServiceActivateAdvancedMetadataSearchRequest
 */
-func (a *IamApiService) IamServiceAddUserToGroup(ctx context.Context) ApiIamServiceAddUserToGroupRequest {
-	return ApiIamServiceAddUserToGroupRequest{
+func (a *BucketApiService) BucketServiceActivateAdvancedMetadataSearch(ctx context.Context, bucketName string) ApiBucketServiceActivateAdvancedMetadataSearchRequest {
+	return ApiBucketServiceActivateAdvancedMetadataSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceAddUserToGroupResponse
-func (a *IamApiService) IamServiceAddUserToGroupExecute(r ApiIamServiceAddUserToGroupRequest) (*IamServiceAddUserToGroupResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceActivateAdvancedMetadataSearchExecute(r ApiBucketServiceActivateAdvancedMetadataSearchRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAddUserToGroupResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAddUserToGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceActivateAdvancedMetadataSearch")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=AddUserToGroup"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/advancedMetadataSearch"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -110,9 +98,6 @@ func (a *IamApiService) IamServiceAddUserToGroupExecute(r ApiIamServiceAddUserTo
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -197,46 +182,201 @@ func (a *IamApiService) IamServiceAddUserToGroupExecute(r ApiIamServiceAddUserTo
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceAttachGroupPolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	groupName     *string
-	xEmcNamespace *string
+type ApiBucketServiceAddBucketTagsRequest struct {
+	ctx                               context.Context
+	ApiService                        *BucketApiService
+	bucketName                        string
+	bucketServiceAddBucketTagsRequest *BucketServiceAddBucketTagsRequest
 }
 
-// Arn of the policy to attach.
-func (r ApiIamServiceAttachGroupPolicyRequest) PolicyArn(policyArn string) ApiIamServiceAttachGroupPolicyRequest {
-	r.policyArn = &policyArn
+func (r ApiBucketServiceAddBucketTagsRequest) BucketServiceAddBucketTagsRequest(bucketServiceAddBucketTagsRequest BucketServiceAddBucketTagsRequest) ApiBucketServiceAddBucketTagsRequest {
+	r.bucketServiceAddBucketTagsRequest = &bucketServiceAddBucketTagsRequest
 	return r
 }
 
-// Name of the group to attach the policy.
-func (r ApiIamServiceAttachGroupPolicyRequest) GroupName(groupName string) ApiIamServiceAttachGroupPolicyRequest {
-	r.groupName = &groupName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceAttachGroupPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceAttachGroupPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceAttachGroupPolicyRequest) Execute() (*IamServiceAttachGroupPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceAttachGroupPolicyExecute(r)
+func (r ApiBucketServiceAddBucketTagsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceAddBucketTagsExecute(r)
 }
 
 /*
-IamServiceAttachGroupPolicy Attach a Managed Policy to Group.
+BucketServiceAddBucketTags Adds the provided tags for the specified bucket.
 
-Attach a Managed Policy to Group.
+Adds the provided tags for the specified bucket.
+
+	This will return with an ERROR when the total number of existing tags and the tags specified exceeds 10
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceAttachGroupPolicyRequest
+	@param bucketName Bucket name for which specified tags will be updated.
+	@return ApiBucketServiceAddBucketTagsRequest
 */
-func (a *IamApiService) IamServiceAttachGroupPolicy(ctx context.Context) ApiIamServiceAttachGroupPolicyRequest {
-	return ApiIamServiceAttachGroupPolicyRequest{
+func (a *BucketApiService) BucketServiceAddBucketTags(ctx context.Context, bucketName string) ApiBucketServiceAddBucketTagsRequest {
+	return ApiBucketServiceAddBucketTagsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceAddBucketTagsExecute(r ApiBucketServiceAddBucketTagsRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceAddBucketTags")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/tags"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.bucketServiceAddBucketTagsRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceAddBucketTagsRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.bucketServiceAddBucketTagsRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceCreateBucketRequest struct {
+	ctx                              context.Context
+	ApiService                       *BucketApiService
+	bucketServiceCreateBucketRequest *BucketServiceCreateBucketRequest
+}
+
+func (r ApiBucketServiceCreateBucketRequest) BucketServiceCreateBucketRequest(bucketServiceCreateBucketRequest BucketServiceCreateBucketRequest) ApiBucketServiceCreateBucketRequest {
+	r.bucketServiceCreateBucketRequest = &bucketServiceCreateBucketRequest
+	return r
+}
+
+func (r ApiBucketServiceCreateBucketRequest) Execute() (*BucketServiceCreateBucketResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceCreateBucketExecute(r)
+}
+
+/*
+BucketServiceCreateBucket Creates a bucket in which users can create objects
+
+Creates a bucket in which users can create objects.
+
+	The bucket is created in a storage pool associated with the specified replication group.
+	<ul>
+	    <li><p>Current user will become the bucket owner.</p></li>
+	    <li><p>If namespace to this bucket creation does not exist, user's namespace is used</p></li>
+	    <li><p>For non SYSTEM_ADMIN user, namespace should be current user's namespace</p></li>
+	</ul>
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiBucketServiceCreateBucketRequest
+*/
+func (a *BucketApiService) BucketServiceCreateBucket(ctx context.Context) ApiBucketServiceCreateBucketRequest {
+	return ApiBucketServiceCreateBucketRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -244,31 +384,190 @@ func (a *IamApiService) IamServiceAttachGroupPolicy(ctx context.Context) ApiIamS
 
 // Execute executes the request
 //
-//	@return IamServiceAttachGroupPolicyResponse
-func (a *IamApiService) IamServiceAttachGroupPolicyExecute(r ApiIamServiceAttachGroupPolicyRequest) (*IamServiceAttachGroupPolicyResponse, *http.Response, error) {
+//	@return BucketServiceCreateBucketResponse
+func (a *BucketApiService) BucketServiceCreateBucketExecute(r ApiBucketServiceCreateBucketRequest) (*BucketServiceCreateBucketResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAttachGroupPolicyResponse
+		localVarReturnValue *BucketServiceCreateBucketResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAttachGroupPolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceCreateBucket")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=AttachGroupPolicy"
+	localVarPath := localBasePath + "/object/bucket"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.bucketServiceCreateBucketRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceCreateBucketRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.bucketServiceCreateBucketRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceDeactivateAdvancedMetadataSearchRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+}
+
+// Namespace associated. If it is null, then current user&#39;s namespace is                    used.
+func (r ApiBucketServiceDeactivateAdvancedMetadataSearchRequest) Namespace(namespace string) ApiBucketServiceDeactivateAdvancedMetadataSearchRequest {
+	r.namespace = &namespace
+	return r
+}
+
+func (r ApiBucketServiceDeactivateAdvancedMetadataSearchRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceDeactivateAdvancedMetadataSearchExecute(r)
+}
+
+/*
+BucketServiceDeactivateAdvancedMetadataSearch Disables advanced metadata search functionality for a bucket.
+
+Disables advanced metadata search functionality for a bucket.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Bucket name for which advanced metadata search will be disabled.
+	@return ApiBucketServiceDeactivateAdvancedMetadataSearchRequest
+*/
+func (a *BucketApiService) BucketServiceDeactivateAdvancedMetadataSearch(ctx context.Context, bucketName string) ApiBucketServiceDeactivateAdvancedMetadataSearchRequest {
+	return ApiBucketServiceDeactivateAdvancedMetadataSearchRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceDeactivateAdvancedMetadataSearchExecute(r ApiBucketServiceDeactivateAdvancedMetadataSearchRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceDeactivateAdvancedMetadataSearch")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/advancedMetadataSearch"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
-	}
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -286,9 +585,6 @@ func (a *IamApiService) IamServiceAttachGroupPolicyExecute(r ApiIamServiceAttach
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -373,78 +669,75 @@ func (a *IamApiService) IamServiceAttachGroupPolicyExecute(r ApiIamServiceAttach
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceAttachRolePolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceDeactivateBucketRequest struct {
+	ctx         context.Context
+	ApiService  *BucketApiService
+	bucketName  string
+	namespace   *string
+	emptyBucket *string
 }
 
-// Arn that identifies the policy.
-func (r ApiIamServiceAttachRolePolicyRequest) PolicyArn(policyArn string) ApiIamServiceAttachRolePolicyRequest {
-	r.policyArn = &policyArn
+// Namespace associated. If it is null, then current user&#39;s namespace is used.
+func (r ApiBucketServiceDeactivateBucketRequest) Namespace(namespace string) ApiBucketServiceDeactivateBucketRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceAttachRolePolicyRequest) RoleName(roleName string) ApiIamServiceAttachRolePolicyRequest {
-	r.roleName = &roleName
+// Optional: &lt;b&gt;true&lt;/b&gt; | &lt;b&gt;false&lt;/b&gt; (default).      If emptyBucket&#x3D;true the contents of the bucket will be emptied as part of the delete.     The request will return a 202 Accepted if the bucket is not already empty and cleanup was initiated to run in the background.     &lt;br&gt;     The bucket will be read only during the operation.  If the task successfully removes all related items the buket will be deleted.     If the task is unable to remove all items or is aborted the bucket will be put back into a writable state.     &lt;br&gt;     Progress can be monitored through call to:     &lt;br&gt;     /object/bucket/{bucketName}/emtpy-bucket-status     &lt;br&gt;     &lt;br&gt;     If emptyBucket&#x3D;false or not present the delete bucket operation will fail if the bucket is not empty.
+func (r ApiBucketServiceDeactivateBucketRequest) EmptyBucket(emptyBucket string) ApiBucketServiceDeactivateBucketRequest {
+	r.emptyBucket = &emptyBucket
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceAttachRolePolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceAttachRolePolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceAttachRolePolicyRequest) Execute() (*IamServiceAttachRolePolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceAttachRolePolicyExecute(r)
+func (r ApiBucketServiceDeactivateBucketRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceDeactivateBucketExecute(r)
 }
 
 /*
-IamServiceAttachRolePolicy Attaches the specified managed policy to the specified IAM role.
+BucketServiceDeactivateBucket Deletes the specified bucket
 
-Attaches the specified managed policy to the specified IAM role.
+Deletes the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceAttachRolePolicyRequest
+	@param bucketName Bucket name to be deleted
+	@return ApiBucketServiceDeactivateBucketRequest
 */
-func (a *IamApiService) IamServiceAttachRolePolicy(ctx context.Context) ApiIamServiceAttachRolePolicyRequest {
-	return ApiIamServiceAttachRolePolicyRequest{
+func (a *BucketApiService) BucketServiceDeactivateBucket(ctx context.Context, bucketName string) ApiBucketServiceDeactivateBucketRequest {
+	return ApiBucketServiceDeactivateBucketRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceAttachRolePolicyResponse
-func (a *IamApiService) IamServiceAttachRolePolicyExecute(r ApiIamServiceAttachRolePolicyRequest) (*IamServiceAttachRolePolicyResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceDeactivateBucketExecute(r ApiBucketServiceDeactivateBucketRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAttachRolePolicyResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAttachRolePolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceDeactivateBucket")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=AttachRolePolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/deactivate"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.emptyBucket != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "emptyBucket", r.emptyBucket, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -462,9 +755,6 @@ func (a *IamApiService) IamServiceAttachRolePolicyExecute(r ApiIamServiceAttachR
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -549,78 +839,65 @@ func (a *IamApiService) IamServiceAttachRolePolicyExecute(r ApiIamServiceAttachR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceCreateGroupRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	path          *string
-	xEmcNamespace *string
+type ApiBucketServiceDeactivateMetaSearchRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// The name of the group to create.
-func (r ApiIamServiceCreateGroupRequest) GroupName(groupName string) ApiIamServiceCreateGroupRequest {
-	r.groupName = &groupName
+// Namespace associated. If it is null, then current user&#39;s namespace is                    used.
+func (r ApiBucketServiceDeactivateMetaSearchRequest) Namespace(namespace string) ApiBucketServiceDeactivateMetaSearchRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// The path for the group. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed.
-func (r ApiIamServiceCreateGroupRequest) Path(path string) ApiIamServiceCreateGroupRequest {
-	r.path = &path
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceCreateGroupRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceCreateGroupRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceCreateGroupRequest) Execute() (*IamServiceCreateGroupResponse, *http.Response, error) {
-	return r.ApiService.IamServiceCreateGroupExecute(r)
+func (r ApiBucketServiceDeactivateMetaSearchRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceDeactivateMetaSearchExecute(r)
 }
 
 /*
-IamServiceCreateGroup Creates a new IAM Group.
+BucketServiceDeactivateMetaSearch Disables the metadata search functionality for a bucket.
 
-Creates a new IAM Group.
+Disables the metadata search functionality for a bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceCreateGroupRequest
+	@param bucketName Bucket name for which metadata search mode will be disabled.
+	@return ApiBucketServiceDeactivateMetaSearchRequest
 */
-func (a *IamApiService) IamServiceCreateGroup(ctx context.Context) ApiIamServiceCreateGroupRequest {
-	return ApiIamServiceCreateGroupRequest{
+func (a *BucketApiService) BucketServiceDeactivateMetaSearch(ctx context.Context, bucketName string) ApiBucketServiceDeactivateMetaSearchRequest {
+	return ApiBucketServiceDeactivateMetaSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceCreateGroupResponse
-func (a *IamApiService) IamServiceCreateGroupExecute(r ApiIamServiceCreateGroupRequest) (*IamServiceCreateGroupResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceDeactivateMetaSearchExecute(r ApiBucketServiceDeactivateMetaSearchRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceCreateGroupResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceCreateGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceDeactivateMetaSearch")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=CreateGroup"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/searchmetadata"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.path != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Path", r.path, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -638,9 +915,6 @@ func (a *IamApiService) IamServiceCreateGroupExecute(r ApiIamServiceCreateGroupR
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -725,128 +999,75 @@ func (a *IamApiService) IamServiceCreateGroupExecute(r ApiIamServiceCreateGroupR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceCreateRoleRequest struct {
-	ctx                      context.Context
-	ApiService               *IamApiService
-	roleName                 *string
-	assumeRolePolicyDocument *string
-	maxSessionDuration       *int32
-	description              *string
-	path                     *string
-	permissionsBoundary      *string
-	tagsMemberN              *map[string]interface{}
-	xEmcNamespace            *string
+type ApiBucketServiceDeleteBucketHeadMetadataRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	headType   *string
+	namespace  *string
 }
 
-// The name of the role to create.
-func (r ApiIamServiceCreateRoleRequest) RoleName(roleName string) ApiIamServiceCreateRoleRequest {
-	r.roleName = &roleName
+// the head-type of the metadata to be removed (HDFS, S3, etc)
+func (r ApiBucketServiceDeleteBucketHeadMetadataRequest) HeadType(headType string) ApiBucketServiceDeleteBucketHeadMetadataRequest {
+	r.headType = &headType
 	return r
 }
 
-// The trust relationship policy document that grants an entity permission to assume the role
-func (r ApiIamServiceCreateRoleRequest) AssumeRolePolicyDocument(assumeRolePolicyDocument string) ApiIamServiceCreateRoleRequest {
-	r.assumeRolePolicyDocument = &assumeRolePolicyDocument
+// namespace of the bucket
+func (r ApiBucketServiceDeleteBucketHeadMetadataRequest) Namespace(namespace string) ApiBucketServiceDeleteBucketHeadMetadataRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied.  This setting can have a value from 1 hour to 12 hours
-func (r ApiIamServiceCreateRoleRequest) MaxSessionDuration(maxSessionDuration int32) ApiIamServiceCreateRoleRequest {
-	r.maxSessionDuration = &maxSessionDuration
-	return r
-}
-
-// A description of the role.
-func (r ApiIamServiceCreateRoleRequest) Description(description string) ApiIamServiceCreateRoleRequest {
-	r.description = &description
-	return r
-}
-
-// The path to the role. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed.
-func (r ApiIamServiceCreateRoleRequest) Path(path string) ApiIamServiceCreateRoleRequest {
-	r.path = &path
-	return r
-}
-
-// The ARN of the policy that is used to set the permissions boundary for the role.
-func (r ApiIamServiceCreateRoleRequest) PermissionsBoundary(permissionsBoundary string) ApiIamServiceCreateRoleRequest {
-	r.permissionsBoundary = &permissionsBoundary
-	return r
-}
-
-// A list of tags that you want to attach to the role being created.
-func (r ApiIamServiceCreateRoleRequest) TagsMemberN(tagsMemberN map[string]interface{}) ApiIamServiceCreateRoleRequest {
-	r.tagsMemberN = &tagsMemberN
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceCreateRoleRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceCreateRoleRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceCreateRoleRequest) Execute() (*IamServiceCreateRoleResponse, *http.Response, error) {
-	return r.ApiService.IamServiceCreateRoleExecute(r)
+func (r ApiBucketServiceDeleteBucketHeadMetadataRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceDeleteBucketHeadMetadataExecute(r)
 }
 
 /*
-IamServiceCreateRole Creates a new IAM role.
+BucketServiceDeleteBucketHeadMetadata Deletes additional metadata associated with the bucket for a given head-type
 
-Creates a new IAM role.
+Delete a page of head metadata for the specified bucket
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceCreateRoleRequest
+	@param bucketName name of the bucket for which the metadata is to be removed
+	@return ApiBucketServiceDeleteBucketHeadMetadataRequest
 */
-func (a *IamApiService) IamServiceCreateRole(ctx context.Context) ApiIamServiceCreateRoleRequest {
-	return ApiIamServiceCreateRoleRequest{
+func (a *BucketApiService) BucketServiceDeleteBucketHeadMetadata(ctx context.Context, bucketName string) ApiBucketServiceDeleteBucketHeadMetadataRequest {
+	return ApiBucketServiceDeleteBucketHeadMetadataRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceCreateRoleResponse
-func (a *IamApiService) IamServiceCreateRoleExecute(r ApiIamServiceCreateRoleRequest) (*IamServiceCreateRoleResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceDeleteBucketHeadMetadataExecute(r ApiBucketServiceDeleteBucketHeadMetadataRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceCreateRoleResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceCreateRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceDeleteBucketHeadMetadata")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=CreateRole"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/metadata"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.headType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "headType", r.headType, "")
 	}
-	if r.assumeRolePolicyDocument != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "AssumeRolePolicyDocument", r.assumeRolePolicyDocument, "")
-	}
-	if r.maxSessionDuration != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxSessionDuration", r.maxSessionDuration, "")
-	}
-	if r.description != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Description", r.description, "")
-	}
-	if r.path != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Path", r.path, "")
-	}
-	if r.permissionsBoundary != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PermissionsBoundary", r.permissionsBoundary, "")
-	}
-	if r.tagsMemberN != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", r.tagsMemberN, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -864,9 +1085,6 @@ func (a *IamApiService) IamServiceCreateRoleExecute(r ApiIamServiceCreateRoleReq
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -951,68 +1169,65 @@ func (a *IamApiService) IamServiceCreateRoleExecute(r ApiIamServiceCreateRoleReq
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDeleteGroupRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	xEmcNamespace *string
+type ApiBucketServiceDeleteBucketPolicyRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// The name of the group to delete.
-func (r ApiIamServiceDeleteGroupRequest) GroupName(groupName string) ApiIamServiceDeleteGroupRequest {
-	r.groupName = &groupName
+// Namespace of the bucket.
+func (r ApiBucketServiceDeleteBucketPolicyRequest) Namespace(namespace string) ApiBucketServiceDeleteBucketPolicyRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDeleteGroupRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDeleteGroupRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDeleteGroupRequest) Execute() (*IamServiceDeleteGroupResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDeleteGroupExecute(r)
+func (r ApiBucketServiceDeleteBucketPolicyRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceDeleteBucketPolicyExecute(r)
 }
 
 /*
-IamServiceDeleteGroup Delete an IAM Group.
+BucketServiceDeleteBucketPolicy Deletes the bucket policy for the specified bucket.
 
-Delete an IAM Group.
+Deletes the bucket policy for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDeleteGroupRequest
+	@param bucketName Bucket name for which the policy will be deleted.
+	@return ApiBucketServiceDeleteBucketPolicyRequest
 */
-func (a *IamApiService) IamServiceDeleteGroup(ctx context.Context) ApiIamServiceDeleteGroupRequest {
-	return ApiIamServiceDeleteGroupRequest{
+func (a *BucketApiService) BucketServiceDeleteBucketPolicy(ctx context.Context, bucketName string) ApiBucketServiceDeleteBucketPolicyRequest {
+	return ApiBucketServiceDeleteBucketPolicyRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteGroupResponse
-func (a *IamApiService) IamServiceDeleteGroupExecute(r ApiIamServiceDeleteGroupRequest) (*IamServiceDeleteGroupResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceDeleteBucketPolicyExecute(r ApiBucketServiceDeleteBucketPolicyRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteGroupResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceDeleteBucketPolicy")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DeleteGroup"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/policy"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1030,9 +1245,6 @@ func (a *IamApiService) IamServiceDeleteGroupExecute(r ApiIamServiceDeleteGroupR
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -1117,78 +1329,232 @@ func (a *IamApiService) IamServiceDeleteGroupExecute(r ApiIamServiceDeleteGroupR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDeleteGroupPolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	policyName    *string
-	xEmcNamespace *string
+type ApiBucketServiceDeleteBucketTagsRequest struct {
+	ctx                                  context.Context
+	ApiService                           *BucketApiService
+	bucketName                           string
+	bucketServiceDeleteBucketTagsRequest *BucketServiceDeleteBucketTagsRequest
 }
 
-// Name of the group to delete the inline policy.
-func (r ApiIamServiceDeleteGroupPolicyRequest) GroupName(groupName string) ApiIamServiceDeleteGroupPolicyRequest {
-	r.groupName = &groupName
+func (r ApiBucketServiceDeleteBucketTagsRequest) BucketServiceDeleteBucketTagsRequest(bucketServiceDeleteBucketTagsRequest BucketServiceDeleteBucketTagsRequest) ApiBucketServiceDeleteBucketTagsRequest {
+	r.bucketServiceDeleteBucketTagsRequest = &bucketServiceDeleteBucketTagsRequest
 	return r
 }
 
-// Name of the policy whose Policy Document needs to be deleted.
-func (r ApiIamServiceDeleteGroupPolicyRequest) PolicyName(policyName string) ApiIamServiceDeleteGroupPolicyRequest {
-	r.policyName = &policyName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDeleteGroupPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDeleteGroupPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDeleteGroupPolicyRequest) Execute() (*IamServiceDeleteGroupPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDeleteGroupPolicyExecute(r)
+func (r ApiBucketServiceDeleteBucketTagsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceDeleteBucketTagsExecute(r)
 }
 
 /*
-IamServiceDeleteGroupPolicy Delete specific inlinePolicy for IAM Group.
+BucketServiceDeleteBucketTags Deletes the provided tags for the specified bucket.
 
-Delete specific inlinePolicy for IAM Group.
+Deletes the provided tags for the specified bucket.
+
+	All the specified tags must be present in the Bucket.
+	If any one of the tags is missing in the Bucket, this will throw appropriate Error code (TBD)
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDeleteGroupPolicyRequest
+	@param bucketName Bucket name for which specified tags will be updated.
+	@return ApiBucketServiceDeleteBucketTagsRequest
 */
-func (a *IamApiService) IamServiceDeleteGroupPolicy(ctx context.Context) ApiIamServiceDeleteGroupPolicyRequest {
-	return ApiIamServiceDeleteGroupPolicyRequest{
+func (a *BucketApiService) BucketServiceDeleteBucketTags(ctx context.Context, bucketName string) ApiBucketServiceDeleteBucketTagsRequest {
+	return ApiBucketServiceDeleteBucketTagsRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteGroupPolicyResponse
-func (a *IamApiService) IamServiceDeleteGroupPolicyExecute(r ApiIamServiceDeleteGroupPolicyRequest) (*IamServiceDeleteGroupPolicyResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceDeleteBucketTagsExecute(r ApiBucketServiceDeleteBucketTagsRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteGroupPolicyResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteGroupPolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceDeleteBucketTags")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DeleteGroupPolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/tags"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.bucketServiceDeleteBucketTagsRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceDeleteBucketTagsRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.bucketServiceDeleteBucketTagsRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+}
+
+// Namespace for the bucket for which object lock and ADO will be enabled.
+func (r ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest) Namespace(namespace string) ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest {
+	r.namespace = &namespace
+	return r
+}
+
+func (r ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceEnableObjectLockWithAdoAllowedForExistingBucketExecute(r)
+}
+
+/*
+BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket Sets flag on the bucket to allow Object Lock and ADO to be enabled together.
+
+Permanently sets flag on the bucket to allow Object Lock and ADO to be enabled together.
+
+	 <br>This operation does not enable Object Lock or ADO.
+	 <br>Once set the flag cannot be disabled.  See the Admin Guide for more information.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Bucket name for which object lock and ADO will be enabled.
+	@return ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest
+*/
+func (a *BucketApiService) BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket(ctx context.Context, bucketName string) ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest {
+	return ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceEnableObjectLockWithAdoAllowedForExistingBucketExecute(r ApiBucketServiceEnableObjectLockWithAdoAllowedForExistingBucketRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/allow-object-lock-with-ado"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1206,9 +1572,6 @@ func (a *IamApiService) IamServiceDeleteGroupPolicyExecute(r ApiIamServiceDelete
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -1293,68 +1656,65 @@ func (a *IamApiService) IamServiceDeleteGroupPolicyExecute(r ApiIamServiceDelete
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDeleteRoleRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketACLRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceDeleteRoleRequest) RoleName(roleName string) ApiIamServiceDeleteRoleRequest {
-	r.roleName = &roleName
+// Namespace with which bucket is associated. If it is null, the current user&#39;s namespace is used.
+func (r ApiBucketServiceGetBucketACLRequest) Namespace(namespace string) ApiBucketServiceGetBucketACLRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDeleteRoleRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDeleteRoleRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDeleteRoleRequest) Execute() (*IamServiceDeleteRoleResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDeleteRoleExecute(r)
+func (r ApiBucketServiceGetBucketACLRequest) Execute() (*BucketServiceGetBucketACLResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketACLExecute(r)
 }
 
 /*
-IamServiceDeleteRole Deletes the specified IAM role.
+BucketServiceGetBucketACL Gets the ACL for the given bucket
 
-Deletes the specified IAM role.
+Gets the ACL for the given bucket. Current user's namespace is used.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDeleteRoleRequest
+	@param bucketName Name of the bucket for which ACL is to be fetched.
+	@return ApiBucketServiceGetBucketACLRequest
 */
-func (a *IamApiService) IamServiceDeleteRole(ctx context.Context) ApiIamServiceDeleteRoleRequest {
-	return ApiIamServiceDeleteRoleRequest{
+func (a *BucketApiService) BucketServiceGetBucketACL(ctx context.Context, bucketName string) ApiBucketServiceGetBucketACLRequest {
+	return ApiBucketServiceGetBucketACLRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteRoleResponse
-func (a *IamApiService) IamServiceDeleteRoleExecute(r ApiIamServiceDeleteRoleRequest) (*IamServiceDeleteRoleResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketACLResponse
+func (a *BucketApiService) BucketServiceGetBucketACLExecute(r ApiBucketServiceGetBucketACLRequest) (*BucketServiceGetBucketACLResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteRoleResponse
+		localVarReturnValue *BucketServiceGetBucketACLResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketACL")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DeleteRole"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/acl"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1372,9 +1732,6 @@ func (a *IamApiService) IamServiceDeleteRoleExecute(r ApiIamServiceDeleteRoleReq
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -1459,68 +1816,65 @@ func (a *IamApiService) IamServiceDeleteRoleExecute(r ApiIamServiceDeleteRoleReq
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDeleteRolePermissionsBoundaryRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketDefaultLockConfigurationRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceDeleteRolePermissionsBoundaryRequest) RoleName(roleName string) ApiIamServiceDeleteRolePermissionsBoundaryRequest {
-	r.roleName = &roleName
+// Namespace of the bucket for which default lock configuration will be retrieved.
+func (r ApiBucketServiceGetBucketDefaultLockConfigurationRequest) Namespace(namespace string) ApiBucketServiceGetBucketDefaultLockConfigurationRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDeleteRolePermissionsBoundaryRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDeleteRolePermissionsBoundaryRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDeleteRolePermissionsBoundaryRequest) Execute() (*IamServiceDeleteRolePermissionsBoundaryResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDeleteRolePermissionsBoundaryExecute(r)
+func (r ApiBucketServiceGetBucketDefaultLockConfigurationRequest) Execute() (*BucketServiceGetBucketDefaultLockConfigurationResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketDefaultLockConfigurationExecute(r)
 }
 
 /*
-IamServiceDeleteRolePermissionsBoundary Deletes the permissions boundary for the specified IAM role.
+BucketServiceGetBucketDefaultLockConfiguration Gets bucket default lock configuration.
 
-Deletes the permissions boundary for the specified IAM role.
+Gets bucket default lock configuration.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDeleteRolePermissionsBoundaryRequest
+	@param bucketName Bucket name for which default lock configuration will be retrieved.
+	@return ApiBucketServiceGetBucketDefaultLockConfigurationRequest
 */
-func (a *IamApiService) IamServiceDeleteRolePermissionsBoundary(ctx context.Context) ApiIamServiceDeleteRolePermissionsBoundaryRequest {
-	return ApiIamServiceDeleteRolePermissionsBoundaryRequest{
+func (a *BucketApiService) BucketServiceGetBucketDefaultLockConfiguration(ctx context.Context, bucketName string) ApiBucketServiceGetBucketDefaultLockConfigurationRequest {
+	return ApiBucketServiceGetBucketDefaultLockConfigurationRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteRolePermissionsBoundaryResponse
-func (a *IamApiService) IamServiceDeleteRolePermissionsBoundaryExecute(r ApiIamServiceDeleteRolePermissionsBoundaryRequest) (*IamServiceDeleteRolePermissionsBoundaryResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketDefaultLockConfigurationResponse
+func (a *BucketApiService) BucketServiceGetBucketDefaultLockConfigurationExecute(r ApiBucketServiceGetBucketDefaultLockConfigurationRequest) (*BucketServiceGetBucketDefaultLockConfigurationResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteRolePermissionsBoundaryResponse
+		localVarReturnValue *BucketServiceGetBucketDefaultLockConfigurationResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteRolePermissionsBoundary")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketDefaultLockConfiguration")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DeleteRolePermissionsBoundary"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/object-lock-config"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1538,9 +1892,6 @@ func (a *IamApiService) IamServiceDeleteRolePermissionsBoundaryExecute(r ApiIamS
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -1625,78 +1976,74 @@ func (a *IamApiService) IamServiceDeleteRolePermissionsBoundaryExecute(r ApiIamS
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDeleteRolePolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	policyName    *string
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketHeadMetadataRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	headType   *string
+	namespace  *string
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceDeleteRolePolicyRequest) RoleName(roleName string) ApiIamServiceDeleteRolePolicyRequest {
-	r.roleName = &roleName
+// the head-type of the metadata to be queried (HDFS, S3, etc)
+func (r ApiBucketServiceGetBucketHeadMetadataRequest) HeadType(headType string) ApiBucketServiceGetBucketHeadMetadataRequest {
+	r.headType = &headType
 	return r
 }
 
-// Simple name identifying the policy.
-func (r ApiIamServiceDeleteRolePolicyRequest) PolicyName(policyName string) ApiIamServiceDeleteRolePolicyRequest {
-	r.policyName = &policyName
+func (r ApiBucketServiceGetBucketHeadMetadataRequest) Namespace(namespace string) ApiBucketServiceGetBucketHeadMetadataRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDeleteRolePolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDeleteRolePolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDeleteRolePolicyRequest) Execute() (*IamServiceDeleteRolePolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDeleteRolePolicyExecute(r)
+func (r ApiBucketServiceGetBucketHeadMetadataRequest) Execute() (*BucketServiceGetBucketHeadMetadataResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketHeadMetadataExecute(r)
 }
 
 /*
-IamServiceDeleteRolePolicy Deletes the specified inline policy that is embedded in the specified IAM role.
+BucketServiceGetBucketHeadMetadata Retrieves additional metadata associated with the bucket for a given head-type
 
-Deletes the specified inline policy that is embedded in the specified IAM role.
+Fetch a page of head-specific metadata for the specified bucket
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDeleteRolePolicyRequest
+	@param bucketName name of the bucket for which head metadata is to be fetched.
+	@return ApiBucketServiceGetBucketHeadMetadataRequest
 */
-func (a *IamApiService) IamServiceDeleteRolePolicy(ctx context.Context) ApiIamServiceDeleteRolePolicyRequest {
-	return ApiIamServiceDeleteRolePolicyRequest{
+func (a *BucketApiService) BucketServiceGetBucketHeadMetadata(ctx context.Context, bucketName string) ApiBucketServiceGetBucketHeadMetadataRequest {
+	return ApiBucketServiceGetBucketHeadMetadataRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteRolePolicyResponse
-func (a *IamApiService) IamServiceDeleteRolePolicyExecute(r ApiIamServiceDeleteRolePolicyRequest) (*IamServiceDeleteRolePolicyResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketHeadMetadataResponse
+func (a *BucketApiService) BucketServiceGetBucketHeadMetadataExecute(r ApiBucketServiceGetBucketHeadMetadataRequest) (*BucketServiceGetBucketHeadMetadataResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteRolePolicyResponse
+		localVarReturnValue *BucketServiceGetBucketHeadMetadataResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteRolePolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketHeadMetadata")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DeleteRolePolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/metadata"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.headType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "headType", r.headType, "")
 	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1714,9 +2061,6 @@ func (a *IamApiService) IamServiceDeleteRolePolicyExecute(r ApiIamServiceDeleteR
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -1801,78 +2145,65 @@ func (a *IamApiService) IamServiceDeleteRolePolicyExecute(r ApiIamServiceDeleteR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDeleteUserPolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	userName      *string
-	policyName    *string
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketInfoRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Name of the user to delete the inline policy.
-func (r ApiIamServiceDeleteUserPolicyRequest) UserName(userName string) ApiIamServiceDeleteUserPolicyRequest {
-	r.userName = &userName
+// Namespace associated. If it is null, then current user&#39;s namespace is used.
+func (r ApiBucketServiceGetBucketInfoRequest) Namespace(namespace string) ApiBucketServiceGetBucketInfoRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Name of the policy whose Policy Document needs to be deleted.
-func (r ApiIamServiceDeleteUserPolicyRequest) PolicyName(policyName string) ApiIamServiceDeleteUserPolicyRequest {
-	r.policyName = &policyName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDeleteUserPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDeleteUserPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDeleteUserPolicyRequest) Execute() (*IamServiceDeleteUserPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDeleteUserPolicyExecute(r)
+func (r ApiBucketServiceGetBucketInfoRequest) Execute() (*BucketServiceGetBucketInfoResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketInfoExecute(r)
 }
 
 /*
-IamServiceDeleteUserPolicy Delete specific inlinePolicy for IAM User.
+BucketServiceGetBucketInfo Gets bucket information for the specified bucket
 
-Delete specific inlinePolicy for IAM User.
+Gets bucket information for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDeleteUserPolicyRequest
+	@param bucketName Bucket name for which information will be retrieved
+	@return ApiBucketServiceGetBucketInfoRequest
 */
-func (a *IamApiService) IamServiceDeleteUserPolicy(ctx context.Context) ApiIamServiceDeleteUserPolicyRequest {
-	return ApiIamServiceDeleteUserPolicyRequest{
+func (a *BucketApiService) BucketServiceGetBucketInfo(ctx context.Context, bucketName string) ApiBucketServiceGetBucketInfoRequest {
+	return ApiBucketServiceGetBucketInfoRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteUserPolicyResponse
-func (a *IamApiService) IamServiceDeleteUserPolicyExecute(r ApiIamServiceDeleteUserPolicyRequest) (*IamServiceDeleteUserPolicyResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketInfoResponse
+func (a *BucketApiService) BucketServiceGetBucketInfoExecute(r ApiBucketServiceGetBucketInfoRequest) (*BucketServiceGetBucketInfoResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteUserPolicyResponse
+		localVarReturnValue *BucketServiceGetBucketInfoResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteUserPolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketInfo")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DeleteUserPolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/info"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1890,9 +2221,6 @@ func (a *IamApiService) IamServiceDeleteUserPolicyExecute(r ApiIamServiceDeleteU
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -1977,78 +2305,65 @@ func (a *IamApiService) IamServiceDeleteUserPolicyExecute(r ApiIamServiceDeleteU
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDetachGroupPolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	groupName     *string
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketLockRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Arn of the policy to remove.
-func (r ApiIamServiceDetachGroupPolicyRequest) PolicyArn(policyArn string) ApiIamServiceDetachGroupPolicyRequest {
-	r.policyArn = &policyArn
+// Namespace associated
+func (r ApiBucketServiceGetBucketLockRequest) Namespace(namespace string) ApiBucketServiceGetBucketLockRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Name of the group to remove the policy.
-func (r ApiIamServiceDetachGroupPolicyRequest) GroupName(groupName string) ApiIamServiceDetachGroupPolicyRequest {
-	r.groupName = &groupName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDetachGroupPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDetachGroupPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDetachGroupPolicyRequest) Execute() (*IamServiceDetachGroupPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDetachGroupPolicyExecute(r)
+func (r ApiBucketServiceGetBucketLockRequest) Execute() (*BucketServiceGetBucketLockResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketLockExecute(r)
 }
 
 /*
-IamServiceDetachGroupPolicy Remove a Managed Policy attached to Group.
+BucketServiceGetBucketLock Gets lock information for the specified bucket
 
-Remove a Managed Policy attached to Group.
+Gets lock information for the specified bucket. The current user's namespace is used.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDetachGroupPolicyRequest
+	@param bucketName Name of the bucket for which lock information is to be retrieved
+	@return ApiBucketServiceGetBucketLockRequest
 */
-func (a *IamApiService) IamServiceDetachGroupPolicy(ctx context.Context) ApiIamServiceDetachGroupPolicyRequest {
-	return ApiIamServiceDetachGroupPolicyRequest{
+func (a *BucketApiService) BucketServiceGetBucketLock(ctx context.Context, bucketName string) ApiBucketServiceGetBucketLockRequest {
+	return ApiBucketServiceGetBucketLockRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDetachGroupPolicyResponse
-func (a *IamApiService) IamServiceDetachGroupPolicyExecute(r ApiIamServiceDetachGroupPolicyRequest) (*IamServiceDetachGroupPolicyResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketLockResponse
+func (a *BucketApiService) BucketServiceGetBucketLockExecute(r ApiBucketServiceGetBucketLockRequest) (*BucketServiceGetBucketLockResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDetachGroupPolicyResponse
+		localVarReturnValue *BucketServiceGetBucketLockResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDetachGroupPolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketLock")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DetachGroupPolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/lock"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
-	}
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2066,9 +2381,6 @@ func (a *IamApiService) IamServiceDetachGroupPolicyExecute(r ApiIamServiceDetach
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -2153,78 +2465,65 @@ func (a *IamApiService) IamServiceDetachGroupPolicyExecute(r ApiIamServiceDetach
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceDetachRolePolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketNotificationConfigRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Arn that identifies the policy.
-func (r ApiIamServiceDetachRolePolicyRequest) PolicyArn(policyArn string) ApiIamServiceDetachRolePolicyRequest {
-	r.policyArn = &policyArn
+// Namespace associated with the bucket.
+func (r ApiBucketServiceGetBucketNotificationConfigRequest) Namespace(namespace string) ApiBucketServiceGetBucketNotificationConfigRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceDetachRolePolicyRequest) RoleName(roleName string) ApiIamServiceDetachRolePolicyRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceDetachRolePolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceDetachRolePolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceDetachRolePolicyRequest) Execute() (*IamServiceDetachRolePolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceDetachRolePolicyExecute(r)
+func (r ApiBucketServiceGetBucketNotificationConfigRequest) Execute() (*BucketServiceGetBucketNotificationConfigResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketNotificationConfigExecute(r)
 }
 
 /*
-IamServiceDetachRolePolicy Removes the specified managed policy from the specified IAM role.
+BucketServiceGetBucketNotificationConfig Gets the notification configuration for the specified bucket.
 
-Removes the specified managed policy from the specified IAM role.
+Gets the  notification configuration for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceDetachRolePolicyRequest
+	@param bucketName Bucket name for which notification config will be retrieved.
+	@return ApiBucketServiceGetBucketNotificationConfigRequest
 */
-func (a *IamApiService) IamServiceDetachRolePolicy(ctx context.Context) ApiIamServiceDetachRolePolicyRequest {
-	return ApiIamServiceDetachRolePolicyRequest{
+func (a *BucketApiService) BucketServiceGetBucketNotificationConfig(ctx context.Context, bucketName string) ApiBucketServiceGetBucketNotificationConfigRequest {
+	return ApiBucketServiceGetBucketNotificationConfigRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceDetachRolePolicyResponse
-func (a *IamApiService) IamServiceDetachRolePolicyExecute(r ApiIamServiceDetachRolePolicyRequest) (*IamServiceDetachRolePolicyResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketNotificationConfigResponse
+func (a *BucketApiService) BucketServiceGetBucketNotificationConfigExecute(r ApiBucketServiceGetBucketNotificationConfigRequest) (*BucketServiceGetBucketNotificationConfigResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDetachRolePolicyResponse
+		localVarReturnValue *BucketServiceGetBucketNotificationConfigResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDetachRolePolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketNotificationConfig")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=DetachRolePolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/notification"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2242,9 +2541,6 @@ func (a *IamApiService) IamServiceDetachRolePolicyExecute(r ApiIamServiceDetachR
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -2329,53 +2625,700 @@ func (a *IamApiService) IamServiceDetachRolePolicyExecute(r ApiIamServiceDetachR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceGetGroupRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	marker        *string
-	maxItems      *int32
-	xEmcNamespace *string
+type ApiBucketServiceGetBucketPolicyRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// The name of the group.
-func (r ApiIamServiceGetGroupRequest) GroupName(groupName string) ApiIamServiceGetGroupRequest {
-	r.groupName = &groupName
+// Namespace of the bucket.
+func (r ApiBucketServiceGetBucketPolicyRequest) Namespace(namespace string) ApiBucketServiceGetBucketPolicyRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceGetGroupRequest) Marker(marker string) ApiIamServiceGetGroupRequest {
+func (r ApiBucketServiceGetBucketPolicyRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketPolicyExecute(r)
+}
+
+/*
+BucketServiceGetBucketPolicy Gets policy on the specified bucket
+
+Returns the bucket policy on the specified bucket
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Name of the bucket for which the policy is to be displayed.
+	@return ApiBucketServiceGetBucketPolicyRequest
+*/
+func (a *BucketApiService) BucketServiceGetBucketPolicy(ctx context.Context, bucketName string) ApiBucketServiceGetBucketPolicyRequest {
+	return ApiBucketServiceGetBucketPolicyRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceGetBucketPolicyExecute(r ApiBucketServiceGetBucketPolicyRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketPolicy")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/policy"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceGetBucketQuotaRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+}
+
+// Namespace with which bucket is associated. If it is null, the current user&#39;s namespace is used.
+func (r ApiBucketServiceGetBucketQuotaRequest) Namespace(namespace string) ApiBucketServiceGetBucketQuotaRequest {
+	r.namespace = &namespace
+	return r
+}
+
+func (r ApiBucketServiceGetBucketQuotaRequest) Execute() (*BucketServiceGetBucketQuotaResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketQuotaExecute(r)
+}
+
+/*
+BucketServiceGetBucketQuota Gets the quota for the given bucket and namespace
+
+Gets the quota for the given bucket and namespace. The namespace with which the bucket is associated can be specified
+
+	as a query parameter.
+	<p>
+	A value of -1 for the block or notification quota value indicates that no quota has been defined.
+	</p>
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Name of the bucket which for which quota is to be retrieved
+	@return ApiBucketServiceGetBucketQuotaRequest
+*/
+func (a *BucketApiService) BucketServiceGetBucketQuota(ctx context.Context, bucketName string) ApiBucketServiceGetBucketQuotaRequest {
+	return ApiBucketServiceGetBucketQuotaRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return BucketServiceGetBucketQuotaResponse
+func (a *BucketApiService) BucketServiceGetBucketQuotaExecute(r ApiBucketServiceGetBucketQuotaRequest) (*BucketServiceGetBucketQuotaResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BucketServiceGetBucketQuotaResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketQuota")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/quota"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceGetBucketRetentionRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+}
+
+// Namespace associated. If it is null, then current user&#39;s namespace is used.
+func (r ApiBucketServiceGetBucketRetentionRequest) Namespace(namespace string) ApiBucketServiceGetBucketRetentionRequest {
+	r.namespace = &namespace
+	return r
+}
+
+func (r ApiBucketServiceGetBucketRetentionRequest) Execute() (*BucketServiceGetBucketRetentionResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketRetentionExecute(r)
+}
+
+/*
+BucketServiceGetBucketRetention Gets the retention period setting for the specified bucket
+
+Gets the retention period setting for the specified bucket.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Bucket name for which the retention period setting will be retrieved
+	@return ApiBucketServiceGetBucketRetentionRequest
+*/
+func (a *BucketApiService) BucketServiceGetBucketRetention(ctx context.Context, bucketName string) ApiBucketServiceGetBucketRetentionRequest {
+	return ApiBucketServiceGetBucketRetentionRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return BucketServiceGetBucketRetentionResponse
+func (a *BucketApiService) BucketServiceGetBucketRetentionExecute(r ApiBucketServiceGetBucketRetentionRequest) (*BucketServiceGetBucketRetentionResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BucketServiceGetBucketRetentionResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketRetention")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/retention"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceGetBucketVersioningRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+}
+
+// Namespace associated with the bucket.
+func (r ApiBucketServiceGetBucketVersioningRequest) Namespace(namespace string) ApiBucketServiceGetBucketVersioningRequest {
+	r.namespace = &namespace
+	return r
+}
+
+func (r ApiBucketServiceGetBucketVersioningRequest) Execute() (*BucketServiceGetBucketVersioningResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketVersioningExecute(r)
+}
+
+/*
+BucketServiceGetBucketVersioning Gets the versioning status for the specified bucket.
+
+Gets the versioning status for the specified bucket.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Bucket name for which versioning will be retrieved.
+	@return ApiBucketServiceGetBucketVersioningRequest
+*/
+func (a *BucketApiService) BucketServiceGetBucketVersioning(ctx context.Context, bucketName string) ApiBucketServiceGetBucketVersioningRequest {
+	return ApiBucketServiceGetBucketVersioningRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return BucketServiceGetBucketVersioningResponse
+func (a *BucketApiService) BucketServiceGetBucketVersioningExecute(r ApiBucketServiceGetBucketVersioningRequest) (*BucketServiceGetBucketVersioningResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BucketServiceGetBucketVersioningResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBucketVersioning")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/versioning"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceGetBucketsRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	namespace  *string
+	marker     *string
+	limit      *string
+	name       *string
+}
+
+// Namespace for which buckets should be listed.
+func (r ApiBucketServiceGetBucketsRequest) Namespace(namespace string) ApiBucketServiceGetBucketsRequest {
+	r.namespace = &namespace
+	return r
+}
+
+// reference to last object returned.
+func (r ApiBucketServiceGetBucketsRequest) Marker(marker string) ApiBucketServiceGetBucketsRequest {
 	r.marker = &marker
 	return r
 }
 
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceGetGroupRequest) MaxItems(maxItems int32) ApiIamServiceGetGroupRequest {
-	r.maxItems = &maxItems
+// number of objects requested in current fetch.
+func (r ApiBucketServiceGetBucketsRequest) Limit(limit string) ApiBucketServiceGetBucketsRequest {
+	r.limit = &limit
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceGetGroupRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetGroupRequest {
-	r.xEmcNamespace = &xEmcNamespace
+// Case sensitive prefix of the Bucket name with a wild card(*) Ex : any_prefix_string*
+func (r ApiBucketServiceGetBucketsRequest) Name(name string) ApiBucketServiceGetBucketsRequest {
+	r.name = &name
 	return r
 }
 
-func (r ApiIamServiceGetGroupRequest) Execute() (*IamServiceGetGroupResponse, *http.Response, error) {
-	return r.ApiService.IamServiceGetGroupExecute(r)
+func (r ApiBucketServiceGetBucketsRequest) Execute() (*BucketServiceGetBucketsResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetBucketsExecute(r)
 }
 
 /*
-IamServiceGetGroup Retrieve list of users in IAM group.
+BucketServiceGetBuckets Gets the list of buckets for the specified namespace
 
-Retrieve list of users in IAM group.
+Gets the list of buckets for the specified namespace. If namespace to this bucket creation does not exist
+
+	then user's namespace is used.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceGetGroupRequest
+	@return ApiBucketServiceGetBucketsRequest
 */
-func (a *IamApiService) IamServiceGetGroup(ctx context.Context) ApiIamServiceGetGroupRequest {
-	return ApiIamServiceGetGroupRequest{
+func (a *BucketApiService) BucketServiceGetBuckets(ctx context.Context) ApiBucketServiceGetBucketsRequest {
+	return ApiBucketServiceGetBucketsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -2383,34 +3326,37 @@ func (a *IamApiService) IamServiceGetGroup(ctx context.Context) ApiIamServiceGet
 
 // Execute executes the request
 //
-//	@return IamServiceGetGroupResponse
-func (a *IamApiService) IamServiceGetGroupExecute(r ApiIamServiceGetGroupRequest) (*IamServiceGetGroupResponse, *http.Response, error) {
+//	@return BucketServiceGetBucketsResponse
+func (a *BucketApiService) BucketServiceGetBucketsExecute(r ApiBucketServiceGetBucketsRequest) (*BucketServiceGetBucketsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceGetGroupResponse
+		localVarReturnValue *BucketServiceGetBucketsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetBuckets")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=GetGroup"
+	localVarPath := localBasePath + "/object/bucket"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "marker", r.marker, "")
 	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	}
+	if r.name != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "name", r.name, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2428,9 +3374,6 @@ func (a *IamApiService) IamServiceGetGroupExecute(r ApiIamServiceGetGroupRequest
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -2515,46 +3458,189 @@ func (a *IamApiService) IamServiceGetGroupExecute(r ApiIamServiceGetGroupRequest
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceGetGroupPolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	policyName    *string
-	xEmcNamespace *string
+type ApiBucketServiceGetEmptyBucketStatusRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Name of the group to retrieve the inline policy.
-func (r ApiIamServiceGetGroupPolicyRequest) GroupName(groupName string) ApiIamServiceGetGroupPolicyRequest {
-	r.groupName = &groupName
+// Namespace associated with the bucket. If not present the user&#39;s namespace is used.
+func (r ApiBucketServiceGetEmptyBucketStatusRequest) Namespace(namespace string) ApiBucketServiceGetEmptyBucketStatusRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Name of the policy whose Policy Document needs to be retrieved.
-func (r ApiIamServiceGetGroupPolicyRequest) PolicyName(policyName string) ApiIamServiceGetGroupPolicyRequest {
-	r.policyName = &policyName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceGetGroupPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetGroupPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceGetGroupPolicyRequest) Execute() (*IamServiceGetGroupPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceGetGroupPolicyExecute(r)
+func (r ApiBucketServiceGetEmptyBucketStatusRequest) Execute() (*BucketServiceGetEmptyBucketStatusResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetEmptyBucketStatusExecute(r)
 }
 
 /*
-IamServiceGetGroupPolicy Get specific inlinePolicy for IAM Group.
+BucketServiceGetEmptyBucketStatus Get empty bucket status
 
-Get specific inlinePolicy for IAM Group.
+Gets empty bucket status for the specified bucket.
+
+	During bucket delete the empty bucket status will be available until the bucket is deleted.
+	Should the delete fail the empty bucket delete status will still be available for some time
+	and will show how many objects failed to be deleted.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceGetGroupPolicyRequest
+	@param bucketName Name of the bucket for which lock information is to be retrieved
+	@return ApiBucketServiceGetEmptyBucketStatusRequest
 */
-func (a *IamApiService) IamServiceGetGroupPolicy(ctx context.Context) ApiIamServiceGetGroupPolicyRequest {
-	return ApiIamServiceGetGroupPolicyRequest{
+func (a *BucketApiService) BucketServiceGetEmptyBucketStatus(ctx context.Context, bucketName string) ApiBucketServiceGetEmptyBucketStatusRequest {
+	return ApiBucketServiceGetEmptyBucketStatusRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return BucketServiceGetEmptyBucketStatusResponse
+func (a *BucketApiService) BucketServiceGetEmptyBucketStatusExecute(r ApiBucketServiceGetEmptyBucketStatusRequest) (*BucketServiceGetEmptyBucketStatusResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BucketServiceGetEmptyBucketStatusResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetEmptyBucketStatus")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/empty-bucket-status"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceGetGroupsRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+}
+
+func (r ApiBucketServiceGetGroupsRequest) Execute() (*BucketServiceGetGroupsResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetGroupsExecute(r)
+}
+
+/*
+BucketServiceGetGroups Gets all ACL groups
+
+Gets all ACL groups.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiBucketServiceGetGroupsRequest
+*/
+func (a *BucketApiService) BucketServiceGetGroups(ctx context.Context) ApiBucketServiceGetGroupsRequest {
+	return ApiBucketServiceGetGroupsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -2562,32 +3648,26 @@ func (a *IamApiService) IamServiceGetGroupPolicy(ctx context.Context) ApiIamServ
 
 // Execute executes the request
 //
-//	@return IamServiceGetGroupPolicyResponse
-func (a *IamApiService) IamServiceGetGroupPolicyExecute(r ApiIamServiceGetGroupPolicyRequest) (*IamServiceGetGroupPolicyResponse, *http.Response, error) {
+//	@return BucketServiceGetGroupsResponse
+func (a *BucketApiService) BucketServiceGetGroupsExecute(r ApiBucketServiceGetGroupsRequest) (*BucketServiceGetGroupsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceGetGroupPolicyResponse
+		localVarReturnValue *BucketServiceGetGroupsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetGroupPolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetGroups")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=GetGroupPolicy"
+	localVarPath := localBasePath + "/object/bucket/acl/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
-	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2604,9 +3684,6 @@ func (a *IamApiService) IamServiceGetGroupPolicyExecute(r ApiIamServiceGetGroupP
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -2691,39 +3768,25 @@ func (a *IamApiService) IamServiceGetGroupPolicyExecute(r ApiIamServiceGetGroupP
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceGetRoleRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceGetPermissionsRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceGetRoleRequest) RoleName(roleName string) ApiIamServiceGetRoleRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceGetRoleRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetRoleRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceGetRoleRequest) Execute() (*IamServiceGetRoleResponse, *http.Response, error) {
-	return r.ApiService.IamServiceGetRoleExecute(r)
+func (r ApiBucketServiceGetPermissionsRequest) Execute() (*BucketServiceGetPermissionsResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetPermissionsExecute(r)
 }
 
 /*
-IamServiceGetRole Gets information about the specified IAM role.
+BucketServiceGetPermissions Gets all ACL permissions
 
-Gets information about the specified IAM role.
+Gets all ACL permissions.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceGetRoleRequest
+	@return ApiBucketServiceGetPermissionsRequest
 */
-func (a *IamApiService) IamServiceGetRole(ctx context.Context) ApiIamServiceGetRoleRequest {
-	return ApiIamServiceGetRoleRequest{
+func (a *BucketApiService) BucketServiceGetPermissions(ctx context.Context) ApiBucketServiceGetPermissionsRequest {
+	return ApiBucketServiceGetPermissionsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -2731,29 +3794,26 @@ func (a *IamApiService) IamServiceGetRole(ctx context.Context) ApiIamServiceGetR
 
 // Execute executes the request
 //
-//	@return IamServiceGetRoleResponse
-func (a *IamApiService) IamServiceGetRoleExecute(r ApiIamServiceGetRoleRequest) (*IamServiceGetRoleResponse, *http.Response, error) {
+//	@return BucketServiceGetPermissionsResponse
+func (a *BucketApiService) BucketServiceGetPermissionsExecute(r ApiBucketServiceGetPermissionsRequest) (*BucketServiceGetPermissionsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceGetRoleResponse
+		localVarReturnValue *BucketServiceGetPermissionsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetPermissions")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=GetRole"
+	localVarPath := localBasePath + "/object/bucket/acl/permissions"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2770,9 +3830,6 @@ func (a *IamApiService) IamServiceGetRoleExecute(r ApiIamServiceGetRoleRequest) 
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -2857,46 +3914,25 @@ func (a *IamApiService) IamServiceGetRoleExecute(r ApiIamServiceGetRoleRequest) 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceGetRolePolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	policyName    *string
-	xEmcNamespace *string
+type ApiBucketServiceGetSearchMetaDataRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceGetRolePolicyRequest) RoleName(roleName string) ApiIamServiceGetRolePolicyRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// Simple name identifying the policy.
-func (r ApiIamServiceGetRolePolicyRequest) PolicyName(policyName string) ApiIamServiceGetRolePolicyRequest {
-	r.policyName = &policyName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceGetRolePolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetRolePolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceGetRolePolicyRequest) Execute() (*IamServiceGetRolePolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceGetRolePolicyExecute(r)
+func (r ApiBucketServiceGetSearchMetaDataRequest) Execute() (*BucketServiceGetSearchMetaDataResponse, *http.Response, error) {
+	return r.ApiService.BucketServiceGetSearchMetaDataExecute(r)
 }
 
 /*
-IamServiceGetRolePolicy Gets tthe specified inline policy document that is embedded with the specified IAM role.
+BucketServiceGetSearchMetaData Lists the system metadata keys available.
 
-Gets tthe specified inline policy document that is embedded with the specified IAM role.
+Lists the system metadata keys available.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceGetRolePolicyRequest
+	@return ApiBucketServiceGetSearchMetaDataRequest
 */
-func (a *IamApiService) IamServiceGetRolePolicy(ctx context.Context) ApiIamServiceGetRolePolicyRequest {
-	return ApiIamServiceGetRolePolicyRequest{
+func (a *BucketApiService) BucketServiceGetSearchMetaData(ctx context.Context) ApiBucketServiceGetSearchMetaDataRequest {
+	return ApiBucketServiceGetSearchMetaDataRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -2904,32 +3940,26 @@ func (a *IamApiService) IamServiceGetRolePolicy(ctx context.Context) ApiIamServi
 
 // Execute executes the request
 //
-//	@return IamServiceGetRolePolicyResponse
-func (a *IamApiService) IamServiceGetRolePolicyExecute(r ApiIamServiceGetRolePolicyRequest) (*IamServiceGetRolePolicyResponse, *http.Response, error) {
+//	@return BucketServiceGetSearchMetaDataResponse
+func (a *BucketApiService) BucketServiceGetSearchMetaDataExecute(r ApiBucketServiceGetSearchMetaDataRequest) (*BucketServiceGetSearchMetaDataResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceGetRolePolicyResponse
+		localVarReturnValue *BucketServiceGetSearchMetaDataResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetRolePolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceGetSearchMetaData")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=GetRolePolicy"
+	localVarPath := localBasePath + "/object/bucket/searchmetadata"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
-	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2946,9 +3976,6 @@ func (a *IamApiService) IamServiceGetRolePolicyExecute(r ApiIamServiceGetRolePol
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -3033,71 +4060,77 @@ func (a *IamApiService) IamServiceGetRolePolicyExecute(r ApiIamServiceGetRolePol
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceGetUserRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	userName      *string
-	xEmcNamespace *string
+type ApiBucketServicePutBucketDefaultLockConfigurationRequest struct {
+	ctx                                                   context.Context
+	ApiService                                            *BucketApiService
+	bucketName                                            string
+	bucketServicePutBucketDefaultLockConfigurationRequest *BucketServicePutBucketDefaultLockConfigurationRequest
+	namespace                                             *string
 }
 
-// The name of the user to retrieve.
-func (r ApiIamServiceGetUserRequest) UserName(userName string) ApiIamServiceGetUserRequest {
-	r.userName = &userName
+func (r ApiBucketServicePutBucketDefaultLockConfigurationRequest) BucketServicePutBucketDefaultLockConfigurationRequest(bucketServicePutBucketDefaultLockConfigurationRequest BucketServicePutBucketDefaultLockConfigurationRequest) ApiBucketServicePutBucketDefaultLockConfigurationRequest {
+	r.bucketServicePutBucketDefaultLockConfigurationRequest = &bucketServicePutBucketDefaultLockConfigurationRequest
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceGetUserRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetUserRequest {
-	r.xEmcNamespace = &xEmcNamespace
+// Namespace of the bucket for which default lock configuration will be updated.
+func (r ApiBucketServicePutBucketDefaultLockConfigurationRequest) Namespace(namespace string) ApiBucketServicePutBucketDefaultLockConfigurationRequest {
+	r.namespace = &namespace
 	return r
 }
 
-func (r ApiIamServiceGetUserRequest) Execute() (*IamServiceGetUserResponse, *http.Response, error) {
-	return r.ApiService.IamServiceGetUserExecute(r)
+func (r ApiBucketServicePutBucketDefaultLockConfigurationRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServicePutBucketDefaultLockConfigurationExecute(r)
 }
 
 /*
-IamServiceGetUser Retrieve IAM user.
+BucketServicePutBucketDefaultLockConfiguration Puts bucket default lock configuration.
 
-Retrieve IAM user.
+Puts bucket default lock configuration.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceGetUserRequest
+	@param bucketName Bucket name for which default lock configuration will be updated.
+	@return ApiBucketServicePutBucketDefaultLockConfigurationRequest
 */
-func (a *IamApiService) IamServiceGetUser(ctx context.Context) ApiIamServiceGetUserRequest {
-	return ApiIamServiceGetUserRequest{
+func (a *BucketApiService) BucketServicePutBucketDefaultLockConfiguration(ctx context.Context, bucketName string) ApiBucketServicePutBucketDefaultLockConfigurationRequest {
+	return ApiBucketServicePutBucketDefaultLockConfigurationRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceGetUserResponse
-func (a *IamApiService) IamServiceGetUserExecute(r ApiIamServiceGetUserRequest) (*IamServiceGetUserResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServicePutBucketDefaultLockConfigurationExecute(r ApiBucketServicePutBucketDefaultLockConfigurationRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceGetUserResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServicePutBucketDefaultLockConfiguration")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=GetUser"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/object-lock-config"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServicePutBucketDefaultLockConfigurationRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServicePutBucketDefaultLockConfigurationRequest is required and must be specified")
+	}
 
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -3113,9 +4146,8 @@ func (a *IamApiService) IamServiceGetUserExecute(r ApiIamServiceGetUserRequest) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServicePutBucketDefaultLockConfigurationRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -3199,81 +4231,84 @@ func (a *IamApiService) IamServiceGetUserExecute(r ApiIamServiceGetUserRequest) 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceGetUserPolicyRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	userName      *string
-	policyName    *string
-	xEmcNamespace *string
+type ApiBucketServicePutBucketNotificationConfigRequest struct {
+	ctx                                             context.Context
+	ApiService                                      *BucketApiService
+	bucketName                                      string
+	bucketServicePutBucketNotificationConfigRequest *BucketServicePutBucketNotificationConfigRequest
+	namespace                                       *string
+	xAmzSkipDestinationValidation                   *string
 }
 
-// Name of the user to retrieve the inline policy.
-func (r ApiIamServiceGetUserPolicyRequest) UserName(userName string) ApiIamServiceGetUserPolicyRequest {
-	r.userName = &userName
+func (r ApiBucketServicePutBucketNotificationConfigRequest) BucketServicePutBucketNotificationConfigRequest(bucketServicePutBucketNotificationConfigRequest BucketServicePutBucketNotificationConfigRequest) ApiBucketServicePutBucketNotificationConfigRequest {
+	r.bucketServicePutBucketNotificationConfigRequest = &bucketServicePutBucketNotificationConfigRequest
 	return r
 }
 
-// Name of the policy whose Policy Document needs to be retrieved.
-func (r ApiIamServiceGetUserPolicyRequest) PolicyName(policyName string) ApiIamServiceGetUserPolicyRequest {
-	r.policyName = &policyName
+// Namespace associated with the bucket for which notification config will be updated.
+func (r ApiBucketServicePutBucketNotificationConfigRequest) Namespace(namespace string) ApiBucketServicePutBucketNotificationConfigRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceGetUserPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetUserPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
+// Optional header to skip destination validation.                                                                             If set to true, destination validation will be skipped.
+func (r ApiBucketServicePutBucketNotificationConfigRequest) XAmzSkipDestinationValidation(xAmzSkipDestinationValidation string) ApiBucketServicePutBucketNotificationConfigRequest {
+	r.xAmzSkipDestinationValidation = &xAmzSkipDestinationValidation
 	return r
 }
 
-func (r ApiIamServiceGetUserPolicyRequest) Execute() (*IamServiceGetUserPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceGetUserPolicyExecute(r)
+func (r ApiBucketServicePutBucketNotificationConfigRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServicePutBucketNotificationConfigExecute(r)
 }
 
 /*
-IamServiceGetUserPolicy Get specific inlinePolicy for IAM User.
+BucketServicePutBucketNotificationConfig Creates or replaces the notification configuration for the bucket.
 
-Get specific inlinePolicy for IAM User.
+Creates or replaces the notification configuration for the bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceGetUserPolicyRequest
+	@param bucketName Bucket name for which notification configuration will be updated.
+	@return ApiBucketServicePutBucketNotificationConfigRequest
 */
-func (a *IamApiService) IamServiceGetUserPolicy(ctx context.Context) ApiIamServiceGetUserPolicyRequest {
-	return ApiIamServiceGetUserPolicyRequest{
+func (a *BucketApiService) BucketServicePutBucketNotificationConfig(ctx context.Context, bucketName string) ApiBucketServicePutBucketNotificationConfigRequest {
+	return ApiBucketServicePutBucketNotificationConfigRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceGetUserPolicyResponse
-func (a *IamApiService) IamServiceGetUserPolicyExecute(r ApiIamServiceGetUserPolicyRequest) (*IamServiceGetUserPolicyResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServicePutBucketNotificationConfigExecute(r ApiBucketServicePutBucketNotificationConfigRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceGetUserPolicyResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetUserPolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServicePutBucketNotificationConfig")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=GetUserPolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/notification"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
+	if r.bucketServicePutBucketNotificationConfigRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServicePutBucketNotificationConfigRequest is required and must be specified")
 	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
+
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -3289,9 +4324,11 @@ func (a *IamApiService) IamServiceGetUserPolicyExecute(r ApiIamServiceGetUserPol
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
+	if r.xAmzSkipDestinationValidation != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-amz-skip-destination-validation ", r.xAmzSkipDestinationValidation, "")
 	}
+	// body params
+	localVarPostBody = r.bucketServicePutBucketNotificationConfigRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -3375,98 +4412,67 @@ func (a *IamApiService) IamServiceGetUserPolicyExecute(r ApiIamServiceGetUserPol
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListAccessKeysRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	pathPrefix    *string
-	userName      *string
-	xEmcNamespace *string
+type ApiBucketServiceRemoveBucketQuotaRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceListAccessKeysRequest) Marker(marker string) ApiIamServiceListAccessKeysRequest {
-	r.marker = &marker
+// Namespace with which bucket is associated. If it is null, the current user&#39;s namespace is used.
+func (r ApiBucketServiceRemoveBucketQuotaRequest) Namespace(namespace string) ApiBucketServiceRemoveBucketQuotaRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceListAccessKeysRequest) MaxItems(maxItems int32) ApiIamServiceListAccessKeysRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed.
-func (r ApiIamServiceListAccessKeysRequest) PathPrefix(pathPrefix string) ApiIamServiceListAccessKeysRequest {
-	r.pathPrefix = &pathPrefix
-	return r
-}
-
-// Name of the user to list accesskeys.
-func (r ApiIamServiceListAccessKeysRequest) UserName(userName string) ApiIamServiceListAccessKeysRequest {
-	r.userName = &userName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListAccessKeysRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListAccessKeysRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListAccessKeysRequest) Execute() (*IamServiceListAccessKeysResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListAccessKeysExecute(r)
+func (r ApiBucketServiceRemoveBucketQuotaRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceRemoveBucketQuotaExecute(r)
 }
 
 /*
-IamServiceListAccessKeys List AccessKeys for a user.
+BucketServiceRemoveBucketQuota Deletes the quota setting for the given bucket and namespace
 
-List AccessKeys for a user.
+Deletes the quota setting for the given bucket and namespace. The namespace with which the bucket is associated can be
+
+	specified as a query parameter.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListAccessKeysRequest
+	@param bucketName Name of the bucket for which the quota is to be deleted
+	@return ApiBucketServiceRemoveBucketQuotaRequest
 */
-func (a *IamApiService) IamServiceListAccessKeys(ctx context.Context) ApiIamServiceListAccessKeysRequest {
-	return ApiIamServiceListAccessKeysRequest{
+func (a *BucketApiService) BucketServiceRemoveBucketQuota(ctx context.Context, bucketName string) ApiBucketServiceRemoveBucketQuotaRequest {
+	return ApiBucketServiceRemoveBucketQuotaRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListAccessKeysResponse
-func (a *IamApiService) IamServiceListAccessKeysExecute(r ApiIamServiceListAccessKeysRequest) (*IamServiceListAccessKeysResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceRemoveBucketQuotaExecute(r ApiBucketServiceRemoveBucketQuotaRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodDelete
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListAccessKeysResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListAccessKeys")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceRemoveBucketQuota")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListAccessKeys"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/quota"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.pathPrefix != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PathPrefix", r.pathPrefix, "")
-	}
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3484,9 +4490,6 @@ func (a *IamApiService) IamServiceListAccessKeysExecute(r ApiIamServiceListAcces
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -3571,101 +4574,77 @@ func (a *IamApiService) IamServiceListAccessKeysExecute(r ApiIamServiceListAcces
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListAttachedGroupPoliciesRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	marker        *string
-	maxItems      *int32
-	pathPrefix    *string
-	xEmcNamespace *string
+type ApiBucketServiceSetAdvancedMetadataSearchTargetRequest struct {
+	ctx                                                 context.Context
+	ApiService                                          *BucketApiService
+	bucketName                                          string
+	bucketServiceSetAdvancedMetadataSearchTargetRequest *BucketServiceSetAdvancedMetadataSearchTargetRequest
+	namespace                                           *string
 }
 
-// The name of the group to list attached policies for.
-func (r ApiIamServiceListAttachedGroupPoliciesRequest) GroupName(groupName string) ApiIamServiceListAttachedGroupPoliciesRequest {
-	r.groupName = &groupName
+func (r ApiBucketServiceSetAdvancedMetadataSearchTargetRequest) BucketServiceSetAdvancedMetadataSearchTargetRequest(bucketServiceSetAdvancedMetadataSearchTargetRequest BucketServiceSetAdvancedMetadataSearchTargetRequest) ApiBucketServiceSetAdvancedMetadataSearchTargetRequest {
+	r.bucketServiceSetAdvancedMetadataSearchTargetRequest = &bucketServiceSetAdvancedMetadataSearchTargetRequest
 	return r
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceListAttachedGroupPoliciesRequest) Marker(marker string) ApiIamServiceListAttachedGroupPoliciesRequest {
-	r.marker = &marker
+// Namespace associated. If it is null, then current user&#39;s namespace is                    used.
+func (r ApiBucketServiceSetAdvancedMetadataSearchTargetRequest) Namespace(namespace string) ApiBucketServiceSetAdvancedMetadataSearchTargetRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceListAttachedGroupPoliciesRequest) MaxItems(maxItems int32) ApiIamServiceListAttachedGroupPoliciesRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed.
-func (r ApiIamServiceListAttachedGroupPoliciesRequest) PathPrefix(pathPrefix string) ApiIamServiceListAttachedGroupPoliciesRequest {
-	r.pathPrefix = &pathPrefix
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListAttachedGroupPoliciesRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListAttachedGroupPoliciesRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListAttachedGroupPoliciesRequest) Execute() (*IamServiceListAttachedGroupPoliciesResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListAttachedGroupPoliciesExecute(r)
+func (r ApiBucketServiceSetAdvancedMetadataSearchTargetRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetAdvancedMetadataSearchTargetExecute(r)
 }
 
 /*
-IamServiceListAttachedGroupPolicies List Managed Policies for IAM Group.
+BucketServiceSetAdvancedMetadataSearchTarget Sets advanced metadata search target for a bucket.
 
-List Managed Policies for IAM Group.
+Set advanced metadata search target for a bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListAttachedGroupPoliciesRequest
+	@param bucketName Bucket name on which advanced metadata search target will be set.
+	@return ApiBucketServiceSetAdvancedMetadataSearchTargetRequest
 */
-func (a *IamApiService) IamServiceListAttachedGroupPolicies(ctx context.Context) ApiIamServiceListAttachedGroupPoliciesRequest {
-	return ApiIamServiceListAttachedGroupPoliciesRequest{
+func (a *BucketApiService) BucketServiceSetAdvancedMetadataSearchTarget(ctx context.Context, bucketName string) ApiBucketServiceSetAdvancedMetadataSearchTargetRequest {
+	return ApiBucketServiceSetAdvancedMetadataSearchTargetRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListAttachedGroupPoliciesResponse
-func (a *IamApiService) IamServiceListAttachedGroupPoliciesExecute(r ApiIamServiceListAttachedGroupPoliciesRequest) (*IamServiceListAttachedGroupPoliciesResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetAdvancedMetadataSearchTargetExecute(r ApiBucketServiceSetAdvancedMetadataSearchTargetRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListAttachedGroupPoliciesResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListAttachedGroupPolicies")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetAdvancedMetadataSearchTarget")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListAttachedGroupPolicies"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/advancedMetadataSearchTarget"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetAdvancedMetadataSearchTargetRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetAdvancedMetadataSearchTargetRequest is required and must be specified")
+	}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.pathPrefix != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PathPrefix", r.pathPrefix, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -3681,9 +4660,8 @@ func (a *IamApiService) IamServiceListAttachedGroupPoliciesExecute(r ApiIamServi
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetAdvancedMetadataSearchTargetRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -3767,101 +4745,72 @@ func (a *IamApiService) IamServiceListAttachedGroupPoliciesExecute(r ApiIamServi
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListAttachedRolePoliciesRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	pathPrefix    *string
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketACLRequest struct {
+	ctx                              context.Context
+	ApiService                       *BucketApiService
+	bucketName                       string
+	bucketServiceSetBucketACLRequest *BucketServiceSetBucketACLRequest
 }
 
-// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
-func (r ApiIamServiceListAttachedRolePoliciesRequest) Marker(marker string) ApiIamServiceListAttachedRolePoliciesRequest {
-	r.marker = &marker
+func (r ApiBucketServiceSetBucketACLRequest) BucketServiceSetBucketACLRequest(bucketServiceSetBucketACLRequest BucketServiceSetBucketACLRequest) ApiBucketServiceSetBucketACLRequest {
+	r.bucketServiceSetBucketACLRequest = &bucketServiceSetBucketACLRequest
 	return r
 }
 
-// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
-func (r ApiIamServiceListAttachedRolePoliciesRequest) MaxItems(maxItems int32) ApiIamServiceListAttachedRolePoliciesRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// The path to the IAM role.
-func (r ApiIamServiceListAttachedRolePoliciesRequest) PathPrefix(pathPrefix string) ApiIamServiceListAttachedRolePoliciesRequest {
-	r.pathPrefix = &pathPrefix
-	return r
-}
-
-// Simple name identifying the role.
-func (r ApiIamServiceListAttachedRolePoliciesRequest) RoleName(roleName string) ApiIamServiceListAttachedRolePoliciesRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListAttachedRolePoliciesRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListAttachedRolePoliciesRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListAttachedRolePoliciesRequest) Execute() (*IamServiceListAttachedRolePoliciesResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListAttachedRolePoliciesExecute(r)
+func (r ApiBucketServiceSetBucketACLRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketACLExecute(r)
 }
 
 /*
-IamServiceListAttachedRolePolicies Lists all managed policies that are attached to the specified IAM Role.
+BucketServiceSetBucketACL Updates the ACL for the given bucket and namespace.
 
-Lists all managed policies that are attached to the specified IAM Role.
+Updates the ACL for the given bucket. If the buckets's namespace is not specified in the payload, the current
+
+	user's namespace is used.
+	<p>
+	<b>Permission:</b> read, write, read_acl, write_acl, privileged_write, delete, full_control, and none.
+	</p>
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListAttachedRolePoliciesRequest
+	@param bucketName Name of the bucket for which the ACL is to be updated.
+	@return ApiBucketServiceSetBucketACLRequest
 */
-func (a *IamApiService) IamServiceListAttachedRolePolicies(ctx context.Context) ApiIamServiceListAttachedRolePoliciesRequest {
-	return ApiIamServiceListAttachedRolePoliciesRequest{
+func (a *BucketApiService) BucketServiceSetBucketACL(ctx context.Context, bucketName string) ApiBucketServiceSetBucketACLRequest {
+	return ApiBucketServiceSetBucketACLRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListAttachedRolePoliciesResponse
-func (a *IamApiService) IamServiceListAttachedRolePoliciesExecute(r ApiIamServiceListAttachedRolePoliciesRequest) (*IamServiceListAttachedRolePoliciesResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketACLExecute(r ApiBucketServiceSetBucketACLRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListAttachedRolePoliciesResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListAttachedRolePolicies")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketACL")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListAttachedRolePolicies"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/acl"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketACLRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketACLRequest is required and must be specified")
+	}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.pathPrefix != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PathPrefix", r.pathPrefix, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -3877,9 +4826,8 @@ func (a *IamApiService) IamServiceListAttachedRolePoliciesExecute(r ApiIamServic
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketACLRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -3963,88 +4911,86 @@ func (a *IamApiService) IamServiceListAttachedRolePoliciesExecute(r ApiIamServic
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListGroupPoliciesRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	marker        *string
-	maxItems      *int32
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketAuditDeleteExpirationRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+	expiration *string
 }
 
-// The name of the group to list attached policies for.
-func (r ApiIamServiceListGroupPoliciesRequest) GroupName(groupName string) ApiIamServiceListGroupPoliciesRequest {
-	r.groupName = &groupName
+// Namespace associated. If it is null, then current user&#39;s namespace is used.
+func (r ApiBucketServiceSetBucketAuditDeleteExpirationRequest) Namespace(namespace string) ApiBucketServiceSetBucketAuditDeleteExpirationRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceListGroupPoliciesRequest) Marker(marker string) ApiIamServiceListGroupPoliciesRequest {
-	r.marker = &marker
+// Bucket&#39;s audit delete expiration in seconds
+func (r ApiBucketServiceSetBucketAuditDeleteExpirationRequest) Expiration(expiration string) ApiBucketServiceSetBucketAuditDeleteExpirationRequest {
+	r.expiration = &expiration
 	return r
 }
 
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceListGroupPoliciesRequest) MaxItems(maxItems int32) ApiIamServiceListGroupPoliciesRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListGroupPoliciesRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListGroupPoliciesRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListGroupPoliciesRequest) Execute() (*IamServiceListGroupPoliciesResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListGroupPoliciesExecute(r)
+func (r ApiBucketServiceSetBucketAuditDeleteExpirationRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketAuditDeleteExpirationExecute(r)
 }
 
 /*
-IamServiceListGroupPolicies List Inline Policies for IAM Group.
+BucketServiceSetBucketAuditDeleteExpiration Updates the audit delete expiration for the specified bucket.
 
-List Inline Policies for IAM Group.
+Updates the audit delete expiration for the specified bucket.
+
+	<p>When a Centera C-Clip is deleted, a metadata record known as a "reflection" is left behind
+	to audit the deletion of the C-Clip. By default, the reflections are retained indefinitely,
+	but this continues to consume metadata space on OBS.
+	Setting the bucket audit delete expiration will cause the reflections to get automatically
+	deleted after the specified period.</p>
+	<p>Audit delete expiration values and their corresponding meaning:</p>
+	<ul>
+	    <li><p>If expiration is not set OR is set to -1 OR is set to -2, the reflections are retained infinitely.</p></li>
+	    <li><p>If expiration is set to 0, the reflections will be deleted immediately and will not be retained.</p></li>
+	</ul>
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListGroupPoliciesRequest
+	@param bucketName Name of the bucket for which audit delete expiration will be updated
+	@return ApiBucketServiceSetBucketAuditDeleteExpirationRequest
 */
-func (a *IamApiService) IamServiceListGroupPolicies(ctx context.Context) ApiIamServiceListGroupPoliciesRequest {
-	return ApiIamServiceListGroupPoliciesRequest{
+func (a *BucketApiService) BucketServiceSetBucketAuditDeleteExpiration(ctx context.Context, bucketName string) ApiBucketServiceSetBucketAuditDeleteExpirationRequest {
+	return ApiBucketServiceSetBucketAuditDeleteExpirationRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListGroupPoliciesResponse
-func (a *IamApiService) IamServiceListGroupPoliciesExecute(r ApiIamServiceListGroupPoliciesRequest) (*IamServiceListGroupPoliciesResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketAuditDeleteExpirationExecute(r ApiBucketServiceSetBucketAuditDeleteExpirationRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListGroupPoliciesResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListGroupPolicies")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketAuditDeleteExpiration")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListGroupPolicies"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/auditDeleteExpiration"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
+	if r.expiration != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "expiration", r.expiration, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -4062,9 +5008,6 @@ func (a *IamApiService) IamServiceListGroupPoliciesExecute(r ApiIamServiceListGr
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -4149,91 +5092,67 @@ func (a *IamApiService) IamServiceListGroupPoliciesExecute(r ApiIamServiceListGr
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListGroupsRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	pathPrefix    *string
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketAutoCommitPeriodRequest struct {
+	ctx                                           context.Context
+	ApiService                                    *BucketApiService
+	bucketName                                    string
+	bucketServiceSetBucketAutoCommitPeriodRequest *BucketServiceSetBucketAutoCommitPeriodRequest
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceListGroupsRequest) Marker(marker string) ApiIamServiceListGroupsRequest {
-	r.marker = &marker
+func (r ApiBucketServiceSetBucketAutoCommitPeriodRequest) BucketServiceSetBucketAutoCommitPeriodRequest(bucketServiceSetBucketAutoCommitPeriodRequest BucketServiceSetBucketAutoCommitPeriodRequest) ApiBucketServiceSetBucketAutoCommitPeriodRequest {
+	r.bucketServiceSetBucketAutoCommitPeriodRequest = &bucketServiceSetBucketAutoCommitPeriodRequest
 	return r
 }
 
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceListGroupsRequest) MaxItems(maxItems int32) ApiIamServiceListGroupsRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed.
-func (r ApiIamServiceListGroupsRequest) PathPrefix(pathPrefix string) ApiIamServiceListGroupsRequest {
-	r.pathPrefix = &pathPrefix
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListGroupsRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListGroupsRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListGroupsRequest) Execute() (*IamServiceListGroupsResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListGroupsExecute(r)
+func (r ApiBucketServiceSetBucketAutoCommitPeriodRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketAutoCommitPeriodExecute(r)
 }
 
 /*
-IamServiceListGroups Lists the IAM groups.
+BucketServiceSetBucketAutoCommitPeriod Updates the auto-commit period setting for the specified bucket.
 
-Lists the IAM groups.
+Updates the auto-commit period setting for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListGroupsRequest
+	@param bucketName Bucket name for which retention period will be updated.
+	@return ApiBucketServiceSetBucketAutoCommitPeriodRequest
 */
-func (a *IamApiService) IamServiceListGroups(ctx context.Context) ApiIamServiceListGroupsRequest {
-	return ApiIamServiceListGroupsRequest{
+func (a *BucketApiService) BucketServiceSetBucketAutoCommitPeriod(ctx context.Context, bucketName string) ApiBucketServiceSetBucketAutoCommitPeriodRequest {
+	return ApiBucketServiceSetBucketAutoCommitPeriodRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListGroupsResponse
-func (a *IamApiService) IamServiceListGroupsExecute(r ApiIamServiceListGroupsRequest) (*IamServiceListGroupsResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketAutoCommitPeriodExecute(r ApiBucketServiceSetBucketAutoCommitPeriodRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListGroupsResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListGroups")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketAutoCommitPeriod")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListGroups"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/autocommit"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketAutoCommitPeriodRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketAutoCommitPeriodRequest is required and must be specified")
+	}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.pathPrefix != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PathPrefix", r.pathPrefix, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -4249,9 +5168,8 @@ func (a *IamApiService) IamServiceListGroupsExecute(r ApiIamServiceListGroupsReq
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketAutoCommitPeriodRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -4335,91 +5253,69 @@ func (a *IamApiService) IamServiceListGroupsExecute(r ApiIamServiceListGroupsReq
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListGroupsForUserRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	userName      *string
-	marker        *string
-	maxItems      *int32
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketDefaultGroupRequest struct {
+	ctx                                       context.Context
+	ApiService                                *BucketApiService
+	bucketName                                string
+	bucketServiceSetBucketDefaultGroupRequest *BucketServiceSetBucketDefaultGroupRequest
 }
 
-// Simple name identifying the user.
-func (r ApiIamServiceListGroupsForUserRequest) UserName(userName string) ApiIamServiceListGroupsForUserRequest {
-	r.userName = &userName
+func (r ApiBucketServiceSetBucketDefaultGroupRequest) BucketServiceSetBucketDefaultGroupRequest(bucketServiceSetBucketDefaultGroupRequest BucketServiceSetBucketDefaultGroupRequest) ApiBucketServiceSetBucketDefaultGroupRequest {
+	r.bucketServiceSetBucketDefaultGroupRequest = &bucketServiceSetBucketDefaultGroupRequest
 	return r
 }
 
-// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
-func (r ApiIamServiceListGroupsForUserRequest) Marker(marker string) ApiIamServiceListGroupsForUserRequest {
-	r.marker = &marker
-	return r
-}
-
-// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
-func (r ApiIamServiceListGroupsForUserRequest) MaxItems(maxItems int32) ApiIamServiceListGroupsForUserRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListGroupsForUserRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListGroupsForUserRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListGroupsForUserRequest) Execute() (*IamServiceListGroupsForUserResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListGroupsForUserExecute(r)
+func (r ApiBucketServiceSetBucketDefaultGroupRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketDefaultGroupExecute(r)
 }
 
 /*
-IamServiceListGroupsForUser List Groups for IAM User
+BucketServiceSetBucketDefaultGroup Updates the defaultGroup & defaultGroupPermissions for the given bucket and namespace.
 
-List Groups for IAM User
+Updates the default group & default group permissions for the given bucket.
+
+	If the bucket's namespace is not specified in the payload, the current user's namespace is used.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListGroupsForUserRequest
+	@param bucketName Name of the bucket for which the default group is to be updated.
+	@return ApiBucketServiceSetBucketDefaultGroupRequest
 */
-func (a *IamApiService) IamServiceListGroupsForUser(ctx context.Context) ApiIamServiceListGroupsForUserRequest {
-	return ApiIamServiceListGroupsForUserRequest{
+func (a *BucketApiService) BucketServiceSetBucketDefaultGroup(ctx context.Context, bucketName string) ApiBucketServiceSetBucketDefaultGroupRequest {
+	return ApiBucketServiceSetBucketDefaultGroupRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListGroupsForUserResponse
-func (a *IamApiService) IamServiceListGroupsForUserExecute(r ApiIamServiceListGroupsForUserRequest) (*IamServiceListGroupsForUserResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketDefaultGroupExecute(r ApiBucketServiceSetBucketDefaultGroupRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListGroupsForUserResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListGroupsForUser")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketDefaultGroup")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListGroupsForUser"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/defaultGroup"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketDefaultGroupRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketDefaultGroupRequest is required and must be specified")
+	}
 
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
-	}
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -4435,9 +5331,8 @@ func (a *IamApiService) IamServiceListGroupsForUserExecute(r ApiIamServiceListGr
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketDefaultGroupRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -4521,91 +5416,77 @@ func (a *IamApiService) IamServiceListGroupsForUserExecute(r ApiIamServiceListGr
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListRolePoliciesRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketHeadMetadataRequest struct {
+	ctx                                       context.Context
+	ApiService                                *BucketApiService
+	bucketName                                string
+	bucketServiceSetBucketHeadMetadataRequest *BucketServiceSetBucketHeadMetadataRequest
+	namespace                                 *string
 }
 
-// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
-func (r ApiIamServiceListRolePoliciesRequest) Marker(marker string) ApiIamServiceListRolePoliciesRequest {
-	r.marker = &marker
+func (r ApiBucketServiceSetBucketHeadMetadataRequest) BucketServiceSetBucketHeadMetadataRequest(bucketServiceSetBucketHeadMetadataRequest BucketServiceSetBucketHeadMetadataRequest) ApiBucketServiceSetBucketHeadMetadataRequest {
+	r.bucketServiceSetBucketHeadMetadataRequest = &bucketServiceSetBucketHeadMetadataRequest
 	return r
 }
 
-// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
-func (r ApiIamServiceListRolePoliciesRequest) MaxItems(maxItems int32) ApiIamServiceListRolePoliciesRequest {
-	r.maxItems = &maxItems
+// namespace of the bucket
+func (r ApiBucketServiceSetBucketHeadMetadataRequest) Namespace(namespace string) ApiBucketServiceSetBucketHeadMetadataRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceListRolePoliciesRequest) RoleName(roleName string) ApiIamServiceListRolePoliciesRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListRolePoliciesRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListRolePoliciesRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListRolePoliciesRequest) Execute() (*IamServiceListRolePoliciesResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListRolePoliciesExecute(r)
+func (r ApiBucketServiceSetBucketHeadMetadataRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketHeadMetadataExecute(r)
 }
 
 /*
-IamServiceListRolePolicies Lists the names of the inline policies that are embedded in the specified IAM role.
+BucketServiceSetBucketHeadMetadata Attaches additional metadata associated with the bucket for a given head-type
 
-Lists the names of the inline policies that are embedded in the specified IAM role.
+Persist additional head metadata for the bucket
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListRolePoliciesRequest
+	@param bucketName name of the bucket for which the metadata is to be added
+	@return ApiBucketServiceSetBucketHeadMetadataRequest
 */
-func (a *IamApiService) IamServiceListRolePolicies(ctx context.Context) ApiIamServiceListRolePoliciesRequest {
-	return ApiIamServiceListRolePoliciesRequest{
+func (a *BucketApiService) BucketServiceSetBucketHeadMetadata(ctx context.Context, bucketName string) ApiBucketServiceSetBucketHeadMetadataRequest {
+	return ApiBucketServiceSetBucketHeadMetadataRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListRolePoliciesResponse
-func (a *IamApiService) IamServiceListRolePoliciesExecute(r ApiIamServiceListRolePoliciesRequest) (*IamServiceListRolePoliciesResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketHeadMetadataExecute(r ApiBucketServiceSetBucketHeadMetadataRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListRolePoliciesResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListRolePolicies")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketHeadMetadata")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListRolePolicies"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/metadata"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketHeadMetadataRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketHeadMetadataRequest is required and must be specified")
+	}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -4621,9 +5502,8 @@ func (a *IamApiService) IamServiceListRolePoliciesExecute(r ApiIamServiceListRol
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketHeadMetadataRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -4707,91 +5587,71 @@ func (a *IamApiService) IamServiceListRolePoliciesExecute(r ApiIamServiceListRol
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListRoleTagsRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	roleName      *string
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketLockRequest struct {
+	ctx                               context.Context
+	ApiService                        *BucketApiService
+	bucketName                        string
+	isLocked                          string
+	bucketServiceSetBucketLockRequest *BucketServiceSetBucketLockRequest
 }
 
-// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
-func (r ApiIamServiceListRoleTagsRequest) Marker(marker string) ApiIamServiceListRoleTagsRequest {
-	r.marker = &marker
+func (r ApiBucketServiceSetBucketLockRequest) BucketServiceSetBucketLockRequest(bucketServiceSetBucketLockRequest BucketServiceSetBucketLockRequest) ApiBucketServiceSetBucketLockRequest {
+	r.bucketServiceSetBucketLockRequest = &bucketServiceSetBucketLockRequest
 	return r
 }
 
-// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
-func (r ApiIamServiceListRoleTagsRequest) MaxItems(maxItems int32) ApiIamServiceListRoleTagsRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// Simple name identifying the role.
-func (r ApiIamServiceListRoleTagsRequest) RoleName(roleName string) ApiIamServiceListRoleTagsRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListRoleTagsRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListRoleTagsRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListRoleTagsRequest) Execute() (*IamServiceListRoleTagsResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListRoleTagsExecute(r)
+func (r ApiBucketServiceSetBucketLockRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketLockExecute(r)
 }
 
 /*
-IamServiceListRoleTags Lists the tags that are attached to the specified IAM role.
+BucketServiceSetBucketLock Locks or unlocks the specified bucket
 
-Lists the tags that are attached to the specified IAM role.
+Locks or unlocks the specified bucket. Current user's namespace is used.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListRoleTagsRequest
+	@param bucketName Name of the bucket which is to be locked/unlocked.
+	@param isLocked Set to \"true\" for lock bucket and \"false\" for unlock bucket.
+	@return ApiBucketServiceSetBucketLockRequest
 */
-func (a *IamApiService) IamServiceListRoleTags(ctx context.Context) ApiIamServiceListRoleTagsRequest {
-	return ApiIamServiceListRoleTagsRequest{
+func (a *BucketApiService) BucketServiceSetBucketLock(ctx context.Context, bucketName string, isLocked string) ApiBucketServiceSetBucketLockRequest {
+	return ApiBucketServiceSetBucketLockRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
+		isLocked:   isLocked,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListRoleTagsResponse
-func (a *IamApiService) IamServiceListRoleTagsExecute(r ApiIamServiceListRoleTagsRequest) (*IamServiceListRoleTagsResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketLockExecute(r ApiBucketServiceSetBucketLockRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListRoleTagsResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListRoleTags")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketLock")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListRoleTags"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/lock/{IsLocked}"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"IsLocked"+"}", url.PathEscape(parameterValueToString(r.isLocked, "isLocked")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketLockRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketLockRequest is required and must be specified")
+	}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -4807,9 +5667,8 @@ func (a *IamApiService) IamServiceListRoleTagsExecute(r ApiIamServiceListRoleTag
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketLockRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -4893,88 +5752,65 @@ func (a *IamApiService) IamServiceListRoleTagsExecute(r ApiIamServiceListRoleTag
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListRolesRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	pathPrefix    *string
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketPolicyRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
 }
 
-// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
-func (r ApiIamServiceListRolesRequest) Marker(marker string) ApiIamServiceListRolesRequest {
-	r.marker = &marker
+// namespace of the bucket
+func (r ApiBucketServiceSetBucketPolicyRequest) Namespace(namespace string) ApiBucketServiceSetBucketPolicyRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
-func (r ApiIamServiceListRolesRequest) MaxItems(maxItems int32) ApiIamServiceListRolesRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// The path to the roles.
-func (r ApiIamServiceListRolesRequest) PathPrefix(pathPrefix string) ApiIamServiceListRolesRequest {
-	r.pathPrefix = &pathPrefix
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListRolesRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListRolesRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListRolesRequest) Execute() (*IamServiceListRolesResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListRolesExecute(r)
+func (r ApiBucketServiceSetBucketPolicyRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketPolicyExecute(r)
 }
 
 /*
-IamServiceListRoles Lists the IAM roles.
+BucketServiceSetBucketPolicy Add/Replace the policy for the specified bucket in namespace
 
-Lists the IAM roles.
+Add/Replace the policy on the specified bucket
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListRolesRequest
+	@param bucketName Name of the bucket for which the policy is to be updated.
+	@return ApiBucketServiceSetBucketPolicyRequest
 */
-func (a *IamApiService) IamServiceListRoles(ctx context.Context) ApiIamServiceListRolesRequest {
-	return ApiIamServiceListRolesRequest{
+func (a *BucketApiService) BucketServiceSetBucketPolicy(ctx context.Context, bucketName string) ApiBucketServiceSetBucketPolicyRequest {
+	return ApiBucketServiceSetBucketPolicyRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListRolesResponse
-func (a *IamApiService) IamServiceListRolesExecute(r ApiIamServiceListRolesRequest) (*IamServiceListRolesResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketPolicyExecute(r ApiBucketServiceSetBucketPolicyRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListRolesResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListRoles")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketPolicy")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListRoles"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/policy"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.pathPrefix != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PathPrefix", r.pathPrefix, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -4992,9 +5828,6 @@ func (a *IamApiService) IamServiceListRolesExecute(r ApiIamServiceListRolesReque
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -5079,91 +5912,67 @@ func (a *IamApiService) IamServiceListRolesExecute(r ApiIamServiceListRolesReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListUserPoliciesRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	userName      *string
-	marker        *string
-	maxItems      *int32
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketRetentionRequest struct {
+	ctx                                    context.Context
+	ApiService                             *BucketApiService
+	bucketName                             string
+	bucketServiceSetBucketRetentionRequest *BucketServiceSetBucketRetentionRequest
 }
 
-// The name of the user to list attached policies for.
-func (r ApiIamServiceListUserPoliciesRequest) UserName(userName string) ApiIamServiceListUserPoliciesRequest {
-	r.userName = &userName
+func (r ApiBucketServiceSetBucketRetentionRequest) BucketServiceSetBucketRetentionRequest(bucketServiceSetBucketRetentionRequest BucketServiceSetBucketRetentionRequest) ApiBucketServiceSetBucketRetentionRequest {
+	r.bucketServiceSetBucketRetentionRequest = &bucketServiceSetBucketRetentionRequest
 	return r
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceListUserPoliciesRequest) Marker(marker string) ApiIamServiceListUserPoliciesRequest {
-	r.marker = &marker
-	return r
-}
-
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceListUserPoliciesRequest) MaxItems(maxItems int32) ApiIamServiceListUserPoliciesRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListUserPoliciesRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListUserPoliciesRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListUserPoliciesRequest) Execute() (*IamServiceListUserPoliciesResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListUserPoliciesExecute(r)
+func (r ApiBucketServiceSetBucketRetentionRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketRetentionExecute(r)
 }
 
 /*
-IamServiceListUserPolicies List Inline Policies for IAM User.
+BucketServiceSetBucketRetention Updates the default retention period setting for the specified bucket
 
-List Inline Policies for IAM User.
+Updates the default retention period setting for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListUserPoliciesRequest
+	@param bucketName Bucket name for which retention period will be updated.
+	@return ApiBucketServiceSetBucketRetentionRequest
 */
-func (a *IamApiService) IamServiceListUserPolicies(ctx context.Context) ApiIamServiceListUserPoliciesRequest {
-	return ApiIamServiceListUserPoliciesRequest{
+func (a *BucketApiService) BucketServiceSetBucketRetention(ctx context.Context, bucketName string) ApiBucketServiceSetBucketRetentionRequest {
+	return ApiBucketServiceSetBucketRetentionRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListUserPoliciesResponse
-func (a *IamApiService) IamServiceListUserPoliciesExecute(r ApiIamServiceListUserPoliciesRequest) (*IamServiceListUserPoliciesResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketRetentionExecute(r ApiBucketServiceSetBucketRetentionRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListUserPoliciesResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListUserPolicies")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketRetention")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListUserPolicies"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/retention"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketRetentionRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketRetentionRequest is required and must be specified")
+	}
 
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
-	}
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -5179,9 +5988,8 @@ func (a *IamApiService) IamServiceListUserPoliciesExecute(r ApiIamServiceListUse
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketRetentionRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -5265,91 +6073,77 @@ func (a *IamApiService) IamServiceListUserPoliciesExecute(r ApiIamServiceListUse
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListUserTagsRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	userName      *string
-	marker        *string
-	maxItems      *int32
-	xEmcNamespace *string
+type ApiBucketServiceSetBucketVersioningRequest struct {
+	ctx                                     context.Context
+	ApiService                              *BucketApiService
+	bucketName                              string
+	bucketServiceSetBucketVersioningRequest *BucketServiceSetBucketVersioningRequest
+	namespace                               *string
 }
 
-// Simple name identifying the user.
-func (r ApiIamServiceListUserTagsRequest) UserName(userName string) ApiIamServiceListUserTagsRequest {
-	r.userName = &userName
+func (r ApiBucketServiceSetBucketVersioningRequest) BucketServiceSetBucketVersioningRequest(bucketServiceSetBucketVersioningRequest BucketServiceSetBucketVersioningRequest) ApiBucketServiceSetBucketVersioningRequest {
+	r.bucketServiceSetBucketVersioningRequest = &bucketServiceSetBucketVersioningRequest
 	return r
 }
 
-// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
-func (r ApiIamServiceListUserTagsRequest) Marker(marker string) ApiIamServiceListUserTagsRequest {
-	r.marker = &marker
+// Namespace associated with the bucket for which versioning will be updated.
+func (r ApiBucketServiceSetBucketVersioningRequest) Namespace(namespace string) ApiBucketServiceSetBucketVersioningRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
-func (r ApiIamServiceListUserTagsRequest) MaxItems(maxItems int32) ApiIamServiceListUserTagsRequest {
-	r.maxItems = &maxItems
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListUserTagsRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListUserTagsRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListUserTagsRequest) Execute() (*IamServiceListUserTagsResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListUserTagsExecute(r)
+func (r ApiBucketServiceSetBucketVersioningRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetBucketVersioningExecute(r)
 }
 
 /*
-IamServiceListUserTags Lists the tags that are attached to the specified IAM User.
+BucketServiceSetBucketVersioning Updates the versioning status for the specified bucket
 
-Lists the tags that are attached to the specified IAM User.
+Updates the versioning status for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListUserTagsRequest
+	@param bucketName Bucket name for which versioning will be updated.
+	@return ApiBucketServiceSetBucketVersioningRequest
 */
-func (a *IamApiService) IamServiceListUserTags(ctx context.Context) ApiIamServiceListUserTagsRequest {
-	return ApiIamServiceListUserTagsRequest{
+func (a *BucketApiService) BucketServiceSetBucketVersioning(ctx context.Context, bucketName string) ApiBucketServiceSetBucketVersioningRequest {
+	return ApiBucketServiceSetBucketVersioningRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListUserTagsResponse
-func (a *IamApiService) IamServiceListUserTagsExecute(r ApiIamServiceListUserTagsRequest) (*IamServiceListUserTagsResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetBucketVersioningExecute(r ApiBucketServiceSetBucketVersioningRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListUserTagsResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListUserTags")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetBucketVersioning")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListUserTags"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/versioning"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceSetBucketVersioningRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceSetBucketVersioningRequest is required and must be specified")
+	}
 
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
-	}
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
-	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -5365,9 +6159,8 @@ func (a *IamApiService) IamServiceListUserTagsExecute(r ApiIamServiceListUserTag
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceSetBucketVersioningRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -5451,88 +6244,81 @@ func (a *IamApiService) IamServiceListUserTagsExecute(r ApiIamServiceListUserTag
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceListUsersRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	marker        *string
-	maxItems      *int32
-	pathPrefix    *string
-	xEmcNamespace *string
+type ApiBucketServiceSetEventualReadsForBucketRequest struct {
+	ctx        context.Context
+	ApiService *BucketApiService
+	bucketName string
+	namespace  *string
+	enabled    *string
 }
 
-// Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated.
-func (r ApiIamServiceListUsersRequest) Marker(marker string) ApiIamServiceListUsersRequest {
-	r.marker = &marker
+// Namespace of the bucket for which the OBS CAS local object metadata reads should be updated.
+func (r ApiBucketServiceSetEventualReadsForBucketRequest) Namespace(namespace string) ApiBucketServiceSetEventualReadsForBucketRequest {
+	r.namespace = &namespace
 	return r
 }
 
-// Indicates the maximum number of elements to be returned in the response.
-func (r ApiIamServiceListUsersRequest) MaxItems(maxItems int32) ApiIamServiceListUsersRequest {
-	r.maxItems = &maxItems
+// Enable or disable OBS CAS local object metadata reads on the bucket buckets.
+func (r ApiBucketServiceSetEventualReadsForBucketRequest) Enabled(enabled string) ApiBucketServiceSetEventualReadsForBucketRequest {
+	r.enabled = &enabled
 	return r
 }
 
-// Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed.
-func (r ApiIamServiceListUsersRequest) PathPrefix(pathPrefix string) ApiIamServiceListUsersRequest {
-	r.pathPrefix = &pathPrefix
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceListUsersRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListUsersRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceListUsersRequest) Execute() (*IamServiceListUsersResponse, *http.Response, error) {
-	return r.ApiService.IamServiceListUsersExecute(r)
+func (r ApiBucketServiceSetEventualReadsForBucketRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceSetEventualReadsForBucketExecute(r)
 }
 
 /*
-IamServiceListUsers Lists the IAM users.
+BucketServiceSetEventualReadsForBucket Updates local object metadata read flag for a bucket.
 
-Lists the IAM users.
+Sets local object metadata read flag to enable or disable OBS eventual reads for OBS CAS ADO RW buckets.
+
+	<p> If the local object metadata reads are enabled then the OBS CAS ADO RW buckets will try to read the object metadata from the locally replicated data,
+	this improves availability and improves latency if data was replicated and the object or bucket was created on remote VDC and the remote VDC is far away.
+	But this may result in stale object metadata being returned if the object metadata is not fully replicated to the local VDC,
+	the object can be still not deleted or returned Litigation Hold or Event Based Retention information can be outdated.
+	If object metadata was not replicated then it will be requested from remote VDC.</p>
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceListUsersRequest
+	@param bucketName Bucket name for which the OBS CAS local object metadata reads should be updated.
+	@return ApiBucketServiceSetEventualReadsForBucketRequest
 */
-func (a *IamApiService) IamServiceListUsers(ctx context.Context) ApiIamServiceListUsersRequest {
-	return ApiIamServiceListUsersRequest{
+func (a *BucketApiService) BucketServiceSetEventualReadsForBucket(ctx context.Context, bucketName string) ApiBucketServiceSetEventualReadsForBucketRequest {
+	return ApiBucketServiceSetEventualReadsForBucketRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceListUsersResponse
-func (a *IamApiService) IamServiceListUsersExecute(r ApiIamServiceListUsersRequest) (*IamServiceListUsersResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceSetEventualReadsForBucketExecute(r ApiBucketServiceSetEventualReadsForBucketRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceListUsersResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListUsers")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceSetEventualReadsForBucket")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=ListUsers"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/set-local-object-metadata-reads"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.marker != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
+	if r.namespace != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
-	if r.maxItems != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
-	}
-	if r.pathPrefix != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PathPrefix", r.pathPrefix, "")
+	if r.enabled != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "enabled", r.enabled, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -5550,9 +6336,6 @@ func (a *IamApiService) IamServiceListUsersExecute(r ApiIamServiceListUsersReque
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -5637,956 +6420,45 @@ func (a *IamApiService) IamServiceListUsersExecute(r ApiIamServiceListUsersReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServicePutGroupPolicyRequest struct {
-	ctx            context.Context
-	ApiService     *IamApiService
-	policyDocument *string
-	groupName      *string
-	policyName     *string
-	xEmcNamespace  *string
+type ApiBucketServiceTestPolicyRequest struct {
+	ctx                            context.Context
+	ApiService                     *BucketApiService
+	bucketServiceTestPolicyRequest *BucketServiceTestPolicyRequest
+	bucketName                     *string
+	account                        *string
 }
 
-// The policy document in JSON format.
-func (r ApiIamServicePutGroupPolicyRequest) PolicyDocument(policyDocument string) ApiIamServicePutGroupPolicyRequest {
-	r.policyDocument = &policyDocument
+func (r ApiBucketServiceTestPolicyRequest) BucketServiceTestPolicyRequest(bucketServiceTestPolicyRequest BucketServiceTestPolicyRequest) ApiBucketServiceTestPolicyRequest {
+	r.bucketServiceTestPolicyRequest = &bucketServiceTestPolicyRequest
 	return r
 }
 
-// Simple name identifying the group.
-func (r ApiIamServicePutGroupPolicyRequest) GroupName(groupName string) ApiIamServicePutGroupPolicyRequest {
-	r.groupName = &groupName
+// Bucket name for which DM policy should be validated.
+func (r ApiBucketServiceTestPolicyRequest) BucketName(bucketName string) ApiBucketServiceTestPolicyRequest {
+	r.bucketName = &bucketName
 	return r
 }
 
-// Simple name identifying the policy.
-func (r ApiIamServicePutGroupPolicyRequest) PolicyName(policyName string) ApiIamServicePutGroupPolicyRequest {
-	r.policyName = &policyName
+// Namespace for which DM policy should be validated.
+func (r ApiBucketServiceTestPolicyRequest) Account(account string) ApiBucketServiceTestPolicyRequest {
+	r.account = &account
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServicePutGroupPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServicePutGroupPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServicePutGroupPolicyRequest) Execute() (*IamServicePutGroupPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServicePutGroupPolicyExecute(r)
+func (r ApiBucketServiceTestPolicyRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceTestPolicyExecute(r)
 }
 
 /*
-IamServicePutGroupPolicy Add or Update Inline Policy for IAM Group.
+BucketServiceTestPolicy Validates a DM policy
 
-Add or Update Inline Policy for IAM Group.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServicePutGroupPolicyRequest
-*/
-func (a *IamApiService) IamServicePutGroupPolicy(ctx context.Context) ApiIamServicePutGroupPolicyRequest {
-	return ApiIamServicePutGroupPolicyRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return IamServicePutGroupPolicyResponse
-func (a *IamApiService) IamServicePutGroupPolicyExecute(r ApiIamServicePutGroupPolicyRequest) (*IamServicePutGroupPolicyResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *IamServicePutGroupPolicyResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutGroupPolicy")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/iam?Action=PutGroupPolicy"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.policyDocument != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyDocument", r.policyDocument, "")
-	}
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["AuthToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 500 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiIamServicePutRolePermissionsBoundaryRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	roleName      *string
-	xEmcNamespace *string
-}
-
-// Arn that identifies the policy.
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) PolicyArn(policyArn string) ApiIamServicePutRolePermissionsBoundaryRequest {
-	r.policyArn = &policyArn
-	return r
-}
-
-// Simple name identifying the role.
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) RoleName(roleName string) ApiIamServicePutRolePermissionsBoundaryRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) XEmcNamespace(xEmcNamespace string) ApiIamServicePutRolePermissionsBoundaryRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) Execute() (*IamServicePutRolePermissionsBoundaryResponse, *http.Response, error) {
-	return r.ApiService.IamServicePutRolePermissionsBoundaryExecute(r)
-}
-
-/*
-IamServicePutRolePermissionsBoundary Adds or updates the policy that is specified as the IAM role's permissions boundary.
-
-Adds or updates the policy that is specified as the IAM role's permissions boundary.
+Validates a DM policy.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServicePutRolePermissionsBoundaryRequest
+	@return ApiBucketServiceTestPolicyRequest
 */
-func (a *IamApiService) IamServicePutRolePermissionsBoundary(ctx context.Context) ApiIamServicePutRolePermissionsBoundaryRequest {
-	return ApiIamServicePutRolePermissionsBoundaryRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return IamServicePutRolePermissionsBoundaryResponse
-func (a *IamApiService) IamServicePutRolePermissionsBoundaryExecute(r ApiIamServicePutRolePermissionsBoundaryRequest) (*IamServicePutRolePermissionsBoundaryResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *IamServicePutRolePermissionsBoundaryResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutRolePermissionsBoundary")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/iam?Action=PutRolePermissionsBoundary"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["AuthToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 500 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiIamServicePutRolePolicyRequest struct {
-	ctx            context.Context
-	ApiService     *IamApiService
-	policyDocument *string
-	roleName       *string
-	policyName     *string
-	xEmcNamespace  *string
-}
-
-// The policy document in JSON format.
-func (r ApiIamServicePutRolePolicyRequest) PolicyDocument(policyDocument string) ApiIamServicePutRolePolicyRequest {
-	r.policyDocument = &policyDocument
-	return r
-}
-
-// Simple name identifying the role.
-func (r ApiIamServicePutRolePolicyRequest) RoleName(roleName string) ApiIamServicePutRolePolicyRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// Simple name identifying the policy.
-func (r ApiIamServicePutRolePolicyRequest) PolicyName(policyName string) ApiIamServicePutRolePolicyRequest {
-	r.policyName = &policyName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServicePutRolePolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServicePutRolePolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServicePutRolePolicyRequest) Execute() (*IamServicePutRolePolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServicePutRolePolicyExecute(r)
-}
-
-/*
-IamServicePutRolePolicy Adds or updates an inline policy document that is embedded in the specified IAM role.
-
-Adds or updates an inline policy document that is embedded in the specified IAM role.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServicePutRolePolicyRequest
-*/
-func (a *IamApiService) IamServicePutRolePolicy(ctx context.Context) ApiIamServicePutRolePolicyRequest {
-	return ApiIamServicePutRolePolicyRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return IamServicePutRolePolicyResponse
-func (a *IamApiService) IamServicePutRolePolicyExecute(r ApiIamServicePutRolePolicyRequest) (*IamServicePutRolePolicyResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *IamServicePutRolePolicyResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutRolePolicy")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/iam?Action=PutRolePolicy"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.policyDocument != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyDocument", r.policyDocument, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["AuthToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 500 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiIamServicePutUserPolicyRequest struct {
-	ctx            context.Context
-	ApiService     *IamApiService
-	policyDocument *string
-	policyName     *string
-	userName       *string
-	xEmcNamespace  *string
-}
-
-// The policy document in JSON format.
-func (r ApiIamServicePutUserPolicyRequest) PolicyDocument(policyDocument string) ApiIamServicePutUserPolicyRequest {
-	r.policyDocument = &policyDocument
-	return r
-}
-
-// Simple name identifying the policy.
-func (r ApiIamServicePutUserPolicyRequest) PolicyName(policyName string) ApiIamServicePutUserPolicyRequest {
-	r.policyName = &policyName
-	return r
-}
-
-// Simple name identifying the user.
-func (r ApiIamServicePutUserPolicyRequest) UserName(userName string) ApiIamServicePutUserPolicyRequest {
-	r.userName = &userName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServicePutUserPolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServicePutUserPolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServicePutUserPolicyRequest) Execute() (*IamServicePutUserPolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServicePutUserPolicyExecute(r)
-}
-
-/*
-IamServicePutUserPolicy Add or Update Inline Policy for IAM User.
-
-Add or Update Inline Policy for IAM User.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServicePutUserPolicyRequest
-*/
-func (a *IamApiService) IamServicePutUserPolicy(ctx context.Context) ApiIamServicePutUserPolicyRequest {
-	return ApiIamServicePutUserPolicyRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return IamServicePutUserPolicyResponse
-func (a *IamApiService) IamServicePutUserPolicyExecute(r ApiIamServicePutUserPolicyRequest) (*IamServicePutUserPolicyResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *IamServicePutUserPolicyResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutUserPolicy")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/iam?Action=PutUserPolicy"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.policyDocument != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyDocument", r.policyDocument, "")
-	}
-	if r.policyName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyName", r.policyName, "")
-	}
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["AuthToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 500 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiIamServiceRemoveUserFromGroupRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	groupName     *string
-	userName      *string
-	xEmcNamespace *string
-}
-
-// The name of the group to update.
-func (r ApiIamServiceRemoveUserFromGroupRequest) GroupName(groupName string) ApiIamServiceRemoveUserFromGroupRequest {
-	r.groupName = &groupName
-	return r
-}
-
-// The name of the user to be removed.
-func (r ApiIamServiceRemoveUserFromGroupRequest) UserName(userName string) ApiIamServiceRemoveUserFromGroupRequest {
-	r.userName = &userName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceRemoveUserFromGroupRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceRemoveUserFromGroupRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceRemoveUserFromGroupRequest) Execute() (*IamServiceRemoveUserFromGroupResponse, *http.Response, error) {
-	return r.ApiService.IamServiceRemoveUserFromGroupExecute(r)
-}
-
-/*
-IamServiceRemoveUserFromGroup Remove User from a Group.
-
-Remove User from a Group.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceRemoveUserFromGroupRequest
-*/
-func (a *IamApiService) IamServiceRemoveUserFromGroup(ctx context.Context) ApiIamServiceRemoveUserFromGroupRequest {
-	return ApiIamServiceRemoveUserFromGroupRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return IamServiceRemoveUserFromGroupResponse
-func (a *IamApiService) IamServiceRemoveUserFromGroupExecute(r ApiIamServiceRemoveUserFromGroupRequest) (*IamServiceRemoveUserFromGroupResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *IamServiceRemoveUserFromGroupResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceRemoveUserFromGroup")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/iam?Action=RemoveUserFromGroup"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.groupName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "GroupName", r.groupName, "")
-	}
-	if r.userName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "UserName", r.userName, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["AuthToken"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 500 {
-			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiIamServiceTagRoleRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	tagsMemberN   *map[string]interface{}
-	xEmcNamespace *string
-}
-
-// Simple name identifying the role.
-func (r ApiIamServiceTagRoleRequest) RoleName(roleName string) ApiIamServiceTagRoleRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// A list of tags that you want to attach to the role.
-func (r ApiIamServiceTagRoleRequest) TagsMemberN(tagsMemberN map[string]interface{}) ApiIamServiceTagRoleRequest {
-	r.tagsMemberN = &tagsMemberN
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceTagRoleRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceTagRoleRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceTagRoleRequest) Execute() (map[string]interface{}, *http.Response, error) {
-	return r.ApiService.IamServiceTagRoleExecute(r)
-}
-
-/*
-IamServiceTagRole Adds one or more tags to a specified IAM Role.
-
-Adds one or more tags to a specified IAM Role.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceTagRoleRequest
-*/
-func (a *IamApiService) IamServiceTagRole(ctx context.Context) ApiIamServiceTagRoleRequest {
-	return ApiIamServiceTagRoleRequest{
+func (a *BucketApiService) BucketServiceTestPolicy(ctx context.Context) ApiBucketServiceTestPolicyRequest {
+	return ApiBucketServiceTestPolicyRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -6595,7 +6467,7 @@ func (a *IamApiService) IamServiceTagRole(ctx context.Context) ApiIamServiceTagR
 // Execute executes the request
 //
 //	@return map[string]interface{}
-func (a *IamApiService) IamServiceTagRoleExecute(r ApiIamServiceTagRoleRequest) (map[string]interface{}, *http.Response, error) {
+func (a *BucketApiService) BucketServiceTestPolicyExecute(r ApiBucketServiceTestPolicyRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -6603,25 +6475,28 @@ func (a *IamApiService) IamServiceTagRoleExecute(r ApiIamServiceTagRoleRequest) 
 		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceTagRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceTestPolicy")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=TagRole"
+	localVarPath := localBasePath + "/object/bucket/test-policy"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.bucketServiceTestPolicyRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceTestPolicyRequest is required and must be specified")
 	}
-	if r.tagsMemberN != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", r.tagsMemberN, "")
+
+	if r.bucketName != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "bucketName", r.bucketName, "")
+	}
+	if r.account != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "account", r.account, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -6637,9 +6512,8 @@ func (a *IamApiService) IamServiceTagRoleExecute(r ApiIamServiceTagRoleRequest) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceTestPolicyRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -6723,46 +6597,45 @@ func (a *IamApiService) IamServiceTagRoleExecute(r ApiIamServiceTagRoleRequest) 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceUntagRoleRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	roleName      *string
-	tagKeys       *IamServiceUntagRoleTagKeysParameter
-	xEmcNamespace *string
+type ApiBucketServiceTestPolicyEditRequest struct {
+	ctx                                context.Context
+	ApiService                         *BucketApiService
+	bucketServiceTestPolicyEditRequest *BucketServiceTestPolicyEditRequest
+	bucketName                         *string
+	account                            *string
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceUntagRoleRequest) RoleName(roleName string) ApiIamServiceUntagRoleRequest {
-	r.roleName = &roleName
+func (r ApiBucketServiceTestPolicyEditRequest) BucketServiceTestPolicyEditRequest(bucketServiceTestPolicyEditRequest BucketServiceTestPolicyEditRequest) ApiBucketServiceTestPolicyEditRequest {
+	r.bucketServiceTestPolicyEditRequest = &bucketServiceTestPolicyEditRequest
 	return r
 }
 
-// A list of tags that you want to remove from the role.
-func (r ApiIamServiceUntagRoleRequest) TagKeys(tagKeys IamServiceUntagRoleTagKeysParameter) ApiIamServiceUntagRoleRequest {
-	r.tagKeys = &tagKeys
+// Bucket name for which DM policy should be validated.
+func (r ApiBucketServiceTestPolicyEditRequest) BucketName(bucketName string) ApiBucketServiceTestPolicyEditRequest {
+	r.bucketName = &bucketName
 	return r
 }
 
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceUntagRoleRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceUntagRoleRequest {
-	r.xEmcNamespace = &xEmcNamespace
+// Namespace for which DM policy should be validated.
+func (r ApiBucketServiceTestPolicyEditRequest) Account(account string) ApiBucketServiceTestPolicyEditRequest {
+	r.account = &account
 	return r
 }
 
-func (r ApiIamServiceUntagRoleRequest) Execute() (map[string]interface{}, *http.Response, error) {
-	return r.ApiService.IamServiceUntagRoleExecute(r)
+func (r ApiBucketServiceTestPolicyEditRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceTestPolicyEditExecute(r)
 }
 
 /*
-IamServiceUntagRole Removes the specified tags from a specified IAM Role.
+BucketServiceTestPolicyEdit Validates a DM policy edit operation
 
-Removes the specified tags from a specified IAM Role.
+Validates a DM policy edit request.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceUntagRoleRequest
+	@return ApiBucketServiceTestPolicyEditRequest
 */
-func (a *IamApiService) IamServiceUntagRole(ctx context.Context) ApiIamServiceUntagRoleRequest {
-	return ApiIamServiceUntagRoleRequest{
+func (a *BucketApiService) BucketServiceTestPolicyEdit(ctx context.Context) ApiBucketServiceTestPolicyEditRequest {
+	return ApiBucketServiceTestPolicyEditRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -6771,7 +6644,7 @@ func (a *IamApiService) IamServiceUntagRole(ctx context.Context) ApiIamServiceUn
 // Execute executes the request
 //
 //	@return map[string]interface{}
-func (a *IamApiService) IamServiceUntagRoleExecute(r ApiIamServiceUntagRoleRequest) (map[string]interface{}, *http.Response, error) {
+func (a *BucketApiService) BucketServiceTestPolicyEditExecute(r ApiBucketServiceTestPolicyEditRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -6779,25 +6652,28 @@ func (a *IamApiService) IamServiceUntagRoleExecute(r ApiIamServiceUntagRoleReque
 		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceUntagRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceTestPolicyEdit")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=UntagRole"
+	localVarPath := localBasePath + "/object/bucket/test-policy-edit"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
+	if r.bucketServiceTestPolicyEditRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceTestPolicyEditRequest is required and must be specified")
 	}
-	if r.tagKeys != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "TagKeys", r.tagKeys, "")
+
+	if r.bucketName != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "bucketName", r.bucketName, "")
+	}
+	if r.account != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "account", r.account, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -6813,9 +6689,8 @@ func (a *IamApiService) IamServiceUntagRoleExecute(r ApiIamServiceUntagRoleReque
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceTestPolicyEditRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -6899,81 +6774,77 @@ func (a *IamApiService) IamServiceUntagRoleExecute(r ApiIamServiceUntagRoleReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceUpdateAssumeRolePolicyRequest struct {
-	ctx            context.Context
-	ApiService     *IamApiService
-	policyDocument *string
-	roleName       *string
-	xEmcNamespace  *string
+type ApiBucketServiceUpdateBucketIsStaleAllowedRequest struct {
+	ctx                                            context.Context
+	ApiService                                     *BucketApiService
+	bucketName                                     string
+	bucketServiceUpdateBucketIsStaleAllowedRequest *BucketServiceUpdateBucketIsStaleAllowedRequest
 }
 
-// The policy that grants an entity permission to assume the role.
-func (r ApiIamServiceUpdateAssumeRolePolicyRequest) PolicyDocument(policyDocument string) ApiIamServiceUpdateAssumeRolePolicyRequest {
-	r.policyDocument = &policyDocument
+func (r ApiBucketServiceUpdateBucketIsStaleAllowedRequest) BucketServiceUpdateBucketIsStaleAllowedRequest(bucketServiceUpdateBucketIsStaleAllowedRequest BucketServiceUpdateBucketIsStaleAllowedRequest) ApiBucketServiceUpdateBucketIsStaleAllowedRequest {
+	r.bucketServiceUpdateBucketIsStaleAllowedRequest = &bucketServiceUpdateBucketIsStaleAllowedRequest
 	return r
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceUpdateAssumeRolePolicyRequest) RoleName(roleName string) ApiIamServiceUpdateAssumeRolePolicyRequest {
-	r.roleName = &roleName
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceUpdateAssumeRolePolicyRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceUpdateAssumeRolePolicyRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceUpdateAssumeRolePolicyRequest) Execute() (*IamServiceUpdateAssumeRolePolicyResponse, *http.Response, error) {
-	return r.ApiService.IamServiceUpdateAssumeRolePolicyExecute(r)
+func (r ApiBucketServiceUpdateBucketIsStaleAllowedRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceUpdateBucketIsStaleAllowedExecute(r)
 }
 
 /*
-IamServiceUpdateAssumeRolePolicy Updates the policy that grants an IAM entity permission to assume a role.
+BucketServiceUpdateBucketIsStaleAllowed Updates isStaleAllowed details for the specified bucket
 
-Updates the policy that grants an IAM entity permission to assume a role.
+Updates isStaleAllowed details for the specified bucket in order to enable access to the bucket during a
+
+	temporary site outage. If namespace does not exist in the request
+	payload, the current user's namespace is used.
+	<p>If you set this flag ON, and a temporary site outage occurs, objects that you access in this bucket might
+	have been updated at the failed site but changes might not have been propagated to the site from which you
+	are accessing the object.Hence, you are prepared to accept that the objects you read might not be up to date.</p>
+	<p>If the flag is turned OFF, data in the zone which has the temporary outage is not available for access
+	from other zones and object reads for data which has its primary in the failed site will fail.</p>
+	<p> Validates bucket configuration during ADO updates by ensuring the read-only flag is enabled for FSA buckets
+	and disabled for non-FSA buckets, throwing an error for any invalid setting.</p>
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceUpdateAssumeRolePolicyRequest
+	@param bucketName Name of the bucket for which isStaleAllowed is to be updated
+	@return ApiBucketServiceUpdateBucketIsStaleAllowedRequest
 */
-func (a *IamApiService) IamServiceUpdateAssumeRolePolicy(ctx context.Context) ApiIamServiceUpdateAssumeRolePolicyRequest {
-	return ApiIamServiceUpdateAssumeRolePolicyRequest{
+func (a *BucketApiService) BucketServiceUpdateBucketIsStaleAllowed(ctx context.Context, bucketName string) ApiBucketServiceUpdateBucketIsStaleAllowedRequest {
+	return ApiBucketServiceUpdateBucketIsStaleAllowedRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceUpdateAssumeRolePolicyResponse
-func (a *IamApiService) IamServiceUpdateAssumeRolePolicyExecute(r ApiIamServiceUpdateAssumeRolePolicyRequest) (*IamServiceUpdateAssumeRolePolicyResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceUpdateBucketIsStaleAllowedExecute(r ApiBucketServiceUpdateBucketIsStaleAllowedRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceUpdateAssumeRolePolicyResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceUpdateAssumeRolePolicy")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceUpdateBucketIsStaleAllowed")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=UpdateAssumeRolePolicy"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/isstaleallowed"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceUpdateBucketIsStaleAllowedRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceUpdateBucketIsStaleAllowedRequest is required and must be specified")
+	}
 
-	if r.policyDocument != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyDocument", r.policyDocument, "")
-	}
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -6989,9 +6860,8 @@ func (a *IamApiService) IamServiceUpdateAssumeRolePolicyExecute(r ApiIamServiceU
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
-	}
+	// body params
+	localVarPostBody = r.bucketServiceUpdateBucketIsStaleAllowedRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -7075,91 +6945,67 @@ func (a *IamApiService) IamServiceUpdateAssumeRolePolicyExecute(r ApiIamServiceU
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiIamServiceUpdateRoleRequest struct {
-	ctx                context.Context
-	ApiService         *IamApiService
-	roleName           *string
-	maxSessionDuration *int32
-	description        *string
-	xEmcNamespace      *string
+type ApiBucketServiceUpdateBucketOwnerRequest struct {
+	ctx                                   context.Context
+	ApiService                            *BucketApiService
+	bucketName                            string
+	bucketServiceUpdateBucketOwnerRequest *BucketServiceUpdateBucketOwnerRequest
 }
 
-// Simple name identifying the role.
-func (r ApiIamServiceUpdateRoleRequest) RoleName(roleName string) ApiIamServiceUpdateRoleRequest {
-	r.roleName = &roleName
+func (r ApiBucketServiceUpdateBucketOwnerRequest) BucketServiceUpdateBucketOwnerRequest(bucketServiceUpdateBucketOwnerRequest BucketServiceUpdateBucketOwnerRequest) ApiBucketServiceUpdateBucketOwnerRequest {
+	r.bucketServiceUpdateBucketOwnerRequest = &bucketServiceUpdateBucketOwnerRequest
 	return r
 }
 
-// The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied.  This setting can have a value from 1 hour to 12 hours
-func (r ApiIamServiceUpdateRoleRequest) MaxSessionDuration(maxSessionDuration int32) ApiIamServiceUpdateRoleRequest {
-	r.maxSessionDuration = &maxSessionDuration
-	return r
-}
-
-// The new description that you want to apply to the specified role.
-func (r ApiIamServiceUpdateRoleRequest) Description(description string) ApiIamServiceUpdateRoleRequest {
-	r.description = &description
-	return r
-}
-
-// ECS namespace IAM entity belongs to, only required when request performed by management user
-func (r ApiIamServiceUpdateRoleRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceUpdateRoleRequest {
-	r.xEmcNamespace = &xEmcNamespace
-	return r
-}
-
-func (r ApiIamServiceUpdateRoleRequest) Execute() (*IamServiceUpdateRoleResponse, *http.Response, error) {
-	return r.ApiService.IamServiceUpdateRoleExecute(r)
+func (r ApiBucketServiceUpdateBucketOwnerRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceUpdateBucketOwnerExecute(r)
 }
 
 /*
-IamServiceUpdateRole Updates the description or maximum session duration setting of the specified IAM role.
+BucketServiceUpdateBucketOwner Updates the owner for the specified bucket
 
-Updates the description or maximum session duration setting of the specified IAM role.
+Updates the owner for the specified bucket.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiIamServiceUpdateRoleRequest
+	@param bucketName Name of the bucket for which owner will be updated
+	@return ApiBucketServiceUpdateBucketOwnerRequest
 */
-func (a *IamApiService) IamServiceUpdateRole(ctx context.Context) ApiIamServiceUpdateRoleRequest {
-	return ApiIamServiceUpdateRoleRequest{
+func (a *BucketApiService) BucketServiceUpdateBucketOwner(ctx context.Context, bucketName string) ApiBucketServiceUpdateBucketOwnerRequest {
+	return ApiBucketServiceUpdateBucketOwnerRequest{
 		ApiService: a,
 		ctx:        ctx,
+		bucketName: bucketName,
 	}
 }
 
 // Execute executes the request
 //
-//	@return IamServiceUpdateRoleResponse
-func (a *IamApiService) IamServiceUpdateRoleExecute(r ApiIamServiceUpdateRoleRequest) (*IamServiceUpdateRoleResponse, *http.Response, error) {
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceUpdateBucketOwnerExecute(r ApiBucketServiceUpdateBucketOwnerRequest) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceUpdateRoleResponse
+		localVarReturnValue map[string]interface{}
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceUpdateRole")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceUpdateBucketOwner")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/iam?Action=UpdateRole"
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/owner"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.bucketServiceUpdateBucketOwnerRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceUpdateBucketOwnerRequest is required and must be specified")
+	}
 
-	if r.roleName != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
-	}
-	if r.maxSessionDuration != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxSessionDuration", r.maxSessionDuration, "")
-	}
-	if r.description != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Description", r.description, "")
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -7175,9 +7021,341 @@ func (a *IamApiService) IamServiceUpdateRoleExecute(r ApiIamServiceUpdateRoleReq
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.xEmcNamespace != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
+	// body params
+	localVarPostBody = r.bucketServiceUpdateBucketOwnerRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
 	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceUpdateBucketQuotaRequest struct {
+	ctx                                   context.Context
+	ApiService                            *BucketApiService
+	bucketName                            string
+	bucketServiceUpdateBucketQuotaRequest *BucketServiceUpdateBucketQuotaRequest
+}
+
+func (r ApiBucketServiceUpdateBucketQuotaRequest) BucketServiceUpdateBucketQuotaRequest(bucketServiceUpdateBucketQuotaRequest BucketServiceUpdateBucketQuotaRequest) ApiBucketServiceUpdateBucketQuotaRequest {
+	r.bucketServiceUpdateBucketQuotaRequest = &bucketServiceUpdateBucketQuotaRequest
+	return r
+}
+
+func (r ApiBucketServiceUpdateBucketQuotaRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceUpdateBucketQuotaExecute(r)
+}
+
+/*
+BucketServiceUpdateBucketQuota Updates the quota for the given bucket
+
+Updates the quota for the specified bucket. The payload specifies a limit at which a notification will be
+
+	raised in the event log and a limit at which access will be blocked.
+	<p>
+	Both notification and block values must be supplied.  If you do not want to define one of them, you can set
+	its value to -1.  You cannot set both values to -1 using this API.  To set both notification and block values
+	to -1, use the delete quota API.
+	</p>
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Name of the bucket for which the quota is to be updated.
+	@return ApiBucketServiceUpdateBucketQuotaRequest
+*/
+func (a *BucketApiService) BucketServiceUpdateBucketQuota(ctx context.Context, bucketName string) ApiBucketServiceUpdateBucketQuotaRequest {
+	return ApiBucketServiceUpdateBucketQuotaRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceUpdateBucketQuotaExecute(r ApiBucketServiceUpdateBucketQuotaRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceUpdateBucketQuota")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/quota"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.bucketServiceUpdateBucketQuotaRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceUpdateBucketQuotaRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.bucketServiceUpdateBucketQuotaRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiBucketServiceUpdateBucketTagsRequest struct {
+	ctx                                  context.Context
+	ApiService                           *BucketApiService
+	bucketName                           string
+	bucketServiceUpdateBucketTagsRequest *BucketServiceUpdateBucketTagsRequest
+}
+
+func (r ApiBucketServiceUpdateBucketTagsRequest) BucketServiceUpdateBucketTagsRequest(bucketServiceUpdateBucketTagsRequest BucketServiceUpdateBucketTagsRequest) ApiBucketServiceUpdateBucketTagsRequest {
+	r.bucketServiceUpdateBucketTagsRequest = &bucketServiceUpdateBucketTagsRequest
+	return r
+}
+
+func (r ApiBucketServiceUpdateBucketTagsRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.BucketServiceUpdateBucketTagsExecute(r)
+}
+
+/*
+BucketServiceUpdateBucketTags Updates the provided tags for the specified bucket. Note that the operation will over write the existing tags with the new values.
+
+Updates the provided tags for the specified bucket.
+
+	Note that the operation will over write the existing tags with the new values
+	All the specified tags must be present in the Bucket.
+	If any one of the tags is missing in the Bucket, this will throw appropriate Error code (TBD)
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bucketName Bucket name for which specified tags will be updated.
+	@return ApiBucketServiceUpdateBucketTagsRequest
+*/
+func (a *BucketApiService) BucketServiceUpdateBucketTags(ctx context.Context, bucketName string) ApiBucketServiceUpdateBucketTagsRequest {
+	return ApiBucketServiceUpdateBucketTagsRequest{
+		ApiService: a,
+		ctx:        ctx,
+		bucketName: bucketName,
+	}
+}
+
+// Execute executes the request
+//
+//	@return map[string]interface{}
+func (a *BucketApiService) BucketServiceUpdateBucketTagsExecute(r ApiBucketServiceUpdateBucketTagsRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BucketApiService.BucketServiceUpdateBucketTags")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/object/bucket/{bucketName}/tags"
+	localVarPath = strings.Replace(localVarPath, "{"+"bucketName"+"}", url.PathEscape(parameterValueToString(r.bucketName, "bucketName")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.bucketServiceUpdateBucketTagsRequest == nil {
+		return localVarReturnValue, nil, reportError("bucketServiceUpdateBucketTagsRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.bucketServiceUpdateBucketTagsRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
