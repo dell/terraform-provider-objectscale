@@ -14,99 +14,99 @@
 # limitations under the License.
 
 def _normalizeObjectScaleIamRoleResponse(json_obj: dict) -> dict:
-    """Normalize IamRole-related responses safely and modularly."""
+    """In GetRoleResponse, Result property should be GetRoleResult.
+       Inner property Role should be normalised to IamRole.
+       Also for UpdateRoleResponse inner property Role should be normalised to IamRole.
+       Also for CreateRoleResponse inner property Role should be normalised to IamRole.
+       Also for ListRolesResponse inner property Roles should be normalised to IamRole.
+    """
 
-    def get_path(obj, path: list):
-        """Safely get a nested value. Returns None if any key is missing."""
-        for p in path:
-            if not isinstance(obj, dict) or p not in obj:
-                return None
-            obj = obj[p]
-        return obj
+    # Check GetRoleResponse exists
+    if (
+        "components" in json_obj and
+        "schemas" in json_obj["components"] and
+        "IamService_GetRoleResponse" in json_obj["components"]["schemas"]
+    ):
+        get_role_schema = json_obj["components"]["schemas"]["IamService_GetRoleResponse"]
 
-    def set_path(obj, path: list, value):
-        """Safely set a nested value only if all parents exist."""
-        cur = obj
-        for p in path[:-1]:
-            if p not in cur or not isinstance(cur[p], dict):
-                return False
-            cur = cur[p]
-        cur[path[-1]] = value
-        return True
+        if (
+            "properties" in get_role_schema and
+            "Result" in get_role_schema["properties"] and
+            "properties" in get_role_schema["properties"]["Result"] and
+            "Role" in get_role_schema["properties"]["Result"]["properties"]
+        ):
+            common_role = get_role_schema["properties"]["Result"]["properties"]["Role"]
 
-    def delete_path(obj, path: list):
-        """Safely delete a path only if all keys exist."""
-        cur = obj
-        for p in path[:-1]:
-            if p not in cur or not isinstance(cur[p], dict):
-                return False
-            cur = cur[p]
-        return cur.pop(path[-1], None) is not None
+            if (
+                "properties" in common_role and
+                "Tags" in common_role["properties"] and
+                "items" in common_role["properties"]["Tags"]
+            ):
+                common_role["properties"]["Tags"]["items"] = {
+                    "$ref": "#/components/schemas/IamTagKeyValue"
+                }
 
-
-    # Build Common IamRole Schema
-    common_role_path = [
-        "components", "schemas",
-        "IamService_GetRoleResponse", "properties",
-        "Result", "properties", "Role"
-    ]
-    common_role = get_path(json_obj, common_role_path)
-
-    if common_role:
-        # Fix Tags schema
-        tags_path = common_role["properties"].get("Tags", {})
-        if "properties" in common_role and "Tags" in common_role["properties"]:
-            common_role["properties"]["Tags"]["items"] = {
-                "$ref": "#/components/schemas/IamTagKeyValue"
+            json_obj['components']['schemas']['IamRole'] = common_role
+            json_obj['components']['schemas']['IamRoleResult'] = {
+                "type": "object",
+                "properties": {
+                    "Role": {
+                        "$ref": "#/components/schemas/IamRole"
+                    }
+                }
             }
 
-        # Create IamRole schema
-        json_obj["components"]["schemas"]["IamRole"] = common_role
-
-        # Create IamRoleResult schema
-        json_obj["components"]["schemas"]["IamRoleResult"] = {
-            "type": "object",
-            "properties": {
-                "Role": {"$ref": "#/components/schemas/IamRole"}
+    # GetRole Response normalization
+    if "IamService_GetRoleResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_GetRoleResponse']['properties']
+        if "Result" in props:
+            props['GetRoleResult'] = props['Result']
+            del props['Result']
+            props['GetRoleResult'] = {
+                "$ref": "#/components/schemas/IamRoleResult"
             }
-        }
 
-    # Helper to normalize Role responses
-    def normalize_response(root_schema: str, result_key: str):
-        base_path = ["components", "schemas", root_schema, "properties"]
-
-        result_obj = get_path(json_obj, base_path + ["Result"])
-        if result_obj is None:
-            return
-
-        delete_path(json_obj, base_path + ["Result"])
-
-        set_path(json_obj, base_path + [result_key], {
-            "$ref": "#/components/schemas/IamRoleResult"
-        })
-
-    normalize_response("IamService_GetRoleResponse", "GetRoleResult")
-    normalize_response("IamService_UpdateRoleResponse", "UpdateRoleResult")
-    normalize_response("IamService_CreateRoleResponse", "CreateRoleResult")
-
-
-    # Normalize ListRolesResponse
-
-    list_roles_path = [
-        "components", "schemas",
-        "IamService_ListRolesResponse", "properties"
-    ]
-    list_roles_props = get_path(json_obj, list_roles_path)
-
-    if list_roles_props and "Result" in list_roles_props:
-        list_roles_props["ListRolesResult"] = list_roles_props.pop("Result")
-
-        lr = list_roles_props["ListRolesResult"]["properties"]
-        if "member" in lr:
-            lr["Roles"] = lr.pop("member")
-            lr["Roles"]["items"] = {
-                "$ref": "#/components/schemas/IamRole"
+    # UpdateRole Response normalization
+    if "IamService_UpdateRoleResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_UpdateRoleResponse']['properties']
+        if "Result" in props:
+            props['UpdateRoleResult'] = props['Result']
+            del props['Result']
+            props['UpdateRoleResult'] = {
+                "$ref": "#/components/schemas/IamRoleResult"
             }
+
+    # CreateRole Response normalization
+    if "IamService_CreateRoleResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_CreateRoleResponse']['properties']
+        if "Result" in props:
+            props['CreateRoleResult'] = props['Result']
+            del props['Result']
+            props['CreateRoleResult'] = {
+                "$ref": "#/components/schemas/IamRoleResult"
+            }
+
+    # ListRoles Response normalization
+    if "IamService_ListRolesResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_ListRolesResponse']['properties']
+        if "Result" in props:
+            props['ListRolesResult'] = props['Result']
+            del props['Result']
+
+            # Ensure sub-properties exist
+            if (
+                "properties" in props['ListRolesResult'] and
+                "member" in props['ListRolesResult']["properties"]
+            ):
+                props['ListRolesResult']["properties"]["Roles"] = (
+                    props['ListRolesResult']["properties"]["member"]
+                )
+                del props['ListRolesResult']["properties"]["member"]
+
+                if "items" in props['ListRolesResult']["properties"]["Roles"]:
+                    props['ListRolesResult']["properties"]["Roles"]['items'] = {
+                        "$ref": "#/components/schemas/IamRole"
+                    }
 
     return json_obj
 
