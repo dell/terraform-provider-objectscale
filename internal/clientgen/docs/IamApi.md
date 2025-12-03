@@ -500,7 +500,7 @@ func main() {
     description := "description_example" // string | A description of the role. (optional)
     path := "path_example" // string | The path to the role. Optional, defaults to \"/\" and only \"/\" is allowed. (optional)
     permissionsBoundary := "permissionsBoundary_example" // string | The ARN of the policy that is used to set the permissions boundary for the role. (optional)
-    tagsMemberN := map[string]interface{}{ ... } // map[string]interface{} | A list of tags that you want to attach to the role being created. (optional)
+    tagsMemberN := []openapiclient.IamTagKeyValue{*openapiclient.NewIamTagKeyValue()} // []IamTagKeyValue | A list of tags that you want to attach to the role being created. (optional)
     xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
 
     configuration := openapiclient.NewConfiguration()
@@ -532,7 +532,7 @@ Name | Type | Description  | Notes
  **description** | **string** | A description of the role. | 
  **path** | **string** | The path to the role. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed. | 
  **permissionsBoundary** | **string** | The ARN of the policy that is used to set the permissions boundary for the role. | 
- **tagsMemberN** | [**map[string]interface{}**](map[string]interface{}.md) | A list of tags that you want to attach to the role being created. | 
+ **tagsMemberN** | [**[]IamTagKeyValue**](IamTagKeyValue.md) | A list of tags that you want to attach to the role being created. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
 ### Return type
@@ -3133,7 +3133,7 @@ import (
 
 func main() {
     roleName := "roleName_example" // string | Simple name identifying the role. (optional)
-    tagsMemberN := map[string]interface{}{ ... } // map[string]interface{} | A list of tags that you want to attach to the role. (optional)
+    tagsMemberN := []openapiclient.IamTagKeyValue{*openapiclient.NewIamTagKeyValue()} // []IamTagKeyValue | A list of tags that you want to attach to the role. (optional)
     xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
 
     configuration := openapiclient.NewConfiguration()
@@ -3160,7 +3160,7 @@ Other parameters are passed through a pointer to a apiIamServiceTagRoleRequest s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **roleName** | **string** | Simple name identifying the role. | 
- **tagsMemberN** | [**map[string]interface{}**](map[string]interface{}.md) | A list of tags that you want to attach to the role. | 
+ **tagsMemberN** | [**[]IamTagKeyValue**](IamTagKeyValue.md) | A list of tags that you want to attach to the role. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
 ### Return type
@@ -3203,7 +3203,7 @@ import (
 
 func main() {
     roleName := "roleName_example" // string | Simple name identifying the role. (optional)
-    tagKeys := map[string][]openapiclient.IamServiceUntagRoleTagKeysParameter{ ... } // IamServiceUntagRoleTagKeysParameter | A list of tags that you want to remove from the role. (optional)
+    tagKeys := []openapiclient.IamTagKey{*openapiclient.NewIamTagKey()} // []IamTagKey | A list of tags that you want to remove from the role. (optional)
     xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
 
     configuration := openapiclient.NewConfiguration()
@@ -3230,7 +3230,7 @@ Other parameters are passed through a pointer to a apiIamServiceUntagRoleRequest
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **roleName** | **string** | Simple name identifying the role. | 
- **tagKeys** | [**IamServiceUntagRoleTagKeysParameter**](IamServiceUntagRoleTagKeysParameter.md) | A list of tags that you want to remove from the role. | 
+ **tagKeys** | [**[]IamTagKey**](IamTagKey.md) | A list of tags that you want to remove from the role. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
 ### Return type

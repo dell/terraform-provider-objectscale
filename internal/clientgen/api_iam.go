@@ -16,6 +16,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"reflect"
 )
 
 // IamApiService IamApi service
@@ -1076,7 +1077,7 @@ type ApiIamServiceCreateRoleRequest struct {
 	description              *string
 	path                     *string
 	permissionsBoundary      *string
-	tagsMemberN              *map[string]interface{}
+	tagsMemberN              *[]IamTagKeyValue
 	xEmcNamespace            *string
 }
 
@@ -1117,7 +1118,7 @@ func (r ApiIamServiceCreateRoleRequest) PermissionsBoundary(permissionsBoundary 
 }
 
 // A list of tags that you want to attach to the role being created.
-func (r ApiIamServiceCreateRoleRequest) TagsMemberN(tagsMemberN map[string]interface{}) ApiIamServiceCreateRoleRequest {
+func (r ApiIamServiceCreateRoleRequest) TagsMemberN(tagsMemberN []IamTagKeyValue) ApiIamServiceCreateRoleRequest {
 	r.tagsMemberN = &tagsMemberN
 	return r
 }
@@ -1188,7 +1189,15 @@ func (a *IamApiService) IamServiceCreateRoleExecute(r ApiIamServiceCreateRoleReq
 		parameterAddToHeaderOrQuery(localVarQueryParams, "PermissionsBoundary", r.permissionsBoundary, "")
 	}
 	if r.tagsMemberN != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", r.tagsMemberN, "")
+		t := *r.tagsMemberN
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", s.Index(i), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", t, "multi")
+		}
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -7823,7 +7832,7 @@ type ApiIamServiceTagRoleRequest struct {
 	ctx           context.Context
 	ApiService    *IamApiService
 	roleName      *string
-	tagsMemberN   *map[string]interface{}
+	tagsMemberN   *[]IamTagKeyValue
 	xEmcNamespace *string
 }
 
@@ -7834,7 +7843,7 @@ func (r ApiIamServiceTagRoleRequest) RoleName(roleName string) ApiIamServiceTagR
 }
 
 // A list of tags that you want to attach to the role.
-func (r ApiIamServiceTagRoleRequest) TagsMemberN(tagsMemberN map[string]interface{}) ApiIamServiceTagRoleRequest {
+func (r ApiIamServiceTagRoleRequest) TagsMemberN(tagsMemberN []IamTagKeyValue) ApiIamServiceTagRoleRequest {
 	r.tagsMemberN = &tagsMemberN
 	return r
 }
@@ -7890,7 +7899,15 @@ func (a *IamApiService) IamServiceTagRoleExecute(r ApiIamServiceTagRoleRequest) 
 		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
 	}
 	if r.tagsMemberN != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", r.tagsMemberN, "")
+		t := *r.tagsMemberN
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", s.Index(i), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "Tags.member.N", t, "multi")
+		}
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -7999,7 +8016,7 @@ type ApiIamServiceUntagRoleRequest struct {
 	ctx           context.Context
 	ApiService    *IamApiService
 	roleName      *string
-	tagKeys       *IamServiceUntagRoleTagKeysParameter
+	tagKeys       *[]IamTagKey
 	xEmcNamespace *string
 }
 
@@ -8010,7 +8027,7 @@ func (r ApiIamServiceUntagRoleRequest) RoleName(roleName string) ApiIamServiceUn
 }
 
 // A list of tags that you want to remove from the role.
-func (r ApiIamServiceUntagRoleRequest) TagKeys(tagKeys IamServiceUntagRoleTagKeysParameter) ApiIamServiceUntagRoleRequest {
+func (r ApiIamServiceUntagRoleRequest) TagKeys(tagKeys []IamTagKey) ApiIamServiceUntagRoleRequest {
 	r.tagKeys = &tagKeys
 	return r
 }
@@ -8066,7 +8083,15 @@ func (a *IamApiService) IamServiceUntagRoleExecute(r ApiIamServiceUntagRoleReque
 		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")
 	}
 	if r.tagKeys != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "TagKeys", r.tagKeys, "")
+		t := *r.tagKeys
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "TagKeys", s.Index(i), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "TagKeys", t, "multi")
+		}
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
