@@ -133,6 +133,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceAddUserToGroup**](docs/IamApi.md#iamserviceaddusertogroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
 *IamApi* | [**IamServiceAttachGroupPolicy**](docs/IamApi.md#iamserviceattachgrouppolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
 *IamApi* | [**IamServiceAttachRolePolicy**](docs/IamApi.md#iamserviceattachrolepolicy) | **Post** /iam?Action&#x3D;AttachRolePolicy | Attaches the specified managed policy to the specified IAM role.
+*IamApi* | [**IamServiceAttachUserPolicy**](docs/IamApi.md#iamserviceattachuserpolicy) | **Post** /iam?Action&#x3D;AttachUserPolicy | Attach a Managed Policy to User.
 *IamApi* | [**IamServiceCreateAccessKey**](docs/IamApi.md#iamservicecreateaccesskey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 *IamApi* | [**IamServiceCreateGroup**](docs/IamApi.md#iamservicecreategroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
 *IamApi* | [**IamServiceCreateRole**](docs/IamApi.md#iamservicecreaterole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
@@ -145,8 +146,10 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceDeleteUserPolicy**](docs/IamApi.md#iamservicedeleteuserpolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
 *IamApi* | [**IamServiceDetachGroupPolicy**](docs/IamApi.md#iamservicedetachgrouppolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
 *IamApi* | [**IamServiceDetachRolePolicy**](docs/IamApi.md#iamservicedetachrolepolicy) | **Post** /iam?Action&#x3D;DetachRolePolicy | Removes the specified managed policy from the specified IAM role.
+*IamApi* | [**IamServiceDetachUserPolicy**](docs/IamApi.md#iamservicedetachuserpolicy) | **Post** /iam?Action&#x3D;DetachUserPolicy | Remove a Managed Policy attached to User.
 *IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 *IamApi* | [**IamServiceGetGroupPolicy**](docs/IamApi.md#iamservicegetgrouppolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceGetPolicy**](docs/IamApi.md#iamservicegetpolicy) | **Post** /iam?Action&#x3D;GetPolicy | Retrieve Managed Policy
 *IamApi* | [**IamServiceGetRole**](docs/IamApi.md#iamservicegetrole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 *IamApi* | [**IamServiceGetRolePolicy**](docs/IamApi.md#iamservicegetrolepolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 *IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
@@ -172,6 +175,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceRemoveUserFromGroup**](docs/IamApi.md#iamserviceremoveuserfromgroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
 *IamApi* | [**IamServiceTagRole**](docs/IamApi.md#iamservicetagrole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
 *IamApi* | [**IamServiceUntagRole**](docs/IamApi.md#iamserviceuntagrole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
+*IamApi* | [**IamServiceUpdateAccessKey**](docs/IamApi.md#iamserviceupdateaccesskey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 *IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 *IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
@@ -254,6 +258,7 @@ Class | Method | HTTP request | Description
  - [IamServiceAddUserToGroupResponseResponseMetadata](docs/IamServiceAddUserToGroupResponseResponseMetadata.md)
  - [IamServiceAttachGroupPolicyResponse](docs/IamServiceAttachGroupPolicyResponse.md)
  - [IamServiceAttachRolePolicyResponse](docs/IamServiceAttachRolePolicyResponse.md)
+ - [IamServiceAttachUserPolicyResponse](docs/IamServiceAttachUserPolicyResponse.md)
  - [IamServiceCreateAccessKeyResponse](docs/IamServiceCreateAccessKeyResponse.md)
  - [IamServiceCreateAccessKeyResponseCreateAccessKeyResult](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResult.md)
  - [IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey.md)
@@ -273,11 +278,15 @@ Class | Method | HTTP request | Description
  - [IamServiceDeleteUserPolicyResponse](docs/IamServiceDeleteUserPolicyResponse.md)
  - [IamServiceDetachGroupPolicyResponse](docs/IamServiceDetachGroupPolicyResponse.md)
  - [IamServiceDetachRolePolicyResponse](docs/IamServiceDetachRolePolicyResponse.md)
+ - [IamServiceDetachUserPolicyResponse](docs/IamServiceDetachUserPolicyResponse.md)
  - [IamServiceGetGroupPolicyResponse](docs/IamServiceGetGroupPolicyResponse.md)
  - [IamServiceGetGroupPolicyResponseGetGroupPolicyResult](docs/IamServiceGetGroupPolicyResponseGetGroupPolicyResult.md)
  - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
  - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
  - [IamServiceGetGroupResponseGetGroupResultUsersInner](docs/IamServiceGetGroupResponseGetGroupResultUsersInner.md)
+ - [IamServiceGetPolicyResponse](docs/IamServiceGetPolicyResponse.md)
+ - [IamServiceGetPolicyResponseGetPolicyResult](docs/IamServiceGetPolicyResponseGetPolicyResult.md)
+ - [IamServiceGetPolicyResponseGetPolicyResultPolicy](docs/IamServiceGetPolicyResponseGetPolicyResultPolicy.md)
  - [IamServiceGetRolePolicyResponse](docs/IamServiceGetRolePolicyResponse.md)
  - [IamServiceGetRolePolicyResponseGetRolePolicyResult](docs/IamServiceGetRolePolicyResponseGetRolePolicyResult.md)
  - [IamServiceGetRoleResponse](docs/IamServiceGetRoleResponse.md)
@@ -322,6 +331,7 @@ Class | Method | HTTP request | Description
  - [IamServiceRemoveUserFromGroupResponse](docs/IamServiceRemoveUserFromGroupResponse.md)
  - [IamServiceUntagRoleTagKeysParameter](docs/IamServiceUntagRoleTagKeysParameter.md)
  - [IamServiceUntagRoleTagKeysParameterKeysInner](docs/IamServiceUntagRoleTagKeysParameterKeysInner.md)
+ - [IamServiceUpdateAccessKeyResponse](docs/IamServiceUpdateAccessKeyResponse.md)
  - [IamServiceUpdateAssumeRolePolicyResponse](docs/IamServiceUpdateAssumeRolePolicyResponse.md)
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)

@@ -36,9 +36,6 @@ RequiredAPIs = [
     "/iam?Action=GetGroup",
     "/iam?Action=CreateGroup",
     "/iam?Action=DeleteGroup",
-    "/iam?Action=ListAttachedGroupPolicies",
-    "/iam?Action=AttachGroupPolicy",
-    "/iam?Action=DetachGroupPolicy",
     "/iam?Action=AddUserToGroup",
     "/iam?Action=RemoveUserFromGroup",
     "/iam?Action=ListUserPolicies",
@@ -58,14 +55,11 @@ RequiredAPIs = [
     "/iam?Action=CreateRole",
     "/iam?Action=ListRoles",
     "/iam?Action=GetRole",
-    "/iam?Action=ListAttachedRolePolicies",
     "/iam?Action=ListRolePolicies",
     "/iam?Action=GetRolePolicy",
     "/iam?Action=ListRoleTags",  
     "/iam?Action=UpdateRole",
     "/iam?Action=UpdateAssumeRolePolicy",
-    "/iam?Action=AttachRolePolicy",
-    "/iam?Action=DetachRolePolicy",
     "/iam?Action=PutRolePolicy",
     "/iam?Action=DeleteRolePolicy",
     "/iam?Action=PutRolePermissionsBoundary",
@@ -110,12 +104,18 @@ RequiredAPIs = [
     # Access Key API endpoints
     "/iam?Action=CreateAccessKey",
     "/iam?Action=DeleteAccessKey",
-    "/iam?Action=UpdateAccessKey"
+    "/iam?Action=UpdateAccessKey",
     
     # Policy API endpoints
     "/iam?Action=GetPolicy",
     "/iam?Action=ListPolicies",
     "/iam?Action=ListAttachedGroupPolicies",
     "/iam?Action=ListAttachedRolePolicies",
-    "/iam?Action=ListAttachedUserPolicies"
+    "/iam?Action=ListAttachedUserPolicies",
+    "/iam?Action=AttachGroupPolicy",
+    "/iam?Action=DetachGroupPolicy",
+    "/iam?Action=AttachRolePolicy",
+    "/iam?Action=DetachRolePolicy",
+    "/iam?Action=AttachUserPolicy",
+    "/iam?Action=DetachUserPolicy"
 ]

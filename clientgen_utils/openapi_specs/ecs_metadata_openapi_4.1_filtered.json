@@ -5950,6 +5950,96 @@
 				}
 			}
 		},
+		"/iam?Action=AttachUserPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Attach a Managed Policy to User.",
+				"description": "Attach a Managed Policy to User.",
+				"operationId": "IamService_AttachUserPolicy",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the policy to attach."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Username of the user to attach the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_AttachUserPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:97f4:ce"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=CreateAccessKey": {
 			"post": {
 				"tags": [
@@ -7075,6 +7165,96 @@
 				}
 			}
 		},
+		"/iam?Action=DetachUserPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Remove a Managed Policy attached to User.",
+				"description": "Remove a Managed Policy attached to User.",
+				"operationId": "IamService_DetachUserPolicy",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the policy to remove."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Username of the user to remove the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DetachUserPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:cb03:3b"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=GetGroup": {
 			"post": {
 				"tags": [
@@ -7241,6 +7421,102 @@
 												"PolicyName": "InlinePolicy",
 												"PolicyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"VisualEditor0\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:ListAttachedGroupPolicies\",\n        \"iam:ListUsers\",\n        \"iam:ListPolicies\",\n        \"iam:ListUserPolicies\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
 												"GroupName": "TestGroup"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetPolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve Managed Policy",
+				"description": "Retrieve Managed Policy",
+				"operationId": "IamService_GetPolicy",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the policy to retrieve."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetPolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:e85d:25"
+											},
+											"GetPolicyResult": {
+												"Policy": {
+													"Arn": "urn:ecs:iam::ns:policy/FinanceTeamPolicy",
+													"AttachmentCount": 0,
+													"CreateDate": "2020-04-15T20:38:43Z",
+													"DefaultVersionId": "v1",
+													"Description": "Policy_for_the_finaince_team.",
+													"IsAttachable": true,
+													"Path": "/",
+													"PermissionsBoundaryUsageCount": 0,
+													"PolicyId": "ANPA8AE3BEE658707764",
+													"PolicyName": "FinanceTeamPolicy",
+													"UpdateDate": "2020-04-15T20:38:43Z"
+												}
 											}
 										}
 									}
@@ -9976,6 +10252,105 @@
 										"value": {
 											"ResponseMetadata": {
 												"RequestId": "0af9f5b8:17178fe9282:cb2a:2e"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=UpdateAccessKey": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Update status of AccessKey for user.",
+				"description": "Update status of AccessKey for user.",
+				"operationId": "IamService_UpdateAccessKey",
+				"parameters": [
+					{
+						"name": "AccessKeyId",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The access key ID for the access key ID and secret access key you want to delete."
+					},
+					{
+						"name": "Status",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The status you want to assign to the secret access key.\n Active means that the key can be used for API calls to AWS, while Inactive means that the key cannot be used."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Name of the user whose access key is updated."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_UpdateAccessKeyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:8f5d:37"
 											}
 										}
 									}
@@ -13729,6 +14104,19 @@
 					}
 				}
 			},
+			"IamService_AttachUserPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_CreateAccessKeyResponse": {
 				"type": "object",
 				"properties": {
@@ -14012,6 +14400,19 @@
 					}
 				}
 			},
+			"IamService_DetachUserPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
 			"IamService_GetGroupResponse": {
 				"type": "object",
 				"properties": {
@@ -14103,6 +14504,75 @@
 								"description": "The policy Document."
 							}
 						}
+					},
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_GetPolicyResponse": {
+				"type": "object",
+				"properties": {
+					"GetPolicyResult": {
+						"type": "object",
+						"properties": {
+							"Policy": {
+								"type": "object",
+								"properties": {
+									"Arn": {
+										"type": "string",
+										"description": "The resource name of the policy."
+									},
+									"AttachmentCount": {
+										"type": "integer",
+										"description": "The number of entities (users, groups, and roles) that the policy is attached to."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+									},
+									"DefaultVersionId": {
+										"type": "string",
+										"description": "The identifier for the version of the policy that is set as the default version."
+									},
+									"Description": {
+										"type": "string",
+										"description": "A friendly description of the policy."
+									},
+									"IsAttachable": {
+										"type": "boolean",
+										"description": "Specifies whether the policy can be attached to user, group, or role."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the policy"
+									},
+									"PermissionsBoundaryUsageCount": {
+										"type": "integer",
+										"description": "Resource name of the policy that is used to set permissions boundary for the policy."
+									},
+									"PolicyId": {
+										"type": "string",
+										"description": "The stable and unique string identifying the policy."
+									},
+									"PolicyName": {
+										"type": "string",
+										"description": "The friendly name of the policy."
+									},
+									"UpdateDate": {
+										"type": "string",
+										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+									}
+								},
+								"description": "Get policy"
+							}
+						},
+						"description": "Get getPolicyResult"
 					},
 					"ResponseMetadata": {
 						"type": "object",
@@ -14872,6 +15342,19 @@
 				}
 			},
 			"IamService_RemoveUserFromGroupResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"type": "object",
+						"properties": {
+							"RequestId": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"IamService_UpdateAccessKeyResponse": {
 				"type": "object",
 				"properties": {
 					"ResponseMetadata": {

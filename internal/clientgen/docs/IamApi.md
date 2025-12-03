@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**IamServiceAddUserToGroup**](IamApi.md#IamServiceAddUserToGroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
 [**IamServiceAttachGroupPolicy**](IamApi.md#IamServiceAttachGroupPolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
 [**IamServiceAttachRolePolicy**](IamApi.md#IamServiceAttachRolePolicy) | **Post** /iam?Action&#x3D;AttachRolePolicy | Attaches the specified managed policy to the specified IAM role.
+[**IamServiceAttachUserPolicy**](IamApi.md#IamServiceAttachUserPolicy) | **Post** /iam?Action&#x3D;AttachUserPolicy | Attach a Managed Policy to User.
 [**IamServiceCreateAccessKey**](IamApi.md#IamServiceCreateAccessKey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 [**IamServiceCreateGroup**](IamApi.md#IamServiceCreateGroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
 [**IamServiceCreateRole**](IamApi.md#IamServiceCreateRole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
@@ -19,8 +20,10 @@ Method | HTTP request | Description
 [**IamServiceDeleteUserPolicy**](IamApi.md#IamServiceDeleteUserPolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
 [**IamServiceDetachGroupPolicy**](IamApi.md#IamServiceDetachGroupPolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
 [**IamServiceDetachRolePolicy**](IamApi.md#IamServiceDetachRolePolicy) | **Post** /iam?Action&#x3D;DetachRolePolicy | Removes the specified managed policy from the specified IAM role.
+[**IamServiceDetachUserPolicy**](IamApi.md#IamServiceDetachUserPolicy) | **Post** /iam?Action&#x3D;DetachUserPolicy | Remove a Managed Policy attached to User.
 [**IamServiceGetGroup**](IamApi.md#IamServiceGetGroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 [**IamServiceGetGroupPolicy**](IamApi.md#IamServiceGetGroupPolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
+[**IamServiceGetPolicy**](IamApi.md#IamServiceGetPolicy) | **Post** /iam?Action&#x3D;GetPolicy | Retrieve Managed Policy
 [**IamServiceGetRole**](IamApi.md#IamServiceGetRole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 [**IamServiceGetRolePolicy**](IamApi.md#IamServiceGetRolePolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 [**IamServiceGetUser**](IamApi.md#IamServiceGetUser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
@@ -46,6 +49,7 @@ Method | HTTP request | Description
 [**IamServiceRemoveUserFromGroup**](IamApi.md#IamServiceRemoveUserFromGroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
 [**IamServiceTagRole**](IamApi.md#IamServiceTagRole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
 [**IamServiceUntagRole**](IamApi.md#IamServiceUntagRole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
+[**IamServiceUpdateAccessKey**](IamApi.md#IamServiceUpdateAccessKey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 [**IamServiceUpdateAssumeRolePolicy**](IamApi.md#IamServiceUpdateAssumeRolePolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 [**IamServiceUpdateRole**](IamApi.md#IamServiceUpdateRole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
 
@@ -246,6 +250,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceAttachRolePolicyResponse**](IamServiceAttachRolePolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceAttachUserPolicy
+
+> IamServiceAttachUserPolicyResponse IamServiceAttachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Attach a Managed Policy to User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to attach. (optional)
+    userName := "userName_example" // string | Username of the user to attach the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceAttachUserPolicy(context.Background()).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachUserPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceAttachUserPolicy`: IamServiceAttachUserPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachUserPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceAttachUserPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to attach. | 
+ **userName** | **string** | Username of the user to attach the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceAttachUserPolicyResponse**](IamServiceAttachUserPolicyResponse.md)
 
 ### Authorization
 
@@ -1103,6 +1177,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceDetachUserPolicy
+
+> IamServiceDetachUserPolicyResponse IamServiceDetachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Remove a Managed Policy attached to User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to remove. (optional)
+    userName := "userName_example" // string | Username of the user to remove the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDetachUserPolicy(context.Background()).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachUserPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDetachUserPolicy`: IamServiceDetachUserPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachUserPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDetachUserPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to remove. | 
+ **userName** | **string** | Username of the user to remove the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceDetachUserPolicyResponse**](IamServiceDetachUserPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceGetGroup
 
 > IamServiceGetGroupResponse IamServiceGetGroup(ctx).GroupName(groupName).Marker(marker).MaxItems(maxItems).XEmcNamespace(xEmcNamespace).Execute()
@@ -1230,6 +1374,74 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceGetGroupPolicyResponse**](IamServiceGetGroupPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceGetPolicy
+
+> IamServiceGetPolicyResponse IamServiceGetPolicy(ctx).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+
+Retrieve Managed Policy
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to retrieve. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceGetPolicy(context.Background()).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceGetPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceGetPolicy`: IamServiceGetPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceGetPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceGetPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to retrieve. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceGetPolicyResponse**](IamServiceGetPolicyResponse.md)
 
 ### Authorization
 
@@ -3024,6 +3236,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 **map[string]interface{}**
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUpdateAccessKey
+
+> IamServiceUpdateAccessKeyResponse IamServiceUpdateAccessKey(ctx).AccessKeyId(accessKeyId).Status(status).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Update status of AccessKey for user.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    accessKeyId := "accessKeyId_example" // string | The access key ID for the access key ID and secret access key you want to delete. (optional)
+    status := "status_example" // string | The status you want to assign to the secret access key.  Active means that the key can be used for API calls to AWS, while Inactive means that the key cannot be used. (optional)
+    userName := "userName_example" // string | Name of the user whose access key is updated. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUpdateAccessKey(context.Background()).AccessKeyId(accessKeyId).Status(status).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateAccessKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUpdateAccessKey`: IamServiceUpdateAccessKeyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateAccessKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUpdateAccessKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accessKeyId** | **string** | The access key ID for the access key ID and secret access key you want to delete. | 
+ **status** | **string** | The status you want to assign to the secret access key.  Active means that the key can be used for API calls to AWS, while Inactive means that the key cannot be used. | 
+ **userName** | **string** | Name of the user whose access key is updated. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceUpdateAccessKeyResponse**](IamServiceUpdateAccessKeyResponse.md)
 
 ### Authorization
 
