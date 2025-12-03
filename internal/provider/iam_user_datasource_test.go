@@ -9,6 +9,7 @@ import (
 
 // user_001,sample_user_1 and group_008 are assumed to exist in the test ObjectScale cluster.
 func TestAccIAMUserDataSource_basic(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

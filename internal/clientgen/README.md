@@ -79,6 +79,7 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*AuthenticationApi* | [**AuthenticationResourceLogout**](docs/AuthenticationApi.md#authenticationresourcelogout) | **Get** /logout | User logout
 *DataVpoolApi* | [**DataServiceVpoolServiceAddToVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceaddtovpool) | **Put** /vdc/data-service/vpools/{id}/addvarrays | Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group
 *DataVpoolApi* | [**DataServiceVpoolServiceCreateDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolservicecreatedataservicevpool) | **Post** /vdc/data-service/vpools | Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)
 *DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceStore**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicestore) | **Get** /vdc/data-service/vpools/{id} | Gets the details for the specified replication group
