@@ -62553,7 +62553,7 @@
           "ListGroupPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "PolicyNames": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -62584,10 +62584,35 @@
             "properties": {
               "Groups": {
                 "type": "array",
+                "description": "Get groups.",
                 "items": {
-                  "type": "string"
-                },
-                "description": "Get groups."
+                  "type": "object",
+                  "properties": {
+                    "Arn": {
+                      "type": "string"
+                    },
+                    "CreateDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "GroupId": {
+                      "type": "string"
+                    },
+                    "GroupName": {
+                      "type": "string"
+                    },
+                    "Path": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "Arn",
+                    "CreateDate",
+                    "GroupId",
+                    "GroupName",
+                    "Path"
+                  ]
+                }
               },
               "IsTruncated": {
                 "type": "boolean",
@@ -62613,15 +62638,21 @@
       "IamService_ListGroupsForUserResponse": {
         "type": "object",
         "properties": {
-          "Result": {
+          "ListGroupsForUserResult": {
             "type": "object",
             "properties": {
               "Groups": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "Arn": { "type": "string" },
+                    "GroupId": { "type": "string" },
+                    "GroupName": { "type": "string" },
+                    "Path": { "type": "string" }
+                  }
                 },
-                "description": "Get groups"
+                "description": "List of groups the user belongs to."
               },
               "IsTruncated": {
                 "type": "boolean",
@@ -62629,16 +62660,14 @@
               },
               "Marker": {
                 "type": "string",
-                "description": "When isTruncated is true, this element needs to be sent in the Marker parameter for subsequent pagination requests."
+                "description": "Marker for pagination if IsTruncated is true."
               }
             }
           },
           "ResponseMetadata": {
             "type": "object",
             "properties": {
-              "RequestId": {
-                "type": "string"
-              }
+              "RequestId": { "type": "string" }
             }
           }
         }
@@ -62713,7 +62742,7 @@
           "ListRolePoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "PolicyNames": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -62802,7 +62831,7 @@
           "ListUserPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "PolicyNames": {
                 "type": "array",
                 "items": {
                   "type": "string"

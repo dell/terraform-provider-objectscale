@@ -140,6 +140,8 @@ func (p *ObjectScaleProvider) Configure(ctx context.Context, req provider.Config
 func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewNamespaceResource,
+		NewIAMInlinePolicyResource,
+		NewIAMGroupResource,
 	}
 }
 
@@ -147,6 +149,7 @@ func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.R
 func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewNamespaceDataSource,
+		NewIAMGroupsDataSource,
 		NewIAMUserDataSource,
 		NewReplicationGroupDataSource,
 	}

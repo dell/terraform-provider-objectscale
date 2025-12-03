@@ -270,47 +270,40 @@ func (d *IAMUserDataSource) getUser(ctx context.Context, namespace, username str
 }
 
 func (d *IAMUserDataSource) listUsersByGroup(ctx context.Context, namespace, groupName string) ([]models.IAMUser, error) {
-	gResp, _, err := d.client.GenClient.IamApi.
-		IamServiceGetGroup(ctx).
+	items, err := helper.GetAllInstances(d.client.GenClient.IamApi.IamServiceGetGroup(ctx).
 		GroupName(groupName).
-		XEmcNamespace(namespace).
-		Execute()
+		XEmcNamespace(namespace))
+
+	if err != nil {
+		return nil, err
+	}
 
 	if err != nil {
 		return nil, err
 	}
 	var users []models.IAMUser
-	if gResp.GetGroupResult != nil {
-		for _, u := range gResp.GetGroupResult.Users {
-			users = append(users, models.IAMUser{
-				UserName:            helper.TfString(u.UserName),
-				ID:                  helper.TfString(u.UserId),
-				Arn:                 helper.TfString(u.Arn),
-				Path:                helper.TfString(u.Path),
-				CreateDate:          helper.TfString(u.CreateDate),
-				PermissionsBoundary: types.StringNull(),
-			})
-		}
+	for _, u := range items {
+		users = append(users, models.IAMUser{
+			UserName:            helper.TfString(u.UserName),
+			ID:                  helper.TfString(u.UserId),
+			Arn:                 helper.TfString(u.Arn),
+			Path:                helper.TfString(u.Path),
+			CreateDate:          helper.TfString(u.CreateDate),
+			PermissionsBoundary: types.StringNull(),
+		})
 	}
 	return users, nil
 }
 
 func (d *IAMUserDataSource) listAllUsers(ctx context.Context, namespace string) ([]models.IAMUser, error) {
-	listResp, _, err := d.client.GenClient.IamApi.
-		IamServiceListUsers(ctx).
-		XEmcNamespace(namespace).
-		Execute()
 
+	items, err := helper.GetAllInstances(d.client.GenClient.IamApi.IamServiceListUsers(ctx).XEmcNamespace(namespace))
 	if err != nil {
-		return nil, fmt.Errorf("error listing IAM users: %w", err)
-	}
-
-	if listResp == nil || listResp.ListUsersResult == nil {
-		return nil, fmt.Errorf("no result in response")
+		return nil, err
 	}
 
 	var users []models.IAMUser
-	for _, u := range listResp.ListUsersResult.Users {
+	for _, u := range items {
 		users = append(users, models.IAMUser{
 			UserName:            helper.TfString(u.UserName),
 			ID:                  helper.TfString(u.UserId),
