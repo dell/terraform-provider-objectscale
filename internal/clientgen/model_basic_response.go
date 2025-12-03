@@ -10,7 +10,7 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceDeleteRolePolicyResponse struct for IamServiceDeleteRolePolicyResponse
-type IamServiceDeleteRolePolicyResponse struct {
-	ResponseMetadata *IamServiceAddUserToGroupResponseResponseMetadata `json:"ResponseMetadata,omitempty"`
+// BasicResponse struct for BasicResponse
+type BasicResponse struct {
+	ResponseMetadata *IamResponseMetadata `json:"ResponseMetadata,omitempty"`
 }

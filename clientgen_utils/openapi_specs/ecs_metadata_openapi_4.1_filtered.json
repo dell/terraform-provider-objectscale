@@ -5723,7 +5723,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_AddUserToGroupResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -5813,7 +5813,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_AttachGroupPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -5903,7 +5903,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_AttachRolePolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -5993,7 +5993,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_AttachUserPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6425,7 +6425,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteAccessKeyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6506,7 +6506,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteGroupResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6596,7 +6596,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteGroupPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6677,7 +6677,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteRoleResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6758,7 +6758,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteRolePermissionsBoundaryResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6848,7 +6848,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteRolePolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -6938,7 +6938,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DeleteUserPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -7028,7 +7028,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DetachGroupPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -7118,7 +7118,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DetachRolePolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -7208,7 +7208,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_DetachUserPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -9673,7 +9673,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_PutGroupPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -9763,7 +9763,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_PutRolePermissionsBoundaryResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -9862,7 +9862,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_PutRolePolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -9961,7 +9961,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_PutUserPolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -10051,7 +10051,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_RemoveUserFromGroupResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -10344,7 +10344,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_UpdateAccessKeyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -10434,7 +10434,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IamService_UpdateAssumeRolePolicyResponse"
+									"$ref": "#/components/schemas/BasicResponse"
 								},
 								"examples": {
 									"example_1": {
@@ -14065,58 +14065,6 @@
 					}
 				}
 			},
-			"IamService_AddUserToGroupResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_AttachGroupPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_AttachRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_AttachUserPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
 			"IamService_CreateAccessKeyResponse": {
 				"type": "object",
 				"properties": {
@@ -14155,12 +14103,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14198,12 +14141,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14274,142 +14212,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteAccessKeyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteGroupResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteGroupPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteRoleResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteRolePermissionsBoundaryResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DeleteUserPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DetachGroupPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DetachRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_DetachUserPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14476,12 +14279,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14506,12 +14304,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14575,12 +14368,7 @@
 						"description": "Get getPolicyResult"
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14651,12 +14439,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14681,12 +14464,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14694,12 +14472,7 @@
 				"type": "object",
 				"properties": {
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					},
 					"GetUserResult": {
 						"type": "object",
@@ -14774,12 +14547,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14815,12 +14583,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14843,12 +14606,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14871,12 +14629,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14899,12 +14652,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14928,12 +14676,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -14987,12 +14730,7 @@
 						"description": "Get listGroupsResult"
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15034,12 +14772,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15068,12 +14801,7 @@
 						"description": "Get listPoliciesResult"
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15097,12 +14825,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15125,12 +14848,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15157,12 +14875,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15186,12 +14899,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15224,12 +14932,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15280,103 +14983,7 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_PutGroupPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_PutRolePermissionsBoundaryResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_PutRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_PutUserPolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_RemoveUserFromGroupResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_UpdateAccessKeyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
-					}
-				}
-			},
-			"IamService_UpdateAssumeRolePolicyResponse": {
-				"type": "object",
-				"properties": {
-					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			},
@@ -15447,12 +15054,23 @@
 						}
 					},
 					"ResponseMetadata": {
-						"type": "object",
-						"properties": {
-							"RequestId": {
-								"type": "string"
-							}
-						}
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamResponseMetadata": {
+				"type": "object",
+				"properties": {
+					"RequestId": {
+						"type": "string"
+					}
+				}
+			},
+			"BasicResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
 			}
