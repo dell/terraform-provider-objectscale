@@ -57,7 +57,7 @@ Method | HTTP request | Description
 
 ## IamServiceAddUserToGroup
 
-> IamServiceAddUserToGroupResponse IamServiceAddUserToGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceAddUserToGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Add user to a group.
 
@@ -87,7 +87,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAddUserToGroup``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceAddUserToGroup`: IamServiceAddUserToGroupResponse
+    // response from `IamServiceAddUserToGroup`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAddUserToGroup`: %v\n", resp)
 }
 ```
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceAddUserToGroupResponse**](IamServiceAddUserToGroupResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -127,7 +127,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceAttachGroupPolicy
 
-> IamServiceAttachGroupPolicyResponse IamServiceAttachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceAttachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
 
 Attach a Managed Policy to Group.
 
@@ -157,7 +157,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceAttachGroupPolicy`: IamServiceAttachGroupPolicyResponse
+    // response from `IamServiceAttachGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachGroupPolicy`: %v\n", resp)
 }
 ```
@@ -179,7 +179,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceAttachGroupPolicyResponse**](IamServiceAttachGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -197,7 +197,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceAttachRolePolicy
 
-> IamServiceAttachRolePolicyResponse IamServiceAttachRolePolicy(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceAttachRolePolicy(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Attaches the specified managed policy to the specified IAM role.
 
@@ -227,7 +227,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceAttachRolePolicy`: IamServiceAttachRolePolicyResponse
+    // response from `IamServiceAttachRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachRolePolicy`: %v\n", resp)
 }
 ```
@@ -249,7 +249,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceAttachRolePolicyResponse**](IamServiceAttachRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -267,7 +267,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceAttachUserPolicy
 
-> IamServiceAttachUserPolicyResponse IamServiceAttachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceAttachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Attach a Managed Policy to User.
 
@@ -297,7 +297,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachUserPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceAttachUserPolicy`: IamServiceAttachUserPolicyResponse
+    // response from `IamServiceAttachUserPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachUserPolicy`: %v\n", resp)
 }
 ```
@@ -319,7 +319,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceAttachUserPolicyResponse**](IamServiceAttachUserPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -555,7 +555,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteAccessKey
 
-> IamServiceDeleteAccessKeyResponse IamServiceDeleteAccessKey(ctx).AccessKeyId(accessKeyId).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteAccessKey(ctx).AccessKeyId(accessKeyId).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete access key.
 
@@ -585,7 +585,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteAccessKey``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteAccessKey`: IamServiceDeleteAccessKeyResponse
+    // response from `IamServiceDeleteAccessKey`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteAccessKey`: %v\n", resp)
 }
 ```
@@ -607,7 +607,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteAccessKeyResponse**](IamServiceDeleteAccessKeyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -625,7 +625,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteGroup
 
-> IamServiceDeleteGroupResponse IamServiceDeleteGroup(ctx).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteGroup(ctx).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete an IAM Group.
 
@@ -654,7 +654,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteGroup``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteGroup`: IamServiceDeleteGroupResponse
+    // response from `IamServiceDeleteGroup`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteGroup`: %v\n", resp)
 }
 ```
@@ -675,7 +675,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteGroupResponse**](IamServiceDeleteGroupResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -693,7 +693,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteGroupPolicy
 
-> IamServiceDeleteGroupPolicyResponse IamServiceDeleteGroupPolicy(ctx).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteGroupPolicy(ctx).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete specific inlinePolicy for IAM Group.
 
@@ -723,7 +723,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteGroupPolicy`: IamServiceDeleteGroupPolicyResponse
+    // response from `IamServiceDeleteGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteGroupPolicy`: %v\n", resp)
 }
 ```
@@ -745,7 +745,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteGroupPolicyResponse**](IamServiceDeleteGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -763,7 +763,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteRole
 
-> IamServiceDeleteRoleResponse IamServiceDeleteRole(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteRole(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Deletes the specified IAM role.
 
@@ -792,7 +792,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteRole``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteRole`: IamServiceDeleteRoleResponse
+    // response from `IamServiceDeleteRole`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteRole`: %v\n", resp)
 }
 ```
@@ -813,7 +813,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteRoleResponse**](IamServiceDeleteRoleResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -831,7 +831,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteRolePermissionsBoundary
 
-> IamServiceDeleteRolePermissionsBoundaryResponse IamServiceDeleteRolePermissionsBoundary(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteRolePermissionsBoundary(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Deletes the permissions boundary for the specified IAM role.
 
@@ -860,7 +860,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteRolePermissionsBoundary``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteRolePermissionsBoundary`: IamServiceDeleteRolePermissionsBoundaryResponse
+    // response from `IamServiceDeleteRolePermissionsBoundary`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteRolePermissionsBoundary`: %v\n", resp)
 }
 ```
@@ -881,7 +881,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteRolePermissionsBoundaryResponse**](IamServiceDeleteRolePermissionsBoundaryResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -899,7 +899,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteRolePolicy
 
-> IamServiceDeleteRolePolicyResponse IamServiceDeleteRolePolicy(ctx).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteRolePolicy(ctx).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Deletes the specified inline policy that is embedded in the specified IAM role.
 
@@ -929,7 +929,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteRolePolicy`: IamServiceDeleteRolePolicyResponse
+    // response from `IamServiceDeleteRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteRolePolicy`: %v\n", resp)
 }
 ```
@@ -951,7 +951,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteRolePolicyResponse**](IamServiceDeleteRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -969,7 +969,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteUserPolicy
 
-> IamServiceDeleteUserPolicyResponse IamServiceDeleteUserPolicy(ctx).UserName(userName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteUserPolicy(ctx).UserName(userName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete specific inlinePolicy for IAM User.
 
@@ -999,7 +999,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteUserPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteUserPolicy`: IamServiceDeleteUserPolicyResponse
+    // response from `IamServiceDeleteUserPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteUserPolicy`: %v\n", resp)
 }
 ```
@@ -1021,7 +1021,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteUserPolicyResponse**](IamServiceDeleteUserPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -1039,7 +1039,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDetachGroupPolicy
 
-> IamServiceDetachGroupPolicyResponse IamServiceDetachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDetachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
 
 Remove a Managed Policy attached to Group.
 
@@ -1069,7 +1069,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDetachGroupPolicy`: IamServiceDetachGroupPolicyResponse
+    // response from `IamServiceDetachGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachGroupPolicy`: %v\n", resp)
 }
 ```
@@ -1091,7 +1091,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDetachGroupPolicyResponse**](IamServiceDetachGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -1109,7 +1109,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDetachRolePolicy
 
-> IamServiceDetachRolePolicyResponse IamServiceDetachRolePolicy(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDetachRolePolicy(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Removes the specified managed policy from the specified IAM role.
 
@@ -1139,7 +1139,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDetachRolePolicy`: IamServiceDetachRolePolicyResponse
+    // response from `IamServiceDetachRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachRolePolicy`: %v\n", resp)
 }
 ```
@@ -1161,7 +1161,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDetachRolePolicyResponse**](IamServiceDetachRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -1179,7 +1179,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDetachUserPolicy
 
-> IamServiceDetachUserPolicyResponse IamServiceDetachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDetachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Remove a Managed Policy attached to User.
 
@@ -1209,7 +1209,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachUserPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDetachUserPolicy`: IamServiceDetachUserPolicyResponse
+    // response from `IamServiceDetachUserPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachUserPolicy`: %v\n", resp)
 }
 ```
@@ -1231,7 +1231,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDetachUserPolicyResponse**](IamServiceDetachUserPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -2757,7 +2757,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutGroupPolicy
 
-> IamServicePutGroupPolicyResponse IamServicePutGroupPolicy(ctx).PolicyDocument(policyDocument).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutGroupPolicy(ctx).PolicyDocument(policyDocument).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Add or Update Inline Policy for IAM Group.
 
@@ -2788,7 +2788,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutGroupPolicy`: IamServicePutGroupPolicyResponse
+    // response from `IamServicePutGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutGroupPolicy`: %v\n", resp)
 }
 ```
@@ -2811,7 +2811,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutGroupPolicyResponse**](IamServicePutGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -2829,7 +2829,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutRolePermissionsBoundary
 
-> IamServicePutRolePermissionsBoundaryResponse IamServicePutRolePermissionsBoundary(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutRolePermissionsBoundary(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Adds or updates the policy that is specified as the IAM role's permissions boundary.
 
@@ -2859,7 +2859,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutRolePermissionsBoundary``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutRolePermissionsBoundary`: IamServicePutRolePermissionsBoundaryResponse
+    // response from `IamServicePutRolePermissionsBoundary`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutRolePermissionsBoundary`: %v\n", resp)
 }
 ```
@@ -2881,7 +2881,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutRolePermissionsBoundaryResponse**](IamServicePutRolePermissionsBoundaryResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -2899,7 +2899,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutRolePolicy
 
-> IamServicePutRolePolicyResponse IamServicePutRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Adds or updates an inline policy document that is embedded in the specified IAM role.
 
@@ -2930,7 +2930,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutRolePolicy`: IamServicePutRolePolicyResponse
+    // response from `IamServicePutRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutRolePolicy`: %v\n", resp)
 }
 ```
@@ -2953,7 +2953,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutRolePolicyResponse**](IamServicePutRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -2971,7 +2971,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutUserPolicy
 
-> IamServicePutUserPolicyResponse IamServicePutUserPolicy(ctx).PolicyDocument(policyDocument).PolicyName(policyName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutUserPolicy(ctx).PolicyDocument(policyDocument).PolicyName(policyName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Add or Update Inline Policy for IAM User.
 
@@ -3002,7 +3002,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutUserPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutUserPolicy`: IamServicePutUserPolicyResponse
+    // response from `IamServicePutUserPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutUserPolicy`: %v\n", resp)
 }
 ```
@@ -3025,7 +3025,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutUserPolicyResponse**](IamServicePutUserPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -3043,7 +3043,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceRemoveUserFromGroup
 
-> IamServiceRemoveUserFromGroupResponse IamServiceRemoveUserFromGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceRemoveUserFromGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Remove User from a Group.
 
@@ -3073,7 +3073,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceRemoveUserFromGroup``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceRemoveUserFromGroup`: IamServiceRemoveUserFromGroupResponse
+    // response from `IamServiceRemoveUserFromGroup`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceRemoveUserFromGroup`: %v\n", resp)
 }
 ```
@@ -3095,7 +3095,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceRemoveUserFromGroupResponse**](IamServiceRemoveUserFromGroupResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -3253,7 +3253,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceUpdateAccessKey
 
-> IamServiceUpdateAccessKeyResponse IamServiceUpdateAccessKey(ctx).AccessKeyId(accessKeyId).Status(status).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceUpdateAccessKey(ctx).AccessKeyId(accessKeyId).Status(status).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Update status of AccessKey for user.
 
@@ -3284,7 +3284,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateAccessKey``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceUpdateAccessKey`: IamServiceUpdateAccessKeyResponse
+    // response from `IamServiceUpdateAccessKey`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateAccessKey`: %v\n", resp)
 }
 ```
@@ -3307,7 +3307,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceUpdateAccessKeyResponse**](IamServiceUpdateAccessKeyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -3325,7 +3325,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceUpdateAssumeRolePolicy
 
-> IamServiceUpdateAssumeRolePolicyResponse IamServiceUpdateAssumeRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceUpdateAssumeRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Updates the policy that grants an IAM entity permission to assume a role.
 
@@ -3355,7 +3355,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateAssumeRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceUpdateAssumeRolePolicy`: IamServiceUpdateAssumeRolePolicyResponse
+    // response from `IamServiceUpdateAssumeRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateAssumeRolePolicy`: %v\n", resp)
 }
 ```
@@ -3377,7 +3377,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceUpdateAssumeRolePolicyResponse**](IamServiceUpdateAssumeRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 

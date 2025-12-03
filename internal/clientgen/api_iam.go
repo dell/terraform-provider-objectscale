@@ -47,7 +47,7 @@ func (r ApiIamServiceAddUserToGroupRequest) XEmcNamespace(xEmcNamespace string) 
 	return r
 }
 
-func (r ApiIamServiceAddUserToGroupRequest) Execute() (*IamServiceAddUserToGroupResponse, *http.Response, error) {
+func (r ApiIamServiceAddUserToGroupRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceAddUserToGroupExecute(r)
 }
 
@@ -68,13 +68,13 @@ func (a *IamApiService) IamServiceAddUserToGroup(ctx context.Context) ApiIamServ
 
 // Execute executes the request
 //
-//	@return IamServiceAddUserToGroupResponse
-func (a *IamApiService) IamServiceAddUserToGroupExecute(r ApiIamServiceAddUserToGroupRequest) (*IamServiceAddUserToGroupResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceAddUserToGroupExecute(r ApiIamServiceAddUserToGroupRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAddUserToGroupResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAddUserToGroup")
@@ -223,7 +223,7 @@ func (r ApiIamServiceAttachGroupPolicyRequest) XEmcNamespace(xEmcNamespace strin
 	return r
 }
 
-func (r ApiIamServiceAttachGroupPolicyRequest) Execute() (*IamServiceAttachGroupPolicyResponse, *http.Response, error) {
+func (r ApiIamServiceAttachGroupPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceAttachGroupPolicyExecute(r)
 }
 
@@ -244,13 +244,13 @@ func (a *IamApiService) IamServiceAttachGroupPolicy(ctx context.Context) ApiIamS
 
 // Execute executes the request
 //
-//	@return IamServiceAttachGroupPolicyResponse
-func (a *IamApiService) IamServiceAttachGroupPolicyExecute(r ApiIamServiceAttachGroupPolicyRequest) (*IamServiceAttachGroupPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceAttachGroupPolicyExecute(r ApiIamServiceAttachGroupPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAttachGroupPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAttachGroupPolicy")
@@ -399,7 +399,7 @@ func (r ApiIamServiceAttachRolePolicyRequest) XEmcNamespace(xEmcNamespace string
 	return r
 }
 
-func (r ApiIamServiceAttachRolePolicyRequest) Execute() (*IamServiceAttachRolePolicyResponse, *http.Response, error) {
+func (r ApiIamServiceAttachRolePolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceAttachRolePolicyExecute(r)
 }
 
@@ -420,13 +420,13 @@ func (a *IamApiService) IamServiceAttachRolePolicy(ctx context.Context) ApiIamSe
 
 // Execute executes the request
 //
-//	@return IamServiceAttachRolePolicyResponse
-func (a *IamApiService) IamServiceAttachRolePolicyExecute(r ApiIamServiceAttachRolePolicyRequest) (*IamServiceAttachRolePolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceAttachRolePolicyExecute(r ApiIamServiceAttachRolePolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAttachRolePolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAttachRolePolicy")
@@ -575,7 +575,7 @@ func (r ApiIamServiceAttachUserPolicyRequest) XEmcNamespace(xEmcNamespace string
 	return r
 }
 
-func (r ApiIamServiceAttachUserPolicyRequest) Execute() (*IamServiceAttachUserPolicyResponse, *http.Response, error) {
+func (r ApiIamServiceAttachUserPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceAttachUserPolicyExecute(r)
 }
 
@@ -596,13 +596,13 @@ func (a *IamApiService) IamServiceAttachUserPolicy(ctx context.Context) ApiIamSe
 
 // Execute executes the request
 //
-//	@return IamServiceAttachUserPolicyResponse
-func (a *IamApiService) IamServiceAttachUserPolicyExecute(r ApiIamServiceAttachUserPolicyRequest) (*IamServiceAttachUserPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceAttachUserPolicyExecute(r ApiIamServiceAttachUserPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceAttachUserPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceAttachUserPolicy")
@@ -1319,7 +1319,7 @@ func (r ApiIamServiceDeleteAccessKeyRequest) XEmcNamespace(xEmcNamespace string)
 	return r
 }
 
-func (r ApiIamServiceDeleteAccessKeyRequest) Execute() (*IamServiceDeleteAccessKeyResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteAccessKeyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteAccessKeyExecute(r)
 }
 
@@ -1340,13 +1340,13 @@ func (a *IamApiService) IamServiceDeleteAccessKey(ctx context.Context) ApiIamSer
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteAccessKeyResponse
-func (a *IamApiService) IamServiceDeleteAccessKeyExecute(r ApiIamServiceDeleteAccessKeyRequest) (*IamServiceDeleteAccessKeyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteAccessKeyExecute(r ApiIamServiceDeleteAccessKeyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteAccessKeyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteAccessKey")
@@ -1488,7 +1488,7 @@ func (r ApiIamServiceDeleteGroupRequest) XEmcNamespace(xEmcNamespace string) Api
 	return r
 }
 
-func (r ApiIamServiceDeleteGroupRequest) Execute() (*IamServiceDeleteGroupResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteGroupRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteGroupExecute(r)
 }
 
@@ -1509,13 +1509,13 @@ func (a *IamApiService) IamServiceDeleteGroup(ctx context.Context) ApiIamService
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteGroupResponse
-func (a *IamApiService) IamServiceDeleteGroupExecute(r ApiIamServiceDeleteGroupRequest) (*IamServiceDeleteGroupResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteGroupExecute(r ApiIamServiceDeleteGroupRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteGroupResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteGroup")
@@ -1661,7 +1661,7 @@ func (r ApiIamServiceDeleteGroupPolicyRequest) XEmcNamespace(xEmcNamespace strin
 	return r
 }
 
-func (r ApiIamServiceDeleteGroupPolicyRequest) Execute() (*IamServiceDeleteGroupPolicyResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteGroupPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteGroupPolicyExecute(r)
 }
 
@@ -1682,13 +1682,13 @@ func (a *IamApiService) IamServiceDeleteGroupPolicy(ctx context.Context) ApiIamS
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteGroupPolicyResponse
-func (a *IamApiService) IamServiceDeleteGroupPolicyExecute(r ApiIamServiceDeleteGroupPolicyRequest) (*IamServiceDeleteGroupPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteGroupPolicyExecute(r ApiIamServiceDeleteGroupPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteGroupPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteGroupPolicy")
@@ -1830,7 +1830,7 @@ func (r ApiIamServiceDeleteRoleRequest) XEmcNamespace(xEmcNamespace string) ApiI
 	return r
 }
 
-func (r ApiIamServiceDeleteRoleRequest) Execute() (*IamServiceDeleteRoleResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteRoleRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteRoleExecute(r)
 }
 
@@ -1851,13 +1851,13 @@ func (a *IamApiService) IamServiceDeleteRole(ctx context.Context) ApiIamServiceD
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteRoleResponse
-func (a *IamApiService) IamServiceDeleteRoleExecute(r ApiIamServiceDeleteRoleRequest) (*IamServiceDeleteRoleResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteRoleExecute(r ApiIamServiceDeleteRoleRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteRoleResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteRole")
@@ -1996,7 +1996,7 @@ func (r ApiIamServiceDeleteRolePermissionsBoundaryRequest) XEmcNamespace(xEmcNam
 	return r
 }
 
-func (r ApiIamServiceDeleteRolePermissionsBoundaryRequest) Execute() (*IamServiceDeleteRolePermissionsBoundaryResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteRolePermissionsBoundaryRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteRolePermissionsBoundaryExecute(r)
 }
 
@@ -2017,13 +2017,13 @@ func (a *IamApiService) IamServiceDeleteRolePermissionsBoundary(ctx context.Cont
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteRolePermissionsBoundaryResponse
-func (a *IamApiService) IamServiceDeleteRolePermissionsBoundaryExecute(r ApiIamServiceDeleteRolePermissionsBoundaryRequest) (*IamServiceDeleteRolePermissionsBoundaryResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteRolePermissionsBoundaryExecute(r ApiIamServiceDeleteRolePermissionsBoundaryRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteRolePermissionsBoundaryResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteRolePermissionsBoundary")
@@ -2169,7 +2169,7 @@ func (r ApiIamServiceDeleteRolePolicyRequest) XEmcNamespace(xEmcNamespace string
 	return r
 }
 
-func (r ApiIamServiceDeleteRolePolicyRequest) Execute() (*IamServiceDeleteRolePolicyResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteRolePolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteRolePolicyExecute(r)
 }
 
@@ -2190,13 +2190,13 @@ func (a *IamApiService) IamServiceDeleteRolePolicy(ctx context.Context) ApiIamSe
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteRolePolicyResponse
-func (a *IamApiService) IamServiceDeleteRolePolicyExecute(r ApiIamServiceDeleteRolePolicyRequest) (*IamServiceDeleteRolePolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteRolePolicyExecute(r ApiIamServiceDeleteRolePolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteRolePolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteRolePolicy")
@@ -2345,7 +2345,7 @@ func (r ApiIamServiceDeleteUserPolicyRequest) XEmcNamespace(xEmcNamespace string
 	return r
 }
 
-func (r ApiIamServiceDeleteUserPolicyRequest) Execute() (*IamServiceDeleteUserPolicyResponse, *http.Response, error) {
+func (r ApiIamServiceDeleteUserPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDeleteUserPolicyExecute(r)
 }
 
@@ -2366,13 +2366,13 @@ func (a *IamApiService) IamServiceDeleteUserPolicy(ctx context.Context) ApiIamSe
 
 // Execute executes the request
 //
-//	@return IamServiceDeleteUserPolicyResponse
-func (a *IamApiService) IamServiceDeleteUserPolicyExecute(r ApiIamServiceDeleteUserPolicyRequest) (*IamServiceDeleteUserPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDeleteUserPolicyExecute(r ApiIamServiceDeleteUserPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDeleteUserPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDeleteUserPolicy")
@@ -2521,7 +2521,7 @@ func (r ApiIamServiceDetachGroupPolicyRequest) XEmcNamespace(xEmcNamespace strin
 	return r
 }
 
-func (r ApiIamServiceDetachGroupPolicyRequest) Execute() (*IamServiceDetachGroupPolicyResponse, *http.Response, error) {
+func (r ApiIamServiceDetachGroupPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDetachGroupPolicyExecute(r)
 }
 
@@ -2542,13 +2542,13 @@ func (a *IamApiService) IamServiceDetachGroupPolicy(ctx context.Context) ApiIamS
 
 // Execute executes the request
 //
-//	@return IamServiceDetachGroupPolicyResponse
-func (a *IamApiService) IamServiceDetachGroupPolicyExecute(r ApiIamServiceDetachGroupPolicyRequest) (*IamServiceDetachGroupPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDetachGroupPolicyExecute(r ApiIamServiceDetachGroupPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDetachGroupPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDetachGroupPolicy")
@@ -2697,7 +2697,7 @@ func (r ApiIamServiceDetachRolePolicyRequest) XEmcNamespace(xEmcNamespace string
 	return r
 }
 
-func (r ApiIamServiceDetachRolePolicyRequest) Execute() (*IamServiceDetachRolePolicyResponse, *http.Response, error) {
+func (r ApiIamServiceDetachRolePolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDetachRolePolicyExecute(r)
 }
 
@@ -2718,13 +2718,13 @@ func (a *IamApiService) IamServiceDetachRolePolicy(ctx context.Context) ApiIamSe
 
 // Execute executes the request
 //
-//	@return IamServiceDetachRolePolicyResponse
-func (a *IamApiService) IamServiceDetachRolePolicyExecute(r ApiIamServiceDetachRolePolicyRequest) (*IamServiceDetachRolePolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDetachRolePolicyExecute(r ApiIamServiceDetachRolePolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDetachRolePolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDetachRolePolicy")
@@ -2873,7 +2873,7 @@ func (r ApiIamServiceDetachUserPolicyRequest) XEmcNamespace(xEmcNamespace string
 	return r
 }
 
-func (r ApiIamServiceDetachUserPolicyRequest) Execute() (*IamServiceDetachUserPolicyResponse, *http.Response, error) {
+func (r ApiIamServiceDetachUserPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceDetachUserPolicyExecute(r)
 }
 
@@ -2894,13 +2894,13 @@ func (a *IamApiService) IamServiceDetachUserPolicy(ctx context.Context) ApiIamSe
 
 // Execute executes the request
 //
-//	@return IamServiceDetachUserPolicyResponse
-func (a *IamApiService) IamServiceDetachUserPolicyExecute(r ApiIamServiceDetachUserPolicyRequest) (*IamServiceDetachUserPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceDetachUserPolicyExecute(r ApiIamServiceDetachUserPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceDetachUserPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceDetachUserPolicy")
@@ -6942,7 +6942,7 @@ func (r ApiIamServicePutGroupPolicyRequest) XEmcNamespace(xEmcNamespace string) 
 	return r
 }
 
-func (r ApiIamServicePutGroupPolicyRequest) Execute() (*IamServicePutGroupPolicyResponse, *http.Response, error) {
+func (r ApiIamServicePutGroupPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServicePutGroupPolicyExecute(r)
 }
 
@@ -6963,13 +6963,13 @@ func (a *IamApiService) IamServicePutGroupPolicy(ctx context.Context) ApiIamServ
 
 // Execute executes the request
 //
-//	@return IamServicePutGroupPolicyResponse
-func (a *IamApiService) IamServicePutGroupPolicyExecute(r ApiIamServicePutGroupPolicyRequest) (*IamServicePutGroupPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServicePutGroupPolicyExecute(r ApiIamServicePutGroupPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServicePutGroupPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutGroupPolicy")
@@ -7121,7 +7121,7 @@ func (r ApiIamServicePutRolePermissionsBoundaryRequest) XEmcNamespace(xEmcNamesp
 	return r
 }
 
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) Execute() (*IamServicePutRolePermissionsBoundaryResponse, *http.Response, error) {
+func (r ApiIamServicePutRolePermissionsBoundaryRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServicePutRolePermissionsBoundaryExecute(r)
 }
 
@@ -7142,13 +7142,13 @@ func (a *IamApiService) IamServicePutRolePermissionsBoundary(ctx context.Context
 
 // Execute executes the request
 //
-//	@return IamServicePutRolePermissionsBoundaryResponse
-func (a *IamApiService) IamServicePutRolePermissionsBoundaryExecute(r ApiIamServicePutRolePermissionsBoundaryRequest) (*IamServicePutRolePermissionsBoundaryResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServicePutRolePermissionsBoundaryExecute(r ApiIamServicePutRolePermissionsBoundaryRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServicePutRolePermissionsBoundaryResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutRolePermissionsBoundary")
@@ -7304,7 +7304,7 @@ func (r ApiIamServicePutRolePolicyRequest) XEmcNamespace(xEmcNamespace string) A
 	return r
 }
 
-func (r ApiIamServicePutRolePolicyRequest) Execute() (*IamServicePutRolePolicyResponse, *http.Response, error) {
+func (r ApiIamServicePutRolePolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServicePutRolePolicyExecute(r)
 }
 
@@ -7325,13 +7325,13 @@ func (a *IamApiService) IamServicePutRolePolicy(ctx context.Context) ApiIamServi
 
 // Execute executes the request
 //
-//	@return IamServicePutRolePolicyResponse
-func (a *IamApiService) IamServicePutRolePolicyExecute(r ApiIamServicePutRolePolicyRequest) (*IamServicePutRolePolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServicePutRolePolicyExecute(r ApiIamServicePutRolePolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServicePutRolePolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutRolePolicy")
@@ -7490,7 +7490,7 @@ func (r ApiIamServicePutUserPolicyRequest) XEmcNamespace(xEmcNamespace string) A
 	return r
 }
 
-func (r ApiIamServicePutUserPolicyRequest) Execute() (*IamServicePutUserPolicyResponse, *http.Response, error) {
+func (r ApiIamServicePutUserPolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServicePutUserPolicyExecute(r)
 }
 
@@ -7511,13 +7511,13 @@ func (a *IamApiService) IamServicePutUserPolicy(ctx context.Context) ApiIamServi
 
 // Execute executes the request
 //
-//	@return IamServicePutUserPolicyResponse
-func (a *IamApiService) IamServicePutUserPolicyExecute(r ApiIamServicePutUserPolicyRequest) (*IamServicePutUserPolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServicePutUserPolicyExecute(r ApiIamServicePutUserPolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServicePutUserPolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServicePutUserPolicy")
@@ -7669,7 +7669,7 @@ func (r ApiIamServiceRemoveUserFromGroupRequest) XEmcNamespace(xEmcNamespace str
 	return r
 }
 
-func (r ApiIamServiceRemoveUserFromGroupRequest) Execute() (*IamServiceRemoveUserFromGroupResponse, *http.Response, error) {
+func (r ApiIamServiceRemoveUserFromGroupRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceRemoveUserFromGroupExecute(r)
 }
 
@@ -7690,13 +7690,13 @@ func (a *IamApiService) IamServiceRemoveUserFromGroup(ctx context.Context) ApiIa
 
 // Execute executes the request
 //
-//	@return IamServiceRemoveUserFromGroupResponse
-func (a *IamApiService) IamServiceRemoveUserFromGroupExecute(r ApiIamServiceRemoveUserFromGroupRequest) (*IamServiceRemoveUserFromGroupResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceRemoveUserFromGroupExecute(r ApiIamServiceRemoveUserFromGroupRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceRemoveUserFromGroupResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceRemoveUserFromGroup")
@@ -8204,7 +8204,7 @@ func (r ApiIamServiceUpdateAccessKeyRequest) XEmcNamespace(xEmcNamespace string)
 	return r
 }
 
-func (r ApiIamServiceUpdateAccessKeyRequest) Execute() (*IamServiceUpdateAccessKeyResponse, *http.Response, error) {
+func (r ApiIamServiceUpdateAccessKeyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceUpdateAccessKeyExecute(r)
 }
 
@@ -8225,13 +8225,13 @@ func (a *IamApiService) IamServiceUpdateAccessKey(ctx context.Context) ApiIamSer
 
 // Execute executes the request
 //
-//	@return IamServiceUpdateAccessKeyResponse
-func (a *IamApiService) IamServiceUpdateAccessKeyExecute(r ApiIamServiceUpdateAccessKeyRequest) (*IamServiceUpdateAccessKeyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceUpdateAccessKeyExecute(r ApiIamServiceUpdateAccessKeyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceUpdateAccessKeyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceUpdateAccessKey")
@@ -8383,7 +8383,7 @@ func (r ApiIamServiceUpdateAssumeRolePolicyRequest) XEmcNamespace(xEmcNamespace 
 	return r
 }
 
-func (r ApiIamServiceUpdateAssumeRolePolicyRequest) Execute() (*IamServiceUpdateAssumeRolePolicyResponse, *http.Response, error) {
+func (r ApiIamServiceUpdateAssumeRolePolicyRequest) Execute() (*BasicResponse, *http.Response, error) {
 	return r.ApiService.IamServiceUpdateAssumeRolePolicyExecute(r)
 }
 
@@ -8404,13 +8404,13 @@ func (a *IamApiService) IamServiceUpdateAssumeRolePolicy(ctx context.Context) Ap
 
 // Execute executes the request
 //
-//	@return IamServiceUpdateAssumeRolePolicyResponse
-func (a *IamApiService) IamServiceUpdateAssumeRolePolicyExecute(r ApiIamServiceUpdateAssumeRolePolicyRequest) (*IamServiceUpdateAssumeRolePolicyResponse, *http.Response, error) {
+//	@return BasicResponse
+func (a *IamApiService) IamServiceUpdateAssumeRolePolicyExecute(r ApiIamServiceUpdateAssumeRolePolicyRequest) (*BasicResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *IamServiceUpdateAssumeRolePolicyResponse
+		localVarReturnValue *BasicResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceUpdateAssumeRolePolicy")
