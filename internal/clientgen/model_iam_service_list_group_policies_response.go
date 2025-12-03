@@ -13,5 +13,5 @@ package clientgen
 // IamServiceListGroupPoliciesResponse struct for IamServiceListGroupPoliciesResponse
 type IamServiceListGroupPoliciesResponse struct {
 	ListGroupPoliciesResult *IamServiceListGroupPoliciesResponseListGroupPoliciesResult `json:"ListGroupPoliciesResult,omitempty"`
-	ResponseMetadata        *IamServiceAddUserToGroupResponseResponseMetadata           `json:"ResponseMetadata,omitempty"`
+	ResponseMetadata        *IamResponseMetadata                                        `json:"ResponseMetadata,omitempty"`
 }
