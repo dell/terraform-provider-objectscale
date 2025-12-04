@@ -104,3 +104,45 @@ type MinMaxGovernorModel struct {
 	MinimumVariableRetention types.Int64 `tfsdk:"minimum_variable_retention"`
 	MaximumVariableRetention types.Int64 `tfsdk:"maximum_variable_retention"`
 }
+
+// BucketResourceModel represents the Terraform resource model for a bucket.
+// It includes all required and optional properties for bucket creation and management.
+type BucketResourceModel struct {
+	Owner                              types.String         `tfsdk:"owner"`
+	Name                               types.String         `tfsdk:"name"`
+	ReplicationGroup                   types.String         `tfsdk:"replication_group"`
+	Namespace                          types.String         `tfsdk:"namespace"`
+	BlockSize                          types.Int64          `tfsdk:"block_size"`
+	NotificationSize                   types.Int64          `tfsdk:"notification_size"`
+	FsAccessEnabled                    types.Bool           `tfsdk:"filesystem_enabled"`
+	ApiType                            types.String         `tfsdk:"head_type"`
+	Tag                                []TagModel           `tfsdk:"tag_set"`
+	IsEncryptionEnabled                types.Bool           `tfsdk:"is_encryption_enabled"`
+	DefaultGroupFileReadPermission     types.Bool           `tfsdk:"default_group_file_read_permission"`
+	DefaultGroupFileWritePermission    types.Bool           `tfsdk:"default_group_file_write_permission"`
+	DefaultGroupFileExecutePermission  types.Bool           `tfsdk:"default_group_file_execute_permission"`
+	DefaultGroupDirReadPermission      types.Bool           `tfsdk:"default_group_dir_read_permission"`
+	DefaultGroupDirWritePermission     types.Bool           `tfsdk:"default_group_dir_write_permission"`
+	DefaultGroupDirExecutePermission   types.Bool           `tfsdk:"default_group_dir_execute_permission"`
+	DefaultGroup                       types.String         `tfsdk:"default_group"`
+	AutoCommitPeriod                   types.Int64          `tfsdk:"autocommit_period"`
+	Retention                          types.Int64          `tfsdk:"retention"`
+	IsStaleAllowed                     types.Bool           `tfsdk:"is_stale_allowed"`
+	IsObjectLockWithAdoAllowed         types.Bool           `tfsdk:"is_object_lock_with_ado_allowed"`
+	IsTsoReadOnly                      types.Bool           `tfsdk:"is_tso_read_only"`
+	SearchMetadata                     []MetadataModel      `tfsdk:"search_metadata"`
+	MdTokens                           types.Bool           `tfsdk:"metadata_tokens"`
+	MinMaxGovernor                     *MinMaxGovernorModel `tfsdk:"min_max_governor"`
+	AuditDeleteExpiration              types.Int64          `tfsdk:"audited_delete_expiration"`
+	IsObjectLockEnabled                types.Bool           `tfsdk:"is_object_lock_enabled"`
+	ApiTypeStoragePolicy               types.String         `tfsdk:"storage_policy"`
+	EnableAdvancedMetadataSearch       types.Bool           `tfsdk:"enable_advanced_metadata_search"`
+	AdvancedMetadataSearchTargetName   types.String         `tfsdk:"advanced_metadata_search_target_name"`
+	AdvancedMetadataSearchTargetStream types.String         `tfsdk:"advanced_metadata_search_target_stream"`
+	LocalObjectMetadataReads           types.Bool           `tfsdk:"local_object_metadata_reads"`
+	VersioningStatus                   types.String         `tfsdk:"versioning_status"`
+	Path                               types.String         `tfsdk:"path"`
+	Arn                                types.String         `tfsdk:"arn"`
+	Id                                 types.String         `tfsdk:"id"`
+	CreateDate                         types.String         `tfsdk:"create_date"`
+}
