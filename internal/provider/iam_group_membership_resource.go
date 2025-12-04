@@ -1,5 +1,19 @@
-// Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-2.0
+/*
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+
+Licensed under the Mozilla Public License Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://mozilla.org/MPL/2.0/
+
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 package provider
 
@@ -12,7 +26,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -33,8 +46,6 @@ type IAMGroupMembershipResourceModel struct {
 	GroupName types.String `tfsdk:"name"`
 	Namespace types.String `tfsdk:"namespace"`
 	User      types.String `tfsdk:"user"`
-
-	Users types.Set `tfsdk:"users"`
 }
 
 func (r *IAMGroupMembershipResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -42,7 +53,11 @@ func (r *IAMGroupMembershipResource) Metadata(ctx context.Context, req resource.
 }
 
 func (r *IAMGroupMembershipResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+	resp.Schema.Description = "Resource for managing IAM Group Memberships in ObjectScale."
+
 	resp.Schema = schema.Schema{
+		Description:         "Manages Group Membership for a User.",
+		MarkdownDescription: "Manages Group Membership for a User.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Simple name identifying the group. Required",
@@ -58,14 +73,6 @@ func (r *IAMGroupMembershipResource) Schema(ctx context.Context, req resource.Sc
 				Description:         "User to be added to the group. Required",
 				MarkdownDescription: "User to be added to the group. Required",
 				Required:            true,
-			},
-
-			//Optional expose the current group membership list as computed for read only use
-			"users": schema.ListAttribute{
-				Description:         "List of users who are members of the group.",
-				MarkdownDescription: "List of users who are members of the group.",
-				ElementType:         types.StringType,
-				Computed:            true,
 			},
 		},
 	}
@@ -84,25 +91,13 @@ func (r *IAMGroupMembershipResource) Configure(ctx context.Context, req resource
 			"Unexpected Resource Configure Type",
 			fmt.Sprintf("Expected *http.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
-
 		return
 	}
 
 	r.client = client
 }
 
-// func (r *IAMGroupMembershipResource) modelToJson(plan IAMGroupMembershipResourceModel) clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup {
-// 	return clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
-// 		GroupName:  helper.ValueToPointer[string](plan.GroupName),
-// 		GroupId:    helper.ValueToPointer[string](plan.GroupId),
-// 		Path:       helper.ValueToPointer[string](plan.Path),
-// 		CreateDate: helper.ValueToPointer[string](plan.CreateDate),
-// 		Arn:        helper.ValueToPointer[string](plan.Arn),
-// 	}
-// }
-
 func (r *IAMGroupMembershipResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	tflog.Info(ctx, "creating user")
 	var plan IAMGroupMembershipResourceModel
 
 	// Read Terraform plan data into the model
@@ -125,9 +120,19 @@ func (r *IAMGroupMembershipResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
+	// Check that user was added
+	found := false
 	for _, user := range members.GetGroupResult.Users {
-		plan.Users = append(plan.Users, types.StringValue(user))
+		if user.UserName != nil && *user.UserName == plan.User.ValueString() {
+			found = true
+			break
+		}
 	}
+	if !found {
+		resp.Diagnostics.AddError("Error adding user to group", "User was not found in group after addition.")
+		return
+	}
+
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -149,51 +154,28 @@ func (r *IAMGroupMembershipResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	state.Users = make([]types.String, 0, len(members.GetGroupResult.Users))
-	for _, m := range members.GetGroupResult.Users {
-		state.Users = append(state.Users, types.StringValue(m))
+	// Check that user is still a member
+	found := false
+	for _, user := range members.GetGroupResult.Users {
+		if user.UserName != nil && *user.UserName == state.User.ValueString() {
+			found = true
+			break
+		}
 	}
+	if !found {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	// Save updated data into Terraform state
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 
 }
 
-// func (r *IAMGroupMembershipResource) getModel(
-// 	// iam_group *clientgen.IamServiceCreateUserResponseCreateUserResultUser,
-// 	iam_group *clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup,
-// 	namespace types.String) IAMGroupMembershipResourceModel {
-
-// 	return IAMGroupMembershipResourceModel{
-
-// 		GroupId:    helper.TfStringNN(iam_group.GroupId),
-// 		GroupName:  helper.TfStringNN(iam_group.GroupName),
-// 		Arn:        helper.TfStringNN(iam_group.Arn),
-// 		Namespace:  namespace,
-// 		CreateDate: helper.TfStringNN(iam_group.CreateDate),
-// 		Path:       helper.TfStringNN(iam_group.Path),
-// 	}
-// }
-
 func (r *IAMGroupMembershipResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data IAMGroupMembershipResourceModel
-
-	// Read Terraform plan data into the model
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	// If applicable, this is a great opportunity to initialize any necessary
-	// provider client data and make a call using it.
-	// httpResp, err := r.client.Do(httpReq)
-	// if err != nil {
-	//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update example, got error: %s", err))
-	//     return
-	// }
-
-	// Save updated data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	// Update operation is not supported
+	resp.Diagnostics.AddError("Update Group membership operation is not supported.", "Update operation is not supported.")
 }
 
 func (r *IAMGroupMembershipResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -209,6 +191,27 @@ func (r *IAMGroupMembershipResource) Delete(ctx context.Context, req resource.De
 		resp.Diagnostics.AddError("Remove user failed", err.Error())
 		return
 	}
+	//check that user was removed
+	members, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(state.GroupName.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading group members", err.Error())
+		return
+	}
+
+	// Check that user was removed
+	found := false
+	for _, user := range members.GetGroupResult.Users {
+		if user.UserName != nil && *user.UserName == state.User.ValueString() {
+			found = true
+			break
+		}
+	}
+	if found {
+		resp.Diagnostics.AddError("Error removing user from group", "User is still found in group after removal.")
+		return
+	}
+
+	// Remove resource from state
 
 	resp.State.RemoveResource(ctx)
 }
