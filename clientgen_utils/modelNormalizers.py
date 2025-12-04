@@ -222,6 +222,7 @@ def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:
                 json_obj['components']['schemas']['IamTagKeyValue'] = commonTagKeyValueType
     return json_obj
 
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.

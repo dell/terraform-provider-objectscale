@@ -45,6 +45,7 @@ def AddObjectScaleMarker(json_obj: dict) -> dict:
                     prop['x-is-paginated-resp'] = 'true'
     return json_obj
 
+
 filtered_json = AddObjectScaleMarker(filtered_json)
 filtered_json = NormalizeObjectScaleModels(filtered_json)
 
