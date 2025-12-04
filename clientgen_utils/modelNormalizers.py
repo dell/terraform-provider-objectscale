@@ -68,10 +68,69 @@ def _normalizeObjectScaleBasicResponseMetadata(json_obj: dict) -> dict:
 
     return json_obj
 
+def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:
+    """
+    Add ObjectScale specific marker to the OpenAPI spec.
+    Fixes specs of IAM tagging untagging APIs query parameters.
+    Adds 'x-indexed-kv' to any api with Tags.member.N query parameter.
+    Adds 'x-indexed-key-only' to any api with TagKeys parameters that have only keys.
+    """
+    # this is ok in spec, but we shall simplify it for our usecase
+    commonTagKeyType = {
+        "type": "object",
+        "properties": {
+            "key": {
+                "type": "string",
+                "description": "The name of the tag."
+            }
+        }
+    }
+    # this type is wrong in the spec
+    commonTagKeyValueType = {
+        "type": "object",
+        "properties": {
+            "key": {
+                "type": "string",
+                "description": "The name of the tag."
+            },
+            "value": {
+                "type": "string",
+                "description": "The value of the tag."
+            }
+        }
+    }
+    for path, obj in json_obj['paths'].items():
+        if '/iam?' not in path:
+            continue
+        for param in obj.get('post', {}).get('parameters', []):
+            if param['name'] == 'TagKeys':
+                param['x-indexed-kv'] = 'true'
+                param['x-indexed-key-only'] = 'true'
+                param["schema"] = {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/components/schemas/IamTagKey"
+                    }
+                }
+                json_obj['components']['schemas']['IamTagKey'] = commonTagKeyType
+
+            if param['name'] == 'Tags.member.N':
+                param['x-indexed-kv'] = 'true'
+                param["schema"] = {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IamTagKeyValue"
+                        }
+                    }
+                json_obj['components']['schemas']['IamTagKeyValue'] = commonTagKeyValueType
+    return json_obj
+
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
     """
     ret = _normalizeObjectScaleIamResponseMetadata(json_obj)
     ret = _normalizeObjectScaleBasicResponseMetadata(ret)
+    ret = _normalizeObjectScaleIamTags(ret)
     return ret
