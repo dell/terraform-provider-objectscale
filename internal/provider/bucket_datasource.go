@@ -407,24 +407,15 @@ func (d *BucketDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		if nextMarker != nil && *nextMarker != "" {
 			apiReq = apiReq.Marker(*nextMarker)
 		}
-		apiResp, httpResp, err := apiReq.Execute()
+		apiResp, _, err := apiReq.Execute()
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Unable to read buckets",
-				fmt.Sprintf("Error: %s", err),
+				err.Error(),
 			)
 			return
 		}
-		if httpResp != nil && httpResp.StatusCode >= 400 {
-			resp.Diagnostics.AddError(
-				"API returned error",
-				fmt.Sprintf("Status: %d", httpResp.StatusCode),
-			)
-			return
-		}
-		if apiResp.ObjectBucket != nil {
-			allBuckets = append(allBuckets, apiResp.ObjectBucket...)
-		}
+		allBuckets = append(allBuckets, apiResp.ObjectBucket...)
 
 		// If a name prefix was provided and no buckets were found, return an error
 		if prefix != "" && len(apiResp.ObjectBucket) == 0 {
