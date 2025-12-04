@@ -12,7 +12,7 @@ package clientgen
 
 // IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult struct for IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult
 type IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult struct {
-	Member []string `json:"member,omitempty"`
+	AttachedPolicies []IamServiceGetPolicyResponseGetPolicyResultPolicy `json:"member,omitempty"`
 	// When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request.
 	Marker *string `json:"Marker,omitempty"`
 }
