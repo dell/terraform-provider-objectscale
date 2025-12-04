@@ -44,9 +44,17 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				// get all in namespace
+				// namespace ns1 must exist
 				Config: ProviderConfigForTesting + `
 				data "objectscale_iam_policy" "all" {
 					namespace = "ns1"
+					lifecycle {
+						# objectscale has some default policies so atleast one must exist
+						postcondition {
+							condition = length(self.policies) > 0
+							error_message = "atleast one policy in ns1 must exist"
+						}
+					}
 				}
 				`,
 			},
@@ -62,6 +70,7 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 			},
 			{
 				// get by arn
+				// atleast one policy in ns1 must exist
 				PreConfig: func() {
 					upM.UnPatch()
 				},
@@ -74,6 +83,13 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 					arn = data.objectscale_iam_policy.all.policies[0].arn
 				}
 				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrPair(
+						"data.objectscale_iam_policy.all",
+						"policies.0.arn",
+						"data.objectscale_iam_policy.iam_policy",
+						"policies.0.arn"),
+				),
 			},
 			{
 				// get by invalid arn
@@ -87,15 +103,21 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 			},
 			{
 				// get by user name
+				// This works stably only if testaccpreq user is created in ns1
+				// with only one policy attached to it that is IAMReadOnlyAccess
 				Config: ProviderConfigForTesting + `
-				data "objectscale_iam_user" "all" {
-					namespace = "ns1"
-				}
 				data "objectscale_iam_policy" "iam_policy" {
 					namespace = "ns1"
-					user = data.objectscale_iam_user.all.users[0].username
+					user = "testaccpreq"
 				}
 				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"data.objectscale_iam_policy.iam_policy",
+						"policies.0.policy_name",
+						"IAMReadOnlyAccess",
+					),
+				),
 			},
 			{
 				// get by invalid user name
@@ -109,15 +131,21 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 			},
 			{
 				// get by group name
+				// This works stably only if testaccpreq group is created in ns1
+				// with only one policy attached to it that is IAMReadOnlyAccess
 				Config: ProviderConfigForTesting + `
-				data "objectscale_iam_groups" "all" {
-					namespace = "ns1"
-				}
 				data "objectscale_iam_policy" "iam_policy" {
 					namespace = "ns1"
-					group = data.objectscale_iam_groups.all.groups[0].group_name
+					group = "testaccpreq"
 				}
 				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"data.objectscale_iam_policy.iam_policy",
+						"policies.0.policy_name",
+						"IAMReadOnlyAccess",
+					),
+				),
 			},
 			{
 				// get by invalid group name
@@ -131,13 +159,21 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 			},
 			{
 				// get by role name
-				// TODO: get by role arn when role ds is created
+				// This works stably only if testaccpreq role is created in ns1
+				// with only one policy attached to it that is IAMReadOnlyAccess
 				Config: ProviderConfigForTesting + `
 				data "objectscale_iam_policy" "iam_policy" {
 					namespace = "ns1"
 					role = "testaccpreq"
 				}
 				`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"data.objectscale_iam_policy.iam_policy",
+						"policies.0.policy_name",
+						"IAMReadOnlyAccess",
+					),
+				),
 			},
 			{
 				// get by invalid role

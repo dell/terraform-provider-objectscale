@@ -14394,54 +14394,7 @@
 						"type": "object",
 						"properties": {
 							"Policy": {
-								"type": "object",
-								"properties": {
-									"Arn": {
-										"type": "string",
-										"description": "The resource name of the policy."
-									},
-									"AttachmentCount": {
-										"type": "integer",
-										"description": "The number of entities (users, groups, and roles) that the policy is attached to."
-									},
-									"CreateDate": {
-										"type": "string",
-										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
-									},
-									"DefaultVersionId": {
-										"type": "string",
-										"description": "The identifier for the version of the policy that is set as the default version."
-									},
-									"Description": {
-										"type": "string",
-										"description": "A friendly description of the policy."
-									},
-									"IsAttachable": {
-										"type": "boolean",
-										"description": "Specifies whether the policy can be attached to user, group, or role."
-									},
-									"Path": {
-										"type": "string",
-										"description": "The path to the policy"
-									},
-									"PermissionsBoundaryUsageCount": {
-										"type": "integer",
-										"description": "Resource name of the policy that is used to set permissions boundary for the policy."
-									},
-									"PolicyId": {
-										"type": "string",
-										"description": "The stable and unique string identifying the policy."
-									},
-									"PolicyName": {
-										"type": "string",
-										"description": "The friendly name of the policy."
-									},
-									"UpdateDate": {
-										"type": "string",
-										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
-									}
-								},
-								"description": "Get policy"
+								"$ref": "#/components/schemas/IamPolicy"
 							}
 						},
 						"description": "Get getPolicyResult"
@@ -14672,10 +14625,10 @@
 					"ListAttachedGroupPoliciesResult": {
 						"type": "object",
 						"properties": {
-							"member": {
+							"AttachedPolicies": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"$ref": "#/components/schemas/IamPolicy"
 								}
 							},
 							"Marker": {
@@ -14695,10 +14648,10 @@
 					"ListAttachedRolePoliciesResult": {
 						"type": "object",
 						"properties": {
-							"member": {
+							"AttachedPolicies": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"$ref": "#/components/schemas/IamPolicy"
 								}
 							},
 							"Marker": {
@@ -14718,10 +14671,10 @@
 					"ListAttachedUserPoliciesResult": {
 						"type": "object",
 						"properties": {
-							"member": {
+							"AttachedPolicies": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"$ref": "#/components/schemas/IamPolicy"
 								}
 							},
 							"Marker": {
@@ -14864,7 +14817,7 @@
 							"Policies": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"$ref": "#/components/schemas/IamPolicy"
 								},
 								"description": "Get policies"
 							},
@@ -15152,6 +15105,56 @@
 						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
+			},
+			"IamPolicy": {
+				"type": "object",
+				"properties": {
+					"Arn": {
+						"type": "string",
+						"description": "The resource name of the policy."
+					},
+					"AttachmentCount": {
+						"type": "integer",
+						"description": "The number of entities (users, groups, and roles) that the policy is attached to."
+					},
+					"CreateDate": {
+						"type": "string",
+						"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+					},
+					"DefaultVersionId": {
+						"type": "string",
+						"description": "The identifier for the version of the policy that is set as the default version."
+					},
+					"Description": {
+						"type": "string",
+						"description": "A friendly description of the policy."
+					},
+					"IsAttachable": {
+						"type": "boolean",
+						"description": "Specifies whether the policy can be attached to user, group, or role."
+					},
+					"Path": {
+						"type": "string",
+						"description": "The path to the policy"
+					},
+					"PermissionsBoundaryUsageCount": {
+						"type": "integer",
+						"description": "Resource name of the policy that is used to set permissions boundary for the policy."
+					},
+					"PolicyId": {
+						"type": "string",
+						"description": "The stable and unique string identifying the policy."
+					},
+					"PolicyName": {
+						"type": "string",
+						"description": "The friendly name of the policy."
+					},
+					"UpdateDate": {
+						"type": "string",
+						"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+					}
+				},
+				"description": "Get policy"
 			}
 		},
 		"securitySchemes": {

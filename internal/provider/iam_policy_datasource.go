@@ -178,7 +178,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 	}
 
 	namespace := data.Namespace.ValueString()
-	var allPolicyResp []clientgen.IamServiceGetPolicyResponseGetPolicyResultPolicy
+	var allPolicyResp []clientgen.IamPolicy
 
 	if arn := helper.ValueToPointer[string](data.ARN); arn != nil {
 		// get by arn
@@ -244,8 +244,8 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (d IAMPolicyDataSource) updateState(iam_policys []clientgen.IamServiceGetPolicyResponseGetPolicyResultPolicy) []models.IamPolicyDataSourceIamPolicyModel {
-	return helper.SliceTransform(iam_policys, func(v clientgen.IamServiceGetPolicyResponseGetPolicyResultPolicy) models.IamPolicyDataSourceIamPolicyModel {
+func (d IAMPolicyDataSource) updateState(iam_policys []clientgen.IamPolicy) []models.IamPolicyDataSourceIamPolicyModel {
+	return helper.SliceTransform(iam_policys, func(v clientgen.IamPolicy) models.IamPolicyDataSourceIamPolicyModel {
 		return models.IamPolicyDataSourceIamPolicyModel{
 			ARN:                           helper.TfStringNN(v.Arn),
 			AttachmentCount:               helper.TfInt32NN(v.AttachmentCount),

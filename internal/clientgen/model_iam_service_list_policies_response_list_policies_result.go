@@ -13,7 +13,7 @@ package clientgen
 // IamServiceListPoliciesResponseListPoliciesResult Get listPoliciesResult
 type IamServiceListPoliciesResponseListPoliciesResult struct {
 	// Get policies
-	Policies []IamServiceGetPolicyResponseGetPolicyResultPolicy `json:"Policies,omitempty"`
+	Policies []IamPolicy `json:"Policies,omitempty"`
 	// A flag that indicates whether there are more items to return.
 	IsTruncated *bool `json:"IsTruncated,omitempty"`
 	// When IsTruncated is true, this element is present and contains the value to use for the Marker  parameter in a subsequent pagination request.
