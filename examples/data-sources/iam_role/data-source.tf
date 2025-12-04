@@ -17,6 +17,7 @@ limitations under the License.
 
 data "objectscale_iam_role" "all" {
   namespace = "ns1"
+  role_name = "role_Test1"
 }
 
 output "objectscale_iam_role_all" {
