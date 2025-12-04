@@ -137,12 +137,15 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceCreateAccessKey**](docs/IamApi.md#iamservicecreateaccesskey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 *IamApi* | [**IamServiceCreateGroup**](docs/IamApi.md#iamservicecreategroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
 *IamApi* | [**IamServiceCreateRole**](docs/IamApi.md#iamservicecreaterole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+*IamApi* | [**IamServiceCreateUser**](docs/IamApi.md#iamservicecreateuser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
 *IamApi* | [**IamServiceDeleteAccessKey**](docs/IamApi.md#iamservicedeleteaccesskey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 *IamApi* | [**IamServiceDeleteGroup**](docs/IamApi.md#iamservicedeletegroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 *IamApi* | [**IamServiceDeleteGroupPolicy**](docs/IamApi.md#iamservicedeletegrouppolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
 *IamApi* | [**IamServiceDeleteRole**](docs/IamApi.md#iamservicedeleterole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePermissionsBoundary**](docs/IamApi.md#iamservicedeleterolepermissionsboundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePolicy**](docs/IamApi.md#iamservicedeleterolepolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
+*IamApi* | [**IamServiceDeleteUser**](docs/IamApi.md#iamservicedeleteuser) | **Post** /iam?Action&#x3D;DeleteUser | Delete an IAM user.
+*IamApi* | [**IamServiceDeleteUserPermissionsBoundary**](docs/IamApi.md#iamservicedeleteuserpermissionsboundary) | **Post** /iam?Action&#x3D;DeleteUserPermissionsBoundary | Delete User&#39;s PermissionsBoundary.
 *IamApi* | [**IamServiceDeleteUserPolicy**](docs/IamApi.md#iamservicedeleteuserpolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
 *IamApi* | [**IamServiceDetachGroupPolicy**](docs/IamApi.md#iamservicedetachgrouppolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
 *IamApi* | [**IamServiceDetachRolePolicy**](docs/IamApi.md#iamservicedetachrolepolicy) | **Post** /iam?Action&#x3D;DetachRolePolicy | Removes the specified managed policy from the specified IAM role.
@@ -171,10 +174,13 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServicePutGroupPolicy**](docs/IamApi.md#iamserviceputgrouppolicy) | **Post** /iam?Action&#x3D;PutGroupPolicy | Add or Update Inline Policy for IAM Group.
 *IamApi* | [**IamServicePutRolePermissionsBoundary**](docs/IamApi.md#iamserviceputrolepermissionsboundary) | **Post** /iam?Action&#x3D;PutRolePermissionsBoundary | Adds or updates the policy that is specified as the IAM role&#39;s permissions boundary.
 *IamApi* | [**IamServicePutRolePolicy**](docs/IamApi.md#iamserviceputrolepolicy) | **Post** /iam?Action&#x3D;PutRolePolicy | Adds or updates an inline policy document that is embedded in the specified IAM role.
+*IamApi* | [**IamServicePutUserPermissionsBoundary**](docs/IamApi.md#iamserviceputuserpermissionsboundary) | **Post** /iam?Action&#x3D;PutUserPermissionsBoundary | Update User&#39;s PermissionsBoundary.
 *IamApi* | [**IamServicePutUserPolicy**](docs/IamApi.md#iamserviceputuserpolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
 *IamApi* | [**IamServiceRemoveUserFromGroup**](docs/IamApi.md#iamserviceremoveuserfromgroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
 *IamApi* | [**IamServiceTagRole**](docs/IamApi.md#iamservicetagrole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
+*IamApi* | [**IamServiceTagUser**](docs/IamApi.md#iamservicetaguser) | **Post** /iam?Action&#x3D;TagUser | Adds one or more tags to a specified IAM User.
 *IamApi* | [**IamServiceUntagRole**](docs/IamApi.md#iamserviceuntagrole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
+*IamApi* | [**IamServiceUntagUser**](docs/IamApi.md#iamserviceuntaguser) | **Post** /iam?Action&#x3D;UntagUser | Removes the specified tags from a specified IAM User.
 *IamApi* | [**IamServiceUpdateAccessKey**](docs/IamApi.md#iamserviceupdateaccesskey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 *IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 *IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
@@ -266,6 +272,10 @@ Class | Method | HTTP request | Description
  - [IamServiceCreateRoleResponseResult](docs/IamServiceCreateRoleResponseResult.md)
  - [IamServiceCreateRoleResponseResultRole](docs/IamServiceCreateRoleResponseResultRole.md)
  - [IamServiceCreateRoleResponseResultRolePermissionsBoundary](docs/IamServiceCreateRoleResponseResultRolePermissionsBoundary.md)
+ - [IamServiceCreateUserResponse](docs/IamServiceCreateUserResponse.md)
+ - [IamServiceCreateUserResponseCreateUserResult](docs/IamServiceCreateUserResponseCreateUserResult.md)
+ - [IamServiceCreateUserResponseCreateUserResultUser](docs/IamServiceCreateUserResponseCreateUserResultUser.md)
+ - [IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary](docs/IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary.md)
  - [IamServiceGetGroupPolicyResponse](docs/IamServiceGetGroupPolicyResponse.md)
  - [IamServiceGetGroupPolicyResponseGetGroupPolicyResult](docs/IamServiceGetGroupPolicyResponseGetGroupPolicyResult.md)
  - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
@@ -311,9 +321,9 @@ Class | Method | HTTP request | Description
  - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
  - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
  - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
- - [IamServiceUntagRoleTagKeysParameter](docs/IamServiceUntagRoleTagKeysParameter.md)
- - [IamServiceUntagRoleTagKeysParameterKeysInner](docs/IamServiceUntagRoleTagKeysParameterKeysInner.md)
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
+ - [IamTagKey](docs/IamTagKey.md)
+ - [IamTagKeyValue](docs/IamTagKeyValue.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
