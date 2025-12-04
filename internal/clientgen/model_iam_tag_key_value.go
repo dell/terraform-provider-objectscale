@@ -10,8 +10,10 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceUntagRoleTagKeysParameterKeysInner struct for IamServiceUntagRoleTagKeysParameterKeysInner
-type IamServiceUntagRoleTagKeysParameterKeysInner struct {
+// IamTagKeyValue struct for IamTagKeyValue
+type IamTagKeyValue struct {
 	// The name of the tag.
 	Key *string `json:"key,omitempty"`
+	// The value of the tag.
+	Value *string `json:"value,omitempty"`
 }

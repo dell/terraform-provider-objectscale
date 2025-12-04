@@ -6297,9 +6297,13 @@
 						"in": "query",
 						"required": false,
 						"schema": {
-							"type": "object"
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/IamTagKeyValue"
+							}
 						},
-						"description": "A list of tags that you want to attach to the role being created."
+						"description": "A list of tags that you want to attach to the role being created.",
+						"x-indexed-kv": "true"
 					},
 					{
 						"name": "x-emc-namespace",
@@ -6341,6 +6345,127 @@
 															"Value": "Finance"
 														}
 													]
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=CreateUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Creates a new IAM user.",
+				"description": "Creates a new IAM user.",
+				"operationId": "IamService_CreateUser",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to create."
+					},
+					{
+						"name": "Path",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The path for the user. Optional, defaults to \"/\" and only \"/\" is allowed."
+					},
+					{
+						"name": "PermissionsBoundary",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The ARN of the policy that is used to set the permissions boundary for the user."
+					},
+					{
+						"name": "Tags.member.N",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/IamTagKeyValue"
+							}
+						},
+						"description": "A list of tags that you want to attach to the user being created.",
+						"x-indexed-kv": "true"
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_CreateUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:19c8c:48"
+											},
+											"CreateUserResult": {
+												"User": {
+													"Arn": "urn:ecs:iam::ns:user/payroll1",
+													"CreateDate": "2020-04-13T18:59:45Z",
+													"Path": "/",
+													"UserId": "AIDA4E6FD3D4A86F3768",
+													"UserName": "payroll1"
 												}
 											}
 										}
@@ -6855,6 +6980,168 @@
 										"value": {
 											"ResponseMetadata": {
 												"RequestId": "0af9f5b8:17178fe9282:d95a:3a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete an IAM user.",
+				"description": "Delete an IAM user.",
+				"operationId": "IamService_DeleteUser",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the user to delete."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:96aa:354"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteUserPermissionsBoundary": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete User's PermissionsBoundary.",
+				"description": "Delete User's PermissionsBoundary.",
+				"operationId": "IamService_DeleteUserPermissionsBoundary",
+				"parameters": [
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Username of the user to delete the PermissionsBoundary."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:9df1:87"
 											}
 										}
 									}
@@ -9909,6 +10196,96 @@
 				}
 			}
 		},
+		"/iam?Action=PutUserPermissionsBoundary": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Update User's PermissionsBoundary.",
+				"description": "Update User's PermissionsBoundary.",
+				"operationId": "IamService_PutUserPermissionsBoundary",
+				"parameters": [
+					{
+						"name": "PermissionsBoundary",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the Policy which is to be set as Permission Boundary for the user."
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Urn of the user whose Permission Boundary is to be added/updated."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:9fa3:37"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=PutUserPolicy": {
 			"post": {
 				"tags": [
@@ -10121,9 +10498,13 @@
 						"in": "query",
 						"required": false,
 						"schema": {
-							"type": "object"
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/IamTagKeyValue"
+							}
 						},
-						"description": "A list of tags that you want to attach to the role."
+						"description": "A list of tags that you want to attach to the role.",
+						"x-indexed-kv": "true"
 					},
 					{
 						"name": "x-emc-namespace",
@@ -10188,6 +10569,100 @@
 				}
 			}
 		},
+		"/iam?Action=TagUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Adds one or more tags to a specified IAM User.",
+				"description": "Adds one or more tags to a specified IAM User.",
+				"operationId": "IamService_TagUser",
+				"parameters": [
+					{
+						"name": "Tags.member.N",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/IamTagKeyValue"
+							}
+						},
+						"description": "A list of tags that you want to attach to the user.",
+						"x-indexed-kv": "true"
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the user."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:c698:d"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=UntagRole": {
 			"post": {
 				"tags": [
@@ -10211,23 +10686,109 @@
 						"in": "query",
 						"required": false,
 						"schema": {
-							"type": "object",
-							"properties": {
-								"keys": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"key": {
-												"type": "string",
-												"description": "The name of the tag."
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/IamTagKey"
+							}
+						},
+						"description": "A list of tags that you want to remove from the role.",
+						"x-indexed-kv": "true",
+						"x-indexed-key-only": "true"
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:cb2a:2e"
 											}
 										}
 									}
 								}
 							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=UntagUser": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Removes the specified tags from a specified IAM User.",
+				"description": "Removes the specified tags from a specified IAM User.",
+				"operationId": "IamService_UntagUser",
+				"parameters": [
+					{
+						"name": "TagKeys",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/IamTagKey"
+							}
 						},
-						"description": "A list of tags that you want to remove from the role."
+						"description": "A list of tags that you want to remove from the user.",
+						"x-indexed-kv": "true",
+						"x-indexed-key-only": "true"
+					},
+					{
+						"name": "UserName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the user."
 					},
 					{
 						"name": "x-emc-namespace",
@@ -14216,6 +14777,71 @@
 					}
 				}
 			},
+			"IamService_CreateUserResponse": {
+				"type": "object",
+				"properties": {
+					"CreateUserResult": {
+						"type": "object",
+						"properties": {
+							"User": {
+								"type": "object",
+								"properties": {
+									"Arn": {
+										"type": "string",
+										"description": "Arn that identifies the user."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "ISO 8601 format DateTime when user was created."
+									},
+									"PasswordLastUsed": {
+										"type": "string",
+										"description": "ISO 8601 DateTime when the password was last used."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the IAM User."
+									},
+									"PermissionsBoundary": {
+										"type": "object",
+										"properties": {
+											"PermissionsBoundaryArn": {
+												"type": "string",
+												"description": "The ARN of the policy set as permissions boundary."
+											},
+											"PermissionsBoundaryType": {
+												"type": "string",
+												"description": "The permissions boundary usage type that indicates what type of IAM resource is used as the\n permissions boundary for an entity. This data type can only have a value of Policy."
+											}
+										},
+										"description": "The ARN of the policy used to set the permissions boundary for the user."
+									},
+									"Tags": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"description": "The list of Tags associated with the User."
+									},
+									"UserId": {
+										"type": "string",
+										"description": "Unique Id associated with the User."
+									},
+									"UserName": {
+										"type": "string",
+										"description": "Simple name identifying the User."
+									}
+								},
+								"description": "Contains IAM User information."
+							}
+						},
+						"description": "Wrapper with details about the new IAM user."
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
 			"IamService_GetGroupResponse": {
 				"type": "object",
 				"properties": {
@@ -15071,6 +15697,28 @@
 				"properties": {
 					"ResponseMetadata": {
 						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamTagKeyValue": {
+				"type": "object",
+				"properties": {
+					"key": {
+						"type": "string",
+						"description": "The name of the tag."
+					},
+					"value": {
+						"type": "string",
+						"description": "The value of the tag."
+					}
+				}
+			},
+			"IamTagKey": {
+				"type": "object",
+				"properties": {
+					"key": {
+						"type": "string",
+						"description": "The name of the tag."
 					}
 				}
 			}
