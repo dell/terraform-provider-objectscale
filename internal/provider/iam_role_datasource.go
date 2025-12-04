@@ -197,7 +197,7 @@ func (d *IAMRoleDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error retrieving IAM role",
-				fmt.Sprintf("Failed retrieving role %s: %s", roleName, err),
+				fmt.Sprintf("Failed retrieving role %s: %s", roleName, err.Error()),
 			)
 			return
 		}
@@ -208,8 +208,7 @@ func (d *IAMRoleDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		allRoles, err := d.listAllRoles(ctx, ns)
 		if err != nil {
 			resp.Diagnostics.AddError(
-				"Error listing IAM roles",
-				fmt.Sprintf("Error listing IAM roles: %s", err),
+				"Error listing IAM roles", err.Error(),
 			)
 			return
 		}
