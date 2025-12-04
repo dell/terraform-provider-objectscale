@@ -50,33 +50,33 @@ func (d *IAMRoleDataSource) Configure(_ context.Context, req datasource.Configur
 
 func (d *IAMRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:           "Fetch IAM role information for a specific ObjectScale namespace.",
-		MarkdownDescription:   "Fetch IAM role information for a specific ObjectScale namespace.",
+		Description:         "Fetch IAM role information for a specific ObjectScale namespace.",
+		MarkdownDescription: "Fetch IAM role information for a specific ObjectScale namespace.",
 
 		Attributes: map[string]schema.Attribute{
 
 			"id": schema.StringAttribute{
-				Computed:              true,
-				Description:           "Internal ID for this data source.",
-				MarkdownDescription:   "Internal ID for this data source.",
+				Computed:            true,
+				Description:         "Internal ID for this data source.",
+				MarkdownDescription: "Internal ID for this data source.",
 			},
 
 			"namespace": schema.StringAttribute{
-				Required:              true,
-				Description:           "Namespace to query IAM roles from.",
-				MarkdownDescription:   "Namespace to query IAM roles from.",
+				Required:            true,
+				Description:         "Namespace to query IAM roles from.",
+				MarkdownDescription: "Namespace to query IAM roles from.",
 			},
 
 			"role_name": schema.StringAttribute{
-				Optional:              true,
-				Description:           "Filter roles by name.",
-				MarkdownDescription:   "Filter roles by name.",
+				Optional:            true,
+				Description:         "Filter roles by name.",
+				MarkdownDescription: "Filter roles by name.",
 			},
 
 			"roles": schema.ListNestedAttribute{
-				Computed:              true,
-				Description:           "List of IAM roles matching the provided filters.",
-				MarkdownDescription:   "List of IAM roles matching the provided filters.",
+				Computed:            true,
+				Description:         "List of IAM roles matching the provided filters.",
+				MarkdownDescription: "List of IAM roles matching the provided filters.",
 
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

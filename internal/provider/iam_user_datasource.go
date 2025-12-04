@@ -59,33 +59,33 @@ func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 		Attributes: map[string]schema.Attribute{
 
 			"id": schema.StringAttribute{
-				Computed:              true,
-				Description:           "Internal ID for this data source.",
-				MarkdownDescription:   "Internal ID for this data source.",
+				Computed:            true,
+				Description:         "Internal ID for this data source.",
+				MarkdownDescription: "Internal ID for this data source.",
 			},
 
 			"namespace": schema.StringAttribute{
-				Required:              true,
-				Description:           "Namespace containing IAM users.",
-				MarkdownDescription:   "Namespace containing IAM users.",
+				Required:            true,
+				Description:         "Namespace containing IAM users.",
+				MarkdownDescription: "Namespace containing IAM users.",
 			},
 
 			"username": schema.StringAttribute{
-				Optional:              true,
-				Description:           "Filter users by username.",
-				MarkdownDescription:   "Filter users by username.",
+				Optional:            true,
+				Description:         "Filter users by username.",
+				MarkdownDescription: "Filter users by username.",
 			},
 
 			"groupname": schema.StringAttribute{
-				Optional:              true,
-				Description:           "Filter users who belong to the given group name.",
-				MarkdownDescription:   "Filter users who belong to the given group name.",
+				Optional:            true,
+				Description:         "Filter users who belong to the given group name.",
+				MarkdownDescription: "Filter users who belong to the given group name.",
 			},
 
 			"users": schema.ListNestedAttribute{
-				Computed:              true,
-				Description:           "List of IAM users matching the filters.",
-				MarkdownDescription:   "List of IAM users matching the filters.",
+				Computed:            true,
+				Description:         "List of IAM users matching the filters.",
+				MarkdownDescription: "List of IAM users matching the filters.",
 
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -181,7 +181,6 @@ func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 		},
 	}
 }
-
 
 func (d *IAMUserDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data models.IAMUserDatasourceModel
