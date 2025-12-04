@@ -50,82 +50,99 @@ func (d *IAMRoleDataSource) Configure(_ context.Context, req datasource.Configur
 
 func (d *IAMRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetch IAM role information for a specific ObjectScale namespace.",
+		Description:           "Fetch IAM role information for a specific ObjectScale namespace.",
+		MarkdownDescription:   "Fetch IAM role information for a specific ObjectScale namespace.",
 
 		Attributes: map[string]schema.Attribute{
+
 			"id": schema.StringAttribute{
-				Computed:            true,
-				MarkdownDescription: "Internal ID for this data source.",
+				Computed:              true,
+				Description:           "Internal ID for this data source.",
+				MarkdownDescription:   "Internal ID for this data source.",
 			},
 
 			"namespace": schema.StringAttribute{
-				Required:            true,
-				MarkdownDescription: "Namespace to query IAM roles from.",
+				Required:              true,
+				Description:           "Namespace to query IAM roles from.",
+				MarkdownDescription:   "Namespace to query IAM roles from.",
 			},
 
 			"role_name": schema.StringAttribute{
-				Optional:            true,
-				MarkdownDescription: "Filter roles by name.",
+				Optional:              true,
+				Description:           "Filter roles by name.",
+				MarkdownDescription:   "Filter roles by name.",
 			},
 
 			"roles": schema.ListNestedAttribute{
-				Computed:            true,
-				MarkdownDescription: "List of IAM roles matching the provided filters.",
+				Computed:              true,
+				Description:           "List of IAM roles matching the provided filters.",
+				MarkdownDescription:   "List of IAM roles matching the provided filters.",
 
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 
 						"arn": schema.StringAttribute{
 							Computed:            true,
+							Description:         "IAM role ARN.",
 							MarkdownDescription: "IAM role ARN.",
 						},
 
 						"role_name": schema.StringAttribute{
 							Computed:            true,
+							Description:         "IAM role name.",
 							MarkdownDescription: "IAM role name.",
 						},
 
 						"role_id": schema.StringAttribute{
 							Computed:            true,
+							Description:         "Unique ObjectScale IAM role ID (RoleId).",
 							MarkdownDescription: "Unique ObjectScale IAM role ID (RoleId).",
 						},
 
 						"path": schema.StringAttribute{
 							Computed:            true,
+							Description:         "IAM role path.",
 							MarkdownDescription: "IAM role path.",
 						},
 
 						"description": schema.StringAttribute{
 							Computed:            true,
+							Description:         "Role description.",
 							MarkdownDescription: "Role description.",
 						},
 
 						"create_date": schema.StringAttribute{
 							Computed:            true,
+							Description:         "Timestamp when the role was created.",
 							MarkdownDescription: "Timestamp when the role was created.",
 						},
 
 						"max_session_duration": schema.Int64Attribute{
 							Computed:            true,
+							Description:         "Maximum session duration allowed for the IAM role.",
 							MarkdownDescription: "Maximum session duration allowed for the IAM role.",
 						},
 
 						"assume_role_policy": schema.StringAttribute{
 							Computed:            true,
+							Description:         "The trust policy document defining who can assume the role.",
 							MarkdownDescription: "The trust policy document defining who can assume the role.",
 						},
 
 						"permissions_boundary": schema.SingleNestedAttribute{
 							Computed:            true,
+							Description:         "Permissions boundary applied to this role.",
 							MarkdownDescription: "Permissions boundary applied to this role.",
 
 							Attributes: map[string]schema.Attribute{
 								"permissions_boundary_arn": schema.StringAttribute{
 									Computed:            true,
+									Description:         "ARN of the permissions boundary policy.",
 									MarkdownDescription: "ARN of the permissions boundary policy.",
 								},
 								"permissions_boundary_type": schema.StringAttribute{
 									Computed:            true,
+									Description:         "Type of permissions boundary (always 'Policy').",
 									MarkdownDescription: "Type of permissions boundary (always 'Policy').",
 								},
 							},
@@ -133,16 +150,21 @@ func (d *IAMRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 
 						"tags": schema.ListNestedAttribute{
 							Computed:            true,
+							Description:         "List of tags assigned to the role.",
 							MarkdownDescription: "List of tags assigned to the role.",
 
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
+
 									"key": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Tag key.",
 										MarkdownDescription: "Tag key.",
 									},
+
 									"value": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Tag value.",
 										MarkdownDescription: "Tag value.",
 									},
 								},
