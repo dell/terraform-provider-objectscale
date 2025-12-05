@@ -149,6 +149,7 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 		NewIAMGroupsDataSource,
 		NewIAMUserDataSource,
 		NewReplicationGroupDataSource,
+		NewIAMPolicyDataSource,
 		NewIAMRoleDataSource,
 		NewBucketDataSource,
 	}
