@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -22,7 +21,7 @@ func NewBucketDataSource() datasource.DataSource {
 }
 
 type BucketDataSource struct {
-	client *client.Client
+	datasourceProviderConfig
 }
 
 func (d *BucketDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -359,24 +358,6 @@ func (d *BucketDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 		},
 	}
-}
-
-// Configure loads the API client.
-func (d *BucketDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T.", req.ProviderData),
-		)
-		return
-	}
-
-	d.client = client
 }
 
 func (d *BucketDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {

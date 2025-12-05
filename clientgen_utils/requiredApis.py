@@ -15,6 +15,7 @@
 
 RequiredAPIs = [
     "/login",
+    "/logout",
     "/object/namespaces",
     "/object/namespaces/namespace/{id}",
     "/object/namespaces/namespace",

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -20,7 +19,7 @@ var (
 )
 
 type IAMUserDataSource struct {
-	client *client.Client
+	datasourceProviderConfig
 }
 
 func NewIAMUserDataSource() datasource.DataSource {
@@ -29,26 +28,6 @@ func NewIAMUserDataSource() datasource.DataSource {
 
 func (d *IAMUserDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_iam_user"
-}
-
-func (d *IAMUserDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	// Prevent panic if the provider has not been configured.
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-		)
-
-		return
-	}
-
-	d.client = client
 }
 
 func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {

@@ -2,8 +2,6 @@ package provider
 
 import (
 	"context"
-	"fmt"
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
@@ -21,7 +19,7 @@ func NewReplicationGroupDataSource() datasource.DataSource {
 }
 
 type ReplicationGroupDataSource struct {
-	client *client.Client
+	datasourceProviderConfig
 }
 
 func (d *ReplicationGroupDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -164,26 +162,6 @@ func (d *ReplicationGroupDataSource) Schema(ctx context.Context, req datasource.
 			},
 		},
 	}
-}
-
-func (d *ReplicationGroupDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	// Prevent panic if the provider has not been configured.
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-		)
-
-		return
-	}
-
-	d.client = client
 }
 
 func (d *ReplicationGroupDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {

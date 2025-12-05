@@ -17,6 +17,7 @@ var rgDSConfig = `
 
 // Test to Fetch Replication Group.
 func TestAccRGDs(t *testing.T) {
+	defer testUserTokenCleanup(t)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -30,6 +31,7 @@ func TestAccRGDs(t *testing.T) {
 }
 
 func TestAccRGDsErrorGetAll(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	var FunctionMocker *mockey.Mocker
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

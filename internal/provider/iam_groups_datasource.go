@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -22,7 +21,7 @@ func NewIAMGroupsDataSource() datasource.DataSource {
 }
 
 type IAMGroupsDataSource struct {
-	client *client.Client
+	datasourceProviderConfig
 }
 
 func (d *IAMGroupsDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -109,24 +108,6 @@ func (d *IAMGroupsDataSource) Schema(ctx context.Context, req datasource.SchemaR
 			},
 		},
 	}
-}
-
-// Configure loads the API client.
-func (d *IAMGroupsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T.", req.ProviderData),
-		)
-		return
-	}
-
-	d.client = client
 }
 
 func (d *IAMGroupsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {

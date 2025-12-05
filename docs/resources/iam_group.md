@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_group"
 page_title: "objectscale_iam_group Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  
+  Manages an ObjectScale IAM Group.
 ---
 
 # objectscale_iam_group (Resource)
 
-
+Manages an ObjectScale IAM Group.
 
 
 

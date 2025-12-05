@@ -24,6 +24,7 @@ import (
 
 // Test to Create and Update User Resource
 func TestAccIamUserResource(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

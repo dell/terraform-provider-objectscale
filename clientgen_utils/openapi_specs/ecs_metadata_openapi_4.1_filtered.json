@@ -547,6 +547,85 @@
 				}
 			}
 		},
+		"/logout": {
+			"get": {
+				"tags": [
+					"Authentication"
+				],
+				"summary": "User logout",
+				"description": "The user after completing the needed calls can call '/logout' API to log himself out. User needs to pass in the token passed in the request header. The call will terminate the session and the passed token will be invalidated, and the user gets logged out. (This decrements the token count by 1)",
+				"operationId": "AuthenticationResource_logout",
+				"parameters": [
+					{
+						"name": "force",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The user with exceeded tokens limit can still call '/logout?force=true' . This will delete all the current logged in session for the user and invalidates all the tokens, (All the tokens are deleted for the user)\n              Default value: false"
+					},
+					{
+						"name": "username",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "A system administrator ( root ) user can log-out the logged in management-user calling '/logout?username=[USER_ID]'. (In an event of a user exceeded it's token limits, a sysadmin user can logout the user)"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"user": "root"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/object/namespaces": {
 			"get": {
 				"tags": [

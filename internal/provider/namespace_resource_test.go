@@ -21,6 +21,7 @@ func TestAccNSRs(t *testing.T) {
 	if os.Getenv("TF_ACC") == "" {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
+	defer testUserTokenCleanup(t)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -101,6 +102,7 @@ func TestAccNSRsAll(t *testing.T) {
 	if os.Getenv("TF_ACC") == "" {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
+	defer testUserTokenCleanup(t)
 	var upM, rcUpdateM *mockey.Mocker
 
 	resource.Test(t, resource.TestCase{
@@ -306,9 +308,11 @@ func TestAccNSRsAll(t *testing.T) {
 
 func TestAccNsRsUpdateCommon(t *testing.T) {
 	r := &NamespaceResource{
-		client: &client.Client{
-			GenClient: &clientgen.APIClient{
-				NamespaceApi: &clientgen.NamespaceApiService{},
+		resourceProviderConfig: resourceProviderConfig{
+			client: &client.Client{
+				GenClient: &clientgen.APIClient{
+					NamespaceApi: &clientgen.NamespaceApiService{},
+				},
 			},
 		},
 	}
@@ -423,6 +427,7 @@ func loginMocker() *mockey.Mocker {
 }
 
 func TestAccNsRsCreateError(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	loginM := loginMocker()
 	createM := mockey.Mock((*clientgen.NamespaceApiService).NamespaceServiceCreateNamespaceExecute).
 		Return(nil, nil, fmt.Errorf("error")).Build()
@@ -430,9 +435,10 @@ func TestAccNsRsCreateError(t *testing.T) {
 		Return(nil, nil, nil).Build()
 	rcM := mockey.Mock((*clientgen.NamespaceApiService).NamespaceServiceCreateRetentionClassExecute).
 		Return(nil, nil, fmt.Errorf("{}")).Build()
-
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
+		PreCheck: func() {
+			testAccPreCheck(t)
+		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
