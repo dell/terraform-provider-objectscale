@@ -46,3 +46,30 @@ go install golang.org/x/tools/cmd/goimports@latest
 ```
 
 Generation of client code is a fully automated process and is verified by Github Actions on every PR.
+
+# Running Acceptance Tests
+
+In order to run acceptance tests, you need to set the following environment variables
+
+```
+TF_ACC=1
+OBJECTSCALE_USERNAME=<username>
+OBJECTSCALE_PASSWORD=<password>
+OBJECTSCALE_ENDPOINT=https://<ip>:4443
+OBJECTSCALE_LOGOUT_USERNAME=<logoutusername>
+OBJECTSCALE_LOGOUT_PASSWORD=<logoutpassword>
+```
+
+The above is not an exhaustive list. More environment variables may be required for certain tests.
+The above set of environment variables are required for all tests.
+
+## The logout username and password
+
+`OBJECTSCALE_USERNAME` and `OBJECTSCALE_PASSWORD` are used to authenticate to run all tests.
+We found quite early on that running acceptance tests quickly hits the maximum token limit.
+
+But an actual Terraform user will likely not run into this issue, since they will not likely be invoking Terraform in such quick succession.
+For them, it is better if they can use the same token across all resources and datasources.
+
+So we just made changes in the test cleanup logic. We introduced the variables `OBJECTSCALE_LOGOUT_USERNAME` and `OBJECTSCALE_LOGOUT_PASSWORD`.
+These credentials will be used to revoke all tokens generated for the user `OBJECTSCALE_USERNAME` at the end of each acceptance test.

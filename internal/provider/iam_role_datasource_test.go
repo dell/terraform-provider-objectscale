@@ -10,6 +10,7 @@ import (
 // role_Test1 is assumed to exist in the test ObjectScale cluster.
 
 func TestAccIAMRoleDataSource_basic(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -34,6 +35,7 @@ func TestAccIAMRoleDataSource_basic(t *testing.T) {
 }
 
 func TestAccIAMRoleDataSource_withRoleNameFilter(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -57,6 +59,7 @@ func TestAccIAMRoleDataSource_withRoleNameFilter(t *testing.T) {
 }
 
 func TestAccIAMRoleDataSource_getRole_404(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -75,6 +78,7 @@ func TestAccIAMRoleDataSource_getRole_404(t *testing.T) {
 }
 
 func TestAccIAMRoleDataSource_ListRole_404(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

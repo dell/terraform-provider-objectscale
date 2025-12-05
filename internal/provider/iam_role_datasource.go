@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -20,7 +19,7 @@ var (
 )
 
 type IAMRoleDataSource struct {
-	client *client.Client
+	datasourceProviderConfig
 }
 
 func NewIAMRoleDataSource() datasource.DataSource {
@@ -29,23 +28,6 @@ func NewIAMRoleDataSource() datasource.DataSource {
 
 func (d *IAMRoleDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_iam_role"
-}
-
-func (d *IAMRoleDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T", req.ProviderData),
-		)
-		return
-	}
-
-	d.client = client
 }
 
 func (d *IAMRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {

@@ -79,6 +79,7 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*AuthenticationApi* | [**AuthenticationResourceLogout**](docs/AuthenticationApi.md#authenticationresourcelogout) | **Get** /logout | User logout
 *BucketApi* | [**BucketServiceActivateAdvancedMetadataSearch**](docs/BucketApi.md#bucketserviceactivateadvancedmetadatasearch) | **Put** /object/bucket/{bucketName}/advancedMetadataSearch | Enables advanced metadata search functionality for a bucket.
 *BucketApi* | [**BucketServiceAddBucketTags**](docs/BucketApi.md#bucketserviceaddbuckettags) | **Post** /object/bucket/{bucketName}/tags | Adds the provided tags for the specified bucket.
 *BucketApi* | [**BucketServiceCreateBucket**](docs/BucketApi.md#bucketservicecreatebucket) | **Post** /object/bucket | Creates a bucket in which users can create objects
