@@ -181,7 +181,9 @@ func (r *IAMManagedPolicyResource) Read(ctx context.Context, req resource.ReadRe
 				return
 			}
 
-			policyARNs = append(policyARNs, listResp.ListAttachedUserPoliciesResult.Member...)
+			for _, p := range listResp.ListAttachedUserPoliciesResult.AttachedPolicies {
+				policyARNs = append(policyARNs, *p.PolicyArn)
+			}
 
 			markerPtr := listResp.ListAttachedUserPoliciesResult.Marker
 			if markerPtr == nil || *markerPtr == "" {
@@ -205,7 +207,9 @@ func (r *IAMManagedPolicyResource) Read(ctx context.Context, req resource.ReadRe
 				return
 			}
 
-			policyARNs = append(policyARNs, listResp.ListAttachedGroupPoliciesResult.Member...)
+			for _, p := range listResp.ListAttachedGroupPoliciesResult.AttachedPolicies {
+				policyARNs = append(policyARNs, *p.PolicyArn)
+			}
 
 			markerPtr := listResp.ListAttachedGroupPoliciesResult.Marker
 			if markerPtr == nil || *markerPtr == "" {
@@ -229,7 +233,9 @@ func (r *IAMManagedPolicyResource) Read(ctx context.Context, req resource.ReadRe
 				return
 			}
 
-			policyARNs = append(policyARNs, listResp.ListAttachedRolePoliciesResult.Member...)
+			for _, p := range listResp.ListAttachedRolePoliciesResult.AttachedPolicies {
+				policyARNs = append(policyARNs, *p.PolicyArn)
+			}
 
 			markerPtr := listResp.ListAttachedRolePoliciesResult.Marker
 			if markerPtr == nil || *markerPtr == "" {

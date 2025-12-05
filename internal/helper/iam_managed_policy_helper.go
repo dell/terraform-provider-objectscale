@@ -75,7 +75,9 @@ func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAM
 					return plan, fmt.Errorf("failed to list policy arns: %w", err)
 				}
 
-				policyARNs = append(policyARNs, listResp.ListAttachedUserPoliciesResult.Member...)
+				for _, p := range listResp.ListAttachedUserPoliciesResult.AttachedPolicies {
+					policyARNs = append(policyARNs, *p.PolicyArn)
+				}
 
 				markerPtr := listResp.ListAttachedUserPoliciesResult.Marker
 				if markerPtr == nil || *markerPtr == "" {
@@ -98,7 +100,9 @@ func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAM
 					return plan, fmt.Errorf("failed to list policy arns: %w", err)
 				}
 
-				policyARNs = append(policyARNs, listResp.ListAttachedGroupPoliciesResult.Member...)
+				for _, p := range listResp.ListAttachedGroupPoliciesResult.AttachedPolicies {
+					policyARNs = append(policyARNs, *p.PolicyArn)
+				}
 
 				markerPtr := listResp.ListAttachedGroupPoliciesResult.Marker
 				if markerPtr == nil || *markerPtr == "" {
@@ -121,7 +125,9 @@ func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAM
 					return plan, fmt.Errorf("failed to list policy arns: %w", err)
 				}
 
-				policyARNs = append(policyARNs, listResp.ListAttachedRolePoliciesResult.Member...)
+				for _, p := range listResp.ListAttachedRolePoliciesResult.AttachedPolicies {
+					policyARNs = append(policyARNs, *p.PolicyArn)
+				}
 
 				markerPtr := listResp.ListAttachedRolePoliciesResult.Marker
 				if markerPtr == nil || *markerPtr == "" {
