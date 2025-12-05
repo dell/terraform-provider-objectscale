@@ -23,9 +23,9 @@ resource "objectscale_iam_managed_policy" "example" {
   namespace = "ns1"
 
   # Exactly one of username, groupname, or rolename must be provided
-  # username = "userTest1"
+  username = "userTest1"
   # groupname = "groupTest1"
-  rolename  = "roleTest1"
+  # rolename  = "roleTest1"
 
   # List of managed policies to be set on the specified IAM entity must be provided
   policy_arns = [
