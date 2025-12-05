@@ -109,14 +109,14 @@ func (r *IAMGroupMembershipResource) Create(ctx context.Context, req resource.Cr
 
 	_, _, err := r.client.GenClient.IamApi.IamServiceAddUserToGroup(ctx).GroupName(plan.GroupName.ValueString()).XEmcNamespace(plan.Namespace.ValueString()).UserName(plan.User.ValueString()).Execute()
 	if err != nil {
-		resp.Diagnostics.AddError("Error creating user", err.Error())
+		resp.Diagnostics.AddError("Error adding user to group", err.Error())
 		return
 	}
 
 	// Read full membership list
 	members, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(plan.GroupName.ValueString()).XEmcNamespace(plan.Namespace.ValueString()).Execute()
 	if err != nil {
-		resp.Diagnostics.AddError("Error reading group members", err.Error())
+		resp.Diagnostics.AddError("Error reading Group", err.Error())
 		return
 	}
 
@@ -148,9 +148,7 @@ func (r *IAMGroupMembershipResource) Read(ctx context.Context, req resource.Read
 	members, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(state.GroupName.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
 
 	if err != nil {
-		// If group is gone, remove:
-		// resp.State.RemoveResource(ctx); return
-		resp.Diagnostics.AddError("Read membership failed", err.Error())
+		resp.Diagnostics.AddError("Error reading Group", err.Error())
 		return
 	}
 
@@ -191,25 +189,6 @@ func (r *IAMGroupMembershipResource) Delete(ctx context.Context, req resource.De
 		resp.Diagnostics.AddError("Remove user failed", err.Error())
 		return
 	}
-	//check that user was removed
-	members, _, err := r.client.GenClient.IamApi.IamServiceGetGroup(ctx).GroupName(state.GroupName.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading group members", err.Error())
-		return
-	}
-
-	// Check that user was removed
-	found := false
-	for _, user := range members.GetGroupResult.Users {
-		if user.UserName != nil && *user.UserName == state.User.ValueString() {
-			found = true
-			break
-		}
-	}
-	if found {
-		resp.Diagnostics.AddError("Error removing user from group", "User is still found in group after removal.")
-		return
-	}
 
 	// Remove resource from state
 
@@ -217,16 +196,6 @@ func (r *IAMGroupMembershipResource) Delete(ctx context.Context, req resource.De
 }
 
 func (r *IAMGroupMembershipResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// tflog.Info(ctx, "importing IAM user")
-
-	// iam_user, _, err := r.client.GenClient.IamApi.IamServiceGetUser(ctx).UserName(req.ID.ValueString()).XEmcNamespace(state.Namespace.ValueString()).Execute()
-
-	// if err != nil {
-	// 	resp.Diagnostics.AddError("Error reading user", err.Error())
-	// 	return
-	// }
-
-	// data := r.getModel(namespace, types.StringNull())
 	// // Save updated plan into Terraform state
 	// resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	resp.Diagnostics.AddError("[Import] Import operation is not available.", "Import operation is not available.")
