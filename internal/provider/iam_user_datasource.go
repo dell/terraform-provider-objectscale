@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -20,7 +19,7 @@ var (
 )
 
 type IAMUserDataSource struct {
-	client *client.Client
+	datasourceProviderConfig
 }
 
 func NewIAMUserDataSource() datasource.DataSource {
@@ -31,53 +30,40 @@ func (d *IAMUserDataSource) Metadata(_ context.Context, req datasource.MetadataR
 	resp.TypeName = req.ProviderTypeName + "_iam_user"
 }
 
-func (d *IAMUserDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	// Prevent panic if the provider has not been configured.
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-		)
-
-		return
-	}
-
-	d.client = client
-}
-
 func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description:         "Fetch IAM user information for a specific ObjectScale namespace.",
 		MarkdownDescription: "Fetch IAM user information for a specific ObjectScale namespace.",
 
 		Attributes: map[string]schema.Attribute{
+
 			"id": schema.StringAttribute{
 				Computed:            true,
+				Description:         "Internal ID for this data source.",
 				MarkdownDescription: "Internal ID for this data source.",
 			},
 
 			"namespace": schema.StringAttribute{
 				Required:            true,
+				Description:         "Namespace containing IAM users.",
 				MarkdownDescription: "Namespace containing IAM users.",
 			},
 
 			"username": schema.StringAttribute{
 				Optional:            true,
+				Description:         "Filter users by username.",
 				MarkdownDescription: "Filter users by username.",
 			},
 
 			"groupname": schema.StringAttribute{
 				Optional:            true,
+				Description:         "Filter users who belong to the given group name.",
 				MarkdownDescription: "Filter users who belong to the given group name.",
 			},
 
 			"users": schema.ListNestedAttribute{
 				Computed:            true,
+				Description:         "List of IAM users matching the filters.",
 				MarkdownDescription: "List of IAM users matching the filters.",
 
 				NestedObject: schema.NestedAttributeObject{
@@ -85,46 +71,55 @@ func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 
 						"username": schema.StringAttribute{
 							Computed:            true,
-							MarkdownDescription: " IAM username.",
+							Description:         "IAM username.",
+							MarkdownDescription: "IAM username.",
 						},
 
 						"id": schema.StringAttribute{
 							Computed:            true,
+							Description:         "Unique ObjectScale IAM user ID (maps to UserId).",
 							MarkdownDescription: "Unique ObjectScale IAM user ID (maps to UserId).",
 						},
 
 						"arn": schema.StringAttribute{
 							Computed:            true,
+							Description:         "IAM user ARN.",
 							MarkdownDescription: "IAM user ARN.",
 						},
 
 						"create_date": schema.StringAttribute{
 							Computed:            true,
+							Description:         "The timestamp when the user was created.",
 							MarkdownDescription: "The timestamp when the user was created.",
 						},
 
 						"path": schema.StringAttribute{
 							Computed:            true,
+							Description:         "IAM user path.",
 							MarkdownDescription: "IAM user path.",
 						},
 
 						"permissions_boundary": schema.StringAttribute{
 							Computed:            true,
+							Description:         "Policy ARN used as permissions boundary. Can be empty if not set.",
 							MarkdownDescription: "Policy ARN used as permissions boundary. Can be empty if not set.",
 						},
 
 						"tags": schema.ListNestedAttribute{
 							Computed:            true,
+							Description:         "List of tags assigned to the user (sorted by key in Read function).",
 							MarkdownDescription: "List of tags assigned to the user (sorted by key in Read function).",
 
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"key": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Tag key.",
 										MarkdownDescription: "Tag key.",
 									},
 									"value": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Tag value.",
 										MarkdownDescription: "Tag value.",
 									},
 								},
@@ -133,20 +128,27 @@ func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 
 						"access_keys": schema.ListNestedAttribute{
 							Computed:            true,
+							Description:         "List of access keys for the IAM user.",
 							MarkdownDescription: "List of access keys for the IAM user.",
 
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
+
 									"access_key_id": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Access key ID.",
 										MarkdownDescription: "Access key ID.",
 									},
+
 									"create_date": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Timestamp when the access key was created.",
 										MarkdownDescription: "Timestamp when the access key was created.",
 									},
+
 									"status": schema.StringAttribute{
 										Computed:            true,
+										Description:         "Status of the access key (Active/Inactive).",
 										MarkdownDescription: "Status of the access key (Active/Inactive).",
 									},
 								},

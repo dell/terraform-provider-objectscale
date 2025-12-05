@@ -79,6 +79,52 @@ All URIs are relative to *https://objectscale.local:4443*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthenticationApi* | [**AuthenticationResourceGetLoginToken**](docs/AuthenticationApi.md#authenticationresourcegetlogintoken) | **Get** /login | Authenticates a user and obtains an authentication token
+*AuthenticationApi* | [**AuthenticationResourceLogout**](docs/AuthenticationApi.md#authenticationresourcelogout) | **Get** /logout | User logout
+*BucketApi* | [**BucketServiceActivateAdvancedMetadataSearch**](docs/BucketApi.md#bucketserviceactivateadvancedmetadatasearch) | **Put** /object/bucket/{bucketName}/advancedMetadataSearch | Enables advanced metadata search functionality for a bucket.
+*BucketApi* | [**BucketServiceAddBucketTags**](docs/BucketApi.md#bucketserviceaddbuckettags) | **Post** /object/bucket/{bucketName}/tags | Adds the provided tags for the specified bucket.
+*BucketApi* | [**BucketServiceCreateBucket**](docs/BucketApi.md#bucketservicecreatebucket) | **Post** /object/bucket | Creates a bucket in which users can create objects
+*BucketApi* | [**BucketServiceDeactivateAdvancedMetadataSearch**](docs/BucketApi.md#bucketservicedeactivateadvancedmetadatasearch) | **Delete** /object/bucket/{bucketName}/advancedMetadataSearch | Disables advanced metadata search functionality for a bucket.
+*BucketApi* | [**BucketServiceDeactivateBucket**](docs/BucketApi.md#bucketservicedeactivatebucket) | **Post** /object/bucket/{bucketName}/deactivate | Deletes the specified bucket
+*BucketApi* | [**BucketServiceDeactivateMetaSearch**](docs/BucketApi.md#bucketservicedeactivatemetasearch) | **Delete** /object/bucket/{bucketName}/searchmetadata | Disables the metadata search functionality for a bucket.
+*BucketApi* | [**BucketServiceDeleteBucketHeadMetadata**](docs/BucketApi.md#bucketservicedeletebucketheadmetadata) | **Delete** /object/bucket/{bucketName}/metadata | Deletes additional metadata associated with the bucket for a given head-type
+*BucketApi* | [**BucketServiceDeleteBucketPolicy**](docs/BucketApi.md#bucketservicedeletebucketpolicy) | **Delete** /object/bucket/{bucketName}/policy | Deletes the bucket policy for the specified bucket.
+*BucketApi* | [**BucketServiceDeleteBucketTags**](docs/BucketApi.md#bucketservicedeletebuckettags) | **Delete** /object/bucket/{bucketName}/tags | Deletes the provided tags for the specified bucket.
+*BucketApi* | [**BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket**](docs/BucketApi.md#bucketserviceenableobjectlockwithadoallowedforexistingbucket) | **Put** /object/bucket/{bucketName}/allow-object-lock-with-ado | Sets flag on the bucket to allow Object Lock and ADO to be enabled together.
+*BucketApi* | [**BucketServiceGetBucketACL**](docs/BucketApi.md#bucketservicegetbucketacl) | **Get** /object/bucket/{bucketName}/acl | Gets the ACL for the given bucket
+*BucketApi* | [**BucketServiceGetBucketDefaultLockConfiguration**](docs/BucketApi.md#bucketservicegetbucketdefaultlockconfiguration) | **Get** /object/bucket/{bucketName}/object-lock-config | Gets bucket default lock configuration.
+*BucketApi* | [**BucketServiceGetBucketHeadMetadata**](docs/BucketApi.md#bucketservicegetbucketheadmetadata) | **Get** /object/bucket/{bucketName}/metadata | Retrieves additional metadata associated with the bucket for a given head-type
+*BucketApi* | [**BucketServiceGetBucketInfo**](docs/BucketApi.md#bucketservicegetbucketinfo) | **Get** /object/bucket/{bucketName}/info | Gets bucket information for the specified bucket
+*BucketApi* | [**BucketServiceGetBucketLock**](docs/BucketApi.md#bucketservicegetbucketlock) | **Get** /object/bucket/{bucketName}/lock | Gets lock information for the specified bucket
+*BucketApi* | [**BucketServiceGetBucketNotificationConfig**](docs/BucketApi.md#bucketservicegetbucketnotificationconfig) | **Get** /object/bucket/{bucketName}/notification | Gets the notification configuration for the specified bucket.
+*BucketApi* | [**BucketServiceGetBucketPolicy**](docs/BucketApi.md#bucketservicegetbucketpolicy) | **Get** /object/bucket/{bucketName}/policy | Gets policy on the specified bucket
+*BucketApi* | [**BucketServiceGetBucketQuota**](docs/BucketApi.md#bucketservicegetbucketquota) | **Get** /object/bucket/{bucketName}/quota | Gets the quota for the given bucket and namespace
+*BucketApi* | [**BucketServiceGetBucketRetention**](docs/BucketApi.md#bucketservicegetbucketretention) | **Get** /object/bucket/{bucketName}/retention | Gets the retention period setting for the specified bucket
+*BucketApi* | [**BucketServiceGetBucketVersioning**](docs/BucketApi.md#bucketservicegetbucketversioning) | **Get** /object/bucket/{bucketName}/versioning | Gets the versioning status for the specified bucket.
+*BucketApi* | [**BucketServiceGetBuckets**](docs/BucketApi.md#bucketservicegetbuckets) | **Get** /object/bucket | Gets the list of buckets for the specified namespace
+*BucketApi* | [**BucketServiceGetEmptyBucketStatus**](docs/BucketApi.md#bucketservicegetemptybucketstatus) | **Get** /object/bucket/{bucketName}/empty-bucket-status | Get empty bucket status
+*BucketApi* | [**BucketServiceGetGroups**](docs/BucketApi.md#bucketservicegetgroups) | **Get** /object/bucket/acl/groups | Gets all ACL groups
+*BucketApi* | [**BucketServiceGetPermissions**](docs/BucketApi.md#bucketservicegetpermissions) | **Get** /object/bucket/acl/permissions | Gets all ACL permissions
+*BucketApi* | [**BucketServiceGetSearchMetaData**](docs/BucketApi.md#bucketservicegetsearchmetadata) | **Get** /object/bucket/searchmetadata | Lists the system metadata keys available.
+*BucketApi* | [**BucketServicePutBucketDefaultLockConfiguration**](docs/BucketApi.md#bucketserviceputbucketdefaultlockconfiguration) | **Put** /object/bucket/{bucketName}/object-lock-config | Puts bucket default lock configuration.
+*BucketApi* | [**BucketServicePutBucketNotificationConfig**](docs/BucketApi.md#bucketserviceputbucketnotificationconfig) | **Put** /object/bucket/{bucketName}/notification | Creates or replaces the notification configuration for the bucket.
+*BucketApi* | [**BucketServiceRemoveBucketQuota**](docs/BucketApi.md#bucketserviceremovebucketquota) | **Delete** /object/bucket/{bucketName}/quota | Deletes the quota setting for the given bucket and namespace
+*BucketApi* | [**BucketServiceSetAdvancedMetadataSearchTarget**](docs/BucketApi.md#bucketservicesetadvancedmetadatasearchtarget) | **Put** /object/bucket/{bucketName}/advancedMetadataSearchTarget | Sets advanced metadata search target for a bucket.
+*BucketApi* | [**BucketServiceSetBucketACL**](docs/BucketApi.md#bucketservicesetbucketacl) | **Put** /object/bucket/{bucketName}/acl | Updates the ACL for the given bucket and namespace.
+*BucketApi* | [**BucketServiceSetBucketAuditDeleteExpiration**](docs/BucketApi.md#bucketservicesetbucketauditdeleteexpiration) | **Put** /object/bucket/{bucketName}/auditDeleteExpiration | Updates the audit delete expiration for the specified bucket.
+*BucketApi* | [**BucketServiceSetBucketAutoCommitPeriod**](docs/BucketApi.md#bucketservicesetbucketautocommitperiod) | **Put** /object/bucket/{bucketName}/autocommit | Updates the auto-commit period setting for the specified bucket.
+*BucketApi* | [**BucketServiceSetBucketDefaultGroup**](docs/BucketApi.md#bucketservicesetbucketdefaultgroup) | **Put** /object/bucket/{bucketName}/defaultGroup | Updates the defaultGroup &amp; defaultGroupPermissions for the given bucket and namespace.
+*BucketApi* | [**BucketServiceSetBucketHeadMetadata**](docs/BucketApi.md#bucketservicesetbucketheadmetadata) | **Put** /object/bucket/{bucketName}/metadata | Attaches additional metadata associated with the bucket for a given head-type
+*BucketApi* | [**BucketServiceSetBucketLock**](docs/BucketApi.md#bucketservicesetbucketlock) | **Put** /object/bucket/{bucketName}/lock/{IsLocked} | Locks or unlocks the specified bucket
+*BucketApi* | [**BucketServiceSetBucketPolicy**](docs/BucketApi.md#bucketservicesetbucketpolicy) | **Put** /object/bucket/{bucketName}/policy | Add/Replace the policy for the specified bucket in namespace
+*BucketApi* | [**BucketServiceSetBucketRetention**](docs/BucketApi.md#bucketservicesetbucketretention) | **Put** /object/bucket/{bucketName}/retention | Updates the default retention period setting for the specified bucket
+*BucketApi* | [**BucketServiceSetBucketVersioning**](docs/BucketApi.md#bucketservicesetbucketversioning) | **Put** /object/bucket/{bucketName}/versioning | Updates the versioning status for the specified bucket
+*BucketApi* | [**BucketServiceSetEventualReadsForBucket**](docs/BucketApi.md#bucketserviceseteventualreadsforbucket) | **Put** /object/bucket/{bucketName}/set-local-object-metadata-reads | Updates local object metadata read flag for a bucket.
+*BucketApi* | [**BucketServiceTestPolicy**](docs/BucketApi.md#bucketservicetestpolicy) | **Post** /object/bucket/test-policy | Validates a DM policy
+*BucketApi* | [**BucketServiceTestPolicyEdit**](docs/BucketApi.md#bucketservicetestpolicyedit) | **Post** /object/bucket/test-policy-edit | Validates a DM policy edit operation
+*BucketApi* | [**BucketServiceUpdateBucketIsStaleAllowed**](docs/BucketApi.md#bucketserviceupdatebucketisstaleallowed) | **Post** /object/bucket/{bucketName}/isstaleallowed | Updates isStaleAllowed details for the specified bucket
+*BucketApi* | [**BucketServiceUpdateBucketOwner**](docs/BucketApi.md#bucketserviceupdatebucketowner) | **Post** /object/bucket/{bucketName}/owner | Updates the owner for the specified bucket
+*BucketApi* | [**BucketServiceUpdateBucketQuota**](docs/BucketApi.md#bucketserviceupdatebucketquota) | **Put** /object/bucket/{bucketName}/quota | Updates the quota for the given bucket
+*BucketApi* | [**BucketServiceUpdateBucketTags**](docs/BucketApi.md#bucketserviceupdatebuckettags) | **Put** /object/bucket/{bucketName}/tags | Updates the provided tags for the specified bucket. Note that the operation will over write the existing tags with the new values.
 *DataVpoolApi* | [**DataServiceVpoolServiceAddToVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceaddtovpool) | **Put** /vdc/data-service/vpools/{id}/addvarrays | Adds one or more storage pools (as  VDC:storage pool tuples) to the specified replication group
 *DataVpoolApi* | [**DataServiceVpoolServiceCreateDataServiceVpool**](docs/DataVpoolApi.md#dataservicevpoolservicecreatedataservicevpool) | **Post** /vdc/data-service/vpools | Creates a replication group that includes the specified storage pools (VDC:storage pool tuple)
 *DataVpoolApi* | [**DataServiceVpoolServiceGetDataServiceStore**](docs/DataVpoolApi.md#dataservicevpoolservicegetdataservicestore) | **Get** /vdc/data-service/vpools/{id} | Gets the details for the specified replication group
@@ -87,30 +133,58 @@ Class | Method | HTTP request | Description
 *DataVpoolApi* | [**DataServiceVpoolServiceRemoveFromVpool**](docs/DataVpoolApi.md#dataservicevpoolserviceremovefromvpool) | **Put** /vdc/data-service/vpools/{id}/removevarrays | Deletes a storage pool (VDC:storage pool tuple) from a specified replication group
 *IamApi* | [**IamServiceAddUserToGroup**](docs/IamApi.md#iamserviceaddusertogroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
 *IamApi* | [**IamServiceAttachGroupPolicy**](docs/IamApi.md#iamserviceattachgrouppolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
+*IamApi* | [**IamServiceAttachRolePolicy**](docs/IamApi.md#iamserviceattachrolepolicy) | **Post** /iam?Action&#x3D;AttachRolePolicy | Attaches the specified managed policy to the specified IAM role.
+*IamApi* | [**IamServiceAttachUserPolicy**](docs/IamApi.md#iamserviceattachuserpolicy) | **Post** /iam?Action&#x3D;AttachUserPolicy | Attach a Managed Policy to User.
+*IamApi* | [**IamServiceCreateAccessKey**](docs/IamApi.md#iamservicecreateaccesskey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 *IamApi* | [**IamServiceCreateGroup**](docs/IamApi.md#iamservicecreategroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
+*IamApi* | [**IamServiceCreateRole**](docs/IamApi.md#iamservicecreaterole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+*IamApi* | [**IamServiceCreateUser**](docs/IamApi.md#iamservicecreateuser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
+*IamApi* | [**IamServiceDeleteAccessKey**](docs/IamApi.md#iamservicedeleteaccesskey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 *IamApi* | [**IamServiceDeleteGroup**](docs/IamApi.md#iamservicedeletegroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 *IamApi* | [**IamServiceDeleteGroupPolicy**](docs/IamApi.md#iamservicedeletegrouppolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceDeleteRole**](docs/IamApi.md#iamservicedeleterole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
+*IamApi* | [**IamServiceDeleteRolePermissionsBoundary**](docs/IamApi.md#iamservicedeleterolepermissionsboundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePolicy**](docs/IamApi.md#iamservicedeleterolepolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
+*IamApi* | [**IamServiceDeleteUser**](docs/IamApi.md#iamservicedeleteuser) | **Post** /iam?Action&#x3D;DeleteUser | Delete an IAM user.
+*IamApi* | [**IamServiceDeleteUserPermissionsBoundary**](docs/IamApi.md#iamservicedeleteuserpermissionsboundary) | **Post** /iam?Action&#x3D;DeleteUserPermissionsBoundary | Delete User&#39;s PermissionsBoundary.
 *IamApi* | [**IamServiceDeleteUserPolicy**](docs/IamApi.md#iamservicedeleteuserpolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
 *IamApi* | [**IamServiceDetachGroupPolicy**](docs/IamApi.md#iamservicedetachgrouppolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
+*IamApi* | [**IamServiceDetachRolePolicy**](docs/IamApi.md#iamservicedetachrolepolicy) | **Post** /iam?Action&#x3D;DetachRolePolicy | Removes the specified managed policy from the specified IAM role.
+*IamApi* | [**IamServiceDetachUserPolicy**](docs/IamApi.md#iamservicedetachuserpolicy) | **Post** /iam?Action&#x3D;DetachUserPolicy | Remove a Managed Policy attached to User.
 *IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 *IamApi* | [**IamServiceGetGroupPolicy**](docs/IamApi.md#iamservicegetgrouppolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceGetPolicy**](docs/IamApi.md#iamservicegetpolicy) | **Post** /iam?Action&#x3D;GetPolicy | Retrieve Managed Policy
+*IamApi* | [**IamServiceGetRole**](docs/IamApi.md#iamservicegetrole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 *IamApi* | [**IamServiceGetRolePolicy**](docs/IamApi.md#iamservicegetrolepolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 *IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 *IamApi* | [**IamServiceGetUserPolicy**](docs/IamApi.md#iamservicegetuserpolicy) | **Post** /iam?Action&#x3D;GetUserPolicy | Get specific inlinePolicy for IAM User.
 *IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
 *IamApi* | [**IamServiceListAttachedGroupPolicies**](docs/IamApi.md#iamservicelistattachedgrouppolicies) | **Post** /iam?Action&#x3D;ListAttachedGroupPolicies | List Managed Policies for IAM Group.
+*IamApi* | [**IamServiceListAttachedRolePolicies**](docs/IamApi.md#iamservicelistattachedrolepolicies) | **Post** /iam?Action&#x3D;ListAttachedRolePolicies | Lists all managed policies that are attached to the specified IAM Role.
+*IamApi* | [**IamServiceListAttachedUserPolicies**](docs/IamApi.md#iamservicelistattacheduserpolicies) | **Post** /iam?Action&#x3D;ListAttachedUserPolicies | List Managed Policies for IAM User.
 *IamApi* | [**IamServiceListGroupPolicies**](docs/IamApi.md#iamservicelistgrouppolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
 *IamApi* | [**IamServiceListGroups**](docs/IamApi.md#iamservicelistgroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 *IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
+*IamApi* | [**IamServiceListPolicies**](docs/IamApi.md#iamservicelistpolicies) | **Post** /iam?Action&#x3D;ListPolicies | Lists the IAM users.
 *IamApi* | [**IamServiceListRolePolicies**](docs/IamApi.md#iamservicelistrolepolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
+*IamApi* | [**IamServiceListRoleTags**](docs/IamApi.md#iamservicelistroletags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
+*IamApi* | [**IamServiceListRoles**](docs/IamApi.md#iamservicelistroles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
 *IamApi* | [**IamServiceListUserPolicies**](docs/IamApi.md#iamservicelistuserpolicies) | **Post** /iam?Action&#x3D;ListUserPolicies | List Inline Policies for IAM User.
 *IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 *IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
 *IamApi* | [**IamServicePutGroupPolicy**](docs/IamApi.md#iamserviceputgrouppolicy) | **Post** /iam?Action&#x3D;PutGroupPolicy | Add or Update Inline Policy for IAM Group.
+*IamApi* | [**IamServicePutRolePermissionsBoundary**](docs/IamApi.md#iamserviceputrolepermissionsboundary) | **Post** /iam?Action&#x3D;PutRolePermissionsBoundary | Adds or updates the policy that is specified as the IAM role&#39;s permissions boundary.
 *IamApi* | [**IamServicePutRolePolicy**](docs/IamApi.md#iamserviceputrolepolicy) | **Post** /iam?Action&#x3D;PutRolePolicy | Adds or updates an inline policy document that is embedded in the specified IAM role.
+*IamApi* | [**IamServicePutUserPermissionsBoundary**](docs/IamApi.md#iamserviceputuserpermissionsboundary) | **Post** /iam?Action&#x3D;PutUserPermissionsBoundary | Update User&#39;s PermissionsBoundary.
 *IamApi* | [**IamServicePutUserPolicy**](docs/IamApi.md#iamserviceputuserpolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
 *IamApi* | [**IamServiceRemoveUserFromGroup**](docs/IamApi.md#iamserviceremoveuserfromgroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
+*IamApi* | [**IamServiceTagRole**](docs/IamApi.md#iamservicetagrole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
+*IamApi* | [**IamServiceTagUser**](docs/IamApi.md#iamservicetaguser) | **Post** /iam?Action&#x3D;TagUser | Adds one or more tags to a specified IAM User.
+*IamApi* | [**IamServiceUntagRole**](docs/IamApi.md#iamserviceuntagrole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
+*IamApi* | [**IamServiceUntagUser**](docs/IamApi.md#iamserviceuntaguser) | **Post** /iam?Action&#x3D;UntagUser | Removes the specified tags from a specified IAM User.
+*IamApi* | [**IamServiceUpdateAccessKey**](docs/IamApi.md#iamserviceupdateaccesskey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
+*IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
+*IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
@@ -127,6 +201,58 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [BasicResponse](docs/BasicResponse.md)
+ - [BucketServiceAddBucketTagsRequest](docs/BucketServiceAddBucketTagsRequest.md)
+ - [BucketServiceCreateBucketRequest](docs/BucketServiceCreateBucketRequest.md)
+ - [BucketServiceCreateBucketRequestCopyPolicy](docs/BucketServiceCreateBucketRequestCopyPolicy.md)
+ - [BucketServiceCreateBucketRequestMetadataInner](docs/BucketServiceCreateBucketRequestMetadataInner.md)
+ - [BucketServiceCreateBucketRequestMinMaxGovernor](docs/BucketServiceCreateBucketRequestMinMaxGovernor.md)
+ - [BucketServiceCreateBucketRequestTagInner](docs/BucketServiceCreateBucketRequestTagInner.md)
+ - [BucketServiceCreateBucketResponse](docs/BucketServiceCreateBucketResponse.md)
+ - [BucketServiceCreateBucketResponseMetaData](docs/BucketServiceCreateBucketResponseMetaData.md)
+ - [BucketServiceDeleteBucketTagsRequest](docs/BucketServiceDeleteBucketTagsRequest.md)
+ - [BucketServiceGetBucketACLResponse](docs/BucketServiceGetBucketACLResponse.md)
+ - [BucketServiceGetBucketDefaultLockConfigurationResponse](docs/BucketServiceGetBucketDefaultLockConfigurationResponse.md)
+ - [BucketServiceGetBucketHeadMetadataResponse](docs/BucketServiceGetBucketHeadMetadataResponse.md)
+ - [BucketServiceGetBucketInfoResponse](docs/BucketServiceGetBucketInfoResponse.md)
+ - [BucketServiceGetBucketLockResponse](docs/BucketServiceGetBucketLockResponse.md)
+ - [BucketServiceGetBucketNotificationConfigResponse](docs/BucketServiceGetBucketNotificationConfigResponse.md)
+ - [BucketServiceGetBucketQuotaResponse](docs/BucketServiceGetBucketQuotaResponse.md)
+ - [BucketServiceGetBucketRetentionResponse](docs/BucketServiceGetBucketRetentionResponse.md)
+ - [BucketServiceGetBucketVersioningResponse](docs/BucketServiceGetBucketVersioningResponse.md)
+ - [BucketServiceGetBucketsResponse](docs/BucketServiceGetBucketsResponse.md)
+ - [BucketServiceGetBucketsResponseObjectBucketInner](docs/BucketServiceGetBucketsResponseObjectBucketInner.md)
+ - [BucketServiceGetBucketsResponseObjectBucketInnerMinMaxGovernor](docs/BucketServiceGetBucketsResponseObjectBucketInnerMinMaxGovernor.md)
+ - [BucketServiceGetBucketsResponseObjectBucketInnerSearchMetadata](docs/BucketServiceGetBucketsResponseObjectBucketInnerSearchMetadata.md)
+ - [BucketServiceGetEmptyBucketStatusResponse](docs/BucketServiceGetEmptyBucketStatusResponse.md)
+ - [BucketServiceGetGroupsResponse](docs/BucketServiceGetGroupsResponse.md)
+ - [BucketServiceGetGroupsResponseGroupInner](docs/BucketServiceGetGroupsResponseGroupInner.md)
+ - [BucketServiceGetPermissionsResponse](docs/BucketServiceGetPermissionsResponse.md)
+ - [BucketServiceGetPermissionsResponsePermissionInner](docs/BucketServiceGetPermissionsResponsePermissionInner.md)
+ - [BucketServiceGetSearchMetaDataResponse](docs/BucketServiceGetSearchMetaDataResponse.md)
+ - [BucketServicePutBucketDefaultLockConfigurationRequest](docs/BucketServicePutBucketDefaultLockConfigurationRequest.md)
+ - [BucketServicePutBucketDefaultLockConfigurationRequestRule](docs/BucketServicePutBucketDefaultLockConfigurationRequestRule.md)
+ - [BucketServicePutBucketDefaultLockConfigurationRequestRuleDefaultRetention](docs/BucketServicePutBucketDefaultLockConfigurationRequestRuleDefaultRetention.md)
+ - [BucketServicePutBucketNotificationConfigRequest](docs/BucketServicePutBucketNotificationConfigRequest.md)
+ - [BucketServiceSetAdvancedMetadataSearchTargetRequest](docs/BucketServiceSetAdvancedMetadataSearchTargetRequest.md)
+ - [BucketServiceSetBucketACLRequest](docs/BucketServiceSetBucketACLRequest.md)
+ - [BucketServiceSetBucketACLRequestAcl](docs/BucketServiceSetBucketACLRequestAcl.md)
+ - [BucketServiceSetBucketACLRequestAclCustomgroupAclInner](docs/BucketServiceSetBucketACLRequestAclCustomgroupAclInner.md)
+ - [BucketServiceSetBucketACLRequestAclGroupAclInner](docs/BucketServiceSetBucketACLRequestAclGroupAclInner.md)
+ - [BucketServiceSetBucketACLRequestAclUserAclInner](docs/BucketServiceSetBucketACLRequestAclUserAclInner.md)
+ - [BucketServiceSetBucketAutoCommitPeriodRequest](docs/BucketServiceSetBucketAutoCommitPeriodRequest.md)
+ - [BucketServiceSetBucketDefaultGroupRequest](docs/BucketServiceSetBucketDefaultGroupRequest.md)
+ - [BucketServiceSetBucketHeadMetadataRequest](docs/BucketServiceSetBucketHeadMetadataRequest.md)
+ - [BucketServiceSetBucketHeadMetadataRequestMetadataInner](docs/BucketServiceSetBucketHeadMetadataRequestMetadataInner.md)
+ - [BucketServiceSetBucketLockRequest](docs/BucketServiceSetBucketLockRequest.md)
+ - [BucketServiceSetBucketRetentionRequest](docs/BucketServiceSetBucketRetentionRequest.md)
+ - [BucketServiceSetBucketVersioningRequest](docs/BucketServiceSetBucketVersioningRequest.md)
+ - [BucketServiceTestPolicyEditRequest](docs/BucketServiceTestPolicyEditRequest.md)
+ - [BucketServiceTestPolicyRequest](docs/BucketServiceTestPolicyRequest.md)
+ - [BucketServiceUpdateBucketIsStaleAllowedRequest](docs/BucketServiceUpdateBucketIsStaleAllowedRequest.md)
+ - [BucketServiceUpdateBucketOwnerRequest](docs/BucketServiceUpdateBucketOwnerRequest.md)
+ - [BucketServiceUpdateBucketQuotaRequest](docs/BucketServiceUpdateBucketQuotaRequest.md)
+ - [BucketServiceUpdateBucketTagsRequest](docs/BucketServiceUpdateBucketTagsRequest.md)
  - [DataServiceVpoolServiceAddToVpoolRequest](docs/DataServiceVpoolServiceAddToVpoolRequest.md)
  - [DataServiceVpoolServiceCreateDataServiceVpoolRequest](docs/DataServiceVpoolServiceCreateDataServiceVpoolRequest.md)
  - [DataServiceVpoolServiceCreateDataServiceVpoolResponse](docs/DataServiceVpoolServiceCreateDataServiceVpoolResponse.md)
@@ -136,24 +262,32 @@ Class | Method | HTTP request | Description
  - [DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner](docs/DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner.md)
  - [DataServiceVpoolServicePutDataServiceVpoolRequest](docs/DataServiceVpoolServicePutDataServiceVpoolRequest.md)
  - [DataServiceVpoolServiceRemoveFromVpoolRequest](docs/DataServiceVpoolServiceRemoveFromVpoolRequest.md)
- - [IamServiceAddUserToGroupResponse](docs/IamServiceAddUserToGroupResponse.md)
- - [IamServiceAddUserToGroupResponseResponseMetadata](docs/IamServiceAddUserToGroupResponseResponseMetadata.md)
- - [IamServiceAttachGroupPolicyResponse](docs/IamServiceAttachGroupPolicyResponse.md)
+ - [IamResponseMetadata](docs/IamResponseMetadata.md)
+ - [IamRole](docs/IamRole.md)
+ - [IamRolePermissionsBoundary](docs/IamRolePermissionsBoundary.md)
+ - [IamRoleResult](docs/IamRoleResult.md)
+ - [IamServiceCreateAccessKeyResponse](docs/IamServiceCreateAccessKeyResponse.md)
+ - [IamServiceCreateAccessKeyResponseCreateAccessKeyResult](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResult.md)
+ - [IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey.md)
  - [IamServiceCreateGroupResponse](docs/IamServiceCreateGroupResponse.md)
  - [IamServiceCreateGroupResponseCreateGroupResult](docs/IamServiceCreateGroupResponseCreateGroupResult.md)
  - [IamServiceCreateGroupResponseCreateGroupResultGroup](docs/IamServiceCreateGroupResponseCreateGroupResultGroup.md)
- - [IamServiceDeleteGroupPolicyResponse](docs/IamServiceDeleteGroupPolicyResponse.md)
- - [IamServiceDeleteGroupResponse](docs/IamServiceDeleteGroupResponse.md)
- - [IamServiceDeleteRolePolicyResponse](docs/IamServiceDeleteRolePolicyResponse.md)
- - [IamServiceDeleteUserPolicyResponse](docs/IamServiceDeleteUserPolicyResponse.md)
- - [IamServiceDetachGroupPolicyResponse](docs/IamServiceDetachGroupPolicyResponse.md)
+ - [IamServiceCreateRoleResponse](docs/IamServiceCreateRoleResponse.md)
+ - [IamServiceCreateUserResponse](docs/IamServiceCreateUserResponse.md)
+ - [IamServiceCreateUserResponseCreateUserResult](docs/IamServiceCreateUserResponseCreateUserResult.md)
+ - [IamServiceCreateUserResponseCreateUserResultUser](docs/IamServiceCreateUserResponseCreateUserResultUser.md)
+ - [IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary](docs/IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary.md)
  - [IamServiceGetGroupPolicyResponse](docs/IamServiceGetGroupPolicyResponse.md)
  - [IamServiceGetGroupPolicyResponseGetGroupPolicyResult](docs/IamServiceGetGroupPolicyResponseGetGroupPolicyResult.md)
  - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
  - [IamServiceGetGroupResponseGetGroupResult](docs/IamServiceGetGroupResponseGetGroupResult.md)
  - [IamServiceGetGroupResponseGetGroupResultUsersInner](docs/IamServiceGetGroupResponseGetGroupResultUsersInner.md)
+ - [IamServiceGetPolicyResponse](docs/IamServiceGetPolicyResponse.md)
+ - [IamServiceGetPolicyResponseGetPolicyResult](docs/IamServiceGetPolicyResponseGetPolicyResult.md)
+ - [IamServiceGetPolicyResponseGetPolicyResultPolicy](docs/IamServiceGetPolicyResponseGetPolicyResultPolicy.md)
  - [IamServiceGetRolePolicyResponse](docs/IamServiceGetRolePolicyResponse.md)
  - [IamServiceGetRolePolicyResponseGetRolePolicyResult](docs/IamServiceGetRolePolicyResponseGetRolePolicyResult.md)
+ - [IamServiceGetRoleResponse](docs/IamServiceGetRoleResponse.md)
  - [IamServiceGetUserPolicyResponse](docs/IamServiceGetUserPolicyResponse.md)
  - [IamServiceGetUserPolicyResponseGetUserPolicyResult](docs/IamServiceGetUserPolicyResponseGetUserPolicyResult.md)
  - [IamServiceGetUserResponse](docs/IamServiceGetUserResponse.md)
@@ -166,6 +300,8 @@ Class | Method | HTTP request | Description
  - [IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner](docs/IamServiceListAccessKeysResponseListAccessKeysResultAccessKeyMetadataInner.md)
  - [IamServiceListAttachedGroupPoliciesResponse](docs/IamServiceListAttachedGroupPoliciesResponse.md)
  - [IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult](docs/IamServiceListAttachedGroupPoliciesResponseListAttachedGroupPoliciesResult.md)
+ - [IamServiceListAttachedRolePoliciesResponse](docs/IamServiceListAttachedRolePoliciesResponse.md)
+ - [IamServiceListAttachedUserPoliciesResponse](docs/IamServiceListAttachedUserPoliciesResponse.md)
  - [IamServiceListGroupPoliciesResponse](docs/IamServiceListGroupPoliciesResponse.md)
  - [IamServiceListGroupPoliciesResponseListGroupPoliciesResult](docs/IamServiceListGroupPoliciesResponseListGroupPoliciesResult.md)
  - [IamServiceListGroupsForUserResponse](docs/IamServiceListGroupsForUserResponse.md)
@@ -174,17 +310,21 @@ Class | Method | HTTP request | Description
  - [IamServiceListGroupsResponse](docs/IamServiceListGroupsResponse.md)
  - [IamServiceListGroupsResponseListGroupsResult](docs/IamServiceListGroupsResponseListGroupsResult.md)
  - [IamServiceListGroupsResponseListGroupsResultGroupsInner](docs/IamServiceListGroupsResponseListGroupsResultGroupsInner.md)
+ - [IamServiceListPoliciesResponse](docs/IamServiceListPoliciesResponse.md)
+ - [IamServiceListPoliciesResponseListPoliciesResult](docs/IamServiceListPoliciesResponseListPoliciesResult.md)
  - [IamServiceListRolePoliciesResponse](docs/IamServiceListRolePoliciesResponse.md)
+ - [IamServiceListRoleTagsResponse](docs/IamServiceListRoleTagsResponse.md)
+ - [IamServiceListRolesResponse](docs/IamServiceListRolesResponse.md)
+ - [IamServiceListRolesResponseListRolesResult](docs/IamServiceListRolesResponseListRolesResult.md)
  - [IamServiceListUserPoliciesResponse](docs/IamServiceListUserPoliciesResponse.md)
  - [IamServiceListUserTagsResponse](docs/IamServiceListUserTagsResponse.md)
  - [IamServiceListUserTagsResponseListUserTagsResult](docs/IamServiceListUserTagsResponseListUserTagsResult.md)
  - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
  - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
  - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
- - [IamServicePutGroupPolicyResponse](docs/IamServicePutGroupPolicyResponse.md)
- - [IamServicePutRolePolicyResponse](docs/IamServicePutRolePolicyResponse.md)
- - [IamServicePutUserPolicyResponse](docs/IamServicePutUserPolicyResponse.md)
- - [IamServiceRemoveUserFromGroupResponse](docs/IamServiceRemoveUserFromGroupResponse.md)
+ - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
+ - [IamTagKey](docs/IamTagKey.md)
+ - [IamTagKeyValue](docs/IamTagKeyValue.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)

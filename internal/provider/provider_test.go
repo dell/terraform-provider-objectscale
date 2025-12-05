@@ -19,10 +19,12 @@ package provider
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+	"terraform-provider-objectscale/internal/client"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -42,7 +44,8 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 // var FunctionMocker *mockey.Mocker
 
 var ProviderConfigForTesting = ``
-var username, password, endpoint, rgs string
+var username, password, endpoint, insecure, rgs string
+var logoutUser, logoutPassword string
 
 func init() {
 	_, err := loadEnvFile("objectscale.env")
@@ -54,6 +57,9 @@ func init() {
 	endpoint = setDefault(os.Getenv("OBJECTSCALE_ENDPOINT"), "http://localhost:3007")
 	username = setDefault(os.Getenv("OBJECTSCALE_USERNAME"), "test")
 	password = setDefault(os.Getenv("OBJECTSCALE_PASSWORD"), "test")
+	logoutUser = setDefault(os.Getenv("OBJECTSCALE_LOGOUT_USERNAME"), "logouttest")
+	logoutPassword = setDefault(os.Getenv("OBJECTSCALE_LOGOUT_PASSWORD"), "logouttest")
+	insecure = setDefault(os.Getenv("OBJECTSCALE_INSECURE"), "true")
 	rgs = fmt.Sprintf(`
 		locals {
 			rgs = {
@@ -67,8 +73,6 @@ func init() {
 		setDefault(os.Getenv("OBJECTSCALE_RG2"), "urn:storageos:ReplicationGroupInfo:cd8bffcb-7a99-4023-82a8-982054fd73c2:global"),
 		setDefault(os.Getenv("OBJECTSCALE_RG3"), "urn:storageos:ReplicationGroupInfo:e0b539a3-6ddd-4412-b4d0-ce08049f64cd:global"),
 	)
-
-	insecure := "true"
 
 	ProviderConfigForTesting = fmt.Sprintf(`
 		provider "objectscale" {
@@ -98,6 +102,32 @@ func testAccPreCheck(t *testing.T) {
 	// if FunctionMocker != nil {
 	// 	FunctionMocker.UnPatch()
 	// }
+}
+
+func testUserTokenCleanup(t *testing.T) {
+	client, err := client.NewClient(
+		endpoint,
+		logoutUser,
+		logoutPassword,
+		insecure == "true",
+		120,
+	)
+
+	if err != nil {
+		t.Fatal("Could not login with logout user", err.Error())
+	}
+
+	// logout the username
+	_, _, err = client.GenClient.AuthenticationApi.AuthenticationResourceLogout(context.TODO()).Username(username).Execute()
+	if err != nil {
+		t.Fatal("Could not logout test user", err.Error())
+	}
+
+	// logout the logout user
+	_, _, err = client.GenClient.AuthenticationApi.AuthenticationResourceLogout(context.TODO()).Execute()
+	if err != nil {
+		t.Fatal("Could not logout the logout user", err.Error())
+	}
 }
 
 func setDefault(osInput string, defaultStr string) string {

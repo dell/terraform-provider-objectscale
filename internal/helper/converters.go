@@ -218,3 +218,11 @@ func Object(in any) types.Object {
 	}
 	return types.ObjectValueMust(intypes, invals)
 }
+
+// TfInt64From32 safely converts a *int32 to types.Int64 for Terraform models.
+func TfInt64From32(v *int32) types.Int64 {
+	if v == nil {
+		return types.Int64Null()
+	}
+	return types.Int64Value(int64(*v))
+}

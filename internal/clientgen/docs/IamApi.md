@@ -6,36 +6,64 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**IamServiceAddUserToGroup**](IamApi.md#IamServiceAddUserToGroup) | **Post** /iam?Action&#x3D;AddUserToGroup | Add user to a group.
 [**IamServiceAttachGroupPolicy**](IamApi.md#IamServiceAttachGroupPolicy) | **Post** /iam?Action&#x3D;AttachGroupPolicy | Attach a Managed Policy to Group.
+[**IamServiceAttachRolePolicy**](IamApi.md#IamServiceAttachRolePolicy) | **Post** /iam?Action&#x3D;AttachRolePolicy | Attaches the specified managed policy to the specified IAM role.
+[**IamServiceAttachUserPolicy**](IamApi.md#IamServiceAttachUserPolicy) | **Post** /iam?Action&#x3D;AttachUserPolicy | Attach a Managed Policy to User.
+[**IamServiceCreateAccessKey**](IamApi.md#IamServiceCreateAccessKey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 [**IamServiceCreateGroup**](IamApi.md#IamServiceCreateGroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
+[**IamServiceCreateRole**](IamApi.md#IamServiceCreateRole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+[**IamServiceCreateUser**](IamApi.md#IamServiceCreateUser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
+[**IamServiceDeleteAccessKey**](IamApi.md#IamServiceDeleteAccessKey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 [**IamServiceDeleteGroup**](IamApi.md#IamServiceDeleteGroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 [**IamServiceDeleteGroupPolicy**](IamApi.md#IamServiceDeleteGroupPolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
+[**IamServiceDeleteRole**](IamApi.md#IamServiceDeleteRole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
+[**IamServiceDeleteRolePermissionsBoundary**](IamApi.md#IamServiceDeleteRolePermissionsBoundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 [**IamServiceDeleteRolePolicy**](IamApi.md#IamServiceDeleteRolePolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
+[**IamServiceDeleteUser**](IamApi.md#IamServiceDeleteUser) | **Post** /iam?Action&#x3D;DeleteUser | Delete an IAM user.
+[**IamServiceDeleteUserPermissionsBoundary**](IamApi.md#IamServiceDeleteUserPermissionsBoundary) | **Post** /iam?Action&#x3D;DeleteUserPermissionsBoundary | Delete User&#39;s PermissionsBoundary.
 [**IamServiceDeleteUserPolicy**](IamApi.md#IamServiceDeleteUserPolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
 [**IamServiceDetachGroupPolicy**](IamApi.md#IamServiceDetachGroupPolicy) | **Post** /iam?Action&#x3D;DetachGroupPolicy | Remove a Managed Policy attached to Group.
+[**IamServiceDetachRolePolicy**](IamApi.md#IamServiceDetachRolePolicy) | **Post** /iam?Action&#x3D;DetachRolePolicy | Removes the specified managed policy from the specified IAM role.
+[**IamServiceDetachUserPolicy**](IamApi.md#IamServiceDetachUserPolicy) | **Post** /iam?Action&#x3D;DetachUserPolicy | Remove a Managed Policy attached to User.
 [**IamServiceGetGroup**](IamApi.md#IamServiceGetGroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 [**IamServiceGetGroupPolicy**](IamApi.md#IamServiceGetGroupPolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
+[**IamServiceGetPolicy**](IamApi.md#IamServiceGetPolicy) | **Post** /iam?Action&#x3D;GetPolicy | Retrieve Managed Policy
+[**IamServiceGetRole**](IamApi.md#IamServiceGetRole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 [**IamServiceGetRolePolicy**](IamApi.md#IamServiceGetRolePolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 [**IamServiceGetUser**](IamApi.md#IamServiceGetUser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 [**IamServiceGetUserPolicy**](IamApi.md#IamServiceGetUserPolicy) | **Post** /iam?Action&#x3D;GetUserPolicy | Get specific inlinePolicy for IAM User.
 [**IamServiceListAccessKeys**](IamApi.md#IamServiceListAccessKeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
 [**IamServiceListAttachedGroupPolicies**](IamApi.md#IamServiceListAttachedGroupPolicies) | **Post** /iam?Action&#x3D;ListAttachedGroupPolicies | List Managed Policies for IAM Group.
+[**IamServiceListAttachedRolePolicies**](IamApi.md#IamServiceListAttachedRolePolicies) | **Post** /iam?Action&#x3D;ListAttachedRolePolicies | Lists all managed policies that are attached to the specified IAM Role.
+[**IamServiceListAttachedUserPolicies**](IamApi.md#IamServiceListAttachedUserPolicies) | **Post** /iam?Action&#x3D;ListAttachedUserPolicies | List Managed Policies for IAM User.
 [**IamServiceListGroupPolicies**](IamApi.md#IamServiceListGroupPolicies) | **Post** /iam?Action&#x3D;ListGroupPolicies | List Inline Policies for IAM Group.
 [**IamServiceListGroups**](IamApi.md#IamServiceListGroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 [**IamServiceListGroupsForUser**](IamApi.md#IamServiceListGroupsForUser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
+[**IamServiceListPolicies**](IamApi.md#IamServiceListPolicies) | **Post** /iam?Action&#x3D;ListPolicies | Lists the IAM users.
 [**IamServiceListRolePolicies**](IamApi.md#IamServiceListRolePolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
+[**IamServiceListRoleTags**](IamApi.md#IamServiceListRoleTags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
+[**IamServiceListRoles**](IamApi.md#IamServiceListRoles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
 [**IamServiceListUserPolicies**](IamApi.md#IamServiceListUserPolicies) | **Post** /iam?Action&#x3D;ListUserPolicies | List Inline Policies for IAM User.
 [**IamServiceListUserTags**](IamApi.md#IamServiceListUserTags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 [**IamServiceListUsers**](IamApi.md#IamServiceListUsers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
 [**IamServicePutGroupPolicy**](IamApi.md#IamServicePutGroupPolicy) | **Post** /iam?Action&#x3D;PutGroupPolicy | Add or Update Inline Policy for IAM Group.
+[**IamServicePutRolePermissionsBoundary**](IamApi.md#IamServicePutRolePermissionsBoundary) | **Post** /iam?Action&#x3D;PutRolePermissionsBoundary | Adds or updates the policy that is specified as the IAM role&#39;s permissions boundary.
 [**IamServicePutRolePolicy**](IamApi.md#IamServicePutRolePolicy) | **Post** /iam?Action&#x3D;PutRolePolicy | Adds or updates an inline policy document that is embedded in the specified IAM role.
+[**IamServicePutUserPermissionsBoundary**](IamApi.md#IamServicePutUserPermissionsBoundary) | **Post** /iam?Action&#x3D;PutUserPermissionsBoundary | Update User&#39;s PermissionsBoundary.
 [**IamServicePutUserPolicy**](IamApi.md#IamServicePutUserPolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
 [**IamServiceRemoveUserFromGroup**](IamApi.md#IamServiceRemoveUserFromGroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
+[**IamServiceTagRole**](IamApi.md#IamServiceTagRole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
+[**IamServiceTagUser**](IamApi.md#IamServiceTagUser) | **Post** /iam?Action&#x3D;TagUser | Adds one or more tags to a specified IAM User.
+[**IamServiceUntagRole**](IamApi.md#IamServiceUntagRole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
+[**IamServiceUntagUser**](IamApi.md#IamServiceUntagUser) | **Post** /iam?Action&#x3D;UntagUser | Removes the specified tags from a specified IAM User.
+[**IamServiceUpdateAccessKey**](IamApi.md#IamServiceUpdateAccessKey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
+[**IamServiceUpdateAssumeRolePolicy**](IamApi.md#IamServiceUpdateAssumeRolePolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
+[**IamServiceUpdateRole**](IamApi.md#IamServiceUpdateRole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
 
 
 
 ## IamServiceAddUserToGroup
 
-> IamServiceAddUserToGroupResponse IamServiceAddUserToGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceAddUserToGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Add user to a group.
 
@@ -65,7 +93,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAddUserToGroup``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceAddUserToGroup`: IamServiceAddUserToGroupResponse
+    // response from `IamServiceAddUserToGroup`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAddUserToGroup`: %v\n", resp)
 }
 ```
@@ -87,7 +115,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceAddUserToGroupResponse**](IamServiceAddUserToGroupResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -105,7 +133,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceAttachGroupPolicy
 
-> IamServiceAttachGroupPolicyResponse IamServiceAttachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceAttachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
 
 Attach a Managed Policy to Group.
 
@@ -135,7 +163,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceAttachGroupPolicy`: IamServiceAttachGroupPolicyResponse
+    // response from `IamServiceAttachGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachGroupPolicy`: %v\n", resp)
 }
 ```
@@ -157,7 +185,215 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceAttachGroupPolicyResponse**](IamServiceAttachGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceAttachRolePolicy
+
+> BasicResponse IamServiceAttachRolePolicy(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Attaches the specified managed policy to the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn that identifies the policy. (optional)
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceAttachRolePolicy(context.Background()).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachRolePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceAttachRolePolicy`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachRolePolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceAttachRolePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn that identifies the policy. | 
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceAttachUserPolicy
+
+> BasicResponse IamServiceAttachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Attach a Managed Policy to User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to attach. (optional)
+    userName := "userName_example" // string | Username of the user to attach the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceAttachUserPolicy(context.Background()).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceAttachUserPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceAttachUserPolicy`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceAttachUserPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceAttachUserPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to attach. | 
+ **userName** | **string** | Username of the user to attach the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceCreateAccessKey
+
+> IamServiceCreateAccessKeyResponse IamServiceCreateAccessKey(ctx).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Create AccessKey for User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | The name of the user that new AccessKey belongs to. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreateAccessKey(context.Background()).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreateAccessKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreateAccessKey`: IamServiceCreateAccessKeyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreateAccessKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreateAccessKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | The name of the user that new AccessKey belongs to. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreateAccessKeyResponse**](IamServiceCreateAccessKeyResponse.md)
 
 ### Authorization
 
@@ -243,9 +479,233 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceCreateRole
+
+> IamServiceCreateRoleResponse IamServiceCreateRole(ctx).RoleName(roleName).AssumeRolePolicyDocument(assumeRolePolicyDocument).MaxSessionDuration(maxSessionDuration).Description(description).Path(path).PermissionsBoundary(permissionsBoundary).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
+
+Creates a new IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | The name of the role to create. (optional)
+    assumeRolePolicyDocument := "assumeRolePolicyDocument_example" // string | The trust relationship policy document that grants an entity permission to assume the role (optional)
+    maxSessionDuration := int32(56) // int32 | The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied.  This setting can have a value from 1 hour to 12 hours (optional)
+    description := "description_example" // string | A description of the role. (optional)
+    path := "path_example" // string | The path to the role. Optional, defaults to \"/\" and only \"/\" is allowed. (optional)
+    permissionsBoundary := "permissionsBoundary_example" // string | The ARN of the policy that is used to set the permissions boundary for the role. (optional)
+    tagsMemberN := []openapiclient.IamTagKeyValue{*openapiclient.NewIamTagKeyValue()} // []IamTagKeyValue | A list of tags that you want to attach to the role being created. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreateRole(context.Background()).RoleName(roleName).AssumeRolePolicyDocument(assumeRolePolicyDocument).MaxSessionDuration(maxSessionDuration).Description(description).Path(path).PermissionsBoundary(permissionsBoundary).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreateRole``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreateRole`: IamServiceCreateRoleResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreateRole`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreateRoleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | The name of the role to create. | 
+ **assumeRolePolicyDocument** | **string** | The trust relationship policy document that grants an entity permission to assume the role | 
+ **maxSessionDuration** | **int32** | The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied.  This setting can have a value from 1 hour to 12 hours | 
+ **description** | **string** | A description of the role. | 
+ **path** | **string** | The path to the role. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed. | 
+ **permissionsBoundary** | **string** | The ARN of the policy that is used to set the permissions boundary for the role. | 
+ **tagsMemberN** | [**[]IamTagKeyValue**](IamTagKeyValue.md) | A list of tags that you want to attach to the role being created. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreateRoleResponse**](IamServiceCreateRoleResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceCreateUser
+
+> IamServiceCreateUserResponse IamServiceCreateUser(ctx).UserName(userName).Path(path).PermissionsBoundary(permissionsBoundary).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
+
+Creates a new IAM user.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | The name of the user to create. (optional)
+    path := "path_example" // string | The path for the user. Optional, defaults to \"/\" and only \"/\" is allowed. (optional)
+    permissionsBoundary := "permissionsBoundary_example" // string | The ARN of the policy that is used to set the permissions boundary for the user. (optional)
+    tagsMemberN := []openapiclient.IamTagKeyValue{*openapiclient.NewIamTagKeyValue()} // []IamTagKeyValue | A list of tags that you want to attach to the user being created. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreateUser(context.Background()).UserName(userName).Path(path).PermissionsBoundary(permissionsBoundary).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreateUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreateUser`: IamServiceCreateUserResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreateUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreateUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | The name of the user to create. | 
+ **path** | **string** | The path for the user. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed. | 
+ **permissionsBoundary** | **string** | The ARN of the policy that is used to set the permissions boundary for the user. | 
+ **tagsMemberN** | [**[]IamTagKeyValue**](IamTagKeyValue.md) | A list of tags that you want to attach to the user being created. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreateUserResponse**](IamServiceCreateUserResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteAccessKey
+
+> BasicResponse IamServiceDeleteAccessKey(ctx).AccessKeyId(accessKeyId).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete access key.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    accessKeyId := "accessKeyId_example" // string | The access key ID for the access key ID and secret access key you want to delete. (optional)
+    userName := "userName_example" // string | Name of the user to delete accesskeys. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteAccessKey(context.Background()).AccessKeyId(accessKeyId).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteAccessKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteAccessKey`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteAccessKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteAccessKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accessKeyId** | **string** | The access key ID for the access key ID and secret access key you want to delete. | 
+ **userName** | **string** | Name of the user to delete accesskeys. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceDeleteGroup
 
-> IamServiceDeleteGroupResponse IamServiceDeleteGroup(ctx).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteGroup(ctx).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete an IAM Group.
 
@@ -274,7 +734,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteGroup``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteGroup`: IamServiceDeleteGroupResponse
+    // response from `IamServiceDeleteGroup`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteGroup`: %v\n", resp)
 }
 ```
@@ -295,7 +755,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteGroupResponse**](IamServiceDeleteGroupResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -313,7 +773,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteGroupPolicy
 
-> IamServiceDeleteGroupPolicyResponse IamServiceDeleteGroupPolicy(ctx).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteGroupPolicy(ctx).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete specific inlinePolicy for IAM Group.
 
@@ -343,7 +803,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteGroupPolicy`: IamServiceDeleteGroupPolicyResponse
+    // response from `IamServiceDeleteGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteGroupPolicy`: %v\n", resp)
 }
 ```
@@ -365,7 +825,143 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteGroupPolicyResponse**](IamServiceDeleteGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteRole
+
+> BasicResponse IamServiceDeleteRole(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Deletes the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteRole(context.Background()).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteRole``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteRole`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteRole`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteRoleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteRolePermissionsBoundary
+
+> BasicResponse IamServiceDeleteRolePermissionsBoundary(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Deletes the permissions boundary for the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteRolePermissionsBoundary(context.Background()).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteRolePermissionsBoundary``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteRolePermissionsBoundary`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteRolePermissionsBoundary`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteRolePermissionsBoundaryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -383,7 +979,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteRolePolicy
 
-> IamServiceDeleteRolePolicyResponse IamServiceDeleteRolePolicy(ctx).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteRolePolicy(ctx).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Deletes the specified inline policy that is embedded in the specified IAM role.
 
@@ -413,7 +1009,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteRolePolicy`: IamServiceDeleteRolePolicyResponse
+    // response from `IamServiceDeleteRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteRolePolicy`: %v\n", resp)
 }
 ```
@@ -435,7 +1031,143 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteRolePolicyResponse**](IamServiceDeleteRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteUser
+
+> BasicResponse IamServiceDeleteUser(ctx).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete an IAM user.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | The name of the user to delete. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteUser(context.Background()).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteUser`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | The name of the user to delete. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteUserPermissionsBoundary
+
+> BasicResponse IamServiceDeleteUserPermissionsBoundary(ctx).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete User's PermissionsBoundary.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | Username of the user to delete the PermissionsBoundary. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteUserPermissionsBoundary(context.Background()).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteUserPermissionsBoundary``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteUserPermissionsBoundary`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteUserPermissionsBoundary`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteUserPermissionsBoundaryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | Username of the user to delete the PermissionsBoundary. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -453,7 +1185,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDeleteUserPolicy
 
-> IamServiceDeleteUserPolicyResponse IamServiceDeleteUserPolicy(ctx).UserName(userName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDeleteUserPolicy(ctx).UserName(userName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Delete specific inlinePolicy for IAM User.
 
@@ -483,7 +1215,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteUserPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDeleteUserPolicy`: IamServiceDeleteUserPolicyResponse
+    // response from `IamServiceDeleteUserPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteUserPolicy`: %v\n", resp)
 }
 ```
@@ -505,7 +1237,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDeleteUserPolicyResponse**](IamServiceDeleteUserPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -523,7 +1255,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceDetachGroupPolicy
 
-> IamServiceDetachGroupPolicyResponse IamServiceDetachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceDetachGroupPolicy(ctx).PolicyArn(policyArn).GroupName(groupName).XEmcNamespace(xEmcNamespace).Execute()
 
 Remove a Managed Policy attached to Group.
 
@@ -553,7 +1285,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceDetachGroupPolicy`: IamServiceDetachGroupPolicyResponse
+    // response from `IamServiceDetachGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachGroupPolicy`: %v\n", resp)
 }
 ```
@@ -575,7 +1307,147 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceDetachGroupPolicyResponse**](IamServiceDetachGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDetachRolePolicy
+
+> BasicResponse IamServiceDetachRolePolicy(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Removes the specified managed policy from the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn that identifies the policy. (optional)
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDetachRolePolicy(context.Background()).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachRolePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDetachRolePolicy`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachRolePolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDetachRolePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn that identifies the policy. | 
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDetachUserPolicy
+
+> BasicResponse IamServiceDetachUserPolicy(ctx).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Remove a Managed Policy attached to User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to remove. (optional)
+    userName := "userName_example" // string | Username of the user to remove the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDetachUserPolicy(context.Background()).PolicyArn(policyArn).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDetachUserPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDetachUserPolicy`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDetachUserPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDetachUserPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to remove. | 
+ **userName** | **string** | Username of the user to remove the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -718,6 +1590,142 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceGetGroupPolicyResponse**](IamServiceGetGroupPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceGetPolicy
+
+> IamServiceGetPolicyResponse IamServiceGetPolicy(ctx).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+
+Retrieve Managed Policy
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to retrieve. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceGetPolicy(context.Background()).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceGetPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceGetPolicy`: IamServiceGetPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceGetPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceGetPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to retrieve. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceGetPolicyResponse**](IamServiceGetPolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceGetRole
+
+> IamServiceGetRoleResponse IamServiceGetRole(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Gets information about the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceGetRole(context.Background()).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceGetRole``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceGetRole`: IamServiceGetRoleResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceGetRole`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceGetRoleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceGetRoleResponse**](IamServiceGetRoleResponse.md)
 
 ### Authorization
 
@@ -1089,6 +2097,154 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceListAttachedRolePolicies
+
+> IamServiceListAttachedRolePoliciesResponse IamServiceListAttachedRolePolicies(ctx).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Lists all managed policies that are attached to the specified IAM Role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. (optional)
+    maxItems := int32(56) // int32 | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. (optional)
+    pathPrefix := "pathPrefix_example" // string | The path to the IAM role. (optional)
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListAttachedRolePolicies(context.Background()).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListAttachedRolePolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListAttachedRolePolicies`: IamServiceListAttachedRolePoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListAttachedRolePolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListAttachedRolePoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. | 
+ **maxItems** | **int32** | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. | 
+ **pathPrefix** | **string** | The path to the IAM role. | 
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListAttachedRolePoliciesResponse**](IamServiceListAttachedRolePoliciesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceListAttachedUserPolicies
+
+> IamServiceListAttachedUserPoliciesResponse IamServiceListAttachedUserPolicies(ctx).UserName(userName).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+
+List Managed Policies for IAM User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    userName := "userName_example" // string | The name of the user to list attached policies for. (optional)
+    marker := "marker_example" // string | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. (optional)
+    maxItems := int32(56) // int32 | Indicates the maximum number of elements to be returned in the response. (optional)
+    pathPrefix := "pathPrefix_example" // string | Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListAttachedUserPolicies(context.Background()).UserName(userName).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListAttachedUserPolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListAttachedUserPolicies`: IamServiceListAttachedUserPoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListAttachedUserPolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListAttachedUserPoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userName** | **string** | The name of the user to list attached policies for. | 
+ **marker** | **string** | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. | 
+ **maxItems** | **int32** | Indicates the maximum number of elements to be returned in the response. | 
+ **pathPrefix** | **string** | Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListAttachedUserPoliciesResponse**](IamServiceListAttachedUserPoliciesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceListGroupPolicies
 
 > IamServiceListGroupPoliciesResponse IamServiceListGroupPolicies(ctx).GroupName(groupName).Marker(marker).MaxItems(maxItems).XEmcNamespace(xEmcNamespace).Execute()
@@ -1305,6 +2461,84 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceListPolicies
+
+> IamServiceListPoliciesResponse IamServiceListPolicies(ctx).Marker(marker).MaxItems(maxItems).OnlyAttached(onlyAttached).PathPrefix(pathPrefix).PolicyUsageFilter(policyUsageFilter).PolicyScope(policyScope).XEmcNamespace(xEmcNamespace).Execute()
+
+Lists the IAM users.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. (optional)
+    maxItems := int32(56) // int32 | Indicates the maximum number of elements to be returned in the response. (optional)
+    onlyAttached := true // bool | A flag to filter the results to only the attached policies. (optional)
+    pathPrefix := "pathPrefix_example" // string | Path prefix for filtering the results. Optional, default to \"/\". Only \"/\" is allowed. (optional)
+    policyUsageFilter := "policyUsageFilter_example" // string | The policy usage method to use for filtering the results. Values {PermissionsPolicy, PermissionsBoundary} (optional)
+    policyScope := "policyScope_example" // string | The scope to use for filtering the results. One of {All, ECS, AWS, Local} (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListPolicies(context.Background()).Marker(marker).MaxItems(maxItems).OnlyAttached(onlyAttached).PathPrefix(pathPrefix).PolicyUsageFilter(policyUsageFilter).PolicyScope(policyScope).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListPolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListPolicies`: IamServiceListPoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListPolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListPoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | Marker is obtained from paginated response from the previous query. Use this only if the response indicates it is truncated. | 
+ **maxItems** | **int32** | Indicates the maximum number of elements to be returned in the response. | 
+ **onlyAttached** | **bool** | A flag to filter the results to only the attached policies. | 
+ **pathPrefix** | **string** | Path prefix for filtering the results. Optional, default to \&quot;/\&quot;. Only \&quot;/\&quot; is allowed. | 
+ **policyUsageFilter** | **string** | The policy usage method to use for filtering the results. Values {PermissionsPolicy, PermissionsBoundary} | 
+ **policyScope** | **string** | The scope to use for filtering the results. One of {All, ECS, AWS, Local} | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListPoliciesResponse**](IamServiceListPoliciesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceListRolePolicies
 
 > IamServiceListRolePoliciesResponse IamServiceListRolePolicies(ctx).Marker(marker).MaxItems(maxItems).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
@@ -1362,6 +2596,150 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceListRolePoliciesResponse**](IamServiceListRolePoliciesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceListRoleTags
+
+> IamServiceListRoleTagsResponse IamServiceListRoleTags(ctx).Marker(marker).MaxItems(maxItems).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Lists the tags that are attached to the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. (optional)
+    maxItems := int32(56) // int32 | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. (optional)
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListRoleTags(context.Background()).Marker(marker).MaxItems(maxItems).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListRoleTags``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListRoleTags`: IamServiceListRoleTagsResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListRoleTags`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListRoleTagsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. | 
+ **maxItems** | **int32** | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. | 
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListRoleTagsResponse**](IamServiceListRoleTagsResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceListRoles
+
+> IamServiceListRolesResponse IamServiceListRoles(ctx).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+
+Lists the IAM roles.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. (optional)
+    maxItems := int32(56) // int32 | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. (optional)
+    pathPrefix := "pathPrefix_example" // string | The path to the roles. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListRoles(context.Background()).Marker(marker).MaxItems(maxItems).PathPrefix(pathPrefix).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListRoles``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListRoles`: IamServiceListRolesResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListRoles`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListRolesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. | 
+ **maxItems** | **int32** | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. | 
+ **pathPrefix** | **string** | The path to the roles. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListRolesResponse**](IamServiceListRolesResponse.md)
 
 ### Authorization
 
@@ -1595,7 +2973,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutGroupPolicy
 
-> IamServicePutGroupPolicyResponse IamServicePutGroupPolicy(ctx).PolicyDocument(policyDocument).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutGroupPolicy(ctx).PolicyDocument(policyDocument).GroupName(groupName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Add or Update Inline Policy for IAM Group.
 
@@ -1626,7 +3004,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutGroupPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutGroupPolicy`: IamServicePutGroupPolicyResponse
+    // response from `IamServicePutGroupPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutGroupPolicy`: %v\n", resp)
 }
 ```
@@ -1649,7 +3027,77 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutGroupPolicyResponse**](IamServicePutGroupPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServicePutRolePermissionsBoundary
+
+> BasicResponse IamServicePutRolePermissionsBoundary(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Adds or updates the policy that is specified as the IAM role's permissions boundary.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn that identifies the policy. (optional)
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServicePutRolePermissionsBoundary(context.Background()).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutRolePermissionsBoundary``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServicePutRolePermissionsBoundary`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutRolePermissionsBoundary`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServicePutRolePermissionsBoundaryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn that identifies the policy. | 
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -1667,7 +3115,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutRolePolicy
 
-> IamServicePutRolePolicyResponse IamServicePutRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
 
 Adds or updates an inline policy document that is embedded in the specified IAM role.
 
@@ -1698,7 +3146,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutRolePolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutRolePolicy`: IamServicePutRolePolicyResponse
+    // response from `IamServicePutRolePolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutRolePolicy`: %v\n", resp)
 }
 ```
@@ -1721,7 +3169,77 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutRolePolicyResponse**](IamServicePutRolePolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServicePutUserPermissionsBoundary
+
+> BasicResponse IamServicePutUserPermissionsBoundary(ctx).PermissionsBoundary(permissionsBoundary).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Update User's PermissionsBoundary.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    permissionsBoundary := "permissionsBoundary_example" // string | Arn of the Policy which is to be set as Permission Boundary for the user. (optional)
+    userName := "userName_example" // string | Urn of the user whose Permission Boundary is to be added/updated. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServicePutUserPermissionsBoundary(context.Background()).PermissionsBoundary(permissionsBoundary).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutUserPermissionsBoundary``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServicePutUserPermissionsBoundary`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutUserPermissionsBoundary`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServicePutUserPermissionsBoundaryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **permissionsBoundary** | **string** | Arn of the Policy which is to be set as Permission Boundary for the user. | 
+ **userName** | **string** | Urn of the user whose Permission Boundary is to be added/updated. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -1739,7 +3257,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutUserPolicy
 
-> IamServicePutUserPolicyResponse IamServicePutUserPolicy(ctx).PolicyDocument(policyDocument).PolicyName(policyName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutUserPolicy(ctx).PolicyDocument(policyDocument).PolicyName(policyName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Add or Update Inline Policy for IAM User.
 
@@ -1770,7 +3288,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutUserPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServicePutUserPolicy`: IamServicePutUserPolicyResponse
+    // response from `IamServicePutUserPolicy`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServicePutUserPolicy`: %v\n", resp)
 }
 ```
@@ -1793,7 +3311,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServicePutUserPolicyResponse**](IamServicePutUserPolicyResponse.md)
+[**BasicResponse**](BasicResponse.md)
 
 ### Authorization
 
@@ -1811,7 +3329,7 @@ Name | Type | Description  | Notes
 
 ## IamServiceRemoveUserFromGroup
 
-> IamServiceRemoveUserFromGroupResponse IamServiceRemoveUserFromGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServiceRemoveUserFromGroup(ctx).GroupName(groupName).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
 
 Remove User from a Group.
 
@@ -1841,7 +3359,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceRemoveUserFromGroup``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `IamServiceRemoveUserFromGroup`: IamServiceRemoveUserFromGroupResponse
+    // response from `IamServiceRemoveUserFromGroup`: BasicResponse
     fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceRemoveUserFromGroup`: %v\n", resp)
 }
 ```
@@ -1863,7 +3381,501 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IamServiceRemoveUserFromGroupResponse**](IamServiceRemoveUserFromGroupResponse.md)
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceTagRole
+
+> map[string]interface{} IamServiceTagRole(ctx).RoleName(roleName).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
+
+Adds one or more tags to a specified IAM Role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    tagsMemberN := []openapiclient.IamTagKeyValue{*openapiclient.NewIamTagKeyValue()} // []IamTagKeyValue | A list of tags that you want to attach to the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceTagRole(context.Background()).RoleName(roleName).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceTagRole``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceTagRole`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceTagRole`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceTagRoleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | Simple name identifying the role. | 
+ **tagsMemberN** | [**[]IamTagKeyValue**](IamTagKeyValue.md) | A list of tags that you want to attach to the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceTagUser
+
+> map[string]interface{} IamServiceTagUser(ctx).TagsMemberN(tagsMemberN).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Adds one or more tags to a specified IAM User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    tagsMemberN := []openapiclient.IamTagKeyValue{*openapiclient.NewIamTagKeyValue()} // []IamTagKeyValue | A list of tags that you want to attach to the user. (optional)
+    userName := "userName_example" // string | Simple name identifying the user. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceTagUser(context.Background()).TagsMemberN(tagsMemberN).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceTagUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceTagUser`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceTagUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceTagUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **tagsMemberN** | [**[]IamTagKeyValue**](IamTagKeyValue.md) | A list of tags that you want to attach to the user. | 
+ **userName** | **string** | Simple name identifying the user. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUntagRole
+
+> map[string]interface{} IamServiceUntagRole(ctx).RoleName(roleName).TagKeys(tagKeys).XEmcNamespace(xEmcNamespace).Execute()
+
+Removes the specified tags from a specified IAM Role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    tagKeys := []openapiclient.IamTagKey{*openapiclient.NewIamTagKey()} // []IamTagKey | A list of tags that you want to remove from the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUntagRole(context.Background()).RoleName(roleName).TagKeys(tagKeys).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUntagRole``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUntagRole`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUntagRole`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUntagRoleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | Simple name identifying the role. | 
+ **tagKeys** | [**[]IamTagKey**](IamTagKey.md) | A list of tags that you want to remove from the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUntagUser
+
+> map[string]interface{} IamServiceUntagUser(ctx).TagKeys(tagKeys).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Removes the specified tags from a specified IAM User.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    tagKeys := []openapiclient.IamTagKey{*openapiclient.NewIamTagKey()} // []IamTagKey | A list of tags that you want to remove from the user. (optional)
+    userName := "userName_example" // string | Simple name identifying the user. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUntagUser(context.Background()).TagKeys(tagKeys).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUntagUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUntagUser`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUntagUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUntagUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **tagKeys** | [**[]IamTagKey**](IamTagKey.md) | A list of tags that you want to remove from the user. | 
+ **userName** | **string** | Simple name identifying the user. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUpdateAccessKey
+
+> BasicResponse IamServiceUpdateAccessKey(ctx).AccessKeyId(accessKeyId).Status(status).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+
+Update status of AccessKey for user.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    accessKeyId := "accessKeyId_example" // string | The access key ID for the access key ID and secret access key you want to delete. (optional)
+    status := "status_example" // string | The status you want to assign to the secret access key.  Active means that the key can be used for API calls to AWS, while Inactive means that the key cannot be used. (optional)
+    userName := "userName_example" // string | Name of the user whose access key is updated. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUpdateAccessKey(context.Background()).AccessKeyId(accessKeyId).Status(status).UserName(userName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateAccessKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUpdateAccessKey`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateAccessKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUpdateAccessKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accessKeyId** | **string** | The access key ID for the access key ID and secret access key you want to delete. | 
+ **status** | **string** | The status you want to assign to the secret access key.  Active means that the key can be used for API calls to AWS, while Inactive means that the key cannot be used. | 
+ **userName** | **string** | Name of the user whose access key is updated. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUpdateAssumeRolePolicy
+
+> BasicResponse IamServiceUpdateAssumeRolePolicy(ctx).PolicyDocument(policyDocument).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+
+Updates the policy that grants an IAM entity permission to assume a role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyDocument := "policyDocument_example" // string | The policy that grants an entity permission to assume the role. (optional)
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUpdateAssumeRolePolicy(context.Background()).PolicyDocument(policyDocument).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateAssumeRolePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUpdateAssumeRolePolicy`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateAssumeRolePolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUpdateAssumeRolePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyDocument** | **string** | The policy that grants an entity permission to assume the role. | 
+ **roleName** | **string** | Simple name identifying the role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUpdateRole
+
+> IamServiceUpdateRoleResponse IamServiceUpdateRole(ctx).RoleName(roleName).MaxSessionDuration(maxSessionDuration).Description(description).XEmcNamespace(xEmcNamespace).Execute()
+
+Updates the description or maximum session duration setting of the specified IAM role.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    roleName := "roleName_example" // string | Simple name identifying the role. (optional)
+    maxSessionDuration := int32(56) // int32 | The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied.  This setting can have a value from 1 hour to 12 hours (optional)
+    description := "description_example" // string | The new description that you want to apply to the specified role. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUpdateRole(context.Background()).RoleName(roleName).MaxSessionDuration(maxSessionDuration).Description(description).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateRole``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUpdateRole`: IamServiceUpdateRoleResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateRole`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUpdateRoleRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **roleName** | **string** | Simple name identifying the role. | 
+ **maxSessionDuration** | **int32** | The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied.  This setting can have a value from 1 hour to 12 hours | 
+ **description** | **string** | The new description that you want to apply to the specified role. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceUpdateRoleResponse**](IamServiceUpdateRoleResponse.md)
 
 ### Authorization
 

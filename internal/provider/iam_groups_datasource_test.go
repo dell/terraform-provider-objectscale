@@ -9,6 +9,7 @@ import (
 
 // Main Acceptance Test: all scenarios.
 func TestAccIAMGroupsDataSource_PositiveScenarios(t *testing.T) {
+	defer testUserTokenCleanup(t)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -70,6 +71,7 @@ func TestAccIAMGroupsDataSource_PositiveScenarios(t *testing.T) {
 
 // Error Scenarios for IAM Groups Data Source.
 func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

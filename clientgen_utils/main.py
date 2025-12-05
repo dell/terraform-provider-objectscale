@@ -18,6 +18,7 @@ import json
 
 from requiredApis import RequiredAPIs
 from commonUtils import ProcessOpenapiSpec
+from modelNormalizers import NormalizeObjectScaleModels
 
 parser = argparse.ArgumentParser(description='Process PowerStore OpenAPI spec.')
 parser.add_argument('--input', help='Input PowerStore OpenAPI spec file path.', required=True)
@@ -46,6 +47,7 @@ def AddObjectScaleMarker(json_obj: dict) -> dict:
 
 
 filtered_json = AddObjectScaleMarker(filtered_json)
+filtered_json = NormalizeObjectScaleModels(filtered_json)
 
 # write to file
 with open(args.output, 'w') as outfile:

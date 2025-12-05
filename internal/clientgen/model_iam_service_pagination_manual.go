@@ -45,3 +45,11 @@ func (a *IamServiceGetGroupResponse) GetNextMarker() *string {
 func (o *IamServiceGetGroupResponse) GetPaginatedResp() []IamServiceGetGroupResponseGetGroupResultUsersInner {
 	return o.GetGroupResult.Users
 }
+
+func (a *IamServiceListRolesResponse) GetNextMarker() *string {
+	return a.ListRolesResult.Marker
+}
+
+func (o *IamServiceListRolesResponse) GetPaginatedResp() []IamRole {
+	return o.ListRolesResult.Roles
+}

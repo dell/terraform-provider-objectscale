@@ -19,11 +19,11 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"terraform-provider-objectscale/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -89,15 +89,12 @@ func (p *ObjectScaleProvider) Schema(ctx context.Context, req provider.SchemaReq
 			"insecure": schema.BoolAttribute{
 				MarkdownDescription: "whether to skip SSL validation",
 				Description:         "whether to skip SSL validation",
-				Required:            true,
+				Optional:            true,
 			},
 			"timeout": schema.Int64Attribute{
 				MarkdownDescription: "The timeout in seconds",
 				Description:         "The timeout in seconds",
-				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.AtLeast(1),
-				},
+				Optional:            true,
 			},
 		},
 	}
@@ -139,6 +136,7 @@ func (p *ObjectScaleProvider) Configure(ctx context.Context, req provider.Config
 func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewNamespaceResource,
+		NewIAMUserResource,
 		NewIAMInlinePolicyResource,
 		NewIAMGroupResource,
 		NewIAMGroupMembershipResource,
@@ -152,6 +150,8 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 		NewIAMGroupsDataSource,
 		NewIAMUserDataSource,
 		NewReplicationGroupDataSource,
+		NewIAMRoleDataSource,
+		NewBucketDataSource,
 	}
 }
 
@@ -162,4 +162,52 @@ func New(version string) func() provider.Provider {
 			version: version,
 		}
 	}
+}
+
+// datasourceProviderConfig defines the provider config struct
+type datasourceProviderConfig struct {
+	client *client.Client
+}
+
+func (d *datasourceProviderConfig) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+	// Prevent panic if the provider has not been configured.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*client.Client)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Data Source Configure Type",
+			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+		)
+
+		return
+	}
+	d.client = client
+}
+
+// resourceProviderConfig defines the provider config struct
+type resourceProviderConfig struct {
+	client *client.Client
+}
+
+func (r *resourceProviderConfig) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	// Prevent panic if the provider has not been configured.
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*client.Client)
+
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Resource Configure Type",
+			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+		)
+
+		return
+	}
+	r.client = client
 }
