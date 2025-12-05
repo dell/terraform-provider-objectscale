@@ -213,6 +213,7 @@ func (a *{{{classname}}}Service) {{nickname}}Execute(r {{#structPrefix}}{{&class
 	{{^required}}
 	if r.{{paramName}} != nil {
 	{{#isCollectionFormatMulti}}
+	{{^vendorExtensions.x-indexed-kv}}
 		t := *r.{{paramName}}
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
@@ -222,6 +223,14 @@ func (a *{{{classname}}}Service) {{nickname}}Execute(r {{#structPrefix}}{{&class
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "{{baseName}}", t, "{{collectionFormat}}")
 		}
+	{{/vendorExtensions.x-indexed-kv}}
+	{{#vendorExtensions.x-indexed-kv}}
+		for i, item := range *r.{{paramName}} {
+			{{#vendorExtensions.x-indexed-key-only}}parameterAddToHeaderOrQuery(localVarQueryParams, fmt.Sprintf("TagKeys.member.%d", i+1), item.Key, ""){{/vendorExtensions.x-indexed-key-only}}{{^vendorExtensions.x-indexed-key-only}}
+			parameterAddToHeaderOrQuery(localVarQueryParams, fmt.Sprintf("Tags.member.%d.Key", i+1), item.Key, "")
+			parameterAddToHeaderOrQuery(localVarQueryParams, fmt.Sprintf("Tags.member.%d.Value", i+1), item.Value, ""){{/vendorExtensions.x-indexed-key-only}}
+		}
+	{{/vendorExtensions.x-indexed-kv}}
 	{{/isCollectionFormatMulti}}
 	{{^isCollectionFormatMulti}}
 		parameterAddToHeaderOrQuery(localVarQueryParams, "{{baseName}}", r.{{paramName}}, "{{collectionFormat}}")

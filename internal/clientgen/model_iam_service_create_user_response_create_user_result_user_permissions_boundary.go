@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceCreateRoleResponseResultRolePermissionsBoundary The ARN of the policy used to set the permissions boundary for the role.
-type IamServiceCreateRoleResponseResultRolePermissionsBoundary struct {
+// IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary The ARN of the policy used to set the permissions boundary for the user.
+type IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary struct {
 	// The ARN of the policy set as permissions boundary.
 	PermissionsBoundaryArn *string `json:"PermissionsBoundaryArn,omitempty"`
 	// The permissions boundary usage type that indicates what type of IAM resource is used as the  permissions boundary for an entity. This data type can only have a value of Policy.

@@ -13,6 +13,103 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+def _normalizeObjectScaleIamRoleResponse(json_obj: dict) -> dict:
+    """In GetRoleResponse, Result property should be GetRoleResult.
+       Inner property Role should be normalised to IamRole.
+       Also for UpdateRoleResponse inner property Role should be normalised to IamRole.
+       Also for CreateRoleResponse inner property Role should be normalised to IamRole.
+       Also for ListRolesResponse inner property Roles should be normalised to IamRole.
+    """
+
+    # Check GetRoleResponse exists
+    if (
+        "components" in json_obj and
+        "schemas" in json_obj["components"] and
+        "IamService_GetRoleResponse" in json_obj["components"]["schemas"]
+    ):
+        get_role_schema = json_obj["components"]["schemas"]["IamService_GetRoleResponse"]
+
+        if (
+            "properties" in get_role_schema and
+            "Result" in get_role_schema["properties"] and
+            "properties" in get_role_schema["properties"]["Result"] and
+            "Role" in get_role_schema["properties"]["Result"]["properties"]
+        ):
+            common_role = get_role_schema["properties"]["Result"]["properties"]["Role"]
+
+            if (
+                "properties" in common_role and
+                "Tags" in common_role["properties"] and
+                "items" in common_role["properties"]["Tags"]
+            ):
+                common_role["properties"]["Tags"]["items"] = {
+                    "$ref": "#/components/schemas/IamTagKeyValue"
+                }
+
+            json_obj['components']['schemas']['IamRole'] = common_role
+            json_obj['components']['schemas']['IamRoleResult'] = {
+                "type": "object",
+                "properties": {
+                    "Role": {
+                        "$ref": "#/components/schemas/IamRole"
+                    }
+                }
+            }
+
+    # GetRole Response normalization
+    if "IamService_GetRoleResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_GetRoleResponse']['properties']
+        if "Result" in props:
+            props['GetRoleResult'] = props['Result']
+            del props['Result']
+            props['GetRoleResult'] = {
+                "$ref": "#/components/schemas/IamRoleResult"
+            }
+
+    # UpdateRole Response normalization
+    if "IamService_UpdateRoleResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_UpdateRoleResponse']['properties']
+        if "Result" in props:
+            props['UpdateRoleResult'] = props['Result']
+            del props['Result']
+            props['UpdateRoleResult'] = {
+                "$ref": "#/components/schemas/IamRoleResult"
+            }
+
+    # CreateRole Response normalization
+    if "IamService_CreateRoleResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_CreateRoleResponse']['properties']
+        if "Result" in props:
+            props['CreateRoleResult'] = props['Result']
+            del props['Result']
+            props['CreateRoleResult'] = {
+                "$ref": "#/components/schemas/IamRoleResult"
+            }
+
+    # ListRoles Response normalization
+    if "IamService_ListRolesResponse" in json_obj['components']['schemas']:
+        props = json_obj['components']['schemas']['IamService_ListRolesResponse']['properties']
+        if "Result" in props:
+            props['ListRolesResult'] = props['Result']
+            del props['Result']
+
+            # Ensure sub-properties exist
+            if (
+                "properties" in props['ListRolesResult'] and
+                "member" in props['ListRolesResult']["properties"]
+            ):
+                props['ListRolesResult']["properties"]["Roles"] = (
+                    props['ListRolesResult']["properties"]["member"]
+                )
+                del props['ListRolesResult']["properties"]["member"]
+
+                if "items" in props['ListRolesResult']["properties"]["Roles"]:
+                    props['ListRolesResult']["properties"]["Roles"]['items'] = {
+                        "$ref": "#/components/schemas/IamRole"
+                    }
+
+    return json_obj
+
 def _normalizeObjectScaleIamResponseMetadata(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific response metadata.
@@ -68,10 +165,70 @@ def _normalizeObjectScaleBasicResponseMetadata(json_obj: dict) -> dict:
 
     return json_obj
 
+def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:
+    """
+    Add ObjectScale specific marker to the OpenAPI spec.
+    Fixes specs of IAM tagging untagging APIs query parameters.
+    Adds 'x-indexed-kv' to any api with Tags.member.N query parameter.
+    Adds 'x-indexed-key-only' to any api with TagKeys parameters that have only keys.
+    """
+    # this is ok in spec, but we shall simplify it for our usecase
+    commonTagKeyType = {
+        "type": "object",
+        "properties": {
+            "key": {
+                "type": "string",
+                "description": "The name of the tag."
+            }
+        }
+    }
+    # this type is wrong in the spec
+    commonTagKeyValueType = {
+        "type": "object",
+        "properties": {
+            "key": {
+                "type": "string",
+                "description": "The name of the tag."
+            },
+            "value": {
+                "type": "string",
+                "description": "The value of the tag."
+            }
+        }
+    }
+    for path, obj in json_obj['paths'].items():
+        if '/iam?' not in path:
+            continue
+        for param in obj.get('post', {}).get('parameters', []):
+            if param['name'] == 'TagKeys':
+                param['x-indexed-kv'] = 'true'
+                param['x-indexed-key-only'] = 'true'
+                param["schema"] = {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/components/schemas/IamTagKey"
+                    }
+                }
+                json_obj['components']['schemas']['IamTagKey'] = commonTagKeyType
+
+            if param['name'] == 'Tags.member.N':
+                param['x-indexed-kv'] = 'true'
+                param["schema"] = {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IamTagKeyValue"
+                        }
+                    }
+                json_obj['components']['schemas']['IamTagKeyValue'] = commonTagKeyValueType
+    return json_obj
+
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
     """
     ret = _normalizeObjectScaleIamResponseMetadata(json_obj)
     ret = _normalizeObjectScaleBasicResponseMetadata(ret)
+    ret = _normalizeObjectScaleIamTags(ret)
+    ret = _normalizeObjectScaleIamRoleResponse(ret)
     return ret

@@ -15,10 +15,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-data "objectscale_iam_user" "all" {
-  namespace = "ns1"
+terraform {
+  required_providers {
+    objectscale = {
+      source = "registry.terraform.io/dell/objectscale"
+    }
+  }
 }
 
-output "objectscale_namespace_all" {
-  value = data.objectscale_iam_user.all
+variable "username" {
+  type = string
+}
+
+variable "password" {
+  type = string
+}
+
+variable "endpoint" {
+  type = string
+}
+
+variable "insecure" {
+  type = bool
+}
+
+provider "objectscale" {
+  username = var.username
+  password = var.password
+  endpoint = var.endpoint
+  insecure = var.insecure
+  timeout  = 120
 }

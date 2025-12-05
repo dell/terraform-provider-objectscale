@@ -33,6 +33,7 @@ func TestAccIAMUserDataSource_basic(t *testing.T) {
 }
 
 func TestAccIAMUserDataSource_withUsernameFilter(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -53,6 +54,7 @@ func TestAccIAMUserDataSource_withUsernameFilter(t *testing.T) {
 }
 
 func TestAccIAMUserDataSource_withGroupnameFilter(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -75,6 +77,7 @@ func TestAccIAMUserDataSource_withGroupnameFilter(t *testing.T) {
 }
 
 func TestAccIAMUserDataSource_missingNamespace(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -90,6 +93,7 @@ func TestAccIAMUserDataSource_missingNamespace(t *testing.T) {
 }
 
 func TestAccIAMUserDataSource_groupNoMatch(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -110,6 +114,7 @@ func TestAccIAMUserDataSource_groupNoMatch(t *testing.T) {
 }
 
 func TestAccIAMUserDataSource_UserTagsAndAccessKeys(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
