@@ -81,3 +81,11 @@ func (a *IamServiceListAttachedRolePoliciesResponse) GetNextMarker() *string {
 func (o *IamServiceListAttachedRolePoliciesResponse) GetPaginatedResp() []IamPolicy {
 	return o.ListAttachedRolePoliciesResult.AttachedPolicies
 }
+
+func (a *IamServiceListRolesResponse) GetNextMarker() *string {
+	return a.ListRolesResult.Marker
+}
+
+func (o *IamServiceListRolesResponse) GetPaginatedResp() []IamRole {
+	return o.ListRolesResult.Roles
+}

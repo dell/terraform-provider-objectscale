@@ -71,10 +71,13 @@ provider "objectscale" {
 ### Required
 
 - `endpoint` (String) The API endpoint, ex. https://10.225.100.1:4443
-- `insecure` (Boolean) whether to skip SSL validation
 - `password` (String, Sensitive) The password
-- `timeout` (Number) The timeout in seconds
 - `username` (String) The username
+
+### Optional
+
+- `insecure` (Boolean) whether to skip SSL validation
+- `timeout` (Number) The timeout in seconds
 
 ## Managing User Tokens
 
@@ -83,6 +86,7 @@ If you plan to invoke these commands frequently, please properly configure the t
 By increasing the token limit and decreasing the idle expiration time, you can avoid running into the maximum token limit of your user.
 
 ## Best Practices
+
 1. The parent resource attributes of a certain resource can only be designated at creation.
    Once designated, they cannot be modified except for parent resource renaming.
 2. The name of a resource is modifiable, but it is necessary to make sure its name referenced in the child resources

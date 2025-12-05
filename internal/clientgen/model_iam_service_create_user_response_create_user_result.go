@@ -10,8 +10,7 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceGetRoleResponse struct for IamServiceGetRoleResponse
-type IamServiceGetRoleResponse struct {
-	ResponseMetadata *IamResponseMetadata `json:"ResponseMetadata,omitempty"`
-	GetRoleResult    *IamRoleResult       `json:"GetRoleResult,omitempty"`
+// IamServiceCreateUserResponseCreateUserResult Wrapper with details about the new IAM user.
+type IamServiceCreateUserResponseCreateUserResult struct {
+	User *IamServiceCreateUserResponseCreateUserResultUser `json:"User,omitempty"`
 }

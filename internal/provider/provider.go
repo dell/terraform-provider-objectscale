@@ -24,7 +24,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -90,15 +89,12 @@ func (p *ObjectScaleProvider) Schema(ctx context.Context, req provider.SchemaReq
 			"insecure": schema.BoolAttribute{
 				MarkdownDescription: "whether to skip SSL validation",
 				Description:         "whether to skip SSL validation",
-				Required:            true,
+				Optional:            true,
 			},
 			"timeout": schema.Int64Attribute{
 				MarkdownDescription: "The timeout in seconds",
 				Description:         "The timeout in seconds",
-				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.AtLeast(1),
-				},
+				Optional:            true,
 			},
 		},
 	}
@@ -140,6 +136,7 @@ func (p *ObjectScaleProvider) Configure(ctx context.Context, req provider.Config
 func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewNamespaceResource,
+		NewIAMUserResource,
 		NewIAMInlinePolicyResource,
 		NewIAMGroupResource,
 	}
@@ -153,6 +150,8 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 		NewIAMUserDataSource,
 		NewReplicationGroupDataSource,
 		NewIAMPolicyDataSource,
+		NewIAMRoleDataSource,
+		NewBucketDataSource,
 	}
 }
 
