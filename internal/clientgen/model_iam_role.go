@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceCreateRoleResponseResultRole struct for IamServiceCreateRoleResponseResultRole
-type IamServiceCreateRoleResponseResultRole struct {
+// IamRole struct for IamRole
+type IamRole struct {
 	// Arn that identifies the role.
 	Arn *string `json:"Arn,omitempty"`
 	// The trust relationship policy document that grants an entity permission to assume the role.
@@ -29,6 +29,6 @@ type IamServiceCreateRoleResponseResultRole struct {
 	// Simple name identifying the role.
 	RoleName *string `json:"RoleName,omitempty"`
 	// The list of Tags associated with the role.
-	Tags                []string                                                   `json:"Tags,omitempty"`
-	PermissionsBoundary *IamServiceCreateRoleResponseResultRolePermissionsBoundary `json:"PermissionsBoundary,omitempty"`
+	Tags                []IamTagKeyValue            `json:"Tags,omitempty"`
+	PermissionsBoundary *IamRolePermissionsBoundary `json:"PermissionsBoundary,omitempty"`
 }

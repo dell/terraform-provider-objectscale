@@ -50,6 +50,15 @@ RequiredAPIs = [
     "/iam?Action=DeleteUserPolicy",
     "/iam?Action=DeleteGroupPolicy",
     "/iam?Action=DeleteRolePolicy",
+
+    # user resource APIs
+    "/iam?Action=CreateUser",
+    "/iam?Action=DeleteUser",
+    "/iam?Action=UntagUser",
+    "/iam?Action=TagUser",
+    "/iam?Action=PutUserPermissionsBoundary",
+    "/iam?Action=DeleteUserPermissionsBoundary",
+    
     "/iam?Action=ListRoles",
     "/iam?Action=GetRole",
     "/iam?Action=CreateRole",

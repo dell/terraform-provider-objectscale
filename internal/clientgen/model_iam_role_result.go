@@ -10,7 +10,7 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceCreateRoleResponseResult struct for IamServiceCreateRoleResponseResult
-type IamServiceCreateRoleResponseResult struct {
-	Role *IamServiceCreateRoleResponseResultRole `json:"Role,omitempty"`
+// IamRoleResult struct for IamRoleResult
+type IamRoleResult struct {
+	Role *IamRole `json:"Role,omitempty"`
 }
