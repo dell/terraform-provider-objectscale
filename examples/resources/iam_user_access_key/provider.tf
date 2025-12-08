@@ -26,8 +26,8 @@ terraform {
 
 
 provider "objectscale" {
-  username = "trisha"
-  password = "ChangeMe"
-  endpoint = "https://10.247.101.251:4443"
-  insecure = true
+  username = var.username
+  password = var.password
+  endpoint = var.endpoint
+  insecure = var.insecure
 }
