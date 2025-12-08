@@ -47,10 +47,10 @@ func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAM
 	// Step 1: Get the current policy ARNs
 	var currentPolicyARNs []string
 	if currentState != nil {
-		currentPolicyARNs = []string{}
 		// Use state for Update functionality
-		for _, p := range currentState.PolicyARNs {
-			currentPolicyARNs = append(currentPolicyARNs, p.ValueString())
+		diags := currentState.PolicyARNs.ElementsAs(ctx, &currentPolicyARNs, false)
+		if diags.HasError() {
+			return plan, fmt.Errorf("failed to read policy_arns from state")
 		}
 	} else {
 		currentPolicyARNs = []string{}
@@ -142,8 +142,9 @@ func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAM
 
 	// Step 2: Get the desired policy arns from the plan
 	var desiredPolicyARNs []string
-	for _, p := range plan.PolicyARNs {
-		desiredPolicyARNs = append(desiredPolicyARNs, p.ValueString())
+	diags := plan.PolicyARNs.ElementsAs(ctx, &desiredPolicyARNs, false)
+	if diags.HasError() {
+		return plan, fmt.Errorf("failed to read policy_arns from plan")
 	}
 
 	// Step 3: Detach policy arns in current but not in desired

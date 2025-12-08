@@ -123,7 +123,7 @@ func (r *IAMManagedPolicyResource) Schema(_ context.Context, _ resource.SchemaRe
 					),
 				},
 			},
-			"policy_arns": schema.ListAttribute{
+			"policy_arns": schema.SetAttribute{
 				Description:         "List of IAM managed policy arns to associate with the entity.",
 				MarkdownDescription: "List of IAM managed policy arns to associate with the entity.",
 				Required:            true,
@@ -250,10 +250,14 @@ func (r *IAMManagedPolicyResource) Read(ctx context.Context, req resource.ReadRe
 	}
 
 	// Update state
-	state.PolicyARNs = make([]types.String, len(policyARNs))
-	for i, arn := range policyARNs {
-		state.PolicyARNs[i] = types.StringValue(arn)
+	setVal, diags := types.SetValueFrom(ctx, types.StringType, policyARNs)
+	if diags.HasError() {
+		resp.Diagnostics.Append(diags...)
+		return
 	}
+
+	state.PolicyARNs = setVal
+
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 }
@@ -314,7 +318,13 @@ func (r *IAMManagedPolicyResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	state.PolicyARNs = []types.String{}
+	emptySet, diags := types.SetValueFrom(ctx, types.StringType, []string{})
+	if diags.HasError() {
+		resp.Diagnostics.Append(diags...)
+		return
+	}
+	state.PolicyARNs = emptySet
+
 	_, err := helper.ApplyPolicyARNs(r.client, ctx, state, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("Delete Error", err.Error())

@@ -30,5 +30,5 @@ type IAMManagedPolicyResourceModel struct {
 	Groupname types.String `tfsdk:"groupname"`
 	Rolename  types.String `tfsdk:"rolename"`
 
-	PolicyARNs []types.String `tfsdk:"policy_arns"`
+	PolicyARNs types.Set `tfsdk:"policy_arns"`
 }

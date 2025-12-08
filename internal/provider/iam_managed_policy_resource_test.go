@@ -71,8 +71,8 @@ func TestAccIAMManagedPolicyResourceForUserCRUD(t *testing.T) {
 				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForUserConfig2(testingManagedPolicyResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN2),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
 				),
 			},
 			{
@@ -105,8 +105,8 @@ func TestAccIAMManagedPolicyResourceForGroupCRUD(t *testing.T) {
 				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForGroupConfig2(testingManagedPolicyResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN2),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
 				),
 			},
 			{
@@ -139,8 +139,8 @@ func TestAccIAMManagedPolicyResourceForRoleCRUD(t *testing.T) {
 				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForRoleConfig2(testingManagedPolicyResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN2),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
 				),
 			},
 			{
