@@ -224,7 +224,7 @@ func TestAccIAMGroupMembershipResource_Configure_InvalidType(t *testing.T) {
 		t.Fatalf("expected diagnostics error when ProviderData type is invalid, got none")
 	}
 
-	got := resp.Diagnostics[0].Summary() // ✅ Summary is a method in your version
+	got := resp.Diagnostics[0].Summary()
 	want := "Unexpected Resource Configure Type"
 	if got != want {
 		t.Errorf("unexpected diagnostic summary: got %q, want %q", got, want)
