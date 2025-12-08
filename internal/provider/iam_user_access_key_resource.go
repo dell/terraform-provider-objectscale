@@ -30,10 +30,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 
-	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -86,8 +86,8 @@ func (r *IAMUserAccessKeyResource) Schema(ctx context.Context, req resource.Sche
 				MarkdownDescription: "Secret access key associated with the user.",
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
-				stringplanmodifier.UseStateForUnknown(),
-			},
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"create_date": schema.StringAttribute{
 				Description:         "Creation date of the access key.",
@@ -117,7 +117,6 @@ func (r *IAMUserAccessKeyResource) Configure(ctx context.Context, req resource.C
 
 	r.client = client
 }
-
 
 func (r *IAMUserAccessKeyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	tflog.Info(ctx, "creating access key")

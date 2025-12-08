@@ -19,10 +19,10 @@ limitations under the License.
 # After `terraform apply` of this example file it will create a new user with the name set in `name` attribute on the ObjectScale
 
 resource "objectscale_iam_user_access_key" "test_iam_user_access_key" {
-  username                     = "sample_user_1"
-  namespace                    = "ns1"
-  status                       = "Active"
-  id                           = "AKIA80817B9F1F4C72CB"
+  username  = "sample_user_1"
+  namespace = "ns1"
+  status    = "Active"
+  id        = "AKIA80817B9F1F4C72CB"
 
 
 }
