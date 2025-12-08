@@ -37,7 +37,7 @@ func TestAccIAMGroupMembershipResource(t *testing.T) {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
 	var apiMocker *mockey.Mocker
-
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -160,7 +160,7 @@ func TestAccIAMGroupMembershipResource_InvalidAPIClient(t *testing.T) {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
 	var apiMocker, api1mocker *mockey.Mocker
-
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
