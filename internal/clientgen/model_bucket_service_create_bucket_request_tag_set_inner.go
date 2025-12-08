@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// BucketServiceCreateBucketRequestTagInner struct for BucketServiceCreateBucketRequestTagInner
-type BucketServiceCreateBucketRequestTagInner struct {
+// BucketServiceCreateBucketRequestTagSetInner struct for BucketServiceCreateBucketRequestTagSetInner
+type BucketServiceCreateBucketRequestTagSetInner struct {
 	// The key of a tag
 	Key *string `json:"Key,omitempty"`
 	// The value of a tag
