@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceGetPolicyResponseGetPolicyResultPolicy Get policy
-type IamServiceGetPolicyResponseGetPolicyResultPolicy struct {
+// IamPolicy Get policy
+type IamPolicy struct {
 	// The resource name of the policy.
 	Arn *string `json:"Arn,omitempty"`
 	// The number of entities (users, groups, and roles) that the policy is attached to.

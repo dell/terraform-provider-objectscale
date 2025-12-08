@@ -80,6 +80,13 @@ func TfInt64NN(in *int64) types.Int64 {
 	return types.Int64Value(*in)
 }
 
+func TfInt32NN(in *int32) types.Int32 {
+	if in == nil {
+		return types.Int32Value(0)
+	}
+	return types.Int32Value(*in)
+}
+
 // TfObject - Converts input using the transform transform function, returns empty output if input is nil.
 func TfObject[tfT any, jT any](in *jT, transform func(jT) tfT) tfT {
 	if in == nil {

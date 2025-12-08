@@ -12,5 +12,5 @@ package clientgen
 
 // IamServiceGetPolicyResponseGetPolicyResult Get getPolicyResult
 type IamServiceGetPolicyResponseGetPolicyResult struct {
-	Policy *IamServiceGetPolicyResponseGetPolicyResultPolicy `json:"Policy,omitempty"`
+	Policy *IamPolicy `json:"Policy,omitempty"`
 }
