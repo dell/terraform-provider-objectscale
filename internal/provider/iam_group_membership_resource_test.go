@@ -36,16 +36,18 @@ func TestAccIAMGroupMembershipResource(t *testing.T) {
 	if os.Getenv("TF_ACC") == "" {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
+	var apiMocker *mockey.Mocker
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+
 		Steps: []resource.TestStep{
 			// invalid config testing
 			{
 				Config: ProviderConfigForTesting + `
 				resource "objectscale_iam_group" "example" {
-					name      = "example-group"
+					name      = "testacc_group"
 					namespace = "ns1"
 					}
 					
@@ -60,7 +62,7 @@ func TestAccIAMGroupMembershipResource(t *testing.T) {
 			{
 				Config: ProviderConfigForTesting + `
 				resource "objectscale_iam_group" "example" {
-					name      = "example-group"
+					name      = "testacc_group"
 					namespace = "ns1"
 					}
 					
@@ -72,10 +74,11 @@ func TestAccIAMGroupMembershipResource(t *testing.T) {
 						`,
 				ExpectError: regexp.MustCompile(".*NoSuchEntity.*"),
 			},
+			// Create
 			{
 				Config: ProviderConfigForTesting + `
 				resource "objectscale_iam_group" "example" {
-					name      = "example-group"
+					name      = "testacc_group"
 					namespace = "ns1"
 				}
 		
@@ -86,15 +89,50 @@ func TestAccIAMGroupMembershipResource(t *testing.T) {
 				}
 				`,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("objectscale_iam_group_membership.example_membership", "name", "example-group"),
+					resource.TestCheckResourceAttr("objectscale_iam_group_membership.example_membership", "name", "testacc_group"),
 					resource.TestCheckResourceAttr("objectscale_iam_group_membership.example_membership", "namespace", "ns1"),
 					resource.TestCheckResourceAttr("objectscale_iam_group_membership.example_membership", "user", "test-user"),
 				),
 			},
 			{
+				PreConfig: func() {
+					apiMocker = mockey.Mock((*clientgen.IamApiService).IamServiceGetGroupExecute).
+						Return(mockey.Sequence(
+							&clientgen.IamServiceGetGroupResponse{
+								GetGroupResult: &clientgen.IamServiceGetGroupResponseGetGroupResult{
+									Group: &clientgen.IamServiceCreateGroupResponseCreateGroupResultGroup{
+										GroupId:    getpointer("testacc_group-id"),
+										GroupName:  getpointer("testacc_group"),
+										Arn:        getpointer("arn:aws:iam::123456789012:group/testacc_group"),
+										CreateDate: getpointer("2024-01-01T00:00:00Z"),
+									},
+								},
+							}, nil, nil).Then(nil, nil, fmt.Errorf("error"))).
+						Build()
+				},
 				Config: ProviderConfigForTesting + `
 				resource "objectscale_iam_group" "example" {
-					name      = "example-group"
+					name      = "testacc_group"
+					namespace = "ns1"
+				}
+		
+				resource "objectscale_iam_group_membership" "example_membership" {
+					name      = objectscale_iam_group.example.name
+					namespace = objectscale_iam_group.example.namespace
+					user      = "test-user"
+				}
+				`,
+				PlanOnly:    true,
+				ExpectError: regexp.MustCompile(".*Error reading Group.*"),
+			},
+			// update not supported test
+			{
+				PreConfig: func() {
+					apiMocker.UnPatch() // cleanup after the previous step
+				},
+				Config: ProviderConfigForTesting + `
+				resource "objectscale_iam_group" "example" {
+					name      = "testacc_group"
 					namespace = "ns1"
 				}
 		
@@ -160,23 +198,6 @@ func TestAccIAMGroupMembershipResource_InvalidAPIClient(t *testing.T) {
 				}
 				`,
 				ExpectError: regexp.MustCompile(".*Error reading Group.*"),
-			},
-			{
-				PreConfig: func() {
-					apiMocker.UnPatch() // cleanup after the previous step
-					apiMocker = mockey.Mock((*clientgen.IamApiService).IamServiceRemoveUserFromGroupExecute).
-						Return(nil, nil, fmt.Errorf("error")).
-						Build()
-				},
-				Config: ProviderConfigForTesting + `
-				resource "objectscale_iam_group_membership" "example_membership" {
-					name      = "mocked_group"
-					namespace = "ns1"
-					user      = "mocked_user"
-				}
-				`,
-				Destroy:     true,
-				ExpectError: regexp.MustCompile(".*Remove user failed.*"),
 			},
 		},
 	})

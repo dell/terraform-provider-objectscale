@@ -19,9 +19,6 @@ package provider
 
 import (
 	"context"
-	"fmt"
-
-	"terraform-provider-objectscale/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -38,7 +35,7 @@ func NewIAMGroupMembershipResource() resource.Resource {
 
 // IAMGroupMembershipResource defines the resource implementation.
 type IAMGroupMembershipResource struct {
-	client *client.Client
+	resourceProviderConfig
 }
 
 // IAMGroupMembershipResourceModel describes the resource data model.
@@ -76,25 +73,6 @@ func (r *IAMGroupMembershipResource) Schema(ctx context.Context, req resource.Sc
 			},
 		},
 	}
-}
-
-func (r *IAMGroupMembershipResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	// Prevent panic if the provider has not been configured.
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *http.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-		)
-		return
-	}
-
-	r.client = client
 }
 
 func (r *IAMGroupMembershipResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
