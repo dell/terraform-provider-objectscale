@@ -207,7 +207,7 @@ Class | Method | HTTP request | Description
  - [BucketServiceCreateBucketRequestCopyPolicy](docs/BucketServiceCreateBucketRequestCopyPolicy.md)
  - [BucketServiceCreateBucketRequestMetadataInner](docs/BucketServiceCreateBucketRequestMetadataInner.md)
  - [BucketServiceCreateBucketRequestMinMaxGovernor](docs/BucketServiceCreateBucketRequestMinMaxGovernor.md)
- - [BucketServiceCreateBucketRequestTagInner](docs/BucketServiceCreateBucketRequestTagInner.md)
+ - [BucketServiceCreateBucketRequestTagSetInner](docs/BucketServiceCreateBucketRequestTagSetInner.md)
  - [BucketServiceCreateBucketResponse](docs/BucketServiceCreateBucketResponse.md)
  - [BucketServiceCreateBucketResponseMetaData](docs/BucketServiceCreateBucketResponseMetaData.md)
  - [BucketServiceDeleteBucketTagsRequest](docs/BucketServiceDeleteBucketTagsRequest.md)

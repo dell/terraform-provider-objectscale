@@ -378,38 +378,27 @@ func (d *BucketDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 
 	// Call the API to get buckets with pagination
-	var allBuckets []clientgen.BucketServiceGetBucketsResponseObjectBucketInner
-	var nextMarker *string
-	for {
-		apiReq := d.client.GenClient.BucketApi.BucketServiceGetBuckets(ctx).Namespace(ns)
-		if prefix != "" {
-			apiReq = apiReq.Name(prefix + "*")
-		}
-		if nextMarker != nil && *nextMarker != "" {
-			apiReq = apiReq.Marker(*nextMarker)
-		}
-		apiResp, _, err := apiReq.Execute()
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Unable to read buckets",
-				err.Error(),
-			)
-			return
-		}
-		allBuckets = append(allBuckets, apiResp.ObjectBucket...)
+	apiReq := d.client.GenClient.BucketApi.BucketServiceGetBuckets(ctx).Namespace(ns)
+	if prefix != "" {
+		apiReq = apiReq.Name(prefix + "*")
+	}
 
-		// If a name prefix was provided and no buckets were found, return an error
-		if prefix != "" && len(apiResp.ObjectBucket) == 0 {
-			resp.Diagnostics.AddError(
-				"No buckets found with the specified prefix",
-				fmt.Sprintf("No buckets found in namespace '%s' with prefix '%s'. Please check the prefix.", ns, prefix),
-			)
-			return
-		}
-		nextMarker = apiResp.NextMarker
-		if nextMarker == nil || *nextMarker == "" {
-			break
-		}
+	allBuckets, err := helper.GetAllInstances(apiReq)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Buckets",
+			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
+		)
+		return
+	}
+
+	// If a name prefix was provided and no buckets were found, return an error
+	if prefix != "" && len(allBuckets) == 0 {
+		resp.Diagnostics.AddError(
+			"No buckets found with the specified prefix",
+			fmt.Sprintf("No buckets found in namespace '%s' with prefix '%s'. Please check the prefix.", ns, prefix),
+		)
+		return
 	}
 
 	var buckets []models.BucketModel
@@ -469,7 +458,7 @@ func mapBucketToModel(b clientgen.BucketServiceGetBucketsResponseObjectBucketInn
 	}
 
 	// Tags
-	for _, t := range b.Tag {
+	for _, t := range b.TagSet {
 		m.Tag = append(m.Tag, models.TagModel{
 			Key:   helper.TfString(t.Key),
 			Value: helper.TfString(t.Value),
