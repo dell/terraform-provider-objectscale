@@ -21,7 +21,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"terraform-provider-objectscale/internal/client"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
@@ -40,7 +39,7 @@ var _ resource.ResourceWithImportState = &IAMPolicyAttachmentResource{}
 
 // IAMPolicyAttachmentResource is the resource implementation.
 type IAMPolicyAttachmentResource struct {
-	client *client.Client
+	resourceProviderConfig
 }
 
 // NewIAMPolicyAttachmentResource is a helper function to simplify the provider implementation.
@@ -51,27 +50,6 @@ func NewIAMPolicyAttachmentResource() resource.Resource {
 // Metadata returns the resource type name.
 func (r *IAMPolicyAttachmentResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_iam_policy_attachment"
-}
-
-// Configure adds the provider configured client to the resource.
-func (r *IAMPolicyAttachmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	// Prevent panic if the provider has not been configured.
-	if req.ProviderData == nil {
-		return
-	}
-
-	client, ok := req.ProviderData.(*client.Client)
-
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-		)
-
-		return
-	}
-
-	r.client = client
 }
 
 // Schema defines the schema for the resource.

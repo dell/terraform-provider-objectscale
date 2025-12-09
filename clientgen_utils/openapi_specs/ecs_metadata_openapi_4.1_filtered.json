@@ -15134,7 +15134,7 @@
 							"AttachedPolicies": {
 								"type": "array",
 								"items": {
-									"$ref": "#/components/schemas/IamPolicy"
+									"$ref": "#/components/schemas/IamPolicyAttached"
 								}
 							},
 							"Marker": {
@@ -15157,7 +15157,7 @@
 							"AttachedPolicies": {
 								"type": "array",
 								"items": {
-									"$ref": "#/components/schemas/IamPolicy"
+									"$ref": "#/components/schemas/IamPolicyAttached"
 								}
 							},
 							"Marker": {
@@ -15180,7 +15180,7 @@
 							"AttachedPolicies": {
 								"type": "array",
 								"items": {
-									"$ref": "#/components/schemas/IamPolicy"
+									"$ref": "#/components/schemas/IamPolicyAttached"
 								}
 							},
 							"Marker": {
@@ -15601,6 +15601,19 @@
 					}
 				},
 				"description": "Get policy"
+			},
+			"IamPolicyAttached": {
+				"type": "object",
+				"properties": {
+					"PolicyArn": {
+						"type": "string",
+						"description": "The resource name of the policy."
+					},
+					"PolicyName": {
+						"type": "string",
+						"description": "The friendly name of the policy."
+					}
+				}
 			},
 			"IamTagKeyValue": {
 				"type": "object",

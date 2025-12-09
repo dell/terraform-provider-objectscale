@@ -198,7 +198,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 			resp.Diagnostics.AddError("Error listing IAM policies attached to user: "+*user, err.Error())
 			return
 		}
-		allPolicyResp = dsresp
+		allPolicyResp = helper.SliceTransform(dsresp, d.attachedToMain)
 	} else if group := helper.ValueToPointer[string](data.Group); group != nil {
 		// get by group
 		dsreq := d.client.GenClient.IamApi.IamServiceListAttachedGroupPolicies(ctx).XEmcNamespace(namespace).
@@ -208,7 +208,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 			resp.Diagnostics.AddError("Error listing IAM policies attached to group: "+*group, err.Error())
 			return
 		}
-		allPolicyResp = dsresp
+		allPolicyResp = helper.SliceTransform(dsresp, d.attachedToMain)
 	} else if role := helper.ValueToPointer[string](data.Role); role != nil {
 		// get by role
 		dsreq := d.client.GenClient.IamApi.IamServiceListAttachedRolePolicies(ctx).XEmcNamespace(namespace).
@@ -218,7 +218,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 			resp.Diagnostics.AddError("Error listing IAM policies attached to role: "+*role, err.Error())
 			return
 		}
-		allPolicyResp = dsresp
+		allPolicyResp = helper.SliceTransform(dsresp, d.attachedToMain)
 	} else {
 		// get all policies
 		dsreq := d.client.GenClient.IamApi.IamServiceListPolicies(ctx).XEmcNamespace(namespace)
@@ -242,6 +242,13 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (d IAMPolicyDataSource) attachedToMain(in clientgen.IamPolicyAttached) clientgen.IamPolicy {
+	return clientgen.IamPolicy{
+		PolicyName: in.PolicyName,
+		Arn:        in.PolicyArn,
+	}
 }
 
 func (d IAMPolicyDataSource) updateState(iam_policys []clientgen.IamPolicy) []models.IamPolicyDataSourceIamPolicyModel {
