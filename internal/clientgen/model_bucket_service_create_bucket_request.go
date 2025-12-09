@@ -27,7 +27,7 @@ type BucketServiceCreateBucketRequest struct {
 	// Namespace associated with the user/tenant that is allowed to access the bucket
 	Namespace *string `json:"namespace,omitempty"`
 	// Tags - list of tags set for the Bucket
-	Tag []BucketServiceCreateBucketRequestTagInner `json:"Tag,omitempty"`
+	TagSet []BucketServiceCreateBucketRequestTagSetInner `json:"TagSet,omitempty"`
 	// tag to enable encryption for the bucket
 	IsEncryptionEnabled *bool `json:"is_encryption_enabled,omitempty"`
 	// Flag indicating the Read permission for default group

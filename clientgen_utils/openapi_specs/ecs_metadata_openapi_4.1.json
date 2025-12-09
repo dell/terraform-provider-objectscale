@@ -15995,7 +15995,7 @@
                           "global": null,
                           "remote": null,
                           "vdc": null,
-                          "tags": [],
+                          "TagSet": [],
                           "namespace": "s3",
                           "locked": false,
                           "created": "2015-03-02T20:51:28.034Z",
@@ -16023,7 +16023,7 @@
                           "global": null,
                           "remote": null,
                           "vdc": null,
-                          "tags": [],
+                          "TagSet": [],
                           "namespace": "s3",
                           "locked": false,
                           "created": "2015-03-02T19:44:29.283Z",
@@ -53516,7 +53516,7 @@
             "type": "string",
             "description": "Namespace associated with the user/tenant that is allowed to access the bucket"
           },
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -53752,7 +53752,7 @@
             "type": "string",
             "description": "Message returned by the server indicating the reason for create bucket failure (if any)"
           },
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54051,7 +54051,7 @@
                   "type": "string",
                   "description": "API type"
                 },
-                "Tag": {
+                "TagSet": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -62428,10 +62428,10 @@
           "ListAttachedGroupPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "AttachedPolicies": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/IamService_ListAccessKeysResponse"
                 }
               },
               "Marker": {
@@ -62456,7 +62456,7 @@
           "ListAttachedRolePoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "AttachedPolicies": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -62484,7 +62484,7 @@
           "ListAttachedUserPoliciesResult": {
             "type": "object",
             "properties": {
-              "member": {
+              "AttachedPolicies": {
                 "type": "array",
                 "items": {
                   "type": "string"

@@ -86,6 +86,7 @@ If you plan to invoke these commands frequently, please properly configure the t
 By increasing the token limit and decreasing the idle expiration time, you can avoid running into the maximum token limit of your user.
 
 ## Best Practices
+
 1. The parent resource attributes of a certain resource can only be designated at creation.
    Once designated, they cannot be modified except for parent resource renaming.
 2. The name of a resource is modifiable, but it is necessary to make sure its name referenced in the child resources

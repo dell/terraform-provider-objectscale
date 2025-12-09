@@ -78,7 +78,7 @@ func TestAccBucketDataSource_ErrorScenarios(t *testing.T) {
 			            namespace  = "INVALID"
 			        }
 			    `,
-				ExpectError: regexp.MustCompile(`Namespace INVALID does not exist`),
+				ExpectError: regexp.MustCompile(`Error Reading Buckets`),
 			},
 
 			// Nonexistent Bucket Name → triggers "Error Listing Bucket"

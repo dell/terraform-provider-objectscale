@@ -46,6 +46,42 @@ func (o *IamServiceGetGroupResponse) GetPaginatedResp() []IamServiceGetGroupResp
 	return o.GetGroupResult.Users
 }
 
+// List Policies pagination helper methods
+func (a *IamServiceListPoliciesResponse) GetNextMarker() *string {
+	return a.ListPoliciesResult.Marker
+}
+
+func (o *IamServiceListPoliciesResponse) GetPaginatedResp() []IamPolicy {
+	return o.ListPoliciesResult.Policies
+}
+
+// List Attached User Policies pagination helper methods
+func (a *IamServiceListAttachedUserPoliciesResponse) GetNextMarker() *string {
+	return a.ListAttachedUserPoliciesResult.Marker
+}
+
+func (o *IamServiceListAttachedUserPoliciesResponse) GetPaginatedResp() []IamPolicyAttached {
+	return o.ListAttachedUserPoliciesResult.AttachedPolicies
+}
+
+// List Attached Group Policies pagination helper methods
+func (a *IamServiceListAttachedGroupPoliciesResponse) GetNextMarker() *string {
+	return a.ListAttachedGroupPoliciesResult.Marker
+}
+
+func (o *IamServiceListAttachedGroupPoliciesResponse) GetPaginatedResp() []IamPolicyAttached {
+	return o.ListAttachedGroupPoliciesResult.AttachedPolicies
+}
+
+// List Attached Role Policies pagination helper methods
+func (a *IamServiceListAttachedRolePoliciesResponse) GetNextMarker() *string {
+	return a.ListAttachedRolePoliciesResult.Marker
+}
+
+func (o *IamServiceListAttachedRolePoliciesResponse) GetPaginatedResp() []IamPolicyAttached {
+	return o.ListAttachedRolePoliciesResult.AttachedPolicies
+}
+
 func (a *IamServiceListRolesResponse) GetNextMarker() *string {
 	return a.ListRolesResult.Marker
 }

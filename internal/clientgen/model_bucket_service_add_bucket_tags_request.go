@@ -13,7 +13,7 @@ package clientgen
 // BucketServiceAddBucketTagsRequest struct for BucketServiceAddBucketTagsRequest
 type BucketServiceAddBucketTagsRequest struct {
 	// Tags - list of tags set for the Bucket
-	Tag []BucketServiceCreateBucketRequestTagInner `json:"Tag,omitempty"`
+	Tag []BucketServiceCreateBucketRequestTagSetInner `json:"Tag,omitempty"`
 	// Namespace associated with the user/tenant that is allowed to access the bucket
 	Namespace *string `json:"namespace,omitempty"`
 }

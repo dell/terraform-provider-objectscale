@@ -10,7 +10,10 @@ API version: 4.0.0
 
 package clientgen
 
-// IamServiceGetPolicyResponseGetPolicyResult Get getPolicyResult
-type IamServiceGetPolicyResponseGetPolicyResult struct {
-	Policy *IamPolicy `json:"Policy,omitempty"`
+// IamPolicyAttached struct for IamPolicyAttached
+type IamPolicyAttached struct {
+	// The resource name of the policy.
+	PolicyArn *string `json:"PolicyArn,omitempty"`
+	// The friendly name of the policy.
+	PolicyName *string `json:"PolicyName,omitempty"`
 }
