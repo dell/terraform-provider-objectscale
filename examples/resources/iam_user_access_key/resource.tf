@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 # Available actions: Create, Update, Delete and Import
-# After `terraform apply` of this example file it will create a new user with the name set in `name` attribute on the ObjectScale
+# After `terraform apply` of this example file it will create a new user access key with the name set in `name` attribute on the ObjectScale
 
 resource "objectscale_iam_user_access_key" "test_iam_user_access_key" {
   username  = "sample_user_1"
@@ -27,4 +27,4 @@ resource "objectscale_iam_user_access_key" "test_iam_user_access_key" {
 
 }
 
-# After the execution of above resource block, namespace would have been created on the ObjectScale array. For more information, Please check the terraform state file. 
+# After the execution of above resource block, access key would have been created on the user of the ObjectScale array. For more information, Please check the terraform state file. 
