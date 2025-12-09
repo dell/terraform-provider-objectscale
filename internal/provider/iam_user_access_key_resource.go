@@ -75,9 +75,8 @@ func (r *IAMUserAccessKeyResource) Schema(ctx context.Context, req resource.Sche
 				Computed:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"none",
-						"write-read-coherent",
-						"full",
+						"Active",
+						"Inactive",
 					),
 				},
 			},
@@ -90,6 +89,7 @@ func (r *IAMUserAccessKeyResource) Schema(ctx context.Context, req resource.Sche
 				Description:         "Secret access key associated with the user.",
 				MarkdownDescription: "Secret access key associated with the user.",
 				Computed:            true,
+				Sensitive:           true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
