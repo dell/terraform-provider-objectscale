@@ -35,6 +35,7 @@ func testAccImportStateIDFunc(resourceName string) resource.ImportStateIdFunc {
 	}
 }
 func TestAccIamUserAccessKeyResource(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
