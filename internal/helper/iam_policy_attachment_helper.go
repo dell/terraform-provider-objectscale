@@ -27,7 +27,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAMManagedPolicyResourceModel, currentState *models.IAMManagedPolicyResourceModel) (models.IAMManagedPolicyResourceModel, error) {
+func ApplyPolicyARNs(client *client.Client, ctx context.Context, plan models.IAMPolicyAttachmentResourceModel, currentState *models.IAMPolicyAttachmentResourceModel) (models.IAMPolicyAttachmentResourceModel, error) {
 	// Determine namespace
 	namespace := plan.Namespace.ValueString()
 

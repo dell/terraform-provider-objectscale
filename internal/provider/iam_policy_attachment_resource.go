@@ -35,26 +35,26 @@ import (
 )
 
 // Ensure the implementation satisfies the expected interfaces.
-var _ resource.Resource = &IAMManagedPolicyResource{}
-var _ resource.ResourceWithImportState = &IAMManagedPolicyResource{}
+var _ resource.Resource = &IAMPolicyAttachmentResource{}
+var _ resource.ResourceWithImportState = &IAMPolicyAttachmentResource{}
 
-// IAMManagedPolicyResource is the resource implementation.
-type IAMManagedPolicyResource struct {
+// IAMPolicyAttachmentResource is the resource implementation.
+type IAMPolicyAttachmentResource struct {
 	client *client.Client
 }
 
-// NewIAMManagedPolicyResource is a helper function to simplify the provider implementation.
-func NewIAMManagedPolicyResource() resource.Resource {
-	return &IAMManagedPolicyResource{}
+// NewIAMPolicyAttachmentResource is a helper function to simplify the provider implementation.
+func NewIAMPolicyAttachmentResource() resource.Resource {
+	return &IAMPolicyAttachmentResource{}
 }
 
 // Metadata returns the resource type name.
-func (r *IAMManagedPolicyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_iam_managed_policy"
+func (r *IAMPolicyAttachmentResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_iam_policy_attachment"
 }
 
 // Configure adds the provider configured client to the resource.
-func (r *IAMManagedPolicyResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IAMPolicyAttachmentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -75,14 +75,14 @@ func (r *IAMManagedPolicyResource) Configure(_ context.Context, req resource.Con
 }
 
 // Schema defines the schema for the resource.
-func (r *IAMManagedPolicyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IAMPolicyAttachmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages IAM managed policies for ObjectScale entities (user, group, or role).",
-		MarkdownDescription: "Manages IAM managed policies for ObjectScale entities (user, group, or role).",
+		Description:         "Manages IAM policy attachments for ObjectScale entities (user, group, or role).",
+		MarkdownDescription: "Manages IAM policy attachments for ObjectScale entities (user, group, or role).",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description:         "Unique identifier for the IAM managed policy resource.",
-				MarkdownDescription: "Unique identifier for the IAM managed policy resource.",
+				Description:         "Unique identifier for the IAM policy attachment resource.",
+				MarkdownDescription: "Unique identifier for the IAM policy attachment resource.",
 				Computed:            true,
 			},
 			"namespace": schema.StringAttribute{
@@ -124,8 +124,8 @@ func (r *IAMManagedPolicyResource) Schema(_ context.Context, _ resource.SchemaRe
 				},
 			},
 			"policy_arns": schema.SetAttribute{
-				Description:         "List of IAM managed policy arns to associate with the entity.",
-				MarkdownDescription: "List of IAM managed policy arns to associate with the entity.",
+				Description:         "List of policy arns to associate with the entity.",
+				MarkdownDescription: "List of policy arns to associate with the entity.",
 				Required:            true,
 				ElementType:         types.StringType,
 			},
@@ -134,8 +134,8 @@ func (r *IAMManagedPolicyResource) Schema(_ context.Context, _ resource.SchemaRe
 }
 
 // Read refreshes the Terraform state with the latest data.
-func (r *IAMManagedPolicyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state models.IAMManagedPolicyResourceModel
+func (r *IAMPolicyAttachmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state models.IAMPolicyAttachmentResourceModel
 
 	// Get current state
 	diags := req.State.Get(ctx, &state)
@@ -263,8 +263,8 @@ func (r *IAMManagedPolicyResource) Read(ctx context.Context, req resource.ReadRe
 }
 
 // Create creates the resource and sets the updated Terraform state on success.
-func (r *IAMManagedPolicyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan models.IAMManagedPolicyResourceModel
+func (r *IAMPolicyAttachmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan models.IAMPolicyAttachmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -282,15 +282,15 @@ func (r *IAMManagedPolicyResource) Create(ctx context.Context, req resource.Crea
 }
 
 // Update updates the resource and sets the updated Terraform state on success.
-func (r *IAMManagedPolicyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan models.IAMManagedPolicyResourceModel
+func (r *IAMPolicyAttachmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan models.IAMPolicyAttachmentResourceModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var state models.IAMManagedPolicyResourceModel
+	var state models.IAMPolicyAttachmentResourceModel
 	diags = req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -308,10 +308,10 @@ func (r *IAMManagedPolicyResource) Update(ctx context.Context, req resource.Upda
 }
 
 // Delete deletes the resource and removes the Terraform state.
-func (r *IAMManagedPolicyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	tflog.Info(ctx, "Deleting IAM Managed Policy resource")
+func (r *IAMPolicyAttachmentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	tflog.Info(ctx, "Deleting IAM Policy Attachment resource")
 
-	var state models.IAMManagedPolicyResourceModel
+	var state models.IAMPolicyAttachmentResourceModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -334,11 +334,11 @@ func (r *IAMManagedPolicyResource) Delete(ctx context.Context, req resource.Dele
 	// Remove resource from Terraform state
 	resp.State.RemoveResource(ctx)
 
-	tflog.Info(ctx, "Done with deleting IAM Managed Policy resource")
+	tflog.Info(ctx, "Done with deleting IAM Policy Attachment resource")
 }
 
 // ImportState imports the existing resource into the Terraform state.
-func (r *IAMManagedPolicyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IAMPolicyAttachmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Expected format: <namespace>:<entity_type>:<entity_name>
 	// Retrieve import ID and save to id attribute
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)

@@ -15,17 +15,17 @@
 
 
 # The command is
-# terraform import objectscale_iam_managed_policy.example <namespace>:<entity_type>:<entity_name>
+# terraform import objectscale_iam_policy_attachment.example <namespace>:<entity_type>:<entity_name>
 # <namespace>: Namespace to which the IAM entity belongs.
 # <entity_type>: One of user, group, or role.
 # <entity_name>: The name of the user, group, or role.
 # Examples:
-# Import managed policies for a user
-# terraform import objectscale_iam_managed_policy.example ns1:user:userTest1
-# Import managed policies for a group
-# terraform import objectscale_iam_managed_policy.example ns1:group:groupTest1
-# Import managed policies for a role
-# terraform import objectscale_iam_managed_policy.example ns1:role:roleTest1
+# Import policy attachments for a user
+# terraform import objectscale_iam_policy_attachment.example ns1:user:userTest1
+# Import policy attachments for a group
+# terraform import objectscale_iam_policy_attachment.example ns1:group:groupTest1
+# Import policy attachments for a role
+# terraform import objectscale_iam_policy_attachment.example ns1:role:roleTest1
 
 # after running this command, populate the policy_arns field and other required parameters in the config file to start managing this resource.
 # Note: running "terraform show" after importing shows the current config/state of the resource. You can copy/paste that config to make it easier to manage the resource.

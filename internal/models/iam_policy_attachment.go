@@ -21,8 +21,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// IAMManagedPolicyResourceModel maps the IAM Managed Policy resource data.
-type IAMManagedPolicyResourceModel struct {
+// IAMPolicyAttachmentResourceModel maps the IAM Policy Attachment resource data.
+type IAMPolicyAttachmentResourceModel struct {
 	ID        types.String `tfsdk:"id"`
 	Namespace types.String `tfsdk:"namespace"`
 

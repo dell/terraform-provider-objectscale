@@ -17,8 +17,8 @@ limitations under the License.
 
 # Available actions: Create, Update, Delete and Import
 # Before running `terraform apply`, ensure that the specified user/group/role exists in the ObjectScale
-# Running `terraform apply` will set the specified managed policies for that user/group/role in the ObjectScale
-resource "objectscale_iam_managed_policy" "example" {
+# Running `terraform apply` will set the specified policy arns for that user/group/role in the ObjectScale
+resource "objectscale_iam_policy_attachment" "example" {
   # Namespace to which the IAM entity belongs must be provided
   namespace = "ns1"
 
@@ -27,7 +27,7 @@ resource "objectscale_iam_managed_policy" "example" {
   # groupname = "groupTest1"
   # rolename  = "roleTest1"
 
-  # List of managed policies to be set on the specified IAM entity must be provided
+  # List of policy arns to be set on the specified IAM entity must be provided
   policy_arns = [
     "urn:ecs:iam:::policy/ECSS3ReadOnlyAccess",
     "urn:ecs:iam:::policy/IAMReadOnlyAccess"
