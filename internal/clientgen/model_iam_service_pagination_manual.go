@@ -60,7 +60,7 @@ func (a *IamServiceListAttachedUserPoliciesResponse) GetNextMarker() *string {
 	return a.ListAttachedUserPoliciesResult.Marker
 }
 
-func (o *IamServiceListAttachedUserPoliciesResponse) GetPaginatedResp() []IamPolicy {
+func (o *IamServiceListAttachedUserPoliciesResponse) GetPaginatedResp() []IamPolicyAttached {
 	return o.ListAttachedUserPoliciesResult.AttachedPolicies
 }
 
@@ -69,7 +69,7 @@ func (a *IamServiceListAttachedGroupPoliciesResponse) GetNextMarker() *string {
 	return a.ListAttachedGroupPoliciesResult.Marker
 }
 
-func (o *IamServiceListAttachedGroupPoliciesResponse) GetPaginatedResp() []IamPolicy {
+func (o *IamServiceListAttachedGroupPoliciesResponse) GetPaginatedResp() []IamPolicyAttached {
 	return o.ListAttachedGroupPoliciesResult.AttachedPolicies
 }
 
@@ -78,7 +78,7 @@ func (a *IamServiceListAttachedRolePoliciesResponse) GetNextMarker() *string {
 	return a.ListAttachedRolePoliciesResult.Marker
 }
 
-func (o *IamServiceListAttachedRolePoliciesResponse) GetPaginatedResp() []IamPolicy {
+func (o *IamServiceListAttachedRolePoliciesResponse) GetPaginatedResp() []IamPolicyAttached {
 	return o.ListAttachedRolePoliciesResult.AttachedPolicies
 }
 

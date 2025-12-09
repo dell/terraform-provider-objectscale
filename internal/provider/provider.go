@@ -138,6 +138,7 @@ func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.R
 		NewNamespaceResource,
 		NewIAMUserResource,
 		NewIAMInlinePolicyResource,
+		NewIAMPolicyAttachmentResource,
 		NewIAMGroupResource,
 		NewIAMGroupMembershipResource,
 		NewIAMUserAccessKeyResource,

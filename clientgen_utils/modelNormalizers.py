@@ -168,11 +168,11 @@ def _normalizeObjectScaleBasicResponseMetadata(json_obj: dict) -> dict:
 def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
     """
     Normalize ObjectScale iam policy models.
-    IamService_ListPoliciesResponse.ListPoliciesResult.Policies
-    IamService_ListAttachedGroupPoliciesResponse.ListAttachedGroupPoliciesResult.AttachedPolicies
+    1. IamService_ListPoliciesResponse.ListPoliciesResult.Policies
+    is equal to IamService_GetPolicyResponse.GetPolicyResult.Policy
+    2.IamService_ListAttachedGroupPoliciesResponse.ListAttachedGroupPoliciesResult.AttachedPolicies
     IamService_ListAttachedUserPoliciesResponse.ListAttachedUserPoliciesResult.AttachedPolicies
-    IamService_ListAttachedRolePoliciesResponse.ListAttachedRolePoliciesResult.AttachedPolicies
-    are all equal to IamService_GetPolicyResponse.GetPolicyResult.Policy
+    IamService_ListAttachedRolePoliciesResponse.ListAttachedRolePoliciesResult.AttachedPolicies are all same.
     """
     common_policy_type = json_obj['components']['schemas']['IamService_GetPolicyResponse']\
         ['properties']['GetPolicyResult']\
@@ -180,9 +180,25 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
     common_policy_ref = {
         "$ref": "#/components/schemas/IamPolicy"
     }
+    common_policy_attached_ref = {
+        "$ref": "#/components/schemas/IamPolicyAttached"
+    }
 
     # add the common schema
     json_obj['components']['schemas']['IamPolicy'] = common_policy_type
+    json_obj['components']['schemas']['IamPolicyAttached'] = {
+        "type": "object",
+        "properties": {
+            "PolicyArn": {
+                "type": "string",
+                "description": "The resource name of the policy."
+            },
+            "PolicyName": {
+                "type": "string",
+                "description": "The friendly name of the policy."
+            }
+        }
+    }
     # add common ref to all places
     json_obj['components']['schemas']['IamService_GetPolicyResponse']\
         ['properties']['GetPolicyResult']\
@@ -192,13 +208,13 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
         ['properties']['Policies']['items'] = common_policy_ref
     json_obj['components']['schemas']['IamService_ListAttachedGroupPoliciesResponse']\
         ['properties']['ListAttachedGroupPoliciesResult']\
-        ['properties']['AttachedPolicies']['items'] = common_policy_ref
+        ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
     json_obj['components']['schemas']['IamService_ListAttachedUserPoliciesResponse']\
         ['properties']['ListAttachedUserPoliciesResult']\
-        ['properties']['AttachedPolicies']['items'] = common_policy_ref
+        ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
     json_obj['components']['schemas']['IamService_ListAttachedRolePoliciesResponse']\
         ['properties']['ListAttachedRolePoliciesResult']\
-        ['properties']['AttachedPolicies']['items'] = common_policy_ref
+        ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
     return json_obj
 
 def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:

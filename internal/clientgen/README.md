@@ -263,6 +263,7 @@ Class | Method | HTTP request | Description
  - [DataServiceVpoolServicePutDataServiceVpoolRequest](docs/DataServiceVpoolServicePutDataServiceVpoolRequest.md)
  - [DataServiceVpoolServiceRemoveFromVpoolRequest](docs/DataServiceVpoolServiceRemoveFromVpoolRequest.md)
  - [IamPolicy](docs/IamPolicy.md)
+ - [IamPolicyAttached](docs/IamPolicyAttached.md)
  - [IamResponseMetadata](docs/IamResponseMetadata.md)
  - [IamRole](docs/IamRole.md)
  - [IamRolePermissionsBoundary](docs/IamRolePermissionsBoundary.md)
