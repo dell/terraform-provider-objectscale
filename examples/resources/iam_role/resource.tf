@@ -15,11 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 resource "objectscale_iam_role" "example" {
-  name      = "example-role"
-  namespace = "ns1"
-  description = "An example role updated"
+  name                     = "example-role"
+  namespace                = "ns1"
+  description              = "An example role updated"
   permissions_boundary_arn = "urn:ecs:iam:::policy/ECSS3Access"
-  max_session_duration = 4000
+  max_session_duration     = 4000
   assume_role_policy_document = jsonencode({
     Version = "2012-11-17"
     Statement = [
