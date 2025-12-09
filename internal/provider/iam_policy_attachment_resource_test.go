@@ -25,9 +25,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-var testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource
+var testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource
 
-type testingInputsForIAMManagedPolicyResource struct {
+type testingInputsForIAMPolicyAttachmentResource struct {
 	Namespace  string
 	Username   string
 	Groupname  string
@@ -38,7 +38,7 @@ type testingInputsForIAMManagedPolicyResource struct {
 }
 
 func init() {
-	testingManagedPolicyResourceInputParams = testingInputsForIAMManagedPolicyResource{
+	testingPolicyAttachmentResourceInputParams = testingInputsForIAMPolicyAttachmentResource{
 		Namespace:  "ns1",
 		Username:   "userTest1",
 		Groupname:  "groupTest1",
@@ -49,174 +49,174 @@ func init() {
 	}
 }
 
-func TestAccIAMManagedPolicyResourceForUserCRUD(t *testing.T) {
-	resourceName := "objectscale_iam_managed_policy.example"
+func TestAccIAMPolicyAttachmentResourceForUserCRUD(t *testing.T) {
+	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForInvalidUserConfig(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForInvalidUserConfig(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Create Error"),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForUserConfig1(testingManagedPolicyResourceInputParams),
+				Config: ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForUserConfig1(testingPolicyAttachmentResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN1),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingPolicyAttachmentResourceInputParams.PolicyARN1),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingPolicyAttachmentResourceInputParams.PolicyARN2),
 				),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForUserConfig2(testingManagedPolicyResourceInputParams),
+				Config: ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForUserConfig2(testingPolicyAttachmentResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN3),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingPolicyAttachmentResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingPolicyAttachmentResourceInputParams.PolicyARN2),
 				),
 			},
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForInvalidUserConfig(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForInvalidUserConfig(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Update Error"),
 			},
 		},
 	})
 }
 
-func TestAccIAMManagedPolicyResourceForGroupCRUD(t *testing.T) {
-	resourceName := "objectscale_iam_managed_policy.example"
+func TestAccIAMPolicyAttachmentResourceForGroupCRUD(t *testing.T) {
+	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForInvalidGroupConfig(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForInvalidGroupConfig(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Create Error"),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForGroupConfig1(testingManagedPolicyResourceInputParams),
+				Config: ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForGroupConfig1(testingPolicyAttachmentResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN1),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingPolicyAttachmentResourceInputParams.PolicyARN1),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingPolicyAttachmentResourceInputParams.PolicyARN2),
 				),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForGroupConfig2(testingManagedPolicyResourceInputParams),
+				Config: ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForGroupConfig2(testingPolicyAttachmentResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN3),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingPolicyAttachmentResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingPolicyAttachmentResourceInputParams.PolicyARN2),
 				),
 			},
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForInvalidGroupConfig(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForInvalidGroupConfig(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Update Error"),
 			},
 		},
 	})
 }
 
-func TestAccIAMManagedPolicyResourceForRoleCRUD(t *testing.T) {
-	resourceName := "objectscale_iam_managed_policy.example"
+func TestAccIAMPolicyAttachmentResourceForRoleCRUD(t *testing.T) {
+	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForInvalidRoleConfig(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForInvalidRoleConfig(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Create Error"),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForRoleConfig1(testingManagedPolicyResourceInputParams),
+				Config: ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForRoleConfig1(testingPolicyAttachmentResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN1),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingPolicyAttachmentResourceInputParams.PolicyARN1),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingPolicyAttachmentResourceInputParams.PolicyARN2),
 				),
 			},
 			{
-				Config: ProviderConfigForTesting + testAccIAMManagedPolicyResourceForRoleConfig2(testingManagedPolicyResourceInputParams),
+				Config: ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForRoleConfig2(testingPolicyAttachmentResourceInputParams),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "policy_arns.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingManagedPolicyResourceInputParams.PolicyARN3),
-					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingManagedPolicyResourceInputParams.PolicyARN2),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.0", testingPolicyAttachmentResourceInputParams.PolicyARN3),
+					resource.TestCheckResourceAttr(resourceName, "policy_arns.1", testingPolicyAttachmentResourceInputParams.PolicyARN2),
 				),
 			},
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForInvalidRoleConfig(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForInvalidRoleConfig(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Update Error"),
 			},
 		},
 	})
 }
 
-func TestAccIAMManagedPolicyResourceForErrorScenarios(t *testing.T) {
+func TestAccIAMPolicyAttachmentResourceForErrorScenarios(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForErrorConfig1(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForErrorConfig1(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Invalid Attribute Combination"),
 			},
 			{
-				Config:      ProviderConfigForTesting + testAccIAMManagedPolicyResourceForErrorConfig2(testingManagedPolicyResourceInputParams),
+				Config:      ProviderConfigForTesting + testAccIAMPolicyAttachmentResourceForErrorConfig2(testingPolicyAttachmentResourceInputParams),
 				ExpectError: regexp.MustCompile("Invalid Attribute Combination"),
 			},
 		},
 	})
 }
 
-func TestAccIAMManagedPolicyResourceForImport(t *testing.T) {
-	resourceName := "objectscale_iam_managed_policy.example"
+func TestAccIAMPolicyAttachmentResourceForImport(t *testing.T) {
+	resourceName := "objectscale_iam_policy_attachment.example"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:        ProviderConfigForTesting + `resource "objectscale_iam_managed_policy" "example" {}`,
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_policy_attachment" "example" {}`,
 				ResourceName:  resourceName,
 				ImportState:   true,
-				ImportStateId: fmt.Sprintf("%s:%s", testingManagedPolicyResourceInputParams.Namespace, testingManagedPolicyResourceInputParams.Username),
+				ImportStateId: fmt.Sprintf("%s:%s", testingPolicyAttachmentResourceInputParams.Namespace, testingPolicyAttachmentResourceInputParams.Username),
 				ExpectError:   regexp.MustCompile("Invalid import ID format"),
 			},
 			{
-				Config:        ProviderConfigForTesting + `resource "objectscale_iam_managed_policy" "example" {}`,
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_policy_attachment" "example" {}`,
 				ResourceName:  resourceName,
 				ImportState:   true,
-				ImportStateId: fmt.Sprintf("%s:%s:%s", testingManagedPolicyResourceInputParams.Namespace, "invalid_type", testingManagedPolicyResourceInputParams.Username),
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingPolicyAttachmentResourceInputParams.Namespace, "invalid_type", testingPolicyAttachmentResourceInputParams.Username),
 				ExpectError:   regexp.MustCompile("Invalid entity type"),
 			},
 			{
-				Config:        ProviderConfigForTesting + `resource "objectscale_iam_managed_policy" "example" {}`,
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_policy_attachment" "example" {}`,
 				ResourceName:  resourceName,
 				ImportState:   true,
-				ImportStateId: fmt.Sprintf("%s:%s:%s", testingManagedPolicyResourceInputParams.Namespace, "user", testingManagedPolicyResourceInputParams.Username),
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingPolicyAttachmentResourceInputParams.Namespace, "user", testingPolicyAttachmentResourceInputParams.Username),
 				ExpectError:   nil,
 			},
 			{
-				Config:        ProviderConfigForTesting + `resource "objectscale_iam_managed_policy" "example" {}`,
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_policy_attachment" "example" {}`,
 				ResourceName:  resourceName,
 				ImportState:   true,
-				ImportStateId: fmt.Sprintf("%s:%s:%s", testingManagedPolicyResourceInputParams.Namespace, "group", testingManagedPolicyResourceInputParams.Groupname),
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingPolicyAttachmentResourceInputParams.Namespace, "group", testingPolicyAttachmentResourceInputParams.Groupname),
 				ExpectError:   nil,
 			},
 			{
-				Config:        ProviderConfigForTesting + `resource "objectscale_iam_managed_policy" "example" {}`,
+				Config:        ProviderConfigForTesting + `resource "objectscale_iam_policy_attachment" "example" {}`,
 				ResourceName:  resourceName,
 				ImportState:   true,
-				ImportStateId: fmt.Sprintf("%s:%s:%s", testingManagedPolicyResourceInputParams.Namespace, "role", testingManagedPolicyResourceInputParams.Rolename),
+				ImportStateId: fmt.Sprintf("%s:%s:%s", testingPolicyAttachmentResourceInputParams.Namespace, "role", testingPolicyAttachmentResourceInputParams.Rolename),
 				ExpectError:   nil,
 			},
 		},
 	})
 }
 
-func testAccIAMManagedPolicyResourceForUserConfig1(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForUserConfig1(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     username  = "%s"
 
@@ -226,16 +226,16 @@ func testAccIAMManagedPolicyResourceForUserConfig1(testingManagedPolicyResourceI
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Username,
-		testingManagedPolicyResourceInputParams.PolicyARN1,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Username,
+		testingPolicyAttachmentResourceInputParams.PolicyARN1,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForUserConfig2(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForUserConfig2(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     username  = "%s"
 
@@ -245,16 +245,16 @@ func testAccIAMManagedPolicyResourceForUserConfig2(testingManagedPolicyResourceI
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Username,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
-		testingManagedPolicyResourceInputParams.PolicyARN3,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Username,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.PolicyARN3,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForGroupConfig1(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForGroupConfig1(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     groupname  = "%s"
 
@@ -264,16 +264,16 @@ func testAccIAMManagedPolicyResourceForGroupConfig1(testingManagedPolicyResource
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Groupname,
-		testingManagedPolicyResourceInputParams.PolicyARN1,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Groupname,
+		testingPolicyAttachmentResourceInputParams.PolicyARN1,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForGroupConfig2(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForGroupConfig2(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     groupname  = "%s"
 
@@ -283,16 +283,16 @@ func testAccIAMManagedPolicyResourceForGroupConfig2(testingManagedPolicyResource
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Groupname,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
-		testingManagedPolicyResourceInputParams.PolicyARN3,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Groupname,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.PolicyARN3,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForRoleConfig1(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForRoleConfig1(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     rolename  = "%s"
 
@@ -302,16 +302,16 @@ func testAccIAMManagedPolicyResourceForRoleConfig1(testingManagedPolicyResourceI
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Rolename,
-		testingManagedPolicyResourceInputParams.PolicyARN1,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Rolename,
+		testingPolicyAttachmentResourceInputParams.PolicyARN1,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForRoleConfig2(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForRoleConfig2(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     rolename  = "%s"
 
@@ -321,28 +321,28 @@ func testAccIAMManagedPolicyResourceForRoleConfig2(testingManagedPolicyResourceI
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Rolename,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
-		testingManagedPolicyResourceInputParams.PolicyARN3,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Rolename,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.PolicyARN3,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForErrorConfig1(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForErrorConfig1(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
 
     policy_arns = []
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Namespace,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForErrorConfig2(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForErrorConfig2(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     username  = "%s"
     groupname  = "%s"
@@ -351,16 +351,16 @@ func testAccIAMManagedPolicyResourceForErrorConfig2(testingManagedPolicyResource
     policy_arns = []
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
-		testingManagedPolicyResourceInputParams.Username,
-		testingManagedPolicyResourceInputParams.Groupname,
-		testingManagedPolicyResourceInputParams.Rolename,
+		testingPolicyAttachmentResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Username,
+		testingPolicyAttachmentResourceInputParams.Groupname,
+		testingPolicyAttachmentResourceInputParams.Rolename,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForInvalidUserConfig(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForInvalidUserConfig(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     username  = "%s"
 
@@ -370,16 +370,16 @@ func testAccIAMManagedPolicyResourceForInvalidUserConfig(testingManagedPolicyRes
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Namespace,
 		"INVALID_USERNAME",
-		testingManagedPolicyResourceInputParams.PolicyARN1,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.PolicyARN1,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForInvalidGroupConfig(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForInvalidGroupConfig(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     groupname  = "%s"
 
@@ -389,16 +389,16 @@ func testAccIAMManagedPolicyResourceForInvalidGroupConfig(testingManagedPolicyRe
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Namespace,
 		"INVALID_GROUPNAME",
-		testingManagedPolicyResourceInputParams.PolicyARN1,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.PolicyARN1,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
 	)
 }
 
-func testAccIAMManagedPolicyResourceForInvalidRoleConfig(testingManagedPolicyResourceInputParams testingInputsForIAMManagedPolicyResource) string {
+func testAccIAMPolicyAttachmentResourceForInvalidRoleConfig(testingPolicyAttachmentResourceInputParams testingInputsForIAMPolicyAttachmentResource) string {
 	return fmt.Sprintf(`
-	resource "objectscale_iam_managed_policy" "example" {
+	resource "objectscale_iam_policy_attachment" "example" {
     namespace = "%s"
     rolename  = "%s"
 
@@ -408,9 +408,9 @@ func testAccIAMManagedPolicyResourceForInvalidRoleConfig(testingManagedPolicyRes
     ]
   }
 		`,
-		testingManagedPolicyResourceInputParams.Namespace,
+		testingPolicyAttachmentResourceInputParams.Namespace,
 		"INVALID_ROLENAME",
-		testingManagedPolicyResourceInputParams.PolicyARN1,
-		testingManagedPolicyResourceInputParams.PolicyARN2,
+		testingPolicyAttachmentResourceInputParams.PolicyARN1,
+		testingPolicyAttachmentResourceInputParams.PolicyARN2,
 	)
 }
