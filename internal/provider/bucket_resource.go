@@ -397,7 +397,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 	}
 
 	// Build the request from the plan
-	reqBody := r.modelToJson(ctx, plan)
+	reqBody := r.modelToJson(plan)
 
 	bucket, _, err := r.client.GenClient.BucketApi.BucketServiceCreateBucket(ctx).BucketServiceCreateBucketRequest(reqBody).Execute()
 	if err != nil {
@@ -468,7 +468,7 @@ func (r *BucketResource) minMaxGovernorJson(in models.MinMaxGovernorModel) clien
 	}
 }
 
-func (r *BucketResource) modelToJson(ctx context.Context, plan models.BucketResourceModel) clientgen.BucketServiceCreateBucketRequest {
+func (r *BucketResource) modelToJson(plan models.BucketResourceModel) clientgen.BucketServiceCreateBucketRequest {
 
 	minMaxGovernor := helper.ValueObjectTransform(plan.MinMaxGovernor, r.minMaxGovernorJson)
 
