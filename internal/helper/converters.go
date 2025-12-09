@@ -80,6 +80,13 @@ func TfInt64NN(in *int64) types.Int64 {
 	return types.Int64Value(*in)
 }
 
+func TfInt32NN(in *int32) types.Int32 {
+	if in == nil {
+		return types.Int32Value(0)
+	}
+	return types.Int32Value(*in)
+}
+
 // TfObject - Converts input using the transform transform function, returns empty output if input is nil.
 func TfObject[tfT any, jT any](in *jT, transform func(jT) tfT) tfT {
 	if in == nil {
@@ -95,7 +102,7 @@ func TfObject[tfT any, jT any](in *jT, transform func(jT) tfT) tfT {
 // We can add more types in the future when required
 
 type GoTypes interface {
-	~bool | ~string | ~int64
+	~bool | ~string | ~int64 | ~int32
 }
 
 func ValueToPointer[T GoTypes, VT attr.Value](in VT) *T {
@@ -110,6 +117,8 @@ func ValueToPointer[T GoTypes, VT attr.Value](in VT) *T {
 		ret = inv.ValueBool()
 	case types.Int64:
 		ret = inv.ValueInt64()
+	case types.Int32:
+		ret = inv.ValueInt32()
 	}
 
 	switch retv := ret.(type) {
