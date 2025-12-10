@@ -274,6 +274,17 @@ def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:
                 json_obj['components']['schemas']['IamTagKeyValue'] = commonTagKeyValueType
     return json_obj
 
+# change API header parameter for /iam?Action=PutRolePermissionsBoundary to use PermissionsBoundary instead of PolicyArn
+def _NormalizeObjectScalePutRolePermissionsBoundaryParameter(json_obj: dict) -> dict:
+    """
+    Normalize ObjectScale PutRolePermissionsBoundary API parameter.
+    Change PolicyArn to PermissionsBoundary.
+    """
+    for obj in json_obj['paths']['/iam?Action=PutRolePermissionsBoundary']['post']['parameters']:
+        if obj['name'] == 'PolicyArn':
+            obj['name'] = 'PermissionsBoundary'
+    return json_obj
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
@@ -283,4 +294,5 @@ def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     ret = _normalizeObjectScalePolicies(ret)
     ret = _normalizeObjectScaleIamTags(ret)
     ret = _normalizeObjectScaleIamRoleResponse(ret)
+    ret = _NormalizeObjectScalePutRolePermissionsBoundaryParameter(ret)
     return ret

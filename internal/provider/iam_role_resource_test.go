@@ -148,14 +148,14 @@ func TestAccIamRoleResource(t *testing.T) {
 					resource.TestCheckResourceAttr("objectscale_iam_role.example", "max_session_duration", "3600"),
 				),
 			},
-			// Step 4: Update role with invalid attribute (should fail)
+			// Step 4: Update role with tags attribute
 			{
 				Config: ProviderConfigForTesting + `
                 resource "objectscale_iam_role" "example" {
 				name      = "example-role"
 				namespace = "ns1"
 				description = "An example role updated"
-				permissions_boundary_arn = "urn:ecs:iam:::policy/ECSS3DenyAccess"
+				permissions_boundary_arn = "urn:ecs:iam:::policy/ECSS3FullAccess"
 				max_session_duration = 3600
 				assume_role_policy_document = jsonencode({
 					Version = "2012-11-17"
@@ -173,17 +173,135 @@ func TestAccIamRoleResource(t *testing.T) {
 				})
 				tags = [
 					{
-					"key" : "key1",
-					"value" : "value1"
+					"key" : "key11",
+					"value" : "value11"
 					},
 					{
-					"key" : "key2",
-					"value" : "value2"
+					"key" : "key22",
+					"value" : "value22"
 					}
 				]
 				}
                 `,
-				ExpectError: regexp.MustCompile(".*invalid attribute change detected*"),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("objectscale_iam_role.example", "tags.0.key", "key11"),
+					resource.TestCheckResourceAttr("objectscale_iam_role.example", "tags.0.value", "value11"),
+					resource.TestCheckResourceAttr("objectscale_iam_role.example", "tags.1.key", "key22"),
+					resource.TestCheckResourceAttr("objectscale_iam_role.example", "tags.1.value", "value22"),
+				),
+			},
+			// Step 5: Update role with Permissions boundary attribute (fail)
+			{
+				Config: ProviderConfigForTesting + `
+                resource "objectscale_iam_role" "example" {
+				name      = "example-role"
+				namespace = "ns1"
+				description = "An example role updated"
+				permissions_boundary_arn = "urn:ecs:iam:::policy/ECSS3DenyAll"
+				max_session_duration = 3600
+				assume_role_policy_document = jsonencode({
+					Version = "2012-11-17"
+					Statement = [
+					{
+						Effect = "Allow"
+						Principal = {
+						AWS = [
+							"urn:ecs:iam::ns1:user/sample_user_1"
+						]
+						}
+						Action = "sts:AssumeRole"
+					}
+					]
+				})
+				tags = [
+					{
+					"key" : "key11",
+					"value" : "value11"
+					},
+					{
+					"key" : "key22",
+					"value" : "value22"
+					}
+				]
+				}
+                `,
+				ExpectError: regexp.MustCompile(".*not found in the namespace*"),
+			},
+			//Step 6: Update permissions_boundary_arn
+			{Config: ProviderConfigForTesting + `
+                resource "objectscale_iam_role" "example" {
+				name      = "example-role"
+				namespace = "ns1"
+				description = "An example role updated"
+				permissions_boundary_arn = "urn:ecs:iam:::policy/ECSDenyAll"
+				max_session_duration = 3600
+				assume_role_policy_document = jsonencode({
+					Version = "2012-11-17"
+					Statement = [
+					{
+						Effect = "Allow"
+						Principal = {
+						AWS = [
+							"urn:ecs:iam::ns1:user/sample_user_1"
+						]
+						}
+						Action = "sts:AssumeRole"
+					}
+					]
+				})
+				tags = [
+					{
+					"key" : "key11",
+					"value" : "value11"
+					},
+					{
+					"key" : "key22",
+					"value" : "value22"
+					}
+				]
+				}
+                `,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("objectscale_iam_role.example", "permissions_boundary_arn", "urn:ecs:iam:::policy/ECSDenyAll"),
+				),
+			},
+			//Step 6: Update permissions_boundary_arn to null
+			{Config: ProviderConfigForTesting + `
+                resource "objectscale_iam_role" "example" {
+				name      = "example-role"
+				namespace = "ns1"
+				description = "An example role updated"
+				permissions_boundary_arn = ""
+				max_session_duration = 3600
+				assume_role_policy_document = jsonencode({
+					Version = "2012-11-17"
+					Statement = [
+					{
+						Effect = "Allow"
+						Principal = {
+						AWS = [
+							"urn:ecs:iam::ns1:user/sample_user_1"
+						]
+						}
+						Action = "sts:AssumeRole"
+					}
+					]
+				})
+				tags = [
+					{
+					"key" : "key11",
+					"value" : "value11"
+					},
+					{
+					"key" : "key22",
+					"value" : "value22"
+					}
+				]
+				}
+                `,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("objectscale_iam_role.example", "permissions_boundary_arn", ""),
+				),
 			},
 			// Step 5: Attempt to import with invalid format (should fail)
 			{

@@ -271,10 +271,10 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	// check for changes in plan and state
-	if !(helper.IsChangedNN(plan.MaxSessionDuration, state.MaxSessionDuration) || helper.IsChangedNN(plan.Description, state.Description)) {
-		resp.Diagnostics.AddError("Only 'max_session_duration' or 'description' can be changed", "invalid attribute change detected")
-		return
-	}
+	// if !(helper.IsChangedNN(plan.MaxSessionDuration, state.MaxSessionDuration) || helper.IsChangedNN(plan.Description, state.Description)) {
+	// 	resp.Diagnostics.AddError("Only 'max_session_duration' or 'description' can be changed", "invalid attribute change detected")
+	// 	return
+	// }
 
 	updReq := r.client.GenClient.IamApi.IamServiceUpdateRole(ctx).
 		RoleName(plan.Name.ValueString()).
@@ -291,6 +291,68 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 	if err != nil {
 		resp.Diagnostics.AddError("Error updating Role", err.Error())
 		return
+	}
+
+	if !plan.Tags.IsNull() || !plan.Tags.IsUnknown() || len(plan.Tags.Elements()) != 0 {
+		tags_plan, tags_state := helper.ValueListTransform(plan.Tags, r.tagJson),
+			helper.ValueListTransform(state.Tags, r.tagJson)
+
+		tags_to_add, tags_to_remove := iamTagsDiff(tags_plan, tags_state),
+			iamTagsDiff(tags_state, tags_plan)
+
+		if len(tags_to_remove) != 0 {
+			_, _, err_untag := r.client.GenClient.IamApi.IamServiceUntagRole(ctx).
+				RoleName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				TagKeys(helper.SliceTransform(
+					tags_to_remove,
+					func(a clientgen.IamTagKeyValue) clientgen.IamTagKey {
+						return clientgen.IamTagKey{
+							Key: a.Key,
+						}
+					})).
+				Execute()
+			if err_untag != nil {
+				resp.Diagnostics.AddError("Error removing role tags", err_untag.Error())
+				return
+			}
+		}
+
+		if len(tags_to_add) != 0 {
+			_, _, err_tag := r.client.GenClient.IamApi.IamServiceTagRole(ctx).
+				RoleName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				TagsMemberN(tags_to_add).
+				Execute()
+			if err_tag != nil {
+				resp.Diagnostics.AddError("Error adding role tags", err_tag.Error())
+				return
+			}
+		}
+	}
+	// Update permission boundary
+
+	if !plan.PermissionsBoundaryArn.IsNull() {
+		if plan.PermissionsBoundaryArn.ValueString() == "" && state.PermissionsBoundaryArn.ValueString() != "" {
+			_, _, err := r.client.GenClient.IamApi.IamServiceDeleteRolePermissionsBoundary(ctx).
+				RoleName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error deleting permission boundary", err.Error())
+				return
+			}
+		} else {
+			_, _, err := r.client.GenClient.IamApi.IamServicePutRolePermissionsBoundary(ctx).
+				RoleName(plan.Name.ValueString()).
+				XEmcNamespace(plan.Namespace.ValueString()).
+				PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error updating permission boundary", err.Error())
+				return
+			}
+		}
 	}
 
 	iam_role, _, err := r.client.GenClient.IamApi.IamServiceGetRole(ctx).

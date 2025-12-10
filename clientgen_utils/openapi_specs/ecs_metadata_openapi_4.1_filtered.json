@@ -10096,7 +10096,7 @@
 				"operationId": "IamService_PutRolePermissionsBoundary",
 				"parameters": [
 					{
-						"name": "PolicyArn",
+						"name": "PermissionsBoundary",
 						"in": "query",
 						"required": false,
 						"schema": {
