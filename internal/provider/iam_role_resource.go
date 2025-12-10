@@ -275,22 +275,24 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 	// 	resp.Diagnostics.AddError("Only 'max_session_duration' or 'description' can be changed", "invalid attribute change detected")
 	// 	return
 	// }
+	if helper.IsChangedNN(plan.MaxSessionDuration, state.MaxSessionDuration) || helper.IsChangedNN(plan.Description, state.Description) {
 
-	updReq := r.client.GenClient.IamApi.IamServiceUpdateRole(ctx).
-		RoleName(plan.Name.ValueString()).
-		XEmcNamespace(plan.Namespace.ValueString())
+		updReq := r.client.GenClient.IamApi.IamServiceUpdateRole(ctx).
+			RoleName(plan.Name.ValueString()).
+			XEmcNamespace(plan.Namespace.ValueString())
 
-	if max_session_duration := helper.ValueToPointer[int32](plan.MaxSessionDuration); max_session_duration != nil {
-		updReq = updReq.MaxSessionDuration(*max_session_duration)
-	}
-	if description := helper.ValueToPointer[string](plan.Description); description != nil {
-		updReq = updReq.Description(*description)
-	}
+		if max_session_duration := helper.ValueToPointer[int32](plan.MaxSessionDuration); max_session_duration != nil {
+			updReq = updReq.MaxSessionDuration(*max_session_duration)
+		}
+		if description := helper.ValueToPointer[string](plan.Description); description != nil {
+			updReq = updReq.Description(*description)
+		}
 
-	_, _, err := updReq.Execute()
-	if err != nil {
-		resp.Diagnostics.AddError("Error updating Role", err.Error())
-		return
+		_, _, err := updReq.Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating Role", err.Error())
+			return
+		}
 	}
 
 	if !plan.Tags.IsNull() || !plan.Tags.IsUnknown() || len(plan.Tags.Elements()) != 0 {
@@ -332,25 +334,27 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 	// Update permission boundary
 
-	if !plan.PermissionsBoundaryArn.IsNull() {
-		if plan.PermissionsBoundaryArn.ValueString() == "" && state.PermissionsBoundaryArn.ValueString() != "" {
-			_, _, err := r.client.GenClient.IamApi.IamServiceDeleteRolePermissionsBoundary(ctx).
-				RoleName(plan.Name.ValueString()).
-				XEmcNamespace(plan.Namespace.ValueString()).
-				Execute()
-			if err != nil {
-				resp.Diagnostics.AddError("Error deleting permission boundary", err.Error())
-				return
-			}
-		} else {
-			_, _, err := r.client.GenClient.IamApi.IamServicePutRolePermissionsBoundary(ctx).
-				RoleName(plan.Name.ValueString()).
-				XEmcNamespace(plan.Namespace.ValueString()).
-				PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).
-				Execute()
-			if err != nil {
-				resp.Diagnostics.AddError("Error updating permission boundary", err.Error())
-				return
+	if helper.IsChangedNN(plan.PermissionsBoundaryArn, state.PermissionsBoundaryArn) {
+		if !plan.PermissionsBoundaryArn.IsNull() {
+			if plan.PermissionsBoundaryArn.ValueString() == "" && state.PermissionsBoundaryArn.ValueString() != "" {
+				_, _, err := r.client.GenClient.IamApi.IamServiceDeleteRolePermissionsBoundary(ctx).
+					RoleName(plan.Name.ValueString()).
+					XEmcNamespace(plan.Namespace.ValueString()).
+					Execute()
+				if err != nil {
+					resp.Diagnostics.AddError("Error deleting permission boundary", err.Error())
+					return
+				}
+			} else {
+				_, _, err := r.client.GenClient.IamApi.IamServicePutRolePermissionsBoundary(ctx).
+					RoleName(plan.Name.ValueString()).
+					XEmcNamespace(plan.Namespace.ValueString()).
+					PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).
+					Execute()
+				if err != nil {
+					resp.Diagnostics.AddError("Error updating permission boundary", err.Error())
+					return
+				}
 			}
 		}
 	}

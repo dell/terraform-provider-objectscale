@@ -36,7 +36,7 @@ func TestAccIamRoleResource(t *testing.T) {
 				name      = "example-role"
 				namespace = "ns1"
 				description = "An example role"
-				permissions_boundary_arn = "urn:ecs:iam:::policy/ECSS3Access"
+				permissions_boundary_arn = "urn:ecs:iam:::policy/invalidPolicy"
 				max_session_duration = 4000
 				assume_role_policy_document = jsonencode({
 					Version = "2012-11-17"
@@ -197,7 +197,7 @@ func TestAccIamRoleResource(t *testing.T) {
 				name      = "example-role"
 				namespace = "ns1"
 				description = "An example role updated"
-				permissions_boundary_arn = "urn:ecs:iam:::policy/ECSS3DenyAll"
+				permissions_boundary_arn = "urn:ecs:iam:::policy/invalidPolicy"
 				max_session_duration = 3600
 				assume_role_policy_document = jsonencode({
 					Version = "2012-11-17"
@@ -265,7 +265,7 @@ func TestAccIamRoleResource(t *testing.T) {
 					resource.TestCheckResourceAttr("objectscale_iam_role.example", "permissions_boundary_arn", "urn:ecs:iam:::policy/ECSDenyAll"),
 				),
 			},
-			//Step 6: Update permissions_boundary_arn to null
+			//Step 7: Update permissions_boundary_arn to null
 			{Config: ProviderConfigForTesting + `
                 resource "objectscale_iam_role" "example" {
 				name      = "example-role"
@@ -303,7 +303,7 @@ func TestAccIamRoleResource(t *testing.T) {
 					resource.TestCheckResourceAttr("objectscale_iam_role.example", "permissions_boundary_arn", ""),
 				),
 			},
-			// Step 5: Attempt to import with invalid format (should fail)
+			// Step 8: Attempt to import with invalid format (should fail)
 			{
 
 				ResourceName:  "objectscale_iam_role.example",
@@ -311,7 +311,7 @@ func TestAccIamRoleResource(t *testing.T) {
 				ImportStateId: "invalid-format", // missing namespace
 				ExpectError:   regexp.MustCompile("invalid format"),
 			},
-			// Step 6:import testing
+			// Step 9:import testing
 			{
 				ResourceName:                         "objectscale_iam_role.example",
 				ImportStateId:                        "example-role:ns1",
