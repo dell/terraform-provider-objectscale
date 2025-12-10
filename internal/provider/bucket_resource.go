@@ -399,19 +399,13 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 	// Build the request from the plan
 	reqBody := r.modelToJson(plan)
 
-	bucket, _, err := r.client.GenClient.BucketApi.BucketServiceCreateBucket(ctx).BucketServiceCreateBucketRequest(reqBody).Execute()
+	_, _, err := r.client.GenClient.BucketApi.BucketServiceCreateBucket(ctx).BucketServiceCreateBucketRequest(reqBody).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating bucket", err.Error())
 		return
 	}
 
-	// Call the API to get buckets with pagination
-	apiReq := r.client.GenClient.BucketApi.BucketServiceGetBuckets(ctx).Namespace(plan.Namespace.ValueString())
-	if *bucket.Name != "" {
-		apiReq = apiReq.Name(*bucket.Name + "*")
-	}
-
-	allBuckets, err := helper.GetAllInstances(apiReq)
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Buckets",
@@ -420,24 +414,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	// Filter allBuckets to only include the bucket with the matching ID
-	filteredBuckets := make([]clientgen.BucketServiceGetBucketsResponseObjectBucketInner, 0, len(allBuckets))
-	for _, b := range allBuckets {
-		if b.Id != nil && bucket.Id != nil && *b.Id == *bucket.Id {
-			filteredBuckets = append(filteredBuckets, b)
-		}
-	}
-
-	// If a name prefix was provided and no buckets were found, return an error
-	if plan.Name.ValueString() != "" && len(filteredBuckets) == 0 {
-		resp.Diagnostics.AddError(
-			"No buckets found with the specified prefix",
-			fmt.Sprintf("No buckets found in namespace '%s' with prefix '%s'. Please check the prefix.", plan.Namespace, plan.Name),
-		)
-		return
-	}
-
-	data := getBucketToModel(filteredBuckets[0])
+	data := getBucketToModel(*bucketData)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -517,13 +494,7 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	// Call the API to get buckets with pagination
-	apiReq := r.client.GenClient.BucketApi.BucketServiceGetBuckets(ctx).Namespace(state.Namespace.ValueString())
-	if state.Name.ValueString() != "" {
-		apiReq = apiReq.Name(state.Name.ValueString() + "*")
-	}
-
-	allBuckets, err := helper.GetAllInstances(apiReq)
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Buckets",
@@ -532,31 +503,14 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	// Filter allBuckets to only include the bucket with the matching ID
-	filteredBuckets := make([]clientgen.BucketServiceGetBucketsResponseObjectBucketInner, 0, len(allBuckets))
-	for _, b := range allBuckets {
-		if b.Id != nil && state.Id.ValueString() != "" && *b.Id == state.Id.ValueString() {
-			filteredBuckets = append(filteredBuckets, b)
-		}
-	}
-
-	// If a name prefix was provided and no buckets were found, return an error
-	// if state.Name.ValueString() != "" && len(filteredBuckets) == 0 {
-	// 	resp.Diagnostics.AddError(
-	// 		"No buckets found with the specified prefix",
-	// 		fmt.Sprintf("No buckets found in namespace '%s' with prefix '%s'. Please check the prefix.", state.Namespace.ValueString(), state.Name.ValueString()),
-	// 	)
-	// 	return
-	// }
-
-	data := getBucketToModel(filteredBuckets[0])
+	data := getBucketToModel(*bucketData)
 
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// mapBucketToModel maps a BucketServiceGetBucketsResponseObjectBucketInner to models.BucketModel.
-func getBucketToModel(b clientgen.BucketServiceGetBucketsResponseObjectBucketInner) models.BucketResourceModel {
+// mapBucketToModel maps a BucketServiceGetBucketInfoResponse to models.BucketModel.
+func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.BucketResourceModel {
 	m := models.BucketResourceModel{
 		Id:               helper.TfString(b.Id),
 		Owner:            helper.TfString(b.Owner),
@@ -656,13 +610,8 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 	}
 	bucket_name := parts[0]
 	namespace := parts[1]
-	// Call the API to get buckets with pagination
-	apiReq := r.client.GenClient.BucketApi.BucketServiceGetBuckets(ctx).Namespace(namespace)
-	if bucket_name != "" {
-		apiReq = apiReq.Name(bucket_name + "*")
-	}
 
-	allBuckets, err := helper.GetAllInstances(apiReq)
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, bucket_name).Namespace(namespace).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Buckets",
@@ -671,24 +620,8 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 		return
 	}
 
-	// Filter allBuckets to only include the bucket with the matching ID
-	filteredBuckets := make([]clientgen.BucketServiceGetBucketsResponseObjectBucketInner, 0, len(allBuckets))
-	for _, b := range allBuckets {
-		if b.Id != nil && bucket_name != "" && *b.Name == bucket_name {
-			filteredBuckets = append(filteredBuckets, b)
-		}
-	}
+	data := getBucketToModel(*bucketData)
 
-	// If a name prefix was provided and no buckets were found, return an error
-	if bucket_name != "" && len(filteredBuckets) == 0 {
-		resp.Diagnostics.AddError(
-			"No buckets found with the specified prefix",
-			fmt.Sprintf("No buckets found in namespace '%s' with prefix '%s'. Please check the prefix.", namespace, bucket_name),
-		)
-		return
-	}
-
-	data := getBucketToModel(filteredBuckets[0])
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -58,7 +58,7 @@ type BucketServiceGetBucketInfoResponse struct {
 	// API type
 	ApiType *string `json:"api_type,omitempty"`
 	// Keywords and labels that can be added by a user to a resource  to make it easy to find when doing a search.
-	Tag []BucketServiceCreateBucketRequestTagSetInner `json:"Tag,omitempty"`
+	TagSet []BucketServiceCreateBucketRequestTagSetInner `json:"TagSet,omitempty"`
 	// Default retention value for the bucket.
 	Retention *int64 `json:"retention,omitempty"`
 	// Flag indicating the Read permission for default group

@@ -54567,7 +54567,7 @@
             "type": "string",
             "description": "API type"
           },
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",

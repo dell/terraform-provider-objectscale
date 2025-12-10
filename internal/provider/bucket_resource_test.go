@@ -184,7 +184,7 @@ func TestAccBucketResourceImport(t *testing.T) {
 				ImportState:       true,
 				ImportStateId:     "example-bucket-positive-invalid:ns1",
 				ImportStateVerify: true,
-				ExpectError:       regexp.MustCompile(`No buckets found with the specified prefix`),
+				ExpectError:       regexp.MustCompile(`Error Reading Buckets`),
 			},
 			{
 				ResourceName:      resourceName,
