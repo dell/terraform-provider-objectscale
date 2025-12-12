@@ -7633,16 +7633,16 @@ func (a *IamApiService) IamServicePutGroupPolicyExecute(r ApiIamServicePutGroupP
 }
 
 type ApiIamServicePutRolePermissionsBoundaryRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	roleName      *string
-	xEmcNamespace *string
+	ctx                 context.Context
+	ApiService          *IamApiService
+	permissionsBoundary *string
+	roleName            *string
+	xEmcNamespace       *string
 }
 
 // Arn that identifies the policy.
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) PolicyArn(policyArn string) ApiIamServicePutRolePermissionsBoundaryRequest {
-	r.policyArn = &policyArn
+func (r ApiIamServicePutRolePermissionsBoundaryRequest) PermissionsBoundary(permissionsBoundary string) ApiIamServicePutRolePermissionsBoundaryRequest {
+	r.permissionsBoundary = &permissionsBoundary
 	return r
 }
 
@@ -7699,8 +7699,8 @@ func (a *IamApiService) IamServicePutRolePermissionsBoundaryExecute(r ApiIamServ
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
+	if r.permissionsBoundary != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "PermissionsBoundary", r.permissionsBoundary, "")
 	}
 	if r.roleName != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")

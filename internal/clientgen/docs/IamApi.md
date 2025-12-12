@@ -3045,7 +3045,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutRolePermissionsBoundary
 
-> BasicResponse IamServicePutRolePermissionsBoundary(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutRolePermissionsBoundary(ctx).PermissionsBoundary(permissionsBoundary).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Adds or updates the policy that is specified as the IAM role's permissions boundary.
 
@@ -3064,13 +3064,13 @@ import (
 )
 
 func main() {
-    policyArn := "policyArn_example" // string | Arn that identifies the policy. (optional)
+    permissionsBoundary := "permissionsBoundary_example" // string | Arn that identifies the policy. (optional)
     roleName := "roleName_example" // string | Simple name identifying the role. (optional)
     xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.IamApi.IamServicePutRolePermissionsBoundary(context.Background()).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    resp, r, err := apiClient.IamApi.IamServicePutRolePermissionsBoundary(context.Background()).PermissionsBoundary(permissionsBoundary).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutRolePermissionsBoundary``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3091,7 +3091,7 @@ Other parameters are passed through a pointer to a apiIamServicePutRolePermissio
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **policyArn** | **string** | Arn that identifies the policy. | 
+ **permissionsBoundary** | **string** | Arn that identifies the policy. | 
  **roleName** | **string** | Simple name identifying the role. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
