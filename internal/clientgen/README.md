@@ -154,6 +154,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceGetGroup**](docs/IamApi.md#iamservicegetgroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 *IamApi* | [**IamServiceGetGroupPolicy**](docs/IamApi.md#iamservicegetgrouppolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
 *IamApi* | [**IamServiceGetPolicy**](docs/IamApi.md#iamservicegetpolicy) | **Post** /iam?Action&#x3D;GetPolicy | Retrieve Managed Policy
+*IamApi* | [**IamServiceGetPolicyVersion**](docs/IamApi.md#iamservicegetpolicyversion) | **Post** /iam?Action&#x3D;GetPolicyVersion | Retrieve version of Managed Policy.
 *IamApi* | [**IamServiceGetRole**](docs/IamApi.md#iamservicegetrole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 *IamApi* | [**IamServiceGetRolePolicy**](docs/IamApi.md#iamservicegetrolepolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 *IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
@@ -166,6 +167,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceListGroups**](docs/IamApi.md#iamservicelistgroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 *IamApi* | [**IamServiceListGroupsForUser**](docs/IamApi.md#iamservicelistgroupsforuser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
 *IamApi* | [**IamServiceListPolicies**](docs/IamApi.md#iamservicelistpolicies) | **Post** /iam?Action&#x3D;ListPolicies | Lists the IAM users.
+*IamApi* | [**IamServiceListPolicyVersions**](docs/IamApi.md#iamservicelistpolicyversions) | **Post** /iam?Action&#x3D;ListPolicyVersions | List versions of IAM Managed Policy.
 *IamApi* | [**IamServiceListRolePolicies**](docs/IamApi.md#iamservicelistrolepolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
 *IamApi* | [**IamServiceListRoleTags**](docs/IamApi.md#iamservicelistroletags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
 *IamApi* | [**IamServiceListRoles**](docs/IamApi.md#iamservicelistroles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
@@ -264,6 +266,7 @@ Class | Method | HTTP request | Description
  - [DataServiceVpoolServiceRemoveFromVpoolRequest](docs/DataServiceVpoolServiceRemoveFromVpoolRequest.md)
  - [IamPolicy](docs/IamPolicy.md)
  - [IamPolicyAttached](docs/IamPolicyAttached.md)
+ - [IamPolicyVersion](docs/IamPolicyVersion.md)
  - [IamResponseMetadata](docs/IamResponseMetadata.md)
  - [IamRole](docs/IamRole.md)
  - [IamRolePermissionsBoundary](docs/IamRolePermissionsBoundary.md)
@@ -286,6 +289,8 @@ Class | Method | HTTP request | Description
  - [IamServiceGetGroupResponseGetGroupResultUsersInner](docs/IamServiceGetGroupResponseGetGroupResultUsersInner.md)
  - [IamServiceGetPolicyResponse](docs/IamServiceGetPolicyResponse.md)
  - [IamServiceGetPolicyResponseGetPolicyResult](docs/IamServiceGetPolicyResponseGetPolicyResult.md)
+ - [IamServiceGetPolicyVersionResponse](docs/IamServiceGetPolicyVersionResponse.md)
+ - [IamServiceGetPolicyVersionResponseGetPolicyVersionResult](docs/IamServiceGetPolicyVersionResponseGetPolicyVersionResult.md)
  - [IamServiceGetRolePolicyResponse](docs/IamServiceGetRolePolicyResponse.md)
  - [IamServiceGetRolePolicyResponseGetRolePolicyResult](docs/IamServiceGetRolePolicyResponseGetRolePolicyResult.md)
  - [IamServiceGetRoleResponse](docs/IamServiceGetRoleResponse.md)
@@ -313,6 +318,8 @@ Class | Method | HTTP request | Description
  - [IamServiceListGroupsResponseListGroupsResultGroupsInner](docs/IamServiceListGroupsResponseListGroupsResultGroupsInner.md)
  - [IamServiceListPoliciesResponse](docs/IamServiceListPoliciesResponse.md)
  - [IamServiceListPoliciesResponseListPoliciesResult](docs/IamServiceListPoliciesResponseListPoliciesResult.md)
+ - [IamServiceListPolicyVersionsResponse](docs/IamServiceListPolicyVersionsResponse.md)
+ - [IamServiceListPolicyVersionsResponseListPolicyVersionsResult](docs/IamServiceListPolicyVersionsResponseListPolicyVersionsResult.md)
  - [IamServiceListRolePoliciesResponse](docs/IamServiceListRolePoliciesResponse.md)
  - [IamServiceListRoleTagsResponse](docs/IamServiceListRoleTagsResponse.md)
  - [IamServiceListRoleTagsResponseListRoleTagsResult](docs/IamServiceListRoleTagsResponseListRoleTagsResult.md)

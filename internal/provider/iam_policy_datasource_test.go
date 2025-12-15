@@ -26,6 +26,7 @@ import (
 
 	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAcc_IamPolicyDataSource(t *testing.T) {
@@ -67,6 +68,20 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 				}
 				`,
 				ExpectError: regexp.MustCompile(`Error listing IAM policies`),
+			},
+			{
+				// mocked get version error
+				PreConfig: func() {
+					upM.UnPatch()
+					upM = mockey.Mock((*clientgen.IamApiService).IamServiceListPolicyVersionsExecute).
+						Return(nil, nil, fmt.Errorf("{}")).Build()
+				},
+				Config: ProviderConfigForTesting + `
+				data "objectscale_iam_policy" "all" {
+					namespace = "ns1"
+				}
+				`,
+				ExpectError: regexp.MustCompile(`Error fetching IAM policy versions`),
 			},
 			{
 				// get by arn
@@ -120,7 +135,24 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 				),
 			},
 			{
+				// mocked populate list error
+				PreConfig: func() {
+					upM = mockey.Mock((*clientgen.IamApiService).IamServiceGetPolicyExecute).
+						Return(nil, nil, fmt.Errorf("{}")).Build()
+				},
+				Config: ProviderConfigForTesting + `
+				data "objectscale_iam_policy" "iam_policy" {
+					namespace = "ns1"
+					user = "testaccpreq"
+				}
+				`,
+				ExpectError: regexp.MustCompile(`Error fetching details of attached IAM policies`),
+			},
+			{
 				// get by invalid user name
+				PreConfig: func() {
+					upM.UnPatch()
+				},
 				Config: ProviderConfigForTesting + `
 				data "objectscale_iam_policy" "all" {
 					namespace = "ns1"
@@ -187,4 +219,10 @@ func TestAcc_IamPolicyDataSource(t *testing.T) {
 			},
 		},
 	})
+}
+
+func TestAcc_IamPolicyDataSource_DecodeNilDocument(t *testing.T) {
+	r := &IAMPolicyDataSource{}
+	s := r.decodeDocument(nil)
+	assert.Empty(t, s.ValueString())
 }

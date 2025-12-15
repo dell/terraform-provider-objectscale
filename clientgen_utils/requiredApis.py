@@ -127,5 +127,7 @@ RequiredAPIs = [
     "/iam?Action=AttachRolePolicy",
     "/iam?Action=DetachRolePolicy",
     "/iam?Action=AttachUserPolicy",
-    "/iam?Action=DetachUserPolicy"
+    "/iam?Action=DetachUserPolicy",
+    "/iam?Action=ListPolicyVersions",
+    "/iam?Action=GetPolicyVersion",
 ]

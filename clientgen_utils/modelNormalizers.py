@@ -173,16 +173,26 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
     2.IamService_ListAttachedGroupPoliciesResponse.ListAttachedGroupPoliciesResult.AttachedPolicies
     IamService_ListAttachedUserPoliciesResponse.ListAttachedUserPoliciesResult.AttachedPolicies
     IamService_ListAttachedRolePoliciesResponse.ListAttachedRolePoliciesResult.AttachedPolicies are all same.
+    3. Normalize IamService_GetPolicyVersionResponse.GetPolicyVersionResult.PolicyVersioin to another schema IamPolicyVersion
+    4. Rename IamService_GetPolicyVersionResponse.GetPolicyVersionResult.[PolicyVersioin -> PolicyVersion]
+    5. Use IamPolicyVersion as the common schema for IamService_ListPolicyVersionsResponse.ListPolicyVersionsResult.PolicyVersions
+    6. Rename IamService_ListPolicyVersionsResponse.ListPolicyVersionsResult.[PolicyVersions -> Versions]
     """
     common_policy_type = json_obj['components']['schemas']['IamService_GetPolicyResponse']\
         ['properties']['GetPolicyResult']\
         ['properties']['Policy']
+    common_policy_version = json_obj['components']['schemas']['IamService_GetPolicyVersionResponse']\
+        ['properties']['GetPolicyVersionResult']\
+        ['properties']['PolicyVersioin']
     common_policy_ref = {
         "$ref": "#/components/schemas/IamPolicy"
     }
     common_policy_attached_ref = {
         "$ref": "#/components/schemas/IamPolicyAttached"
     }
+    common_policy_version_ref = {
+        "$ref": "#/components/schemas/IamPolicyVersion"
+    }    
 
     # add the common schema
     json_obj['components']['schemas']['IamPolicy'] = common_policy_type
@@ -199,13 +209,15 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
             }
         }
     }
-    # add common ref to all places
+    json_obj['components']['schemas']['IamPolicyVersion'] = common_policy_version
+    # add common policy ref to all places
     json_obj['components']['schemas']['IamService_GetPolicyResponse']\
         ['properties']['GetPolicyResult']\
         ['properties']['Policy'] = common_policy_ref
     json_obj['components']['schemas']['IamService_ListPoliciesResponse']\
         ['properties']['ListPoliciesResult']\
         ['properties']['Policies']['items'] = common_policy_ref
+    # add common policy attached ref to all places
     json_obj['components']['schemas']['IamService_ListAttachedGroupPoliciesResponse']\
         ['properties']['ListAttachedGroupPoliciesResult']\
         ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
@@ -215,6 +227,22 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
     json_obj['components']['schemas']['IamService_ListAttachedRolePoliciesResponse']\
         ['properties']['ListAttachedRolePoliciesResult']\
         ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
+    # add common policy version ref to all places
+    json_obj['components']['schemas']['IamService_GetPolicyVersionResponse']\
+        ['properties']['GetPolicyVersionResult']\
+        ['properties']['PolicyVersion'] = common_policy_version_ref
+    del json_obj['components']['schemas']['IamService_GetPolicyVersionResponse']\
+        ['properties']['GetPolicyVersionResult']\
+        ['properties']['PolicyVersioin']
+    json_obj['components']['schemas']['IamService_ListPolicyVersionsResponse']\
+        ['properties']['ListPolicyVersionsResult']\
+        ['properties']['PolicyVersions']['items'] = common_policy_version_ref
+    json_obj['components']['schemas']['IamService_ListPolicyVersionsResponse']\
+        ['properties']['ListPolicyVersionsResult']\
+        ['properties']['Versions'] = json_obj['components']['schemas']['IamService_ListPolicyVersionsResponse']\
+        ['properties']['ListPolicyVersionsResult']\
+        ['properties'].pop('PolicyVersions')
+        
     return json_obj
 
 def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:

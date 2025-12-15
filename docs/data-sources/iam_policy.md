@@ -123,3 +123,14 @@ Read-Only:
 - `policy_id` (String) The stable and unique string identifying the policy.
 - `policy_name` (String) The friendly name of the policy.
 - `update_date` (String) The date and time, in ISO 8601 date-time format, when the policy was created.
+- `versions` (Attributes List) List of IAM Policy Versions. (see [below for nested schema](#nestedatt--policies--versions))
+
+<a id="nestedatt--policies--versions"></a>
+### Nested Schema for `policies.versions`
+
+Read-Only:
+
+- `create_date` (String) The date and time, in ISO 8601 date-time format, when the policy was created.
+- `document` (String) The policy document, URL-encoded compliant with RFC 3986.
+- `is_default_version` (Boolean) Specifies whether the policy is the default version.
+- `version_id` (String) The identifier for the version of the policy that is set as the default version.

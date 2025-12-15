@@ -7923,6 +7923,104 @@
 				}
 			}
 		},
+		"/iam?Action=GetPolicyVersion": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve version of Managed Policy.",
+				"description": "Retrieve version of Managed Policy.",
+				"operationId": "IamService_GetPolicyVersion",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ARN of the IAM Managed policy to retrieve."
+					},
+					{
+						"name": "VersionId",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Policy Version to retrieve."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetPolicyVersionResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:fdee:19"
+											},
+											"GetPolicyVersionResult": {
+												"PolicyVersion": {
+													"CreateDate": "2020-04-15T21:57:14Z",
+													"Document": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Action%22%3A%5B%22iam%3AGetPolicyVersion%22%2C%22iam%3AGetUser%22%2C%22iam%3AGetPolicy%22%2C%22iam%3AGetGroupPolicy%22%2C%22iam%3AGetRole%22%2C%22iam%3AGetAccessKeyLastUsed%22%2C%22iam%3AGetGroup%22%2C%22iam%3AGetUserPolicy%22%5D%2C%22Resource%22%3A%22*%22%2C%22Effect%22%3A%22Allow%22%2C%22Sid%22%3A%22VisualEditor0%22%7D%5D%7D",
+													"IsDefaultVersion": false,
+													"VersionId": "v2"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=GetRole": {
 			"post": {
 				"tags": [
@@ -9288,6 +9386,116 @@
 												],
 												"IsTruncated": false,
 												"Marker": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=ListPolicyVersions": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List versions of IAM Managed Policy.",
+				"description": "List versions of IAM Managed Policy.",
+				"operationId": "IamService_ListPolicyVersions",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ARN of the IAM Managed policy to list."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListPolicyVersionsResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:fa67:0"
+											},
+											"ListPolicyVersionsResult": {
+												"PolicyVersions": [
+													{
+														"CreateDate": "2020-04-15T21:43:59Z",
+														"Document": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Action%22%3A%5B%22s3%3AListBucket%22%2C%22s3%3AListAllMyBuckets%22%2C%22s3%3AGetObject%22%2C%22s3%3AGetObjectAcl%22%2C%22s3%3AGetObjectTagging%22%2C%22s3%3AGetObjectVersion%22%2C%22s3%3AGetObjectVersionAcl%22%2C%22s3%3AGetObjectVersionTagging%22%2C%22s3%3AListMultipartUploadParts%22%2C%22s3%3AListBucketVersions%22%2C%22s3%3AGetBucketVersioning%22%2C%22s3%3AGetBucketAcl%22%2C%22s3%3AGetBucketCORS%22%2C%22s3%3AGetLifecycleConfiguration%22%2C%22s3%3AListBucketMultipartUploads%22%2C%22s3%3AGetBucketPolicy%22%2C%22s3%3ACreateBucket%22%2C%22s3%3ADeleteBucket%22%2C%22s3%3APutBucketCORS%22%2C%22s3%3APutBucketVersioning%22%2C%22s3%3APutLifecycleConfiguration%22%2C%22s3%3APutObject%22%2C%22s3%3ADeleteObject%22%2C%22s3%3ADeleteObjectVersion%22%2C%22s3%3AAbortMultipartUpload%22%2C%22s3%3APutObjectTagging%22%2C%22s3%3APutObjectVersionTagging%22%2C%22s3%3ADeleteObjectTagging%22%2C%22s3%3ADeleteObjectVersionTagging%22%2C%22s3%3APutBucketAcl%22%2C%22s3%3APutBucketPolicy%22%2C%22s3%3ADeleteBucketPolicy%22%2C%22s3%3APutObjectAcl%22%2C%22s3%3APutObjectVersionAcl%22%5D%2C%22Resource%22%3A%22*%22%2C%22Effect%22%3A%22Allow%22%2C%22Sid%22%3A%22VisualEditor0%22%7D%5D%7D",
+														"IsDefaultVersion": true,
+														"VersionId": "v1"
+													}
+												],
+												"IsTruncated": false
 											}
 										}
 									}
@@ -14970,6 +15178,23 @@
 					}
 				}
 			},
+			"IamService_GetPolicyVersionResponse": {
+				"type": "object",
+				"properties": {
+					"GetPolicyVersionResult": {
+						"type": "object",
+						"properties": {
+							"PolicyVersion": {
+								"$ref": "#/components/schemas/IamPolicyVersion"
+							}
+						},
+						"description": "Get getPolicyVersionResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
 			"IamService_GetRoleResponse": {
 				"type": "object",
 				"properties": {
@@ -15343,6 +15568,31 @@
 					}
 				}
 			},
+			"IamService_ListPolicyVersionsResponse": {
+				"type": "object",
+				"properties": {
+					"ListPolicyVersionsResult": {
+						"type": "object",
+						"properties": {
+							"Marker": {
+								"type": "string",
+								"description": "When IsTruncated is true, this element is present and contains the value to use for the Marker parameter in a subsequent pagination request."
+							},
+							"Versions": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/IamPolicyVersion"
+								},
+								"description": "Get policyVersions"
+							}
+						},
+						"description": "Get listPolicyVersionsResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
 			"IamService_ListRolePoliciesResponse": {
 				"type": "object",
 				"properties": {
@@ -15614,6 +15864,28 @@
 						"description": "The friendly name of the policy."
 					}
 				}
+			},
+			"IamPolicyVersion": {
+				"type": "object",
+				"properties": {
+					"CreateDate": {
+						"type": "string",
+						"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+					},
+					"Document": {
+						"type": "string",
+						"description": "The policy document, URL-encoded compliant with RFC 3986."
+					},
+					"IsDefaultVersion": {
+						"type": "boolean",
+						"description": "Specifies whether the policy version is set as the policy's default version."
+					},
+					"VersionId": {
+						"type": "string",
+						"description": "The identifier for the policy version."
+					}
+				},
+				"description": "Get policyVersion"
 			},
 			"IamTagKeyValue": {
 				"type": "object",
