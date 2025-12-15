@@ -131,4 +131,9 @@ RequiredAPIs = [
     "/iam?Action=ListPolicyVersions",
     "/iam?Action=GetPolicyVersion",
     "/object/users*",
+
+    # Management User API endpoints
+    "/vdc/users",
+    "/vdc/users/{userid}",
+    "/vdc/users/{userid}/deactivate",
 ]

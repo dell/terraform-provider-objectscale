@@ -187,6 +187,11 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceUpdateAccessKey**](docs/IamApi.md#iamserviceupdateaccesskey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 *IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 *IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceCreateLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicecreatelocaluserinfo) | **Post** /vdc/users | Creates a local VDC user with the specified details
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceDeleteLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicedeletelocaluserinfo) | **Post** /vdc/users/{userid}/deactivate | Deletes local user information for the specified user identifier
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceGetLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicegetlocaluserinfo) | **Get** /vdc/users/{userid} | Gets local user details for the specified user identifier
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceGetLocalUserInfos**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicegetlocaluserinfos) | **Get** /vdc/users | Lists all local management users
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceModifyLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicemodifylocaluserinfo) | **Put** /vdc/users/{userid} | Updates local user details for the specified user identifier
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
@@ -347,6 +352,12 @@ Class | Method | HTTP request | Description
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
  - [IamTagKey](docs/IamTagKey.md)
  - [IamTagKeyValue](docs/IamTagKeyValue.md)
+ - [MgmtUserInfoServiceCreateLocalUserInfoRequest](docs/MgmtUserInfoServiceCreateLocalUserInfoRequest.md)
+ - [MgmtUserInfoServiceCreateLocalUserInfoResponse](docs/MgmtUserInfoServiceCreateLocalUserInfoResponse.md)
+ - [MgmtUserInfoServiceGetLocalUserInfoResponse](docs/MgmtUserInfoServiceGetLocalUserInfoResponse.md)
+ - [MgmtUserInfoServiceGetLocalUserInfosResponse](docs/MgmtUserInfoServiceGetLocalUserInfosResponse.md)
+ - [MgmtUserInfoServiceGetLocalUserInfosResponseMgmtUserInfoInner](docs/MgmtUserInfoServiceGetLocalUserInfosResponseMgmtUserInfoInner.md)
+ - [MgmtUserInfoServiceModifyLocalUserInfoRequest](docs/MgmtUserInfoServiceModifyLocalUserInfoRequest.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)

@@ -626,6 +626,362 @@
 				}
 			}
 		},
+		"/vdc/users": {
+			"post": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Creates a local VDC user with the specified details",
+				"description": "Creates local users for the VDC. These users can be assigned to VDC-wide management roles and are not\n associated with a namespace. User account can be assigned to the System Admin role by setting the\n isSystemAdmin flag in the request payload.",
+				"operationId": "MgmtUserInfoService_createLocalUserInfo",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created management user information.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MgmtUserInfoService_createLocalUserInfoResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"userId": "SampleJsonUser",
+											"password": "SampleJsonPwd",
+											"isSystemAdmin": "true",
+											"isSystemMonitor": "false",
+											"isSecurityAdmin": "false"
+										}
+									},
+									"example_1": {
+										"value": {
+											"userId": "SampleJsonUser",
+											"isSystemAdmin": true,
+											"isSystemMonitor": "false",
+											"isSecurityAdmin": "false"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MgmtUserInfoService_createLocalUserInfoRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Lists all local management users",
+				"description": "Gets all configured local management users.",
+				"operationId": "MgmtUserInfoService_getLocalUserInfos",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of management user information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MgmtUserInfoService_getLocalUserInfosResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"mgmt_user_info": [
+												{
+													"isSystemAdmin": "true",
+													"isSystemMonitor": "false",
+													"isSecurityAdmin": "false",
+													"userId": "root"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/users/{userid}/deactivate": {
+			"post": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Deletes local user information for the specified user identifier",
+				"description": "Deletes local management user information for the specified user identifier.",
+				"operationId": "MgmtUserInfoService_deleteLocalUserInfo",
+				"parameters": [
+					{
+						"name": "userid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User identifier for which local user information needs to be deleted."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete local user information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/users/{userid}": {
+			"put": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Updates local user details for the specified user identifier",
+				"description": "Updates user details for the specified local management user.",
+				"operationId": "MgmtUserInfoService_modifyLocalUserInfo",
+				"parameters": [
+					{
+						"name": "userid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User identifier for which local user information needs to be updated."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update local user information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"mgmt_user_info_update": {
+												"password": "password",
+												"isSystemAdmin": "true",
+												"isSystemMonitor": "false",
+												"isSecurityAdmin": "false"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MgmtUserInfoService_modifyLocalUserInfoRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Gets local user details for the specified user identifier",
+				"description": "Gets details for the specified local management user.",
+				"operationId": "MgmtUserInfoService_getLocalUserInfo",
+				"parameters": [
+					{
+						"name": "userid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User identifier for which local user information needs to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Management user information for the given user identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MgmtUserInfoService_getLocalUserInfoResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/object/namespaces": {
 			"get": {
 				"tags": [
@@ -12526,6 +12882,167 @@
 	},
 	"components": {
 		"schemas": {
+			"MgmtUserInfoService_createLocalUserInfoRequest": {
+				"type": "object",
+				"properties": {
+					"userId": {
+						"type": "string",
+						"description": "Management user id"
+					},
+					"password": {
+						"type": "string",
+						"description": "Password for the management user"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "If set to true, assigns the  management user to the System Admin role"
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "If set to true, assigns the management user to the System Monitor role"
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "If set to true, assigns the management user to the Security Admin role"
+					},
+					"is_external_group": {
+						"type": "boolean",
+						"description": "If set to true, its a domain."
+					}
+				},
+				"required": [
+					"userId"
+				]
+			},
+			"MgmtUserInfoService_createLocalUserInfoResponse": {
+				"type": "object",
+				"properties": {
+					"userId": {
+						"type": "string",
+						"description": "User Id"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Admin"
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Monitor"
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is Security Admin"
+					},
+					"is_external_group": {
+						"type": "boolean",
+						"description": "If set to true, its a domain."
+					},
+					"is_locked": {
+						"type": "boolean",
+						"description": "If set to true, the user is locked."
+					},
+					"last_time_password_changed": {
+						"type": "string",
+						"description": "Value of last time password changed"
+					}
+				}
+			},
+			"MgmtUserInfoService_modifyLocalUserInfoRequest": {
+				"type": "object",
+				"properties": {
+					"password": {
+						"type": "string",
+						"description": "Password for the management user"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "Assigns or removes management user to /from System Admin role."
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "Assigns or removes management user to /from System Monitor role."
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "Assigns or removes management user to/from Security Admin role."
+					}
+				}
+			},
+			"MgmtUserInfoService_getLocalUserInfoResponse": {
+				"type": "object",
+				"properties": {
+					"userId": {
+						"type": "string",
+						"description": "User Id"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Admin"
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Monitor"
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is Security Admin"
+					},
+					"is_external_group": {
+						"type": "boolean",
+						"description": "If set to true, its a domain."
+					},
+					"is_locked": {
+						"type": "boolean",
+						"description": "If set to true, the user is locked."
+					},
+					"last_time_password_changed": {
+						"type": "string",
+						"description": "Value of last time password changed"
+					}
+				}
+			},
+			"MgmtUserInfoService_getLocalUserInfosResponse": {
+				"type": "object",
+				"properties": {
+					"mgmt_user_info": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"userId": {
+									"type": "string",
+									"description": "User Id"
+								},
+								"isSystemAdmin": {
+									"type": "boolean",
+									"description": "Flag indicating whether management user is System Admin"
+								},
+								"isSystemMonitor": {
+									"type": "boolean",
+									"description": "Flag indicating whether management user is System Monitor"
+								},
+								"isSecurityAdmin": {
+									"type": "boolean",
+									"description": "Flag indicating whether management user is Security Admin"
+								},
+								"is_external_group": {
+									"type": "boolean",
+									"description": "If set to true, its a domain."
+								},
+								"is_locked": {
+									"type": "boolean",
+									"description": "If set to true, the user is locked."
+								},
+								"last_time_password_changed": {
+									"type": "string",
+									"description": "Value of last time password changed"
+								}
+							}
+						},
+						"description": "List of management user infos"
+					}
+				}
+			},
 			"NamespaceService_getNamespacesResponse": {
 				"type": "object",
 				"properties": {
