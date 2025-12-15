@@ -19,6 +19,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -26,8 +27,11 @@ import (
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
@@ -87,7 +91,6 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"soft_quota": schema.StringAttribute{
 				Description:         "Soft quota for the bucket.",
 				MarkdownDescription: "Soft quota for the bucket.",
-				Optional:            true,
 				Computed:            true,
 			},
 			"fs_access_enabled": schema.BoolAttribute{
@@ -201,14 +204,13 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"md_tokens": schema.BoolAttribute{
 				Description:         "Metadata tokens for advanced search.",
 				MarkdownDescription: "Metadata tokens for advanced search.",
-				Optional:            true,
 				Computed:            true,
 			},
 			"max_keys": schema.Int64Attribute{
 				Description:         "Maximum number of keys for search.",
 				MarkdownDescription: "Maximum number of keys for search.",
-				Optional:            true,
-				Computed:            true,
+				// Optional:            true,
+				Computed: true,
 			},
 			"metadata": schema.ListNestedAttribute{
 				Description:         "List of metadata definitions.",
@@ -222,6 +224,12 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							MarkdownDescription: "Metadata type.",
 							Optional:            true,
 							Computed:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"User",
+									"System",
+								),
+							},
 						},
 						"name": schema.StringAttribute{
 							Description:         "Metadata name.",
@@ -277,10 +285,17 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"audit_delete_expiration": schema.Int64Attribute{
-				Description:         "Days after which audited delete expires.",
-				MarkdownDescription: "Days after which audited delete expires.",
-				Optional:            true,
-				Computed:            true,
+				Description: `Days after which audited delete expires.
+							If not set, or set to -1 or -2, reflections are retained infinitely.
+							If set to 0, reflections are deleted immediately and not retained.
+							Any other positive value specifies the number of days to retain reflections before deletion.`,
+				MarkdownDescription: `Days after which audited delete expires.
+									- If not set, or set to -1 or -2, reflections are retained infinitely.
+									- If set to 0, reflections are deleted immediately and not retained.
+									- Any other positive value specifies the number of days to retain reflections before deletion.
+				`,
+				Optional: true,
+				Computed: true,
 			},
 			"is_stale_allowed": schema.BoolAttribute{
 				Description:         "Allow stale reads.",
@@ -311,6 +326,12 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Default object lock retention mode.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"Compliance",
+						"Governance",
+					),
+				},
 			},
 			"default_object_lock_retention_years": schema.Int64Attribute{
 				Description:         "Default object lock retention years.",
@@ -381,6 +402,75 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				Computed:            true,
 			},
+			"bucket_policy": schema.StringAttribute{
+				Description:         "Bucket policy in JSON format.",
+				MarkdownDescription: "Bucket policy in JSON format.",
+				Optional:            true,
+				Computed:            true,
+			},
+			"user_acl": schema.ListNestedAttribute{
+				Description:         "List of user ACLs for the bucket.",
+				MarkdownDescription: "List of user ACLs for the bucket.",
+				Optional:            true,
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"user": schema.StringAttribute{
+							Description:         "User for the ACL entry.",
+							MarkdownDescription: "User for the ACL entry.",
+							Required:            true,
+						},
+						"permission": schema.ListAttribute{
+							Description:         "List of permissions for the user.",
+							MarkdownDescription: "List of permissions for the user.",
+							ElementType:         types.StringType,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"group_acl": schema.ListNestedAttribute{
+				Description:         "List of group ACLs for the bucket.",
+				MarkdownDescription: "List of group ACLs for the bucket.",
+				Optional:            true,
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"user": schema.StringAttribute{
+							Description:         "Group for the ACL entry.",
+							MarkdownDescription: "Group for the ACL entry.",
+							Required:            true,
+						},
+						"permission": schema.ListAttribute{
+							Description:         "List of permissions for the group.",
+							MarkdownDescription: "List of permissions for the group.",
+							ElementType:         types.StringType,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"custom_group_acl": schema.ListNestedAttribute{
+				Description:         "List of custom group ACLs for the bucket.",
+				MarkdownDescription: "List of custom group ACLs for the bucket.",
+				Optional:            true,
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"user": schema.StringAttribute{
+							Description:         "Custom group for the ACL entry.",
+							MarkdownDescription: "Custom group for the ACL entry.",
+							Required:            true,
+						},
+						"permission": schema.ListAttribute{
+							Description:         "List of permissions for the custom group.",
+							MarkdownDescription: "List of permissions for the custom group.",
+							ElementType:         types.StringType,
+							Required:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -405,7 +495,804 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
+	// Handle user_acl, group_acl, and custom_group_acl
+	if len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0 {
+		var userAclList []clientgen.BucketServiceSetBucketACLRequestAclUserAclInner
+		var groupAclList []clientgen.BucketServiceSetBucketACLRequestAclGroupAclInner
+		var customAclList []clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner
+		for _, aclVal := range plan.UserAcl.Elements() {
+			acl := aclVal.(types.Object)
+			user := acl.Attributes()["user"].(types.String).ValueString()
+			permList := acl.Attributes()["permission"].(types.List)
+			var permissions []string
+			for _, p := range permList.Elements() {
+				permissions = append(permissions, p.(types.String).ValueString())
+			}
+			userAclList = append(userAclList, clientgen.BucketServiceSetBucketACLRequestAclUserAclInner{
+				User:       &user,
+				Permission: permissions,
+			})
+		}
+		for _, aclVal := range plan.GroupAcl.Elements() {
+			acl := aclVal.(types.Object)
+			group := acl.Attributes()["user"].(types.String).ValueString()
+			permList := acl.Attributes()["permission"].(types.List)
+			var permissions []string
+			for _, p := range permList.Elements() {
+				permissions = append(permissions, p.(types.String).ValueString())
+			}
+			groupAclList = append(groupAclList, clientgen.BucketServiceSetBucketACLRequestAclGroupAclInner{
+				Group:      &group,
+				Permission: permissions,
+			})
+		}
+		for _, aclVal := range plan.CustomGroupAcl.Elements() {
+			acl := aclVal.(types.Object)
+			customGroup := acl.Attributes()["user"].(types.String).ValueString()
+			permList := acl.Attributes()["permission"].(types.List)
+			var permissions []string
+			for _, p := range permList.Elements() {
+				permissions = append(permissions, p.(types.String).ValueString())
+			}
+			customAclList = append(customAclList, clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner{
+				Customgroup: &customGroup,
+				Permission:  permissions,
+			})
+		}
+		namespace := plan.Namespace.ValueString()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketACL(ctx, plan.Name.ValueString()).
+			BucketServiceSetBucketACLRequest(
+				clientgen.BucketServiceSetBucketACLRequest{
+					Acl: &clientgen.BucketServiceSetBucketACLRequestAcl{
+						UserAcl:        userAclList,
+						GroupAcl:       groupAclList,
+						CustomgroupAcl: customAclList,
+					},
+					Namespace: &namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error setting bucket ACL", err.Error())
+			return
+		}
+	}
+
+	if plan.BucketPolicy.ValueString() != "" {
+		var policyMap map[string]interface{}
+		err := json.Unmarshal([]byte(plan.BucketPolicy.ValueString()), &policyMap)
+		if err != nil {
+			resp.Diagnostics.AddError("Error parsing bucket policy JSON", err.Error())
+			return
+		}
+		_, _, err = r.client.GenClient.BucketApi.
+			BucketServiceSetBucketPolicy(ctx, plan.Name.ValueString()).
+			Namespace(plan.Namespace.ValueString()).
+			Body(policyMap).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error setting bucket policy", err.Error())
+			return
+		}
+	}
+
+	if plan.DefaultGroup.ValueString() != "" {
+		namespace := plan.Namespace.ValueString()
+		// Use false as default if plan does not have a value
+		defaultGroupFileReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileReadPermission.ValueBool()))
+		defaultGroupFileWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileWritePermission.ValueBool()))
+		defaultGroupFileExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileExecutePermission.ValueBool()))
+		defaultGroupDirReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirReadPermission.ValueBool()))
+		defaultGroupDirWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirWritePermission.ValueBool()))
+		defaultGroupDirExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirExecutePermission.ValueBool()))
+		defaultGroup := plan.DefaultGroup.ValueString()
+
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketDefaultGroup(ctx, plan.Name.ValueString()).
+			BucketServiceSetBucketDefaultGroupRequest(
+				clientgen.BucketServiceSetBucketDefaultGroupRequest{
+					DefaultGroup:                      &defaultGroup,
+					DefaultGroupFileReadPermission:    defaultGroupFileReadPermission,
+					DefaultGroupFileWritePermission:   defaultGroupFileWritePermission,
+					DefaultGroupFileExecutePermission: defaultGroupFileExecutePermission,
+					DefaultGroupDirReadPermission:     defaultGroupDirReadPermission,
+					DefaultGroupDirWritePermission:    defaultGroupDirWritePermission,
+					DefaultGroupDirExecutePermission:  defaultGroupDirExecutePermission,
+					Namespace:                         &namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating DefaultGroup or related permissions", err.Error())
+			return
+		}
+	}
+
 	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Buckets",
+			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
+		)
+		return
+	}
+
+	// Use setStateFromAPI to populate state from API after creation
+	aclFromPlan := len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0
+	data := r.setStateFromAPI(
+		ctx,
+		*bucketData.Name,
+		plan.Namespace.ValueString(),
+		plan.BucketPolicy.ValueString(),
+		aclFromPlan,
+		plan.UserAcl,
+		plan.GroupAcl,
+		plan.CustomGroupAcl,
+		resp.Diagnostics,
+	)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data == nil {
+		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after creation.")
+		return
+	}
+
+	// Save data into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state models.BucketResourceModel
+
+	// Read Terraform prior state data into the model
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Buckets",
+			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
+		)
+		return
+	}
+
+	// Use setStateFromAPI to populate state from API after creation
+	aclFromPlan := len(state.UserAcl.Elements()) > 0 || len(state.GroupAcl.Elements()) > 0 || len(state.CustomGroupAcl.Elements()) > 0
+	data := r.setStateFromAPI(
+		ctx,
+		*bucketData.Name,
+		state.Namespace.ValueString(),
+		state.BucketPolicy.ValueString(),
+		aclFromPlan,
+		state.UserAcl,
+		state.GroupAcl,
+		state.CustomGroupAcl,
+		resp.Diagnostics,
+	)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data == nil {
+		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after creation.")
+		return
+	}
+
+	// Save updated plan into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+
+	// Update operation is not supported
+	// resp.Diagnostics.AddError("Update Bucket operation is not supported.", "Update operation is not supported.")
+
+	// Check if owner has changed
+	var state models.BucketResourceModel
+	var plan models.BucketResourceModel
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	bucketName := state.Name.ValueString()
+	namespace := state.Namespace.ValueString()
+
+	if state.Name.ValueString() != plan.Name.ValueString() ||
+		state.Namespace.ValueString() != plan.Namespace.ValueString() ||
+		state.ReplicationGroup.ValueString() != plan.ReplicationGroup.ValueString() {
+		resp.Diagnostics.AddError(
+			"Immutable Field Change Detected",
+			"Changing 'name', 'namespace', or 'replication_group' is not supported. Please create a new resource instead.",
+		)
+		return
+	}
+
+	//Handle Owner update
+	if state.Owner.ValueString() != plan.Owner.ValueString() {
+		resetPreviousOwners := true
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceUpdateBucketOwner(ctx, bucketName).
+			BucketServiceUpdateBucketOwnerRequest(
+				clientgen.BucketServiceUpdateBucketOwnerRequest{
+					NewOwner:            plan.Owner.ValueString(),
+					Namespace:           namespace,
+					ResetPreviousOwners: &resetPreviousOwners,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating bucket owner", err.Error())
+			return
+		}
+	}
+
+	//Handle IsStaleAllowed update
+	if state.IsStaleAllowed.ValueBool() != plan.IsStaleAllowed.ValueBool() {
+		isStaleAllowed := plan.IsStaleAllowed.ValueBool()
+		isTsoReadonly := plan.IsTsoReadOnly.ValueBool()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceUpdateBucketIsStaleAllowed(ctx, bucketName).
+			BucketServiceUpdateBucketIsStaleAllowedRequest(
+				clientgen.BucketServiceUpdateBucketIsStaleAllowedRequest{
+					IsStaleAllowed: fmt.Sprintf("%v", isStaleAllowed),
+					Namespace:      &namespace,
+					IsTsoReadOnly:  &isTsoReadonly,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating IsStaleAllowed", err.Error())
+			return
+		}
+	}
+
+	//Handle AutoCommitPeriod update
+	if state.AutoCommitPeriod.ValueInt64() != plan.AutoCommitPeriod.ValueInt64() {
+		autoCommitPeriod := plan.AutoCommitPeriod.ValueInt64()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketAutoCommitPeriod(ctx, bucketName).
+			BucketServiceSetBucketAutoCommitPeriodRequest(
+				clientgen.BucketServiceSetBucketAutoCommitPeriodRequest{
+					Autocommit: fmt.Sprintf("%d", autoCommitPeriod),
+					Namespace:  namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating AutoCommitPeriod", err.Error())
+			return
+		}
+	}
+
+	//Handle Retention update
+	if state.Retention.ValueInt64() != plan.Retention.ValueInt64() {
+		retention := plan.Retention.ValueInt64()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketRetention(ctx, bucketName).
+			BucketServiceSetBucketRetentionRequest(
+				clientgen.BucketServiceSetBucketRetentionRequest{
+					Period:    &retention,
+					Namespace: &namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating Retention", err.Error())
+			return
+		}
+	}
+
+	//Handle VersioningStatus update
+	if state.VersioningStatus.ValueString() != plan.VersioningStatus.ValueString() {
+		versioningStatus := plan.VersioningStatus.ValueString()
+		_, _, err := r.client.GenClient.BucketApi.BucketServiceSetBucketVersioning(ctx, bucketName).
+			BucketServiceSetBucketVersioningRequest(
+				clientgen.BucketServiceSetBucketVersioningRequest{
+					Status: &versioningStatus,
+				},
+			).Namespace(namespace).Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating VersioningStatus", err.Error())
+			return
+		}
+	}
+
+	//Handle DefaultGroup and related permissions update
+	if state.DefaultGroup.ValueString() != plan.DefaultGroup.ValueString() ||
+		state.DefaultGroupFileReadPermission.ValueBool() != plan.DefaultGroupFileReadPermission.ValueBool() ||
+		state.DefaultGroupFileWritePermission.ValueBool() != plan.DefaultGroupFileWritePermission.ValueBool() ||
+		state.DefaultGroupFileExecutePermission.ValueBool() != plan.DefaultGroupFileExecutePermission.ValueBool() ||
+		state.DefaultGroupDirReadPermission.ValueBool() != plan.DefaultGroupDirReadPermission.ValueBool() ||
+		state.DefaultGroupDirWritePermission.ValueBool() != plan.DefaultGroupDirWritePermission.ValueBool() ||
+		state.DefaultGroupDirExecutePermission.ValueBool() != plan.DefaultGroupDirExecutePermission.ValueBool() {
+
+		// Use false as default if plan does not have a value
+		defaultGroupFileReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileReadPermission.ValueBool()))
+		defaultGroupFileWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileWritePermission.ValueBool()))
+		defaultGroupFileExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileExecutePermission.ValueBool()))
+		defaultGroupDirReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirReadPermission.ValueBool()))
+		defaultGroupDirWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirWritePermission.ValueBool()))
+		defaultGroupDirExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirExecutePermission.ValueBool()))
+		defaultGroup := plan.DefaultGroup.ValueString()
+
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketDefaultGroup(ctx, bucketName).
+			BucketServiceSetBucketDefaultGroupRequest(
+				clientgen.BucketServiceSetBucketDefaultGroupRequest{
+					DefaultGroup:                      &defaultGroup,
+					DefaultGroupFileReadPermission:    defaultGroupFileReadPermission,
+					DefaultGroupFileWritePermission:   defaultGroupFileWritePermission,
+					DefaultGroupFileExecutePermission: defaultGroupFileExecutePermission,
+					DefaultGroupDirReadPermission:     defaultGroupDirReadPermission,
+					DefaultGroupDirWritePermission:    defaultGroupDirWritePermission,
+					DefaultGroupDirExecutePermission:  defaultGroupDirExecutePermission,
+					Namespace:                         &namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating DefaultGroup or related permissions", err.Error())
+			return
+		}
+	}
+
+	// Handle tag updates
+	// Convert state and plan tags to maps for easy comparison
+
+	stateTags := make(map[string]string)
+	for _, tagObj := range state.Tag.Elements() {
+		tagMap := tagObj.(types.Object).Attributes()
+		keyVal, _ := tagMap["key"].(types.String)
+		valueVal, _ := tagMap["value"].(types.String)
+		stateTags[keyVal.ValueString()] = valueVal.ValueString()
+	}
+
+	planTags := make(map[string]string)
+	for _, tagObj := range plan.Tag.Elements() {
+		tagMap := tagObj.(types.Object).Attributes()
+		keyVal, _ := tagMap["key"].(types.String)
+		valueVal, _ := tagMap["value"].(types.String)
+		planTags[keyVal.ValueString()] = valueVal.ValueString()
+	}
+
+	// Delete tags that exist in state but not in plan
+	for key := range stateTags {
+		if _, exists := planTags[key]; !exists {
+			val := stateTags[key]
+			tagList := []clientgen.BucketServiceCreateBucketRequestTagSetInner{
+				{
+					Key:   &key,
+					Value: &val,
+				},
+			}
+			_, _, err := r.client.GenClient.BucketApi.
+				BucketServiceDeleteBucketTags(ctx, bucketName).
+				BucketServiceDeleteBucketTagsRequest(
+					clientgen.BucketServiceDeleteBucketTagsRequest{
+						TagSet:    tagList,
+						Namespace: &namespace,
+					},
+				).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error deleting tag", fmt.Sprintf("Tag: %s, Error: %s", key, err.Error()))
+				return
+			}
+		}
+	}
+
+	// Update existing tags if value changed, create new tags if not present in state
+	for key, planVal := range planTags {
+		stateVal, exists := stateTags[key]
+		if exists {
+			if stateVal != planVal {
+				tagList := []clientgen.BucketServiceCreateBucketRequestTagSetInner{
+					{
+						Key:   &key,
+						Value: &planVal,
+					},
+				}
+				_, _, err := r.client.GenClient.BucketApi.
+					BucketServiceUpdateBucketTags(ctx, bucketName).
+					BucketServiceUpdateBucketTagsRequest(
+						clientgen.BucketServiceUpdateBucketTagsRequest{
+							TagSet:    tagList,
+							Namespace: &namespace,
+						},
+					).
+					Execute()
+				if err != nil {
+					resp.Diagnostics.AddError("Error updating tag", fmt.Sprintf("Tag: %s, Error: %s", key, err.Error()))
+					return
+				}
+			}
+		} else {
+			// Create new tag
+			tagList := []clientgen.BucketServiceCreateBucketRequestTagSetInner{
+				{
+					Key:   &key,
+					Value: &planVal,
+				},
+			}
+			_, _, err := r.client.GenClient.BucketApi.
+				BucketServiceAddBucketTags(ctx, bucketName).
+				BucketServiceAddBucketTagsRequest(
+					clientgen.BucketServiceAddBucketTagsRequest{
+						TagSet:    tagList,
+						Namespace: &namespace,
+					},
+				).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error creating tag", fmt.Sprintf("Tag: %s, Error: %s", key, err.Error()))
+				return
+			}
+		}
+	}
+
+	// Handle BlockSize and NotificationSize updates
+	if state.BlockSize.ValueInt64() != plan.BlockSize.ValueInt64() || state.NotificationSize.ValueInt64() != plan.NotificationSize.ValueInt64() {
+		blockSize := plan.BlockSize.ValueInt64()
+		notificationSize := plan.NotificationSize.ValueInt64()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceUpdateBucketQuota(ctx, bucketName).
+			BucketServiceUpdateBucketQuotaRequest(
+				clientgen.BucketServiceUpdateBucketQuotaRequest{
+					BlockSize:        &blockSize,
+					NotificationSize: &notificationSize,
+					Namespace:        &namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating BlockSize or NotificationSize", fmt.Sprintf("BlockSize: %d, NotificationSize: %d, Error: %s", blockSize, notificationSize, err.Error()))
+			return
+		}
+	}
+
+	// Handle IsObjectLockEnabled update
+	if state.IsObjectLockEnabled.ValueBool() != plan.IsObjectLockEnabled.ValueBool() {
+		isObjectLockEnabled := plan.IsObjectLockEnabled.ValueBool()
+		// Prepare DefaultRetention Rule if any of the related fields are set
+		var rule *clientgen.BucketServicePutBucketDefaultLockConfigurationRequestRule
+		mode := plan.DefaultObjectLockRetentionMode.ValueString()
+		years := plan.DefaultObjectLockRetentionYears.ValueInt64()
+		days := plan.DefaultObjectLockRetentionDays.ValueInt64()
+
+		// Only set Rule if at least one of the fields is set
+		if mode != "" || years > 0 || days > 0 {
+			var defaultRetention clientgen.BucketServicePutBucketDefaultLockConfigurationRequestRuleDefaultRetention
+
+			if mode != "" {
+				defaultRetention.Mode = &mode
+			}
+			// Only one of Years or Days should be set, prefer Years if both are set
+			if years > 0 {
+				y := int32(years)
+				defaultRetention.Years = &y
+			} else if days > 0 {
+				d := int32(days)
+				defaultRetention.Days = &d
+			}
+
+			rule = &clientgen.BucketServicePutBucketDefaultLockConfigurationRequestRule{
+				DefaultRetention: &defaultRetention,
+			}
+		}
+
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServicePutBucketDefaultLockConfiguration(ctx, bucketName).
+			BucketServicePutBucketDefaultLockConfigurationRequest(
+				clientgen.BucketServicePutBucketDefaultLockConfigurationRequest{
+					ObjectLockEnabled: helper.ValueToPointer[string](types.StringValue(fmt.Sprintf("%v", isObjectLockEnabled))),
+					Rule:              rule,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating IsObjectLockEnabled", err.Error())
+			return
+		}
+	}
+
+	// Handle IsObjectLockWithAdoAllowed update
+	if state.IsObjectLockWithAdoAllowed.ValueBool() != plan.IsObjectLockWithAdoAllowed.ValueBool() {
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket(ctx, bucketName).
+			Namespace(namespace).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating IsObjectLockWithAdoAllowed", err.Error())
+			return
+		}
+	}
+
+	// Handle Bucket Locked update
+	if state.Locked.ValueBool() != plan.Locked.ValueBool() {
+		locked := plan.Locked.ValueBool()
+		lockedStr := fmt.Sprintf("%v", locked)
+		_, _, err := r.client.GenClient.BucketApi.BucketServiceSetBucketLock(ctx, bucketName, lockedStr).Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating Bucket Lock", err.Error())
+			return
+		}
+	}
+
+	// Handle EnableAdvancedMetadataSearch and related fields update
+	// Handle EnableAdvancedMetadataSearch toggle
+	if state.EnableAdvancedMetadataSearch.ValueBool() != plan.EnableAdvancedMetadataSearch.ValueBool() {
+		var err error
+		if plan.EnableAdvancedMetadataSearch.ValueBool() {
+			_, _, err = r.client.GenClient.BucketApi.
+				BucketServiceActivateAdvancedMetadataSearch(ctx, bucketName).Namespace(namespace).
+				Execute()
+		} else {
+			_, _, err = r.client.GenClient.BucketApi.
+				BucketServiceDeactivateAdvancedMetadataSearch(ctx, bucketName).Namespace(namespace).
+				Execute()
+		}
+		if err != nil {
+			resp.Diagnostics.AddError("Error Updating AdvancedMetadataSearch Status", err.Error())
+			return
+		}
+	}
+
+	// Handle AdvancedMetadataSearchTargetName or AdvancedMetadataSearchTargetStream update
+	if state.AdvancedMetadataSearchTargetName.ValueString() != plan.AdvancedMetadataSearchTargetName.ValueString() ||
+		state.AdvancedMetadataSearchTargetStream.ValueString() != plan.AdvancedMetadataSearchTargetStream.ValueString() {
+
+		targetName := plan.AdvancedMetadataSearchTargetName.ValueString()
+		targetStream := plan.AdvancedMetadataSearchTargetStream.ValueString()
+
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetAdvancedMetadataSearchTarget(ctx, bucketName).
+			BucketServiceSetAdvancedMetadataSearchTargetRequest(
+				clientgen.BucketServiceSetAdvancedMetadataSearchTargetRequest{
+					TargetName: &targetName,
+					StreamName: &targetStream,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating advanced metadata search target settings", err.Error())
+			return
+		}
+	}
+
+	// Handle AuditDeleteExpiration update
+	if state.AuditDeleteExpiration.ValueInt64() != plan.AuditDeleteExpiration.ValueInt64() {
+		auditDeleteExpiration := plan.AuditDeleteExpiration.ValueInt64()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketAuditDeleteExpiration(ctx, bucketName).Namespace(namespace).Expiration(fmt.Sprintf("%d", auditDeleteExpiration)).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating AuditDeleteExpiration", err.Error())
+			return
+		}
+	}
+
+	// Handle BucketPolicy update
+	if plan.BucketPolicy.ValueString() != "" {
+		var policyMap map[string]interface{}
+		err := json.Unmarshal([]byte(plan.BucketPolicy.ValueString()), &policyMap)
+		if err != nil {
+			resp.Diagnostics.AddError("Error parsing bucket policy JSON", err.Error())
+			return
+		}
+		_, _, err = r.client.GenClient.BucketApi.
+			BucketServiceSetBucketPolicy(ctx, plan.Name.ValueString()).
+			Namespace(plan.Namespace.ValueString()).
+			Body(policyMap).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error setting bucket policy", err.Error())
+			return
+		}
+	} else {
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceDeleteBucketPolicy(ctx, plan.Name.ValueString()).
+			Namespace(plan.Namespace.ValueString()).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error deleting bucket policy", err.Error())
+			return
+		}
+	}
+
+	// Handle user_acl, group_acl, and custom_group_acl updates
+	// Convert state and plan ACLs to maps for comparison
+	type aclEntry struct {
+		User        string
+		Permissions []string
+	}
+	aclMap := func(acls types.List) map[string][]string {
+		result := make(map[string][]string)
+		for _, aclVal := range acls.Elements() {
+			acl := aclVal.(types.Object)
+			user := acl.Attributes()["user"].(types.String).ValueString()
+			permList := acl.Attributes()["permission"].(types.List)
+			var permissions []string
+			for _, p := range permList.Elements() {
+				permissions = append(permissions, p.(types.String).ValueString())
+			}
+			result[user] = permissions
+		}
+		return result
+	}
+
+	stateUserAcl := aclMap(state.UserAcl)
+	planUserAcl := aclMap(plan.UserAcl)
+	stateGroupAcl := aclMap(state.GroupAcl)
+	planGroupAcl := aclMap(plan.GroupAcl)
+	stateCustomGroupAcl := aclMap(state.CustomGroupAcl)
+	planCustomGroupAcl := aclMap(plan.CustomGroupAcl)
+
+	aclChanged := false
+	if len(stateUserAcl) != len(planUserAcl) || len(stateGroupAcl) != len(planGroupAcl) || len(stateCustomGroupAcl) != len(planCustomGroupAcl) {
+		aclChanged = true
+	} else {
+		// Check for differences in users/groups and permissions
+		for user, perms := range planUserAcl {
+			if statePerms, ok := stateUserAcl[user]; !ok || len(perms) != len(statePerms) {
+				aclChanged = true
+				break
+			} else {
+				for i, p := range perms {
+					if statePerms[i] != p {
+						aclChanged = true
+						break
+					}
+				}
+			}
+		}
+		for group, perms := range planGroupAcl {
+			if statePerms, ok := stateGroupAcl[group]; !ok || len(perms) != len(statePerms) {
+				aclChanged = true
+				break
+			} else {
+				for i, p := range perms {
+					if statePerms[i] != p {
+						aclChanged = true
+						break
+					}
+				}
+			}
+		}
+		for custom, perms := range planCustomGroupAcl {
+			if statePerms, ok := stateCustomGroupAcl[custom]; !ok || len(perms) != len(statePerms) {
+				aclChanged = true
+				break
+			} else {
+				for i, p := range perms {
+					if statePerms[i] != p {
+						aclChanged = true
+						break
+					}
+				}
+			}
+		}
+	}
+
+	if aclChanged {
+		var userAclList []clientgen.BucketServiceSetBucketACLRequestAclUserAclInner
+		var groupAclList []clientgen.BucketServiceSetBucketACLRequestAclGroupAclInner
+		var customAclList []clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner
+
+		for user, perms := range planUserAcl {
+			userAclList = append(userAclList, clientgen.BucketServiceSetBucketACLRequestAclUserAclInner{
+				User:       &user,
+				Permission: perms,
+			})
+		}
+		for group, perms := range planGroupAcl {
+			groupAclList = append(groupAclList, clientgen.BucketServiceSetBucketACLRequestAclGroupAclInner{
+				Group:      &group,
+				Permission: perms,
+			})
+		}
+		for custom, perms := range planCustomGroupAcl {
+			customAclList = append(customAclList, clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner{
+				Customgroup: &custom,
+				Permission:  perms,
+			})
+		}
+		namespace := plan.Namespace.ValueString()
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketACL(ctx, plan.Name.ValueString()).
+			BucketServiceSetBucketACLRequest(
+				clientgen.BucketServiceSetBucketACLRequest{
+					Acl: &clientgen.BucketServiceSetBucketACLRequestAcl{
+						UserAcl:        userAclList,
+						GroupAcl:       groupAclList,
+						CustomgroupAcl: customAclList,
+					},
+					Namespace: &namespace,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating bucket ACL", err.Error())
+			return
+		}
+	}
+
+	// Refresh state after owner update
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Buckets",
+			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
+		)
+		return
+	}
+
+	// Use setStateFromAPI to populate state from API after creation
+	aclFromPlan := len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0
+
+	data := r.setStateFromAPI(
+		ctx,
+		*bucketData.Name,
+		plan.Namespace.ValueString(),
+		plan.BucketPolicy.ValueString(),
+		aclFromPlan,
+		plan.UserAcl,
+		plan.GroupAcl,
+		plan.CustomGroupAcl,
+		resp.Diagnostics,
+	)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data == nil {
+		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after creation.")
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+
+}
+
+func (r *BucketResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	tflog.Info(ctx, "deleting Bucket")
+	var state models.BucketResourceModel
+
+	// Read Terraform prior state data into the model
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	_, _, err := r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).EmptyBucket("true").Execute()
+
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error deleting Bucket",
+			err.Error(),
+		)
+	}
+}
+
+func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	tflog.Info(ctx, "importing Bucket")
+	parts := strings.SplitN(req.ID, ":", 2)
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError("Error importing Bucket", "invalid format: expected 'bucket_name:namespace'")
+		return
+	}
+	bucket_name := parts[0]
+	namespace := parts[1]
+
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, bucket_name).Namespace(namespace).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Buckets",
@@ -416,7 +1303,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	data := getBucketToModel(*bucketData)
 
-	// Save data into Terraform state
+	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -484,31 +1371,6 @@ func (r *BucketResource) modelToJson(plan models.BucketResourceModel) clientgen.
 	}
 }
 
-func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state models.BucketResourceModel
-
-	// Read Terraform prior state data into the model
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Buckets",
-			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
-		)
-		return
-	}
-
-	data := getBucketToModel(*bucketData)
-
-	// Save updated plan into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
 // mapBucketToModel maps a BucketServiceGetBucketInfoResponse to models.BucketModel.
 func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.BucketResourceModel {
 	m := models.BucketResourceModel{
@@ -520,7 +1382,6 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 		BlockSize:        helper.TfInt64(b.BlockSize),
 		NotificationSize: helper.TfInt64(b.NotificationSize),
 		FsAccessEnabled:  helper.TfBool(b.FsAccessEnabled),
-		//HeadType:         helper.TfString(b.HeadType),
 		Tag: helper.ListNotNull(b.TagSet,
 			func(v clientgen.BucketServiceCreateBucketRequestTagSetInner) types.Object {
 				return helper.Object(models.Tags{
@@ -562,9 +1423,8 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 				MaximumVariableRetention: helper.TfInt64(b.MinMaxGovernor.MaximumVariableRetention),
 			})
 		}(),
-		//AuditedDeleteExpiration:            helper.TfInt64(b.AuditedDeleteExpiration),
-		IsObjectLockEnabled: helper.TfBool(b.IsObjectLockEnabled),
-		//StoragePolicy:                      helper.TfString(b.StoragePolicy),
+		AuditDeleteExpiration:              helper.TfInt64(b.AuditDeleteExpiration),
+		IsObjectLockEnabled:                helper.TfBool(b.IsObjectLockEnabled),
 		EnableAdvancedMetadataSearch:       helper.TfBool(b.EnableAdvancedMetadataSearch),
 		AdvancedMetadataSearchTargetName:   helper.TfString(b.AdvancedMetadataSearchTargetName),
 		AdvancedMetadataSearchTargetStream: helper.TfString(b.AdvancedMetadataSearchTargetStream),
@@ -575,53 +1435,84 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 	return m
 }
 
-func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// Update operation is not supported
-	resp.Diagnostics.AddError("Update Bucket operation is not supported.", "Update operation is not supported.")
-}
-
-func (r *BucketResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	tflog.Info(ctx, "deleting Bucket")
-	var state models.BucketResourceModel
-
-	// Read Terraform prior state data into the model
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	_, _, err := r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).EmptyBucket("true").Execute()
-
+func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool, planUserAcl, planGroupAcl, planCustomGroupAcl types.List, respDiagnostics diag.Diagnostics) *models.BucketResourceModel {
+	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, name).Namespace(namespace).Execute()
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error deleting Bucket",
-			err.Error(),
-		)
-	}
-}
-
-func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	tflog.Info(ctx, "importing Bucket")
-	parts := strings.SplitN(req.ID, ":", 2)
-	if len(parts) != 2 {
-		resp.Diagnostics.AddError("Error importing Bucket", "invalid format: expected 'bucket_name:namespace'")
-		return
-	}
-	bucket_name := parts[0]
-	namespace := parts[1]
-
-	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, bucket_name).Namespace(namespace).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError(
+		respDiagnostics.AddError(
 			"Error Reading Buckets",
 			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
 		)
-		return
+		return nil
+	}
+
+	// Fetch bucket policy if not provided
+	if bucketPolicy == "" {
+		policyResp, _, err := r.client.GenClient.BucketApi.
+			BucketServiceGetBucketPolicy(ctx, name).
+			Namespace(namespace).
+			Execute()
+		if err != nil {
+			respDiagnostics.AddError(
+				"Error Reading Bucket Policy",
+				fmt.Sprintf("An error was encountered reading bucket policy from ObjectScale IAM: %s", err.Error()),
+			)
+			return nil
+		}
+		if policyResp != nil {
+			if policyBytes, err := json.Marshal(policyResp); err == nil {
+				bucketPolicy = string(policyBytes)
+			}
+		}
+	}
+
+	// Fetch ACLs only if any ACL is set in the plan/state
+	userAclList := []models.AclModel{}
+	groupAclList := []models.AclModel{}
+	customGroupAclList := []models.AclModel{}
+	if aclFromPlan {
+		aclResp, _, err := r.client.GenClient.BucketApi.
+			BucketServiceGetBucketACL(ctx, name).
+			Namespace(namespace).
+			Execute()
+		if err != nil {
+			respDiagnostics.AddError(
+				"Error Reading Bucket ACL",
+				fmt.Sprintf("An error was encountered reading bucket ACL from ObjectScale IAM: %s", err.Error()),
+			)
+			return nil
+		}
+		if aclResp != nil && aclResp.Acl != nil {
+			for _, u := range aclResp.Acl.UserAcl {
+				if u.User != nil {
+					userAclList = append(userAclList, models.AclModel{
+						User:       types.StringValue(*u.User),
+						Permission: helper.ListNotNull(u.Permission, types.StringValue),
+					})
+				}
+			}
+			for _, g := range aclResp.Acl.GroupAcl {
+				if g.Group != nil {
+					groupAclList = append(groupAclList, models.AclModel{
+						User:       types.StringValue(*g.Group),
+						Permission: helper.ListNotNull(g.Permission, types.StringValue),
+					})
+				}
+			}
+			for _, c := range aclResp.Acl.CustomgroupAcl {
+				if c.Customgroup != nil {
+					customGroupAclList = append(customGroupAclList, models.AclModel{
+						User:       types.StringValue(*c.Customgroup),
+						Permission: helper.ListNotNull(c.Permission, types.StringValue),
+					})
+				}
+			}
+		}
 	}
 
 	data := getBucketToModel(*bucketData)
-
-	// Save updated plan into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	data.BucketPolicy = types.StringValue(bucketPolicy)
+	data.UserAcl = helper.ListNotNull(userAclList, func(v models.AclModel) types.Object { return helper.Object(v) })
+	data.GroupAcl = helper.ListNotNull(groupAclList, func(v models.AclModel) types.Object { return helper.Object(v) })
+	data.CustomGroupAcl = helper.ListNotNull(customGroupAclList, func(v models.AclModel) types.Object { return helper.Object(v) })
+	return &data
 }

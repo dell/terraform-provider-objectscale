@@ -2556,7 +2556,7 @@ Name | Type | Description  | Notes
 
 ## BucketServiceSetBucketPolicy
 
-> map[string]interface{} BucketServiceSetBucketPolicy(ctx, bucketName).Namespace(namespace).Execute()
+> map[string]interface{} BucketServiceSetBucketPolicy(ctx, bucketName).Body(body).Namespace(namespace).Execute()
 
 Add/Replace the policy for the specified bucket in namespace
 
@@ -2576,11 +2576,12 @@ import (
 
 func main() {
     bucketName := "bucketName_example" // string | Name of the bucket for which the policy is to be updated.
+    body := map[string]interface{}{ ... } // map[string]interface{} | 
     namespace := "namespace_example" // string | namespace of the bucket (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.BucketApi.BucketServiceSetBucketPolicy(context.Background(), bucketName).Namespace(namespace).Execute()
+    resp, r, err := apiClient.BucketApi.BucketServiceSetBucketPolicy(context.Background(), bucketName).Body(body).Namespace(namespace).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `BucketApi.BucketServiceSetBucketPolicy``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2606,6 +2607,7 @@ Other parameters are passed through a pointer to a apiBucketServiceSetBucketPoli
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **body** | **map[string]interface{}** |  | 
  **namespace** | **string** | namespace of the bucket | 
 
 ### Return type
@@ -2618,7 +2620,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

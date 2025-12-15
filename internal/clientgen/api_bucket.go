@@ -5756,7 +5756,13 @@ type ApiBucketServiceSetBucketPolicyRequest struct {
 	ctx        context.Context
 	ApiService *BucketApiService
 	bucketName string
+	body       *map[string]interface{}
 	namespace  *string
+}
+
+func (r ApiBucketServiceSetBucketPolicyRequest) Body(body map[string]interface{}) ApiBucketServiceSetBucketPolicyRequest {
+	r.body = &body
+	return r
 }
 
 // namespace of the bucket
@@ -5808,12 +5814,15 @@ func (a *BucketApiService) BucketServiceSetBucketPolicyExecute(r ApiBucketServic
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.body == nil {
+		return localVarReturnValue, nil, reportError("body is required and must be specified")
+	}
 
 	if r.namespace != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "namespace", r.namespace, "")
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -5829,6 +5838,8 @@ func (a *BucketApiService) BucketServiceSetBucketPolicyExecute(r ApiBucketServic
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.body
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

@@ -17905,6 +17905,16 @@
             "description": "namespace of the bucket"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Response indicating <b>Success</b> or <b>Failure</b> of the operation",
@@ -54226,7 +54236,7 @@
       "BucketService_updateBucketTagsRequest": {
         "type": "object",
         "properties": {
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54252,7 +54262,7 @@
       "BucketService_addBucketTagsRequest": {
         "type": "object",
         "properties": {
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54278,7 +54288,7 @@
       "BucketService_deleteBucketTagsRequest": {
         "type": "object",
         "properties": {
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",

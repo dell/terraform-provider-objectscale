@@ -115,7 +115,7 @@ type BucketResourceModel struct {
 	ReplicationGroup                   types.String `tfsdk:"replication_group"`
 	Created                            types.String `tfsdk:"created"`
 	SoftQuota                          types.String `tfsdk:"soft_quota"`
-	FsAccessEnabled                    types.Bool   `tfsdk:"fs_access_enabled"`
+	FsAccessEnabled                    types.Bool   `tfsdk:"filesystem_enabled"`
 	Locked                             types.Bool   `tfsdk:"locked"`
 	BlockSize                          types.Int64  `tfsdk:"block_size"`
 	NotificationSize                   types.Int64  `tfsdk:"notification_size"`
@@ -153,4 +153,17 @@ type BucketResourceModel struct {
 	AdvancedMetadataSearchTargetStream types.String `tfsdk:"advanced_metadata_search_target_stream"`
 	LocalObjectMetadataReads           types.Bool   `tfsdk:"local_object_metadata_reads"`
 	VersioningStatus                   types.String `tfsdk:"versioning_status"`
+
+	//Policy related fields
+	BucketPolicy types.String `tfsdk:"bucket_policy"`
+
+	//ACL related fields
+	UserAcl        types.List `json:"user_acl,omitempty"`
+	GroupAcl       types.List `json:"group_acl,omitempty"`
+	CustomGroupAcl types.List `json:"custom_group_acl,omitempty"`
+}
+
+type AclModel struct {
+	User       types.String `tfsdk:"user"`
+	Permission types.List   `tfsdk:"permission"`
 }

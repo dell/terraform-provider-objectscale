@@ -122,6 +122,8 @@ func TestAccBucketResourcePositive(t *testing.T) {
 						"key" = "test"
 						"value" = "devops"
 					}]
+					default_group_file_read_permission    = "true"
+					default_group = "default-group"
 				}
 				`,
 				Check: resource.ComposeTestCheckFunc(
@@ -137,10 +139,10 @@ func TestAccBucketResourcePositive(t *testing.T) {
 				Config: ProviderConfigForTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-positive"
-					owner = "admin1"
+					owner = "root"
 					namespace = "ns1"
 					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
-					block_size = 8192
+					block_size = 4096
 				}
 				`,
 				ExpectError: regexp.MustCompile(`Update Bucket operation is not supported`),
