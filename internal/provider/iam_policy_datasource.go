@@ -19,6 +19,7 @@ package provider
 
 import (
 	"context"
+	"net/url"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -109,6 +110,35 @@ func (d *IAMPolicyDataSource) itemSchema() schema.ListNestedAttribute {
 					MarkdownDescription: "The date and time, in ISO 8601 date-time format, when the policy was created.",
 					Computed:            true,
 				},
+				"versions": schema.ListNestedAttribute{
+					Description:         "List of IAM Policy Versions.",
+					MarkdownDescription: "List of IAM Policy Versions.",
+					Computed:            true,
+					NestedObject: schema.NestedAttributeObject{
+						Attributes: map[string]schema.Attribute{
+							"is_default_version": schema.BoolAttribute{
+								Description:         "Specifies whether the policy is the default version.",
+								MarkdownDescription: "Specifies whether the policy is the default version.",
+								Computed:            true,
+							},
+							"version_id": schema.StringAttribute{
+								Description:         "The identifier for the version of the policy that is set as the default version.",
+								MarkdownDescription: "The identifier for the version of the policy that is set as the default version.",
+								Computed:            true,
+							},
+							"create_date": schema.StringAttribute{
+								Description:         "The date and time, in ISO 8601 date-time format, when the policy was created.",
+								MarkdownDescription: "The date and time, in ISO 8601 date-time format, when the policy was created.",
+								Computed:            true,
+							},
+							"document": schema.StringAttribute{
+								Description:         "The policy document, URL-encoded compliant with RFC 3986.",
+								MarkdownDescription: "The policy document, URL-encoded compliant with RFC 3986.",
+								Computed:            true,
+							},
+						},
+					},
+				},
 			},
 		},
 	}
@@ -179,6 +209,10 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 
 	namespace := data.Namespace.ValueString()
 	var allPolicyResp []clientgen.IamPolicy
+	// keep track of whether we are fetching policies attached to a user/group/role
+	// because we must run further API calls to fetch its details
+	// since list attached policies API only returns basic data
+	areAttachedPolicies := false
 
 	if arn := helper.ValueToPointer[string](data.ARN); arn != nil {
 		// get by arn
@@ -199,6 +233,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 			return
 		}
 		allPolicyResp = helper.SliceTransform(dsresp, d.attachedToMain)
+		areAttachedPolicies = true
 	} else if group := helper.ValueToPointer[string](data.Group); group != nil {
 		// get by group
 		dsreq := d.client.GenClient.IamApi.IamServiceListAttachedGroupPolicies(ctx).XEmcNamespace(namespace).
@@ -209,6 +244,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 			return
 		}
 		allPolicyResp = helper.SliceTransform(dsresp, d.attachedToMain)
+		areAttachedPolicies = true
 	} else if role := helper.ValueToPointer[string](data.Role); role != nil {
 		// get by role
 		dsreq := d.client.GenClient.IamApi.IamServiceListAttachedRolePolicies(ctx).XEmcNamespace(namespace).
@@ -219,6 +255,7 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 			return
 		}
 		allPolicyResp = helper.SliceTransform(dsresp, d.attachedToMain)
+		areAttachedPolicies = true
 	} else {
 		// get all policies
 		dsreq := d.client.GenClient.IamApi.IamServiceListPolicies(ctx).XEmcNamespace(namespace)
@@ -230,7 +267,24 @@ func (d *IAMPolicyDataSource) Read(ctx context.Context, req datasource.ReadReque
 		allPolicyResp = dsresp
 	}
 
-	IamPolicyList := d.updateState(allPolicyResp)
+	if areAttachedPolicies {
+		// get full details of attached policies
+		poulatedPolicyResp, verr := d.populateAttachedPolicies(ctx, namespace, allPolicyResp)
+		if verr != nil {
+			resp.Diagnostics.AddError("Error fetching details of attached IAM policies", verr.Error())
+			return
+		}
+		allPolicyResp = poulatedPolicyResp
+	}
+
+	// populate version details for all policies
+	allPolicyRespWithVersions, verr := d.populateVersions(ctx, namespace, allPolicyResp)
+	if verr != nil {
+		resp.Diagnostics.AddError("Error fetching IAM policy versions", verr.Error())
+		return
+	}
+
+	IamPolicyList := d.updateState(allPolicyRespWithVersions)
 
 	// hardcoding a response value to save into the Terraform state.
 	data.ID = types.StringValue("iam_policy_datasource")
@@ -251,20 +305,82 @@ func (d IAMPolicyDataSource) attachedToMain(in clientgen.IamPolicyAttached) clie
 	}
 }
 
-func (d IAMPolicyDataSource) updateState(iam_policys []clientgen.IamPolicy) []models.IamPolicyDataSourceIamPolicyModel {
-	return helper.SliceTransform(iam_policys, func(v clientgen.IamPolicy) models.IamPolicyDataSourceIamPolicyModel {
+func (d IAMPolicyDataSource) updateState(iam_policys []iamPolicyDsResult) []models.IamPolicyDataSourceIamPolicyModel {
+	return helper.SliceTransform(iam_policys, func(v iamPolicyDsResult) models.IamPolicyDataSourceIamPolicyModel {
 		return models.IamPolicyDataSourceIamPolicyModel{
-			ARN:                           helper.TfStringNN(v.Arn),
-			AttachmentCount:               helper.TfInt32NN(v.AttachmentCount),
-			CreateDate:                    helper.TfStringNN(v.CreateDate),
-			DefaultVersionID:              helper.TfStringNN(v.DefaultVersionId),
-			Description:                   helper.TfStringNN(v.Description),
-			IsAttachable:                  helper.TfBoolNN(v.IsAttachable),
-			Path:                          helper.TfStringNN(v.Path),
-			PermissionsBoundaryUsageCount: helper.TfInt32NN(v.PermissionsBoundaryUsageCount),
-			PolicyID:                      helper.TfStringNN(v.PolicyId),
-			PolicyName:                    helper.TfStringNN(v.PolicyName),
-			UpdateDate:                    helper.TfStringNN(v.UpdateDate),
+			ARN:                           helper.TfStringNN(v.Policy.Arn),
+			AttachmentCount:               helper.TfInt32NN(v.Policy.AttachmentCount),
+			CreateDate:                    helper.TfStringNN(v.Policy.CreateDate),
+			DefaultVersionID:              helper.TfStringNN(v.Policy.DefaultVersionId),
+			Description:                   helper.TfStringNN(v.Policy.Description),
+			IsAttachable:                  helper.TfBoolNN(v.Policy.IsAttachable),
+			Path:                          helper.TfStringNN(v.Policy.Path),
+			PermissionsBoundaryUsageCount: helper.TfInt32NN(v.Policy.PermissionsBoundaryUsageCount),
+			PolicyID:                      helper.TfStringNN(v.Policy.PolicyId),
+			PolicyName:                    helper.TfStringNN(v.Policy.PolicyName),
+			UpdateDate:                    helper.TfStringNN(v.Policy.UpdateDate),
+			Versions: helper.SliceTransform(v.Versions, func(vv clientgen.IamPolicyVersion) models.IamPolicyDataSourceIamPolicyVersionModel {
+				return models.IamPolicyDataSourceIamPolicyVersionModel{
+					IsDefaultVersion: helper.TfBoolNN(vv.IsDefaultVersion),
+					VersionID:        helper.TfStringNN(vv.VersionId),
+					CreateDate:       helper.TfStringNN(vv.CreateDate),
+					Document:         d.decodeDocument(vv.Document),
+				}
+			}),
 		}
 	})
+}
+
+// Policy Version API returns document in URL encoded format
+// This function decodes the document
+func (d IAMPolicyDataSource) decodeDocument(in *string) types.String {
+	if in == nil {
+		return types.StringValue("")
+	}
+	ins := *in
+	// Decode the document, which is a URL-encoded compliant with RFC 3986 json string
+	document, err := url.QueryUnescape(ins)
+	if err != nil {
+		return types.StringValue(ins)
+	}
+	return types.StringValue(document)
+}
+
+// attached policy APIs return basic data
+// This function fetches full details of attached policies
+func (d IAMPolicyDataSource) populateAttachedPolicies(ctx context.Context, namespace string, iam_policys []clientgen.IamPolicy) ([]clientgen.IamPolicy, error) {
+	var ret []clientgen.IamPolicy
+	for _, v := range iam_policys {
+		policyResp, _, err := d.client.GenClient.IamApi.IamServiceGetPolicy(ctx).XEmcNamespace(namespace).
+			PolicyArn(*v.Arn).Execute()
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, *policyResp.GetPolicyResult.Policy)
+	}
+	return ret, nil
+}
+
+// a struct that stores a IAM policy and its version details together
+type iamPolicyDsResult struct {
+	Policy   clientgen.IamPolicy
+	Versions []clientgen.IamPolicyVersion
+}
+
+// Populate version details for each policy
+func (d IAMPolicyDataSource) populateVersions(ctx context.Context, namespace string, iam_policys []clientgen.IamPolicy) ([]iamPolicyDsResult, error) {
+	var ret []iamPolicyDsResult
+	for _, v := range iam_policys {
+		// no need for pagination as at max 5 versions supported
+		policyResp, _, err := d.client.GenClient.IamApi.IamServiceListPolicyVersions(ctx).XEmcNamespace(namespace).
+			PolicyArn(*v.Arn).Execute()
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, iamPolicyDsResult{
+			Policy:   v,
+			Versions: policyResp.ListPolicyVersionsResult.Versions,
+		})
+	}
+	return ret, nil
 }
