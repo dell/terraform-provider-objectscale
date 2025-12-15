@@ -199,6 +199,11 @@ Class | Method | HTTP request | Description
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
 *NamespaceApi* | [**NamespaceServiceUpdateNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceupdatenamespacequota) | **Put** /object/namespaces/namespace/{namespace}/quota | Updates the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
+*ZoneInfoApi* | [**ZoneInfoServiceGetLocalVdc**](docs/ZoneInfoApi.md#zoneinfoservicegetlocalvdc) | **Get** /object/vdcs/vdc/local | Gets the details for the local VDC
+*ZoneInfoApi* | [**ZoneInfoServiceGetVdcById**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyid) | **Get** /object/vdcs/vdcid/{vdcId} | Gets the details for a VDC specified by VDC Id
+*ZoneInfoApi* | [**ZoneInfoServiceGetVdcByName**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyname) | **Get** /object/vdcs/vdc/{vdcName} | Gets the details for a VDC specified by name
+*ZoneInfoApi* | [**ZoneInfoServiceInsertVdcInfo**](docs/ZoneInfoApi.md#zoneinfoserviceinsertvdcinfo) | **Put** /object/vdcs/vdc/{vdcName} | Inserts attributes for the current VDC or a VDC to connect to
+*ZoneInfoApi* | [**ZoneInfoServiceListAllVdc**](docs/ZoneInfoApi.md#zoneinfoservicelistallvdc) | **Get** /object/vdcs/vdc/list | Gets the details of all configured VDCs
 
 
 ## Documentation For Models
@@ -334,6 +339,7 @@ Class | Method | HTTP request | Description
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
  - [IamTagKey](docs/IamTagKey.md)
  - [IamTagKeyValue](docs/IamTagKeyValue.md)
+ - [Link](docs/Link.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
@@ -341,7 +347,6 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)
  - [NamespaceServiceGetNamespacesResponse](docs/NamespaceServiceGetNamespacesResponse.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInner.md)
- - [NamespaceServiceGetNamespacesResponseNamespaceInnerLink](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerLink.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner.md)
@@ -353,6 +358,9 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceUpdateNamespaceQuotaRequest](docs/NamespaceServiceUpdateNamespaceQuotaRequest.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
  - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
+ - [Vdc](docs/Vdc.md)
+ - [ZoneInfoServiceInsertVdcInfoRequest](docs/ZoneInfoServiceInsertVdcInfoRequest.md)
+ - [ZoneInfoServiceListAllVdcResponse](docs/ZoneInfoServiceListAllVdcResponse.md)
 
 
 ## Documentation For Authorization

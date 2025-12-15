@@ -130,4 +130,10 @@ RequiredAPIs = [
     "/iam?Action=DetachUserPolicy",
     "/iam?Action=ListPolicyVersions",
     "/iam?Action=GetPolicyVersion",
+
+    # vdcs
+    "/object/vdcs/vdc/{vdcName}",
+    "/object/vdcs/vdcid/{vdcId}",
+    "/object/vdcs/vdc/local",
+    "/object/vdcs/vdc/list",
 ]

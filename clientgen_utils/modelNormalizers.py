@@ -13,6 +13,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+def _normalizeObjectScaleLink(json_obj: dict) -> dict:
+    """
+    Look recursively through all schemas.
+    Any property that looks like a link, should be normalised to Link.
+    """
+    common_type = {
+        "type": "object",
+        "properties": {
+            "rel": {
+                "type": "string",
+                "description": "Relationship type of the hyperlink"
+            },
+            "href": {
+                "type": "string",
+                "description": "Hyperlink URL to the related resource"
+            }
+        },
+        "description": "Hyperlink to the details for this resource"
+    }
+    common_ref = {
+        "$ref": "#/components/schemas/Link"
+    }
+    def _rec_helper(obj: any) -> bool:
+        if obj == common_type:
+            return True
+        elif isinstance(obj, dict):
+            for key, item in obj.items():
+                if _rec_helper(item):
+                    obj[key] = common_ref
+        elif isinstance(obj, list):
+            for i, item in enumerate(obj):
+                if _rec_helper(item):
+                    obj[i] = common_ref
+        return False
+    _rec_helper(json_obj['components']['schemas'])
+    json_obj['components']['schemas']['Link'] = common_type
+    return json_obj
+
+
 def _normalizeObjectScaleIamRoleResponse(json_obj: dict) -> dict:
     """In GetRoleResponse, Result property should be GetRoleResult.
        Inner property Role should be normalised to IamRole.
@@ -313,14 +352,43 @@ def _NormalizeObjectScalePutRolePermissionsBoundaryParameter(json_obj: dict) -> 
             obj['name'] = 'PermissionsBoundary'
     return json_obj
 
+def _normalizeObjectScaleVDCs(json_obj: dict) -> dict:
+    # ZoneInfoService_getVdcByNameResponse, 
+    # ZoneInfoService_getVdcByIdResponse,
+    # ZoneInfoService_getLocalVdcResponse and 
+    # ZoneInfoService_listAllVdcResponse.properties.vdc.items
+    # should be normalized to Vdc
+    commonVdcType = json_obj['components']['schemas']['ZoneInfoService_getVdcByNameResponse']
+    commonVdcRef = {"$ref": "#/components/schemas/Vdc"}
+    for key, container in [
+        ('ZoneInfoService_getVdcByNameResponse', json_obj['components']['schemas']),
+        ('ZoneInfoService_getVdcByIdResponse', json_obj['components']['schemas']),
+        ('ZoneInfoService_getLocalVdcResponse', json_obj['components']['schemas']),
+        ('items', json_obj['components']['schemas']['ZoneInfoService_listAllVdcResponse']['properties']['vdc'])
+        ]:
+        if container[key] == commonVdcType:
+            container[key] = commonVdcRef
+        else:
+            a = container[key]
+            b = commonVdcType
+            added   = b.keys() - a.keys()
+            removed = a.keys() - b.keys()
+            print("Key:", key)
+            print("Added:", added)
+            print("Removed:", removed)
+
+    json_obj['components']['schemas']['Vdc'] = commonVdcType
+    return json_obj
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
     """
-    ret = _normalizeObjectScaleIamResponseMetadata(json_obj)
+    ret = _normalizeObjectScaleLink(json_obj)
+    ret = _normalizeObjectScaleIamResponseMetadata(ret)
     ret = _normalizeObjectScaleBasicResponseMetadata(ret)
     ret = _normalizeObjectScalePolicies(ret)
     ret = _normalizeObjectScaleIamTags(ret)
     ret = _normalizeObjectScaleIamRoleResponse(ret)
     ret = _NormalizeObjectScalePutRolePermissionsBoundaryParameter(ret)
+    ret = _normalizeObjectScaleVDCs(ret)
     return ret
