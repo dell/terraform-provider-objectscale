@@ -19,7 +19,6 @@ package provider
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
@@ -161,6 +160,22 @@ func (r *ManagementUserResource) Create(ctx context.Context, req resource.Create
 	userID := plan.Name.ValueString()
 	mgmtUserType := plan.Type.ValueString()
 
+	// Validate name format based on type
+	if mgmtUserType == ManagementUserTypeLocal && strings.Contains(userID, "@") {
+		resp.Diagnostics.AddError(
+			"Invalid Name Format for LOCAL_USER",
+			"For type LOCAL_USER, 'name' must not contain '@'. Please provide a valid name format.",
+		)
+		return
+	}
+	if (mgmtUserType == ManagementUserTypeADLDAPUser || mgmtUserType == ManagementUserTypeADLDAPGroup) && !strings.Contains(userID, "@") {
+		resp.Diagnostics.AddError(
+			"Invalid Name Format for AD_LDAP_USER/AD_LDAP_GROUP",
+			"For type AD_LDAP_USER or AD_LDAP_GROUP, 'name' must contain '@'. Please provide a valid name format.",
+		)
+		return
+	}
+
 	// Validate conditional password for LOCAL_USER
 	if mgmtUserType == ManagementUserTypeLocal && !isNonEmptyString(plan.Password) {
 		resp.Diagnostics.AddError(
@@ -186,9 +201,6 @@ func (r *ManagementUserResource) Create(ctx context.Context, req resource.Create
 		createRequest.IsExternalGroup = helper.ValueToPointer[bool](types.BoolValue(false))
 	case ManagementUserTypeADLDAPGroup:
 		createRequest.IsExternalGroup = helper.ValueToPointer[bool](types.BoolValue(true))
-	default:
-		resp.Diagnostics.AddError("Invalid Type", fmt.Sprintf("Unsupported 'type': %q", mgmtUserType))
-		return
 	}
 
 	// create management user
