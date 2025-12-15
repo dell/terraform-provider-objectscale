@@ -19,6 +19,11 @@ package provider
 
 import (
 	"context"
+	"fmt"
+	"strings"
+	"terraform-provider-objectscale/internal/clientgen"
+	"terraform-provider-objectscale/internal/helper"
+	"terraform-provider-objectscale/internal/models"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -27,6 +32,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Constants for valid type values (used in Schema validators)
@@ -120,25 +127,213 @@ func (r *ManagementUserResource) Schema(_ context.Context, _ resource.SchemaRequ
 
 // Read refreshes the Terraform state with the latest data.
 func (r *ManagementUserResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state models.ManagementUserResourceModel
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
+	userID := state.Name.ValueString()
+	prevPassword := state.Password
+
+	// get management user
+	getResp, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceGetLocalUserInfo(ctx, userID).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Read Management User failed", err.Error())
+		return
+	}
+
+	newState := mapToModel(getResp, prevPassword)
+	diags = resp.State.Set(ctx, &newState)
+	resp.Diagnostics.Append(diags...)
 }
 
-// Create creates the resource and sets the updated Terraform state on success.
+// Create creates the resource and sets the Terraform state on success.
 func (r *ManagementUserResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan models.ManagementUserResourceModel
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
+	userID := plan.Name.ValueString()
+	mgmtUserType := plan.Type.ValueString()
+
+	// Validate conditional password for LOCAL_USER
+	if mgmtUserType == ManagementUserTypeLocal && !isNonEmptyString(plan.Password) {
+		resp.Diagnostics.AddError(
+			"Password is required for LOCAL_USER",
+			"For type LOCAL_USER, 'password' must be provided during creation.",
+		)
+		return
+	}
+
+	// build create request payload
+	createRequest := clientgen.MgmtUserInfoServiceCreateLocalUserInfoRequest{
+		UserId:          userID,
+		IsSystemAdmin:   helper.ValueToPointer[bool](plan.SystemAdministrator),
+		IsSystemMonitor: helper.ValueToPointer[bool](plan.SystemMonitor),
+		IsSecurityAdmin: helper.ValueToPointer[bool](plan.SecurityAdministrator),
+	}
+
+	switch mgmtUserType {
+	case ManagementUserTypeLocal:
+		createRequest.IsExternalGroup = helper.ValueToPointer[bool](types.BoolValue(false))
+		createRequest.Password = helper.ValueToPointer[string](plan.Password)
+	case ManagementUserTypeADLDAPUser:
+		createRequest.IsExternalGroup = helper.ValueToPointer[bool](types.BoolValue(false))
+	case ManagementUserTypeADLDAPGroup:
+		createRequest.IsExternalGroup = helper.ValueToPointer[bool](types.BoolValue(true))
+	default:
+		resp.Diagnostics.AddError("Invalid Type", fmt.Sprintf("Unsupported 'type': %q", mgmtUserType))
+		return
+	}
+
+	// create management user
+	_, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceCreateLocalUserInfo(ctx).MgmtUserInfoServiceCreateLocalUserInfoRequest(createRequest).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Create Management User failed", err.Error())
+		return
+	}
+
+	// get management user
+	getResp, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceGetLocalUserInfo(ctx, userID).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Read Management User failed", err.Error())
+		return
+	}
+
+	newState := mapToModel(getResp, plan.Password)
+	diags = resp.State.Set(ctx, &newState)
+	resp.Diagnostics.Append(diags...)
 }
 
 // Update updates the resource and sets the updated Terraform state on success.
 func (r *ManagementUserResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan models.ManagementUserResourceModel
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
+	var state models.ManagementUserResourceModel
+	diags = req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	userID := plan.Name.ValueString()
+	mgmtUserType := plan.Type.ValueString()
+
+	// build update request payload
+	updateRequest := clientgen.MgmtUserInfoServiceModifyLocalUserInfoRequest{
+		IsSystemAdmin:   helper.ValueToPointer[bool](plan.SystemAdministrator),
+		IsSystemMonitor: helper.ValueToPointer[bool](plan.SystemMonitor),
+		IsSecurityAdmin: helper.ValueToPointer[bool](plan.SecurityAdministrator),
+	}
+
+	// Only LOCAL_USER can change password; include only if explicitly provided
+	if mgmtUserType == ManagementUserTypeLocal && isNonEmptyString(plan.Password) {
+		// Optional: only send if changed vs state
+		if state.Password.IsNull() || state.Password.IsUnknown() || plan.Password.ValueString() != state.Password.ValueString() {
+			updateRequest.Password = helper.ValueToPointer[string](plan.Password)
+		}
+	}
+
+	// update management user
+	_, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceModifyLocalUserInfo(ctx, userID).MgmtUserInfoServiceModifyLocalUserInfoRequest(updateRequest).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Update Management User failed", err.Error())
+		return
+	}
+
+	// get management user
+	getResp, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceGetLocalUserInfo(ctx, userID).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Read Management User failed", err.Error())
+		return
+	}
+
+	prevPassword := state.Password
+	if isNonEmptyString(plan.Password) {
+		prevPassword = plan.Password
+	}
+
+	newState := mapToModel(getResp, prevPassword)
+	diags = resp.State.Set(ctx, &newState)
+	resp.Diagnostics.Append(diags...)
 }
 
 // Delete deletes the resource and removes the Terraform state.
 func (r *ManagementUserResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	tflog.Info(ctx, "Deleting Management User resource")
 
+	var state models.ManagementUserResourceModel
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	userID := state.Name.ValueString()
+
+	// delete management user
+	_, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceDeleteLocalUserInfo(ctx, userID).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Delete Management User failed", err.Error())
+		return
+	}
+
+	// Remove resource from Terraform state
+	resp.State.RemoveResource(ctx)
+	tflog.Info(ctx, "Done with deleting Management User resource")
 }
 
 // ImportState imports the existing resource into the Terraform state.
 func (r *ManagementUserResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	userID := req.ID
+	prevPassword := types.StringNull()
 
+	// get management user
+	getResp, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceGetLocalUserInfo(ctx, userID).Execute()
+	if err != nil {
+		resp.Diagnostics.AddError("Import Management User failed", err.Error())
+		return
+	}
+
+	newState := mapToModel(getResp, prevPassword)
+	diags := resp.State.Set(ctx, &newState)
+	resp.Diagnostics.Append(diags...)
+}
+
+func mapToModel(resp *clientgen.MgmtUserInfoServiceGetLocalUserInfoResponse, prevPassword types.String) models.ManagementUserResourceModel {
+	mgmtUserType := deriveTypeFromAPI(resp)
+	return models.ManagementUserResourceModel{
+		ID:                    helper.TfString(resp.UserId),
+		Type:                  types.StringValue(mgmtUserType),
+		Name:                  helper.TfString(resp.UserId),
+		Password:              prevPassword,
+		SystemAdministrator:   helper.TfBool(resp.IsSystemAdmin),
+		SystemMonitor:         helper.TfBool(resp.IsSystemMonitor),
+		SecurityAdministrator: helper.TfBool(resp.IsSecurityAdmin),
+	}
+}
+
+func deriveTypeFromAPI(resp *clientgen.MgmtUserInfoServiceGetLocalUserInfoResponse) string {
+	if *resp.IsExternalGroup {
+		return ManagementUserTypeADLDAPGroup
+	}
+	// If not a group, infer by name format.
+	if strings.Contains(*resp.UserId, "@") {
+		return ManagementUserTypeADLDAPUser
+	}
+	return ManagementUserTypeLocal
+}
+
+func isNonEmptyString(v types.String) bool {
+	return !v.IsNull() && !v.IsUnknown() && strings.TrimSpace(v.ValueString()) != ""
 }
