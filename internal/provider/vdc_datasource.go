@@ -231,7 +231,7 @@ func (d *VDCDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		// get local
 		dsresp, _, err := d.client.GenClient.ZoneInfoApi.ZoneInfoServiceGetLocalVdc(ctx).Execute()
 		if err != nil {
-			resp.Diagnostics.AddError("Error fetching VDC with name: "+*name, err.Error())
+			resp.Diagnostics.AddError("Error fetching local VDC", err.Error())
 			return
 		}
 		allPolicyResp = append(allPolicyResp, *dsresp)
@@ -239,7 +239,7 @@ func (d *VDCDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		// get all VDCs
 		dsresp, _, err := d.client.GenClient.ZoneInfoApi.ZoneInfoServiceListAllVdc(ctx).Execute()
 		if err != nil {
-			resp.Diagnostics.AddError("Error listing VDCs", err.Error())
+			resp.Diagnostics.AddError("Error fetching VDCs", err.Error())
 			return
 		}
 		allPolicyResp = dsresp.Vdc
