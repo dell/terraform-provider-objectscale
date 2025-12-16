@@ -19,6 +19,7 @@ package provider
 
 import (
 	"context"
+	"regexp"
 	"strings"
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
@@ -88,6 +89,12 @@ func (r *ManagementUserResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Description:         `Management user id. Format is as follows: For LOCAL_USER use "user1". For AD/LDAP User/Group use "user1@domain".`,
 				MarkdownDescription: `Management user id. Format is as follows: For LOCAL_USER use "user1". For AD/LDAP User/Group use "user1@domain".`,
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(
+						regexp.MustCompile(`^[^A-Z]+$`),
+						"Uppercase letters are not allowed in 'name'.",
+					),
+				},
 			},
 			"password": schema.StringAttribute{
 				Description:         "Password for the management user. Required **only** when creating LOCAL_USER; ignored for AD/LDAP users and groups.",
