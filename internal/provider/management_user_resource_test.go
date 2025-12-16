@@ -38,9 +38,9 @@ func TestAccManagementUserResourceForLocalUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "type", "LOCAL_USER"),
 					resource.TestCheckResourceAttr(resourceName, "name", "localuser1"),
 					resource.TestCheckResourceAttr(resourceName, "password", "pass123"),
-					resource.TestCheckResourceAttr(resourceName, "system_administrator", "true"),
-					resource.TestCheckResourceAttr(resourceName, "system_monitor", "true"),
-					resource.TestCheckResourceAttr(resourceName, "security_administrator", "true"),
+					resource.TestCheckResourceAttr(resourceName, "system_administrator", "false"),
+					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
+					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
 				),
 			},
 			// update Local User
@@ -51,9 +51,9 @@ func TestAccManagementUserResourceForLocalUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "type", "LOCAL_USER"),
 					resource.TestCheckResourceAttr(resourceName, "name", "localuser1"),
 					resource.TestCheckResourceAttr(resourceName, "password", "pass1234"),
-					resource.TestCheckResourceAttr(resourceName, "system_administrator", "false"),
-					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
-					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
+					resource.TestCheckResourceAttr(resourceName, "system_administrator", "true"),
+					resource.TestCheckResourceAttr(resourceName, "system_monitor", "true"),
+					resource.TestCheckResourceAttr(resourceName, "security_administrator", "true"),
 				),
 			},
 			// delete Local User
@@ -74,9 +74,9 @@ func TestAccManagementUserResourceForADLDAPUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "id", "user1@domain"),
 					resource.TestCheckResourceAttr(resourceName, "type", "AD_LDAP_USER"),
 					resource.TestCheckResourceAttr(resourceName, "name", "user1@domain"),
-					resource.TestCheckResourceAttr(resourceName, "system_administrator", "true"),
-					resource.TestCheckResourceAttr(resourceName, "system_monitor", "true"),
-					resource.TestCheckResourceAttr(resourceName, "security_administrator", "true"),
+					resource.TestCheckResourceAttr(resourceName, "system_administrator", "false"),
+					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
+					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
 				),
 			},
 			// update AD/LDAP User
@@ -86,9 +86,9 @@ func TestAccManagementUserResourceForADLDAPUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "id", "user1@domain"),
 					resource.TestCheckResourceAttr(resourceName, "type", "AD_LDAP_USER"),
 					resource.TestCheckResourceAttr(resourceName, "name", "user1@domain"),
-					resource.TestCheckResourceAttr(resourceName, "system_administrator", "false"),
-					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
-					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
+					resource.TestCheckResourceAttr(resourceName, "system_administrator", "true"),
+					resource.TestCheckResourceAttr(resourceName, "system_monitor", "true"),
+					resource.TestCheckResourceAttr(resourceName, "security_administrator", "true"),
 				),
 			},
 			// delete AD/LDAP User
@@ -109,9 +109,9 @@ func TestAccManagementUserResourceForADLDAPGroupCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "id", "group1@domain"),
 					resource.TestCheckResourceAttr(resourceName, "type", "AD_LDAP_GROUP"),
 					resource.TestCheckResourceAttr(resourceName, "name", "group1@domain"),
-					resource.TestCheckResourceAttr(resourceName, "system_administrator", "true"),
-					resource.TestCheckResourceAttr(resourceName, "system_monitor", "true"),
-					resource.TestCheckResourceAttr(resourceName, "security_administrator", "true"),
+					resource.TestCheckResourceAttr(resourceName, "system_administrator", "false"),
+					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
+					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
 				),
 			},
 			// update AD/LDAP Group
@@ -121,9 +121,9 @@ func TestAccManagementUserResourceForADLDAPGroupCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "id", "group1@domain"),
 					resource.TestCheckResourceAttr(resourceName, "type", "AD_LDAP_GROUP"),
 					resource.TestCheckResourceAttr(resourceName, "name", "group1@domain"),
-					resource.TestCheckResourceAttr(resourceName, "system_administrator", "false"),
-					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
-					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
+					resource.TestCheckResourceAttr(resourceName, "system_administrator", "true"),
+					resource.TestCheckResourceAttr(resourceName, "system_monitor", "true"),
+					resource.TestCheckResourceAttr(resourceName, "security_administrator", "true"),
 				),
 			},
 			// delete AD/LDAP Group
@@ -181,9 +181,6 @@ func testAccManagementUserResourceLocalUserConfig1() string {
         type = "LOCAL_USER"
         name = "localuser1"
         password = "pass123"
-        system_administrator = true
-        system_monitor = true
-        security_administrator = true
     }
     `
 }
@@ -194,9 +191,9 @@ func testAccManagementUserResourceLocalUserConfig2() string {
         type = "LOCAL_USER"
         name = "localuser1"
         password = "pass1234"
-        system_administrator = false
-        system_monitor = false
-        security_administrator = false
+        system_administrator = true
+        system_monitor = true
+        security_administrator = true
     }
     `
 }
@@ -206,9 +203,6 @@ func testAccManagementUserResourceADLDAPUserConfig1() string {
     resource "objectscale_management_user" "example" {
         type = "AD_LDAP_USER"
         name = "user1@domain"
-        system_administrator = true
-        system_monitor = true
-        security_administrator = true
     }
     `
 }
@@ -218,9 +212,9 @@ func testAccManagementUserResourceADLDAPUserConfig2() string {
     resource "objectscale_management_user" "example" {
         type = "AD_LDAP_USER"
         name = "user1@domain"
-        system_administrator = false
-        system_monitor = false
-        security_administrator = false
+        system_administrator = true
+        system_monitor = true
+        security_administrator = true
     }
     `
 }
@@ -230,9 +224,6 @@ func testAccManagementUserResourceADLDAPGroupConfig1() string {
     resource "objectscale_management_user" "example" {
         type = "AD_LDAP_GROUP"
         name = "group1@domain"
-        system_administrator = true
-        system_monitor = true
-        security_administrator = true
     }
     `
 }
@@ -242,9 +233,9 @@ func testAccManagementUserResourceADLDAPGroupConfig2() string {
     resource "objectscale_management_user" "example" {
         type = "AD_LDAP_GROUP"
         name = "group1@domain"
-        system_administrator = false
-        system_monitor = false
-        security_administrator = false
+        system_administrator = true
+        system_monitor = true
+        security_administrator = true
     }
     `
 }
