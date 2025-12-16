@@ -131,6 +131,32 @@ func TestAccManagementUserResourceForADLDAPGroupCRUD(t *testing.T) {
 	})
 }
 
+func TestAccManagementUserResourceForImport(t *testing.T) {
+	resourceName := "objectscale_management_user.example"
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: ProviderConfigForTesting + testAccManagementUserResourceADLDAPUserConfig1(),
+			},
+			{
+				ResourceName:      resourceName,
+				ImportState:       true,
+				ImportStateId:     "invalid@name",
+				ImportStateVerify: true,
+				ExpectError:       regexp.MustCompile(`Import Management User failed`),
+			},
+			{
+				ResourceName:      resourceName,
+				ImportState:       true,
+				ImportStateId:     "user1@domain",
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccManagementUserResourceForErrorScenarios(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
