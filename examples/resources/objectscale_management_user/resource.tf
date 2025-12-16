@@ -16,6 +16,8 @@ limitations under the License.
 */
 
 # Available actions: Create, Update, Delete and Import
+# Create, Update, and Delete operations require SECURITY_ADMIN role.
+# Read operation requires any one of SECURITY_ADMIN, SYSTEM_ADMIN, SYSTEM_MONITOR roles.
 # Running `terraform apply` will create/update the management user with the specified roles in the ObjectScale
 resource "objectscale_management_user" "example" {
     # Required. Possible values are LOCAL_USER/AD_LDAP_USER/AD_LDAP_GROUP
