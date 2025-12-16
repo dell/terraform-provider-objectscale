@@ -31,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/boolvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -166,44 +167,84 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Default group file read permission.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Bool{
+					boolvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group"),
+					),
+				},
 			},
 			"default_group_file_write_permission": schema.BoolAttribute{
 				Description:         "Default group file write permission.",
 				MarkdownDescription: "Default group file write permission.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Bool{
+					boolvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group"),
+					),
+				},
 			},
 			"default_group_file_execute_permission": schema.BoolAttribute{
 				Description:         "Default group file execute permission.",
 				MarkdownDescription: "Default group file execute permission.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Bool{
+					boolvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group"),
+					),
+				},
 			},
 			"default_group_dir_read_permission": schema.BoolAttribute{
 				Description:         "Default group directory read permission.",
 				MarkdownDescription: "Default group directory read permission.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Bool{
+					boolvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group"),
+					),
+				},
 			},
 			"default_group_dir_write_permission": schema.BoolAttribute{
 				Description:         "Default group directory write permission.",
 				MarkdownDescription: "Default group directory write permission.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Bool{
+					boolvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group"),
+					),
+				},
 			},
 			"default_group_dir_execute_permission": schema.BoolAttribute{
 				Description:         "Default group directory execute permission.",
 				MarkdownDescription: "Default group directory execute permission.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Bool{
+					boolvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group"),
+					),
+				},
 			},
 			"default_group": schema.StringAttribute{
 				Description:         "Default group name.",
 				MarkdownDescription: "Default group name.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.ExactlyOneOf(
+						path.MatchRoot("default_group_dir_execute_permission"),
+						path.MatchRoot("default_group_dir_write_permission"),
+						path.MatchRoot("default_group_dir_read_permission"),
+						path.MatchRoot("default_group_file_execute_permission"),
+						path.MatchRoot("default_group_file_write_permission"),
+						path.MatchRoot("default_group_file_read_permission"),
+					),
+				},
 			},
-			"is_enabled": schema.BoolAttribute{
+			"is_metadata_enabled": schema.BoolAttribute{
 				Description:         "Is search metadata enabled.",
 				MarkdownDescription: "Is search metadata enabled.",
 				Optional:            true,

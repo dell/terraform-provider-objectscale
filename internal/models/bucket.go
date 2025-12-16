@@ -131,7 +131,7 @@ type BucketResourceModel struct {
 	DefaultGroupDirExecutePermission   types.Bool   `tfsdk:"default_group_dir_execute_permission"`
 	DefaultGroup                       types.String `tfsdk:"default_group"`
 	SearchMetadata                     types.List   `tfsdk:"search_metadata"`
-	IsEnabled                          types.Bool   `tfsdk:"is_enabled"`
+	IsEnabled                          types.Bool   `tfsdk:"is_metadata_enabled"`
 	MdTokens                           types.Bool   `tfsdk:"md_tokens"`
 	MaxKeys                            types.Int64  `tfsdk:"max_keys"`
 	MinMaxGovernor                     types.Object `tfsdk:"min_max_governor"`
