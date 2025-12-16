@@ -43,6 +43,11 @@ func TestAccManagementUserResourceForLocalUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
 				),
 			},
+			// update error on non-updatable fields
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceADLDAPUserConfig1(),
+				ExpectError: regexp.MustCompile("Error updating management user"),
+			},
 			// update Local User
 			{
 				Config: ProviderConfigForTesting + testAccManagementUserResourceLocalUserConfig2(),
@@ -79,6 +84,11 @@ func TestAccManagementUserResourceForADLDAPUserCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
 				),
 			},
+			// update error on non-updatable fields
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceLocalUserConfig1(),
+				ExpectError: regexp.MustCompile("Error updating management user"),
+			},
 			// update AD/LDAP User
 			{
 				Config: ProviderConfigForTesting + testAccManagementUserResourceADLDAPUserConfig2(),
@@ -113,6 +123,11 @@ func TestAccManagementUserResourceForADLDAPGroupCRUD(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "system_monitor", "false"),
 					resource.TestCheckResourceAttr(resourceName, "security_administrator", "false"),
 				),
+			},
+			// update error on non-updatable fields
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceLocalUserConfig1(),
+				ExpectError: regexp.MustCompile("Error updating management user"),
 			},
 			// update AD/LDAP Group
 			{

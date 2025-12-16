@@ -245,6 +245,12 @@ func (r *ManagementUserResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	// To prevent the non-updatable fields from being changed
+	if !plan.Type.Equal(state.Type) || !plan.Name.Equal(state.Name) {
+		resp.Diagnostics.AddError("Error updating management user", "The attributes `type` and `name` are not updatable")
+		return
+	}
+
 	userID := plan.Name.ValueString()
 	mgmtUserType := plan.Type.ValueString()
 
