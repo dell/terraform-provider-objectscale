@@ -13,7 +13,7 @@ package clientgen
 // BucketServiceCreateBucketResponseMetaData Getter for the metadata.
 type BucketServiceCreateBucketResponseMetaData struct {
 	// Getter for the metadata.
-	Metadata []BucketServiceCreateBucketRequestMetadataInner `json:"metadata,omitempty"`
+	Metadata []BucketServiceCreateBucketRequestSearchMetadataInner `json:"metadata,omitempty"`
 	// Getter for the enabled flag.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// Getter for the mdTokens flag.

@@ -21,12 +21,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -93,7 +98,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Soft quota for the bucket.",
 				Computed:            true,
 			},
-			"fs_access_enabled": schema.BoolAttribute{
+			"filesystem_enabled": schema.BoolAttribute{
 				Description:         "Enable filesystem access.",
 				MarkdownDescription: "Enable filesystem access.",
 				Optional:            true,
@@ -121,6 +126,9 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Auto-commit period in seconds.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 30),
+				},
 			},
 			"api_type": schema.StringAttribute{
 				Description:         "API type for the bucket.",
@@ -212,7 +220,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				// Optional:            true,
 				Computed: true,
 			},
-			"metadata": schema.ListNestedAttribute{
+			"search_metadata": schema.ListNestedAttribute{
 				Description:         "List of metadata definitions.",
 				MarkdownDescription: "List of metadata definitions.",
 				Optional:            true,
@@ -242,6 +250,14 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							MarkdownDescription: "Metadata datatype.",
 							Optional:            true,
 							Computed:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"datetime",
+									"decimal",
+									"integer",
+									"string",
+								),
+							},
 						},
 					},
 				},
@@ -345,7 +361,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				Computed:            true,
 			},
-			"is_encryption_enabled": schema.StringAttribute{
+			"is_encryption_enabled": schema.BoolAttribute{
 				Description:         "Enable server-side encryption.",
 				MarkdownDescription: "Enable server-side encryption.",
 				Optional:            true,
@@ -391,16 +407,27 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 			},
 			"local_object_metadata_reads": schema.BoolAttribute{
-				Description:         "Enable local metadata reads.",
-				MarkdownDescription: "Enable local metadata reads.",
-				Optional:            true,
-				Computed:            true,
+				Description: `Enable or disable local object metadata reads for OBS CAS ADO RW buckets.
+				When enabled, the bucket will attempt to read object metadata from locally replicated data, improving availability and reducing latency when the remote VDC is far away or unavailable. However, this may result in stale object metadata being returned if replication is incomplete, such as outdated deletion status, Litigation Hold, or Event Based Retention information. If the metadata is not available locally, it will be fetched from the remote VDC.`,
+				MarkdownDescription: `Enable or disable local object metadata reads for OBS CAS ADO RW buckets.
+
+				- When enabled, the bucket will attempt to read object metadata from locally replicated data, improving availability and reducing latency if the remote VDC is far away or unavailable.
+				- This may result in stale object metadata being returned if the metadata is not fully replicated to the local VDC. For example, deletion status, Litigation Hold, or Event Based Retention information may be outdated.
+				- If the object metadata is not available locally, it will be requested from the remote VDC.`,
+				Optional: true,
+				Computed: true,
 			},
 			"versioning_status": schema.StringAttribute{
 				Description:         "Versioning status (Enabled/Suspended).",
 				MarkdownDescription: "Versioning status (Enabled/Suspended).",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOfCaseInsensitive(
+						"ENABLED",
+						"SUSPENDED",
+					),
+				},
 			},
 			"bucket_policy": schema.StringAttribute{
 				Description:         "Bucket policy in JSON format.",
@@ -415,14 +442,14 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"user": schema.StringAttribute{
+						"name": schema.StringAttribute{
 							Description:         "User for the ACL entry.",
 							MarkdownDescription: "User for the ACL entry.",
 							Required:            true,
 						},
 						"permission": schema.ListAttribute{
-							Description:         "List of permissions for the user.",
-							MarkdownDescription: "List of permissions for the user.",
+							Description:         "List of permissions for the custom group. Valid values: full_control, read, delete, write, write_acl, read_acl, execute, privileged_write, none.",
+							MarkdownDescription: "List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.",
 							ElementType:         types.StringType,
 							Required:            true,
 						},
@@ -436,14 +463,14 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"user": schema.StringAttribute{
+						"name": schema.StringAttribute{
 							Description:         "Group for the ACL entry.",
 							MarkdownDescription: "Group for the ACL entry.",
 							Required:            true,
 						},
 						"permission": schema.ListAttribute{
-							Description:         "List of permissions for the group.",
-							MarkdownDescription: "List of permissions for the group.",
+							Description:         "List of permissions for the custom group. Valid values: full_control, read, delete, write, write_acl, read_acl, execute, privileged_write, none.",
+							MarkdownDescription: "List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.",
 							ElementType:         types.StringType,
 							Required:            true,
 						},
@@ -457,14 +484,14 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"user": schema.StringAttribute{
+						"name": schema.StringAttribute{
 							Description:         "Custom group for the ACL entry.",
 							MarkdownDescription: "Custom group for the ACL entry.",
 							Required:            true,
 						},
 						"permission": schema.ListAttribute{
-							Description:         "List of permissions for the custom group.",
-							MarkdownDescription: "List of permissions for the custom group.",
+							Description:         "List of permissions for the custom group. Valid values: full_control, read, delete, write, write_acl, read_acl, execute, privileged_write, none.",
+							MarkdownDescription: "List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.",
 							ElementType:         types.StringType,
 							Required:            true,
 						},
@@ -472,6 +499,66 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 		},
+	}
+}
+
+func (r *BucketResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var config models.BucketResourceModel
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Validate search_metadata.name for type "User"
+	searchMetadataModels := []models.MetadataModel{}
+	diags := config.SearchMetadata.ElementsAs(ctx, &searchMetadataModels, true)
+	resp.Diagnostics.Append(diags...)
+
+	for idx, md := range searchMetadataModels {
+		if md.Type.ValueString() == "User" {
+			name := md.Name.ValueString()
+			if name == "" {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("search_metadata").AtListIndex(idx).AtName("name"),
+					"Empty Metadata Name",
+					"Metadata name for type 'User' must not be empty.",
+				)
+				continue
+			}
+			if !strings.HasPrefix(name, "x-amz-meta-") {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("search_metadata").AtListIndex(idx).AtName("name"),
+					"Invalid Metadata Name Prefix",
+					"Metadata name for type 'User' must start with 'x-amz-meta-'.",
+				)
+			} else {
+				// Check the rest of the name after the prefix
+				suffix := name[len("x-amz-meta-"):]
+				if suffix == "" {
+					resp.Diagnostics.AddAttributeError(
+						path.Root("search_metadata").AtListIndex(idx).AtName("name"),
+						"Empty Metadata Name Suffix",
+						"Metadata name for type 'User' must have characters after 'x-amz-meta-'.",
+					)
+				} else if !regexp.MustCompile(`^[a-z0-9\-]+$`).MatchString(suffix) {
+					resp.Diagnostics.AddAttributeError(
+						path.Root("search_metadata").AtListIndex(idx).AtName("name"),
+						"Invalid Metadata Name",
+						"Metadata name for type 'User' must only contain lowercase letters, numbers, or hyphens after 'x-amz-meta-'.",
+					)
+				}
+			}
+		} else if md.Type.ValueString() == "System" {
+			name := md.Name.ValueString()
+			if name != "CreateTime" && name != "Owner" && name != "Size" && name != "LastModified" && name != "ObjectName" {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("search_metadata").AtListIndex(idx).AtName("name"),
+					"Invalid System Metadata Name",
+					"Metadata name for type 'System' must be one of: CreateTime, Owner, Size, LastModified, ObjectName.",
+				)
+			}
+		}
 	}
 }
 
@@ -528,7 +615,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 		for _, aclVal := range plan.CustomGroupAcl.Elements() {
 			acl := aclVal.(types.Object)
-			customGroup := acl.Attributes()["user"].(types.String).ValueString()
+			customGroup := acl.Attributes()["name"].(types.String).ValueString()
 			permList := acl.Attributes()["permission"].(types.List)
 			var permissions []string
 			for _, p := range permList.Elements() {
@@ -540,10 +627,12 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			})
 		}
 		namespace := plan.Namespace.ValueString()
+		bucketName := plan.Name.ValueString()
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceSetBucketACL(ctx, plan.Name.ValueString()).
 			BucketServiceSetBucketACLRequest(
 				clientgen.BucketServiceSetBucketACLRequest{
+					Bucket: &bucketName,
 					Acl: &clientgen.BucketServiceSetBucketACLRequestAcl{
 						UserAcl:        userAclList,
 						GroupAcl:       groupAclList,
@@ -708,16 +797,30 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	if state.Name.ValueString() != plan.Name.ValueString() ||
 		state.Namespace.ValueString() != plan.Namespace.ValueString() ||
-		state.ReplicationGroup.ValueString() != plan.ReplicationGroup.ValueString() {
+		state.ReplicationGroup.ValueString() != plan.ReplicationGroup.ValueString() ||
+		state.FsAccessEnabled.ValueBool() != plan.FsAccessEnabled.ValueBool() {
 		resp.Diagnostics.AddError(
 			"Immutable Field Change Detected",
-			"Changing 'name', 'namespace', or 'replication_group' is not supported. Please create a new resource instead.",
+			"Changing 'name', 'namespace', 'fs_access_enabled', or 'replication_group' is not supported. Please create a new resource instead.",
 		)
 		return
 	}
 
+	// Handle LocalObjectMetadataReads update
+	if state.LocalObjectMetadataReads.ValueBool() != plan.LocalObjectMetadataReads.ValueBool() {
+		enabledStr := "Disable"
+		if plan.LocalObjectMetadataReads.ValueBool() {
+			enabledStr = "Enable"
+		}
+		_, _, err := r.client.GenClient.BucketApi.BucketServiceSetEventualReadsForBucket(ctx, bucketName).Namespace(namespace).Enabled(enabledStr).Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating LocalObjectMetadataReads", err.Error())
+			return
+		}
+	}
+
 	//Handle Owner update
-	if state.Owner.ValueString() != plan.Owner.ValueString() {
+	if !plan.Owner.IsNull() && state.Owner.ValueString() != plan.Owner.ValueString() {
 		resetPreviousOwners := true
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceUpdateBucketOwner(ctx, bucketName).
@@ -735,8 +838,9 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 	}
 
-	//Handle IsStaleAllowed update
-	if state.IsStaleAllowed.ValueBool() != plan.IsStaleAllowed.ValueBool() {
+	// Handle IsStaleAllowed update
+	if (!plan.IsStaleAllowed.IsNull() && state.IsStaleAllowed.ValueBool() != plan.IsStaleAllowed.ValueBool()) ||
+		(!plan.IsTsoReadOnly.IsNull() && state.IsTsoReadOnly.ValueBool() != plan.IsTsoReadOnly.ValueBool()) {
 		isStaleAllowed := plan.IsStaleAllowed.ValueBool()
 		isTsoReadonly := plan.IsTsoReadOnly.ValueBool()
 		_, _, err := r.client.GenClient.BucketApi.
@@ -755,8 +859,8 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 	}
 
-	//Handle AutoCommitPeriod update
-	if state.AutoCommitPeriod.ValueInt64() != plan.AutoCommitPeriod.ValueInt64() {
+	// Handle AutoCommitPeriod update
+	if !plan.AutoCommitPeriod.IsNull() && state.AutoCommitPeriod.ValueInt64() != plan.AutoCommitPeriod.ValueInt64() {
 		autoCommitPeriod := plan.AutoCommitPeriod.ValueInt64()
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceSetBucketAutoCommitPeriod(ctx, bucketName).
@@ -773,8 +877,8 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 	}
 
-	//Handle Retention update
-	if state.Retention.ValueInt64() != plan.Retention.ValueInt64() {
+	// Handle Retention update
+	if !plan.Retention.IsNull() && state.Retention.ValueInt64() != plan.Retention.ValueInt64() {
 		retention := plan.Retention.ValueInt64()
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceSetBucketRetention(ctx, bucketName).
@@ -791,8 +895,8 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 	}
 
-	//Handle VersioningStatus update
-	if state.VersioningStatus.ValueString() != plan.VersioningStatus.ValueString() {
+	// Handle VersioningStatus update
+	if !plan.VersioningStatus.IsNull() && !plan.VersioningStatus.IsUnknown() && state.VersioningStatus.ValueString() != plan.VersioningStatus.ValueString() {
 		versioningStatus := plan.VersioningStatus.ValueString()
 		_, _, err := r.client.GenClient.BucketApi.BucketServiceSetBucketVersioning(ctx, bucketName).
 			BucketServiceSetBucketVersioningRequest(
@@ -1118,7 +1222,7 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		result := make(map[string][]string)
 		for _, aclVal := range acls.Elements() {
 			acl := aclVal.(types.Object)
-			user := acl.Attributes()["user"].(types.String).ValueString()
+			user := acl.Attributes()["name"].(types.String).ValueString()
 			permList := acl.Attributes()["permission"].(types.List)
 			var permissions []string
 			for _, p := range permList.Elements() {
@@ -1210,6 +1314,7 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 			BucketServiceSetBucketACL(ctx, plan.Name.ValueString()).
 			BucketServiceSetBucketACLRequest(
 				clientgen.BucketServiceSetBucketACLRequest{
+					Bucket: &bucketName,
 					Acl: &clientgen.BucketServiceSetBucketACLRequestAcl{
 						UserAcl:        userAclList,
 						GroupAcl:       groupAclList,
@@ -1301,7 +1406,24 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 		return
 	}
 
-	data := getBucketToModel(*bucketData)
+	data := r.setStateFromAPI(
+		ctx,
+		*bucketData.Name,
+		namespace,
+		"", // No bucket policy from state
+		true,
+		types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.ListType{ElemType: types.StringType}}}),
+		types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.ListType{ElemType: types.StringType}}}),
+		types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.ListType{ElemType: types.StringType}}}),
+		resp.Diagnostics,
+	)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data == nil {
+		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after import.")
+		return
+	}
 
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1314,8 +1436,8 @@ func (r *BucketResource) tagListJson(in models.TagModel) clientgen.BucketService
 	}
 }
 
-func (r *BucketResource) metadataJson(in models.MetadataModel) clientgen.BucketServiceCreateBucketRequestMetadataInner {
-	return clientgen.BucketServiceCreateBucketRequestMetadataInner{
+func (r *BucketResource) metadataJson(in models.MetadataModel) clientgen.BucketServiceCreateBucketRequestSearchMetadataInner {
+	return clientgen.BucketServiceCreateBucketRequestSearchMetadataInner{
 		Type:     helper.ValueToPointer[string](in.Type),
 		Name:     helper.ValueToPointer[string](in.Name),
 		Datatype: helper.ValueToPointer[string](in.Datatype),
@@ -1354,7 +1476,7 @@ func (r *BucketResource) modelToJson(plan models.BucketResourceModel) clientgen.
 		DefaultGroupDirWritePermission:     helper.ValueToPointer[bool](plan.DefaultGroupDirWritePermission),
 		DefaultGroupDirExecutePermission:   helper.ValueToPointer[bool](plan.DefaultGroupDirExecutePermission),
 		DefaultGroup:                       helper.ValueToPointer[string](plan.DefaultGroup),
-		Metadata:                           helper.ValueListTransform(plan.Metadata, r.metadataJson),
+		SearchMetadata:                     helper.ValueListTransform(plan.SearchMetadata, r.metadataJson),
 		MetadataTokens:                     helper.ValueToPointer[bool](plan.MdTokens),
 		MinMaxGovernor:                     &minMaxGovernor,
 		AuditedDeleteExpiration:            helper.ValueToPointer[int64](plan.AuditDeleteExpiration),
@@ -1389,7 +1511,13 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 					Value: helper.TfStringNN(v.Value),
 				})
 			}),
-		IsEncryptionEnabled:               helper.TfString(b.IsEncryptionEnabled),
+		IsEncryptionEnabled: func() types.Bool {
+			if b.IsEncryptionEnabled != nil {
+				// Accepts "true" or "false" as string
+				return types.BoolValue(strings.ToLower(*b.IsEncryptionEnabled) == "true")
+			}
+			return types.BoolNull()
+		}(),
 		DefaultGroupFileReadPermission:    helper.TfBool(b.DefaultGroupFileReadPermission),
 		DefaultGroupFileWritePermission:   helper.TfBool(b.DefaultGroupFileWritePermission),
 		DefaultGroupFileExecutePermission: helper.TfBool(b.DefaultGroupFileExecutePermission),
@@ -1402,8 +1530,8 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 		IsStaleAllowed:                    helper.TfBool(b.IsStaleAllowed),
 		IsObjectLockWithAdoAllowed:        helper.TfBool(b.IsObjectLockWithAdoAllowed),
 		IsTsoReadOnly:                     helper.TfBool(b.IsTsoReadOnly),
-		Metadata: helper.ListNotNull(b.SearchMetadata.Metadata,
-			func(v clientgen.BucketServiceCreateBucketRequestMetadataInner) types.Object {
+		SearchMetadata: helper.ListNotNull(b.SearchMetadata.Metadata,
+			func(v clientgen.BucketServiceCreateBucketRequestSearchMetadataInner) types.Object {
 				return helper.Object(models.MetadataModel{
 					Type:     helper.TfString(v.Type),
 					Name:     helper.TfString(v.Name),
@@ -1485,7 +1613,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 			for _, u := range aclResp.Acl.UserAcl {
 				if u.User != nil {
 					userAclList = append(userAclList, models.AclModel{
-						User:       types.StringValue(*u.User),
+						Name:       types.StringValue(*u.User),
 						Permission: helper.ListNotNull(u.Permission, types.StringValue),
 					})
 				}
@@ -1493,7 +1621,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 			for _, g := range aclResp.Acl.GroupAcl {
 				if g.Group != nil {
 					groupAclList = append(groupAclList, models.AclModel{
-						User:       types.StringValue(*g.Group),
+						Name:       types.StringValue(*g.Group),
 						Permission: helper.ListNotNull(g.Permission, types.StringValue),
 					})
 				}
@@ -1501,7 +1629,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 			for _, c := range aclResp.Acl.CustomgroupAcl {
 				if c.Customgroup != nil {
 					customGroupAclList = append(customGroupAclList, models.AclModel{
-						User:       types.StringValue(*c.Customgroup),
+						Name:       types.StringValue(*c.Customgroup),
 						Permission: helper.ListNotNull(c.Permission, types.StringValue),
 					})
 				}
@@ -1510,9 +1638,41 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 	}
 
 	data := getBucketToModel(*bucketData)
-	data.BucketPolicy = types.StringValue(bucketPolicy)
-	data.UserAcl = helper.ListNotNull(userAclList, func(v models.AclModel) types.Object { return helper.Object(v) })
-	data.GroupAcl = helper.ListNotNull(groupAclList, func(v models.AclModel) types.Object { return helper.Object(v) })
-	data.CustomGroupAcl = helper.ListNotNull(customGroupAclList, func(v models.AclModel) types.Object { return helper.Object(v) })
+	// Set BucketPolicy
+	if bucketPolicy != "" {
+		data.BucketPolicy = types.StringValue(bucketPolicy)
+	} else {
+		data.BucketPolicy = types.StringNull()
+	}
+
+	// Set ACLs: if not set in plan, keep as in plan (to avoid diff drift)
+	// Always set ACLs to a known, non-null value (empty list if none from API)
+	aclAttrTypes := map[string]attr.Type{
+		"name":       types.StringType,
+		"permission": types.ListType{ElemType: types.StringType},
+	}
+	aclObjectType := types.ObjectType{AttrTypes: aclAttrTypes}
+	//aclListType := types.ListType{ElemType: aclObjectType}
+
+	// Helper to convert []models.AclModel to []attr.Value
+	aclModelsToList := func(acls []models.AclModel) []attr.Value {
+		var objs []attr.Value
+		for _, v := range acls {
+			obj, _ := types.ObjectValue(aclAttrTypes, map[string]attr.Value{
+				"name":       v.Name,
+				"permission": v.Permission,
+			})
+			objs = append(objs, obj)
+		}
+		return objs
+	}
+
+	userAclListVal, _ := types.ListValue(aclObjectType, aclModelsToList(userAclList))
+	groupAclListVal, _ := types.ListValue(aclObjectType, aclModelsToList(groupAclList))
+	customGroupAclListVal, _ := types.ListValue(aclObjectType, aclModelsToList(customGroupAclList))
+
+	data.UserAcl = userAclListVal
+	data.GroupAcl = groupAclListVal
+	data.CustomGroupAcl = customGroupAclListVal
 	return &data
 }

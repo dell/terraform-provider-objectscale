@@ -130,7 +130,7 @@ type BucketResourceModel struct {
 	DefaultGroupDirWritePermission     types.Bool   `tfsdk:"default_group_dir_write_permission"`
 	DefaultGroupDirExecutePermission   types.Bool   `tfsdk:"default_group_dir_execute_permission"`
 	DefaultGroup                       types.String `tfsdk:"default_group"`
-	Metadata                           types.List   `tfsdk:"metadata"`
+	SearchMetadata                     types.List   `tfsdk:"search_metadata"`
 	IsEnabled                          types.Bool   `tfsdk:"is_enabled"`
 	MdTokens                           types.Bool   `tfsdk:"md_tokens"`
 	MaxKeys                            types.Int64  `tfsdk:"max_keys"`
@@ -143,7 +143,7 @@ type BucketResourceModel struct {
 	DefaultObjectLockRetentionMode     types.String `tfsdk:"default_object_lock_retention_mode"`
 	DefaultObjectLockRetentionYears    types.Int64  `tfsdk:"default_object_lock_retention_years"`
 	DefaultObjectLockRetentionDays     types.Int64  `tfsdk:"default_object_lock_retention_days"`
-	IsEncryptionEnabled                types.String `tfsdk:"is_encryption_enabled"`
+	IsEncryptionEnabled                types.Bool   `tfsdk:"is_encryption_enabled"`
 	DefaultRetention                   types.Int64  `tfsdk:"default_retention"`
 	IsEmptyBucketInProgress            types.Bool   `tfsdk:"is_empty_bucket_in_progress"`
 	BlockSizeInCount                   types.Int64  `tfsdk:"block_size_in_count"`
@@ -158,12 +158,12 @@ type BucketResourceModel struct {
 	BucketPolicy types.String `tfsdk:"bucket_policy"`
 
 	//ACL related fields
-	UserAcl        types.List `json:"user_acl,omitempty"`
-	GroupAcl       types.List `json:"group_acl,omitempty"`
-	CustomGroupAcl types.List `json:"custom_group_acl,omitempty"`
+	UserAcl        types.List `tfsdk:"user_acl"`
+	GroupAcl       types.List `tfsdk:"group_acl"`
+	CustomGroupAcl types.List `tfsdk:"custom_group_acl"`
 }
 
 type AclModel struct {
-	User       types.String `tfsdk:"user"`
+	Name       types.String `tfsdk:"name"`
 	Permission types.List   `tfsdk:"permission"`
 }

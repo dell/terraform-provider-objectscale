@@ -12910,7 +12910,7 @@
 						"type": "boolean",
 						"description": "enable the Access During Outage option, which allows read access"
 					},
-					"metadata": {
+					"search_metadata": {
 						"type": "array",
 						"items": {
 							"type": "object",
