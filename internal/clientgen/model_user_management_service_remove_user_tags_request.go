@@ -13,5 +13,5 @@ package clientgen
 // UserManagementServiceRemoveUserTagsRequest struct for UserManagementServiceRemoveUserTagsRequest
 type UserManagementServiceRemoveUserTagsRequest struct {
 	// Tags - List of user tags
-	Tag []UserManagementServiceAddUserRequestTagInner `json:"tags,omitempty"`
+	Tags []UserManagementServiceAddUserRequestTagsInner `json:"tags,omitempty"`
 }

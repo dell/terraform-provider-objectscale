@@ -130,6 +130,5 @@ RequiredAPIs = [
     "/iam?Action=DetachUserPolicy",
     "/iam?Action=ListPolicyVersions",
     "/iam?Action=GetPolicyVersion",
-
-    "/object/users*"
+    "/object/users*",
 ]

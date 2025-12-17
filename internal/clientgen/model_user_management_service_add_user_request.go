@@ -17,5 +17,5 @@ type UserManagementServiceAddUserRequest struct {
 	// Namespace identifier to associate with the user
 	Namespace string `json:"namespace"`
 	// A list of arbitrary tags to assign to the new user.  These  can be used to track additional information about the user.
-	Tag []UserManagementServiceAddUserRequestTagInner `json:"tags,omitempty"`
+	Tags []UserManagementServiceAddUserRequestTagsInner `json:"tags,omitempty"`
 }

@@ -105,8 +105,8 @@ func (r *ObjectUserResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *ObjectUserResource) tagJson(a models.ObjectUserTags) clientgen.UserManagementServiceAddUserRequestTagInner {
-	return clientgen.UserManagementServiceAddUserRequestTagInner{
+func (r *ObjectUserResource) tagJson(a models.ObjectUserTags) clientgen.UserManagementServiceAddUserRequestTagsInner {
+	return clientgen.UserManagementServiceAddUserRequestTagsInner{
 		Name:  helper.ValueToPointer[string](a.Name),
 		Value: helper.ValueToPointer[string](a.Value),
 	}
@@ -115,7 +115,7 @@ func (r *ObjectUserResource) modelToJson(plan models.ObjectUserResourceModel) cl
 	return clientgen.UserManagementServiceAddUserRequest{
 		Namespace: plan.Namespace.ValueString(),
 		User:      plan.Name.ValueString(),
-		Tag:       helper.ValueListTransform(plan.Tags, r.tagJson),
+		Tags:       helper.ValueListTransform(plan.Tags, r.tagJson),
 	}
 }
 
@@ -135,7 +135,7 @@ func (r *ObjectUserResource) Create(ctx context.Context, req resource.CreateRequ
 		clientgen.UserManagementServiceAddUserRequest{
 			Namespace: planJson.Namespace,
 			User:      planJson.User,
-			Tag:       planJson.Tag,
+			Tags:       planJson.Tags,
 		}).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating user", err.Error())
@@ -201,7 +201,7 @@ func (r *ObjectUserResource) getModel(
 		Name:      helper.TfStringNN(&object_user.Name),
 		Id:        user_id,
 		Tags: helper.ListNotNull(object_user.Tag,
-			func(v clientgen.UserManagementServiceAddUserRequestTagInner) types.Object {
+			func(v clientgen.UserManagementServiceAddUserRequestTagsInner) types.Object {
 				return helper.Object(models.ObjectUserTags{
 					Name:  helper.TfStringNN(v.Name),
 					Value: helper.TfStringNN(v.Value),
@@ -211,8 +211,8 @@ func (r *ObjectUserResource) getModel(
 }
 
 // computes the difference between two Iam Tag sets (lists).
-func TagsDiff(first, second []clientgen.UserManagementServiceAddUserRequestTagInner) []clientgen.UserManagementServiceAddUserRequestTagInner {
-	var diff []clientgen.UserManagementServiceAddUserRequestTagInner
+func TagsDiff(first, second []clientgen.UserManagementServiceAddUserRequestTagsInner) []clientgen.UserManagementServiceAddUserRequestTagsInner {
+	var diff []clientgen.UserManagementServiceAddUserRequestTagsInner
 	smap := make(map[string]struct{}, len(second))
 	for _, v := range second {
 		smap[*v.Name] = struct{}{}
@@ -226,8 +226,8 @@ func TagsDiff(first, second []clientgen.UserManagementServiceAddUserRequestTagIn
 }
 
 func TagsChanged(
-	plan, state []clientgen.UserManagementServiceAddUserRequestTagInner,
-) []clientgen.UserManagementServiceAddUserRequestTagInner {
+	plan, state []clientgen.UserManagementServiceAddUserRequestTagsInner,
+) []clientgen.UserManagementServiceAddUserRequestTagsInner {
 
 	// Build a map of name -> value from state for quick lookup
 	sMap := make(map[string]*string, len(state))
@@ -239,7 +239,7 @@ func TagsChanged(
 		sMap[*t.Name] = t.Value
 	}
 
-	var changed []clientgen.UserManagementServiceAddUserRequestTagInner
+	var changed []clientgen.UserManagementServiceAddUserRequestTagsInner
 	for _, p := range plan {
 		if p.Name == nil {
 			// skip entries without a name
@@ -293,7 +293,7 @@ func (r *ObjectUserResource) Update(ctx context.Context, req resource.UpdateRequ
 		if len(tags_to_remove) != 0 {
 			_, _, err_untag := r.client.GenClient.UserManagementApi.UserManagementServiceRemoveUserTags(ctx, state.Name.ValueString()).
 				UserManagementServiceRemoveUserTagsRequest(clientgen.UserManagementServiceRemoveUserTagsRequest{
-					Tag: tags_to_remove,
+					Tags: tags_to_remove,
 				}).
 				Execute()
 			if err_untag != nil {
@@ -305,7 +305,7 @@ func (r *ObjectUserResource) Update(ctx context.Context, req resource.UpdateRequ
 		if len(tags_to_change) != 0 {
 			_, _, err_untag := r.client.GenClient.UserManagementApi.UserManagementServiceUpdateUserTag(ctx, state.Name.ValueString()).
 				UserManagementServiceUpdateUserTagRequest(clientgen.UserManagementServiceUpdateUserTagRequest{
-					Tag: tags_to_change,
+					Tags: tags_to_change,
 				}).
 				Execute()
 			if err_untag != nil {
@@ -316,7 +316,7 @@ func (r *ObjectUserResource) Update(ctx context.Context, req resource.UpdateRequ
 		if len(tags_to_add) != 0 {
 			_, _, err_tag := r.client.GenClient.UserManagementApi.UserManagementServiceAddUserTag(ctx, state.Name.ValueString()).
 				UserManagementServiceAddUserTagRequest(clientgen.UserManagementServiceAddUserTagRequest{
-					Tag: tags_to_add,
+					Tags: tags_to_add,
 				}).
 				Execute()
 			if err_tag != nil {

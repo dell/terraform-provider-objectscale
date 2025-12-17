@@ -21,7 +21,7 @@ type UserManagementServiceGetUserInfoResponse struct {
 	// Gets the user's creation date as an ISO-8601 timestamp.
 	Created string `json:"created"`
 	// Gets the tags associated with this user. May be null if the user has no  tags.
-	Tag []UserManagementServiceAddUserRequestTagInner `json:"tag,omitempty"`
+	Tag []UserManagementServiceAddUserRequestTagsInner `json:"tag,omitempty"`
 	// Gets the user's centerapassword.
 	Centerapassword string `json:"centerapassword"`
 	// Gets the user's swiftpassword.

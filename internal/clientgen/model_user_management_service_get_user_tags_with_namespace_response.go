@@ -15,5 +15,5 @@ type UserManagementServiceGetUserTagsWithNamespaceResponse struct {
 	// User name
 	UserName *string `json:"user_name,omitempty"`
 	// Gets the tags associated with this user. Required.
-	Tag []UserManagementServiceAddUserRequestTagInner `json:"tags,omitempty"`
+	Tags []UserManagementServiceAddUserRequestTagsInner `json:"tags,omitempty"`
 }
