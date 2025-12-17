@@ -20,16 +20,16 @@ limitations under the License.
 # Read operation requires any one of SECURITY_ADMIN, SYSTEM_ADMIN, SYSTEM_MONITOR roles.
 # Running `terraform apply` will create/update the management user with the specified roles in the ObjectScale
 resource "objectscale_management_user" "example" {
-    # Required. Possible values are LOCAL_USER/AD_LDAP_USER/AD_LDAP_GROUP
-    type = "LOCAL_USER"
-    # Required. Format is "user1" for LOCAL_USER and "user1@domain" for AD_LDAP_USER/AD_LDAP_GROUP 
-    name = "localuser1"
+  # Required. Possible values are LOCAL_USER/AD_LDAP_USER/AD_LDAP_GROUP
+  type = "LOCAL_USER"
+  # Required. Format is "user1" for LOCAL_USER and "user1@domain" for AD_LDAP_USER/AD_LDAP_GROUP 
+  name = "localuser1"
 
-    # Required only for LOCAL_USER creation, optional for update.
-    password = "pass123"
+  # Required only for LOCAL_USER creation, optional for update.
+  password = "pass123"
 
-    # Optional parameters. If set to true, assigns the management user to that role.
-    system_administrator = true
-    system_monitor = true
-    security_administrator = true
+  # Optional parameters. If set to true, assigns the management user to that role.
+  system_administrator   = true
+  system_monitor         = true
+  security_administrator = true
 }
