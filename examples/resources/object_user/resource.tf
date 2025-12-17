@@ -19,8 +19,8 @@ limitations under the License.
 # After `terraform apply` of this example file it will create a new object user with the name set in `name` attribute on the ObjectScale
 
 resource "objectscale_object_user" "test_object_user" {
-  name                     = "example_object_user_1"
-  namespace                = "ns1"
+  name      = "example_object_user_1"
+  namespace = "ns1"
   tags = [
     {
       "name" : "example_name",

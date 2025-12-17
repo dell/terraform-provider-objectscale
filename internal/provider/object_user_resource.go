@@ -115,7 +115,7 @@ func (r *ObjectUserResource) modelToJson(plan models.ObjectUserResourceModel) cl
 	return clientgen.UserManagementServiceAddUserRequest{
 		Namespace: plan.Namespace.ValueString(),
 		User:      plan.Name.ValueString(),
-		Tags:       helper.ValueListTransform(plan.Tags, r.tagJson),
+		Tags:      helper.ValueListTransform(plan.Tags, r.tagJson),
 	}
 }
 
@@ -135,7 +135,7 @@ func (r *ObjectUserResource) Create(ctx context.Context, req resource.CreateRequ
 		clientgen.UserManagementServiceAddUserRequest{
 			Namespace: planJson.Namespace,
 			User:      planJson.User,
-			Tags:       planJson.Tags,
+			Tags:      planJson.Tags,
 		}).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating user", err.Error())

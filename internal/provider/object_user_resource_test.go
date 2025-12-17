@@ -20,9 +20,9 @@ import (
 	"regexp"
 	"testing"
 
-	"terraform-provider-objectscale/internal/clientgen"
 	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"terraform-provider-objectscale/internal/clientgen"
 )
 
 // Test to Create and Update User Resource
