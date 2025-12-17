@@ -29,8 +29,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -101,10 +99,6 @@ func (r *ManagementUserResource) Schema(_ context.Context, _ resource.SchemaRequ
 				MarkdownDescription: "Password for the management user. Required **only** when creating LOCAL_USER; ignored for AD/LDAP users and groups.",
 				Optional:            true,
 				Sensitive:           true,
-				PlanModifiers: []planmodifier.String{
-					// Keep password from being diffed/unknown in plans unless explicitly changed.
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"system_administrator": schema.BoolAttribute{
 				Description:         "If set to true, assigns the management user to the System Admin role. System Administrators perform system level administration (VDC administration) and namespace administration.",
@@ -283,12 +277,7 @@ func (r *ManagementUserResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	prevPassword := state.Password
-	if isNonEmptyString(plan.Password) {
-		prevPassword = plan.Password
-	}
-
-	newState := mapToModel(getResp, prevPassword)
+	newState := mapToModel(getResp, plan.Password)
 	diags = resp.State.Set(ctx, &newState)
 	resp.Diagnostics.Append(diags...)
 }
@@ -335,13 +324,13 @@ func (r *ManagementUserResource) ImportState(ctx context.Context, req resource.I
 	resp.Diagnostics.Append(diags...)
 }
 
-func mapToModel(resp *clientgen.MgmtUserInfoServiceGetLocalUserInfoResponse, prevPassword types.String) models.ManagementUserResourceModel {
+func mapToModel(resp *clientgen.MgmtUserInfoServiceGetLocalUserInfoResponse, password types.String) models.ManagementUserResourceModel {
 	mgmtUserType := deriveTypeFromAPI(resp)
 	return models.ManagementUserResourceModel{
 		ID:                    helper.TfString(resp.UserId),
 		Type:                  types.StringValue(mgmtUserType),
 		Name:                  helper.TfString(resp.UserId),
-		Password:              prevPassword,
+		Password:              password,
 		SystemAdministrator:   helper.TfBool(resp.IsSystemAdmin),
 		SystemMonitor:         helper.TfBool(resp.IsSystemMonitor),
 		SecurityAdministrator: helper.TfBool(resp.IsSecurityAdmin),
