@@ -22,13 +22,12 @@ import (
 )
 
 type ObjectUserResourceModel struct {
-
 	Tags      types.List   `tfsdk:"tags"`
 	Name      types.String `tfsdk:"name"`
 	Namespace types.String `tfsdk:"namespace"`
 	Locked    types.Bool   `tfsdk:"locked"`
 	Created   types.String `tfsdk:"created"`
-	Id 	      types.String `tfsdk:"id"`
+	Id        types.String `tfsdk:"id"`
 }
 
 type ObjectUserTags struct {
