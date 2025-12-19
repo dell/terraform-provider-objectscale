@@ -31,7 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 
-	"github.com/hashicorp/terraform-plugin-framework-validators/boolvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -39,6 +38,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -136,7 +136,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "API type for the bucket.",
 				Computed:            true,
 			},
-			"tag": schema.ListNestedAttribute{
+			"tag": schema.SetNestedAttribute{
 				Description:         "Key-value tags for the bucket.",
 				MarkdownDescription: "Key-value tags for the bucket.",
 				Optional:            true,
@@ -167,66 +167,36 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Default group file read permission.",
 				Optional:            true,
 				Computed:            true,
-				Validators: []validator.Bool{
-					boolvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group"),
-					),
-				},
 			},
 			"default_group_file_write_permission": schema.BoolAttribute{
 				Description:         "Default group file write permission.",
 				MarkdownDescription: "Default group file write permission.",
 				Optional:            true,
 				Computed:            true,
-				Validators: []validator.Bool{
-					boolvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group"),
-					),
-				},
 			},
 			"default_group_file_execute_permission": schema.BoolAttribute{
 				Description:         "Default group file execute permission.",
 				MarkdownDescription: "Default group file execute permission.",
 				Optional:            true,
 				Computed:            true,
-				Validators: []validator.Bool{
-					boolvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group"),
-					),
-				},
 			},
 			"default_group_dir_read_permission": schema.BoolAttribute{
 				Description:         "Default group directory read permission.",
 				MarkdownDescription: "Default group directory read permission.",
 				Optional:            true,
 				Computed:            true,
-				Validators: []validator.Bool{
-					boolvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group"),
-					),
-				},
 			},
 			"default_group_dir_write_permission": schema.BoolAttribute{
 				Description:         "Default group directory write permission.",
 				MarkdownDescription: "Default group directory write permission.",
 				Optional:            true,
 				Computed:            true,
-				Validators: []validator.Bool{
-					boolvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group"),
-					),
-				},
 			},
 			"default_group_dir_execute_permission": schema.BoolAttribute{
 				Description:         "Default group directory execute permission.",
 				MarkdownDescription: "Default group directory execute permission.",
 				Optional:            true,
 				Computed:            true,
-				Validators: []validator.Bool{
-					boolvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group"),
-					),
-				},
 			},
 			"default_group": schema.StringAttribute{
 				Description:         "Default group name.",
@@ -234,13 +204,21 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				Computed:            true,
 				Validators: []validator.String{
-					stringvalidator.ExactlyOneOf(
-						path.MatchRoot("default_group_dir_execute_permission"),
-						path.MatchRoot("default_group_dir_write_permission"),
-						path.MatchRoot("default_group_dir_read_permission"),
-						path.MatchRoot("default_group_file_execute_permission"),
-						path.MatchRoot("default_group_file_write_permission"),
-						path.MatchRoot("default_group_file_read_permission"),
+					// stringvalidator.AtLeastOneOf(
+					// 	path.MatchRoot("default_group_dir_execute_permission"),
+					// 	path.MatchRoot("default_group_dir_write_permission"),
+					// 	path.MatchRoot("default_group_dir_read_permission"),
+					// 	path.MatchRoot("default_group_file_execute_permission"),
+					// 	path.MatchRoot("default_group_file_write_permission"),
+					// 	path.MatchRoot("default_group_file_read_permission"),
+					// ),
+					// stringvalidator.AlsoRequires(
+					// 	path.MatchRoot("filesystem_enabled"),
+					// ),
+					stringvalidator.ConflictsWith(
+						path.MatchRoot("group_acl"),
+						path.MatchRoot("user_acl"),
+						path.MatchRoot("custom_group_acl"),
 					),
 				},
 			},
@@ -261,7 +239,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				// Optional:            true,
 				Computed: true,
 			},
-			"search_metadata": schema.ListNestedAttribute{
+			"search_metadata": schema.SetNestedAttribute{
 				Description:         "List of metadata definitions.",
 				MarkdownDescription: "List of metadata definitions.",
 				Optional:            true,
@@ -277,6 +255,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 								stringvalidator.OneOf(
 									"User",
 									"System",
+									"Head",
 								),
 							},
 						},
@@ -409,8 +388,8 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 			},
 			"default_retention": schema.Int64Attribute{
-				Description:         "Default retention period.",
-				MarkdownDescription: "Default retention period.",
+				Description:         "Default retention period in seconds.",
+				MarkdownDescription: "Default retention period in seconds.",
 				Optional:            true,
 				Computed:            true,
 			},
@@ -476,7 +455,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				Computed:            true,
 			},
-			"user_acl": schema.ListNestedAttribute{
+			"user_acl": schema.SetNestedAttribute{
 				Description:         "List of user ACLs for the bucket.",
 				MarkdownDescription: "List of user ACLs for the bucket.",
 				Optional:            true,
@@ -488,7 +467,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							MarkdownDescription: "User for the ACL entry.",
 							Required:            true,
 						},
-						"permission": schema.ListAttribute{
+						"permission": schema.SetAttribute{
 							Description:         "List of permissions for the custom group. Valid values: full_control, read, delete, write, write_acl, read_acl, execute, privileged_write, none.",
 							MarkdownDescription: "List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.",
 							ElementType:         types.StringType,
@@ -497,7 +476,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
-			"group_acl": schema.ListNestedAttribute{
+			"group_acl": schema.SetNestedAttribute{
 				Description:         "List of group ACLs for the bucket.",
 				MarkdownDescription: "List of group ACLs for the bucket.",
 				Optional:            true,
@@ -508,8 +487,16 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Description:         "Group for the ACL entry.",
 							MarkdownDescription: "Group for the ACL entry.",
 							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"all_users",
+									"log_delivery",
+									"other",
+									"public",
+								),
+							},
 						},
-						"permission": schema.ListAttribute{
+						"permission": schema.SetAttribute{
 							Description:         "List of permissions for the custom group. Valid values: full_control, read, delete, write, write_acl, read_acl, execute, privileged_write, none.",
 							MarkdownDescription: "List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.",
 							ElementType:         types.StringType,
@@ -518,7 +505,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
-			"custom_group_acl": schema.ListNestedAttribute{
+			"custom_group_acl": schema.SetNestedAttribute{
 				Description:         "List of custom group ACLs for the bucket.",
 				MarkdownDescription: "List of custom group ACLs for the bucket.",
 				Optional:            true,
@@ -530,7 +517,7 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							MarkdownDescription: "Custom group for the ACL entry.",
 							Required:            true,
 						},
-						"permission": schema.ListAttribute{
+						"permission": schema.SetAttribute{
 							Description:         "List of permissions for the custom group. Valid values: full_control, read, delete, write, write_acl, read_acl, execute, privileged_write, none.",
 							MarkdownDescription: "List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.",
 							ElementType:         types.StringType,
@@ -549,6 +536,39 @@ func (r *BucketResource) ValidateConfig(ctx context.Context, req resource.Valida
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
+	}
+
+	// Validation: if enforce_retention is true, then default_retention and retention must be the same (if both are set)
+	if !config.MinMaxGovernor.IsNull() && !config.MinMaxGovernor.IsUnknown() {
+		var minMax models.MinMaxGovernorModel
+		diags := config.MinMaxGovernor.As(ctx, &minMax, basetypes.ObjectAsOptions{})
+		resp.Diagnostics.Append(diags...)
+		if !minMax.EnforceRetention.IsNull() && minMax.EnforceRetention.ValueBool() {
+			if !config.DefaultRetention.IsNull() && !config.DefaultRetention.IsUnknown() &&
+				!config.Retention.IsNull() && !config.Retention.IsUnknown() &&
+				config.DefaultRetention.ValueInt64() != config.Retention.ValueInt64() {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("default_retention"),
+					"Default Retention and Retention Mismatch",
+					"When 'enforce_retention' is true, 'default_retention' and 'retention' must be the same value.",
+				)
+			}
+		}
+	}
+
+	if !config.DefaultGroupFileReadPermission.IsNull() && config.DefaultGroupFileReadPermission.ValueBool() ||
+		!config.DefaultGroupFileWritePermission.IsNull() && config.DefaultGroupFileWritePermission.ValueBool() ||
+		!config.DefaultGroupFileExecutePermission.IsNull() && config.DefaultGroupFileExecutePermission.ValueBool() ||
+		!config.DefaultGroupDirReadPermission.IsNull() && config.DefaultGroupDirReadPermission.ValueBool() ||
+		!config.DefaultGroupDirWritePermission.IsNull() && config.DefaultGroupDirWritePermission.ValueBool() ||
+		!config.DefaultGroupDirExecutePermission.IsNull() && config.DefaultGroupDirExecutePermission.ValueBool() {
+		if config.DefaultGroup.IsNull() || config.DefaultGroup.ValueString() == "" {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("default_group"),
+				"Missing Default Group",
+				"At least one default_group_*_permission is set to true, but default_group is not specified. Please set default_group.",
+			)
+		}
 	}
 
 	// Validate search_metadata.name for type "User"
@@ -609,11 +629,9 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
 	// Build the request from the plan
 	reqBody := r.modelToJson(plan)
 
@@ -630,8 +648,8 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		var customAclList []clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner
 		for _, aclVal := range plan.UserAcl.Elements() {
 			acl := aclVal.(types.Object)
-			user := acl.Attributes()["user"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.List)
+			user := acl.Attributes()["name"].(types.String).ValueString()
+			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
 			for _, p := range permList.Elements() {
 				permissions = append(permissions, p.(types.String).ValueString())
@@ -643,8 +661,8 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 		for _, aclVal := range plan.GroupAcl.Elements() {
 			acl := aclVal.(types.Object)
-			group := acl.Attributes()["user"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.List)
+			group := acl.Attributes()["name"].(types.String).ValueString()
+			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
 			for _, p := range permList.Elements() {
 				permissions = append(permissions, p.(types.String).ValueString())
@@ -657,7 +675,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		for _, aclVal := range plan.CustomGroupAcl.Elements() {
 			acl := aclVal.(types.Object)
 			customGroup := acl.Attributes()["name"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.List)
+			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
 			for _, p := range permList.Elements() {
 				permissions = append(permissions, p.(types.String).ValueString())
@@ -685,10 +703,12 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			Execute()
 		if err != nil {
 			resp.Diagnostics.AddError("Error setting bucket ACL", err.Error())
+			r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
 			return
 		}
 	}
 
+	// Handle bucket policy
 	if plan.BucketPolicy.ValueString() != "" {
 		var policyMap map[string]interface{}
 		err := json.Unmarshal([]byte(plan.BucketPolicy.ValueString()), &policyMap)
@@ -703,38 +723,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			Execute()
 		if err != nil {
 			resp.Diagnostics.AddError("Error setting bucket policy", err.Error())
-			return
-		}
-	}
-
-	if plan.DefaultGroup.ValueString() != "" {
-		namespace := plan.Namespace.ValueString()
-		// Use false as default if plan does not have a value
-		defaultGroupFileReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileReadPermission.ValueBool()))
-		defaultGroupFileWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileWritePermission.ValueBool()))
-		defaultGroupFileExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileExecutePermission.ValueBool()))
-		defaultGroupDirReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirReadPermission.ValueBool()))
-		defaultGroupDirWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirWritePermission.ValueBool()))
-		defaultGroupDirExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirExecutePermission.ValueBool()))
-		defaultGroup := plan.DefaultGroup.ValueString()
-
-		_, _, err := r.client.GenClient.BucketApi.
-			BucketServiceSetBucketDefaultGroup(ctx, plan.Name.ValueString()).
-			BucketServiceSetBucketDefaultGroupRequest(
-				clientgen.BucketServiceSetBucketDefaultGroupRequest{
-					DefaultGroup:                      &defaultGroup,
-					DefaultGroupFileReadPermission:    defaultGroupFileReadPermission,
-					DefaultGroupFileWritePermission:   defaultGroupFileWritePermission,
-					DefaultGroupFileExecutePermission: defaultGroupFileExecutePermission,
-					DefaultGroupDirReadPermission:     defaultGroupDirReadPermission,
-					DefaultGroupDirWritePermission:    defaultGroupDirWritePermission,
-					DefaultGroupDirExecutePermission:  defaultGroupDirExecutePermission,
-					Namespace:                         &namespace,
-				},
-			).
-			Execute()
-		if err != nil {
-			resp.Diagnostics.AddError("Error updating DefaultGroup or related permissions", err.Error())
+			r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
 			return
 		}
 	}
@@ -762,10 +751,6 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics,
 	)
 	if resp.Diagnostics.HasError() {
-		return
-	}
-	if data == nil {
-		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after creation.")
 		return
 	}
 
@@ -808,10 +793,6 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if data == nil {
-		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after creation.")
-		return
-	}
 
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -836,13 +817,25 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	bucketName := state.Name.ValueString()
 	namespace := state.Namespace.ValueString()
 
+	// Only error if the plan values for default_group and fs_access_enabled are known (not unknown)
 	if state.Name.ValueString() != plan.Name.ValueString() ||
 		state.Namespace.ValueString() != plan.Namespace.ValueString() ||
 		state.ReplicationGroup.ValueString() != plan.ReplicationGroup.ValueString() ||
-		state.FsAccessEnabled.ValueBool() != plan.FsAccessEnabled.ValueBool() {
+		(!plan.FsAccessEnabled.IsUnknown() && state.FsAccessEnabled.ValueBool() != plan.FsAccessEnabled.ValueBool()) ||
+		(!plan.DefaultGroup.IsUnknown() && state.DefaultGroup.ValueString() != plan.DefaultGroup.ValueString()) ||
+		(!plan.SearchMetadata.IsUnknown() && !state.SearchMetadata.Equal(plan.SearchMetadata)) {
 		resp.Diagnostics.AddError(
 			"Immutable Field Change Detected",
-			"Changing 'name', 'namespace', 'fs_access_enabled', or 'replication_group' is not supported. Please create a new resource instead.",
+			"Changing 'name', 'namespace', 'fs_access_enabled', 'replication_group', 'default_group', or 'search_metadata' is not supported. Please create a new resource instead.",
+		)
+		return
+	}
+
+	// Once IsObjectLockWithAdoAllowed is true, it cannot be changed back to false
+	if state.IsObjectLockWithAdoAllowed.ValueBool() && !plan.IsObjectLockWithAdoAllowed.ValueBool() {
+		resp.Diagnostics.AddError(
+			"Immutable Field Change Detected",
+			"Once 'is_object_lock_with_ado_allowed' is enabled (true), it cannot be changed back to false.",
 		)
 		return
 	}
@@ -919,7 +912,7 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Handle Retention update
-	if !plan.Retention.IsNull() && state.Retention.ValueInt64() != plan.Retention.ValueInt64() {
+	if !plan.Retention.IsNull() && !plan.Retention.IsUnknown() && state.Retention.ValueInt64() != plan.Retention.ValueInt64() {
 		retention := plan.Retention.ValueInt64()
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceSetBucketRetention(ctx, bucketName).
@@ -952,21 +945,30 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	//Handle DefaultGroup and related permissions update
-	if state.DefaultGroup.ValueString() != plan.DefaultGroup.ValueString() ||
-		state.DefaultGroupFileReadPermission.ValueBool() != plan.DefaultGroupFileReadPermission.ValueBool() ||
-		state.DefaultGroupFileWritePermission.ValueBool() != plan.DefaultGroupFileWritePermission.ValueBool() ||
-		state.DefaultGroupFileExecutePermission.ValueBool() != plan.DefaultGroupFileExecutePermission.ValueBool() ||
-		state.DefaultGroupDirReadPermission.ValueBool() != plan.DefaultGroupDirReadPermission.ValueBool() ||
-		state.DefaultGroupDirWritePermission.ValueBool() != plan.DefaultGroupDirWritePermission.ValueBool() ||
-		state.DefaultGroupDirExecutePermission.ValueBool() != plan.DefaultGroupDirExecutePermission.ValueBool() {
+	// Only update DefaultGroup and related permissions if any of them are set in the plan (not null/unknown)
+	// This avoids issues where computed values are not yet known during apply.
+	if !plan.DefaultGroup.IsNull() && !plan.DefaultGroup.IsUnknown() &&
+		(state.DefaultGroup.ValueString() != plan.DefaultGroup.ValueString() ||
+			state.DefaultGroupFileReadPermission.ValueBool() != plan.DefaultGroupFileReadPermission.ValueBool() ||
+			state.DefaultGroupFileWritePermission.ValueBool() != plan.DefaultGroupFileWritePermission.ValueBool() ||
+			state.DefaultGroupFileExecutePermission.ValueBool() != plan.DefaultGroupFileExecutePermission.ValueBool() ||
+			state.DefaultGroupDirReadPermission.ValueBool() != plan.DefaultGroupDirReadPermission.ValueBool() ||
+			state.DefaultGroupDirWritePermission.ValueBool() != plan.DefaultGroupDirWritePermission.ValueBool() ||
+			state.DefaultGroupDirExecutePermission.ValueBool() != plan.DefaultGroupDirExecutePermission.ValueBool() ||
+			// Also trigger if any of the plan permissions are explicitly set (not null/unknown)
+			(!plan.DefaultGroupFileReadPermission.IsNull() && !plan.DefaultGroupFileReadPermission.IsUnknown()) ||
+			(!plan.DefaultGroupFileWritePermission.IsNull() && !plan.DefaultGroupFileWritePermission.IsUnknown()) ||
+			(!plan.DefaultGroupFileExecutePermission.IsNull() && !plan.DefaultGroupFileExecutePermission.IsUnknown()) ||
+			(!plan.DefaultGroupDirReadPermission.IsNull() && !plan.DefaultGroupDirReadPermission.IsUnknown()) ||
+			(!plan.DefaultGroupDirWritePermission.IsNull() && !plan.DefaultGroupDirWritePermission.IsUnknown()) ||
+			(!plan.DefaultGroupDirExecutePermission.IsNull() && !plan.DefaultGroupDirExecutePermission.IsUnknown())) {
 
-		// Use false as default if plan does not have a value
-		defaultGroupFileReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileReadPermission.ValueBool()))
-		defaultGroupFileWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileWritePermission.ValueBool()))
-		defaultGroupFileExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupFileExecutePermission.ValueBool()))
-		defaultGroupDirReadPermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirReadPermission.ValueBool()))
-		defaultGroupDirWritePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirWritePermission.ValueBool()))
-		defaultGroupDirExecutePermission := helper.ValueToPointer[bool](types.BoolValue(plan.DefaultGroupDirExecutePermission.ValueBool()))
+		defaultGroupFileReadPermission := helper.ValueToPointer[bool](plan.DefaultGroupFileReadPermission)
+		defaultGroupFileWritePermission := helper.ValueToPointer[bool](plan.DefaultGroupFileWritePermission)
+		defaultGroupFileExecutePermission := helper.ValueToPointer[bool](plan.DefaultGroupFileExecutePermission)
+		defaultGroupDirReadPermission := helper.ValueToPointer[bool](plan.DefaultGroupDirReadPermission)
+		defaultGroupDirWritePermission := helper.ValueToPointer[bool](plan.DefaultGroupDirWritePermission)
+		defaultGroupDirExecutePermission := helper.ValueToPointer[bool](plan.DefaultGroupDirExecutePermission)
 		defaultGroup := plan.DefaultGroup.ValueString()
 
 		_, _, err := r.client.GenClient.BucketApi.
@@ -1085,7 +1087,8 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Handle BlockSize and NotificationSize updates
-	if state.BlockSize.ValueInt64() != plan.BlockSize.ValueInt64() || state.NotificationSize.ValueInt64() != plan.NotificationSize.ValueInt64() {
+	if (!plan.BlockSize.IsUnknown() && state.BlockSize.ValueInt64() != plan.BlockSize.ValueInt64()) ||
+		(!plan.NotificationSize.IsUnknown() && state.NotificationSize.ValueInt64() != plan.NotificationSize.ValueInt64()) {
 		blockSize := plan.BlockSize.ValueInt64()
 		notificationSize := plan.NotificationSize.ValueInt64()
 		_, _, err := r.client.GenClient.BucketApi.
@@ -1105,7 +1108,7 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Handle IsObjectLockEnabled update
-	if state.IsObjectLockEnabled.ValueBool() != plan.IsObjectLockEnabled.ValueBool() {
+	if !plan.IsObjectLockEnabled.IsUnknown() && state.IsObjectLockEnabled.ValueBool() != plan.IsObjectLockEnabled.ValueBool() {
 		isObjectLockEnabled := plan.IsObjectLockEnabled.ValueBool()
 		// Prepare DefaultRetention Rule if any of the related fields are set
 		var rule *clientgen.BucketServicePutBucketDefaultLockConfigurationRequestRule
@@ -1134,14 +1137,21 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 			}
 		}
 
+		var enabled string
+		if isObjectLockEnabled {
+			enabled = "Enabled"
+		} else {
+			enabled = "Disabled"
+		}
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServicePutBucketDefaultLockConfiguration(ctx, bucketName).
 			BucketServicePutBucketDefaultLockConfigurationRequest(
 				clientgen.BucketServicePutBucketDefaultLockConfigurationRequest{
-					ObjectLockEnabled: helper.ValueToPointer[string](types.StringValue(fmt.Sprintf("%v", isObjectLockEnabled))),
+					ObjectLockEnabled: &enabled,
 					Rule:              rule,
 				},
 			).
+			Namespace(namespace).
 			Execute()
 		if err != nil {
 			resp.Diagnostics.AddError("Error updating IsObjectLockEnabled", err.Error())
@@ -1150,31 +1160,22 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Handle IsObjectLockWithAdoAllowed update
-	if state.IsObjectLockWithAdoAllowed.ValueBool() != plan.IsObjectLockWithAdoAllowed.ValueBool() {
-		_, _, err := r.client.GenClient.BucketApi.
-			BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket(ctx, bucketName).
-			Namespace(namespace).
-			Execute()
-		if err != nil {
-			resp.Diagnostics.AddError("Error updating IsObjectLockWithAdoAllowed", err.Error())
-			return
-		}
-	}
-
-	// Handle Bucket Locked update
-	if state.Locked.ValueBool() != plan.Locked.ValueBool() {
-		locked := plan.Locked.ValueBool()
-		lockedStr := fmt.Sprintf("%v", locked)
-		_, _, err := r.client.GenClient.BucketApi.BucketServiceSetBucketLock(ctx, bucketName, lockedStr).Execute()
-		if err != nil {
-			resp.Diagnostics.AddError("Error updating Bucket Lock", err.Error())
-			return
+	if !plan.IsObjectLockWithAdoAllowed.IsUnknown() && state.IsObjectLockWithAdoAllowed.ValueBool() != plan.IsObjectLockWithAdoAllowed.ValueBool() {
+		if plan.IsObjectLockWithAdoAllowed.ValueBool() {
+			_, _, err := r.client.GenClient.BucketApi.
+				BucketServiceEnableObjectLockWithAdoAllowedForExistingBucket(ctx, bucketName).
+				Namespace(namespace).
+				Execute()
+			if err != nil {
+				resp.Diagnostics.AddError("Error updating IsObjectLockWithAdoAllowed", err.Error())
+				return
+			}
 		}
 	}
 
 	// Handle EnableAdvancedMetadataSearch and related fields update
 	// Handle EnableAdvancedMetadataSearch toggle
-	if state.EnableAdvancedMetadataSearch.ValueBool() != plan.EnableAdvancedMetadataSearch.ValueBool() {
+	if !plan.EnableAdvancedMetadataSearch.IsUnknown() && state.EnableAdvancedMetadataSearch.ValueBool() != plan.EnableAdvancedMetadataSearch.ValueBool() {
 		var err error
 		if plan.EnableAdvancedMetadataSearch.ValueBool() {
 			_, _, err = r.client.GenClient.BucketApi.
@@ -1192,8 +1193,8 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Handle AdvancedMetadataSearchTargetName or AdvancedMetadataSearchTargetStream update
-	if state.AdvancedMetadataSearchTargetName.ValueString() != plan.AdvancedMetadataSearchTargetName.ValueString() ||
-		state.AdvancedMetadataSearchTargetStream.ValueString() != plan.AdvancedMetadataSearchTargetStream.ValueString() {
+	if (!plan.AdvancedMetadataSearchTargetName.IsUnknown() && state.AdvancedMetadataSearchTargetName.ValueString() != plan.AdvancedMetadataSearchTargetName.ValueString()) ||
+		(!plan.AdvancedMetadataSearchTargetStream.IsUnknown() && state.AdvancedMetadataSearchTargetStream.ValueString() != plan.AdvancedMetadataSearchTargetStream.ValueString()) {
 
 		targetName := plan.AdvancedMetadataSearchTargetName.ValueString()
 		targetStream := plan.AdvancedMetadataSearchTargetStream.ValueString()
@@ -1214,7 +1215,7 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Handle AuditDeleteExpiration update
-	if state.AuditDeleteExpiration.ValueInt64() != plan.AuditDeleteExpiration.ValueInt64() {
+	if !plan.AuditDeleteExpiration.IsUnknown() && state.AuditDeleteExpiration.ValueInt64() != plan.AuditDeleteExpiration.ValueInt64() {
 		auditDeleteExpiration := plan.AuditDeleteExpiration.ValueInt64()
 		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceSetBucketAuditDeleteExpiration(ctx, bucketName).Namespace(namespace).Expiration(fmt.Sprintf("%d", auditDeleteExpiration)).
@@ -1253,18 +1254,39 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 	}
 
+	// Handle DefaultRetention update
+	if (!plan.DefaultRetention.IsNull() && !plan.DefaultRetention.IsUnknown() && state.DefaultRetention.ValueInt64() != plan.DefaultRetention.ValueInt64()) ||
+		(!plan.MinMaxGovernor.IsNull() && !plan.MinMaxGovernor.IsUnknown() && !state.MinMaxGovernor.Equal(plan.MinMaxGovernor)) {
+		defaultRetention := plan.DefaultRetention.ValueInt64()
+		minMaxGovernor := helper.ValueObjectTransform(plan.MinMaxGovernor, r.minMaxGovernorJson)
+		_, _, err := r.client.GenClient.BucketApi.
+			BucketServiceSetBucketRetention(ctx, bucketName).
+			BucketServiceSetBucketRetentionRequest(
+				clientgen.BucketServiceSetBucketRetentionRequest{
+					Period:         &defaultRetention,
+					Namespace:      &namespace,
+					MinMaxGovernor: &minMaxGovernor,
+				},
+			).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating DefaultRetention", err.Error())
+			return
+		}
+	}
+
 	// Handle user_acl, group_acl, and custom_group_acl updates
 	// Convert state and plan ACLs to maps for comparison
 	type aclEntry struct {
 		User        string
 		Permissions []string
 	}
-	aclMap := func(acls types.List) map[string][]string {
+	aclMap := func(acls types.Set) map[string][]string {
 		result := make(map[string][]string)
 		for _, aclVal := range acls.Elements() {
 			acl := aclVal.(types.Object)
 			user := acl.Attributes()["name"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.List)
+			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
 			for _, p := range permList.Elements() {
 				permissions = append(permissions, p.(types.String).ValueString())
@@ -1398,10 +1420,6 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if data == nil {
-		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after creation.")
-		return
-	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
@@ -1441,7 +1459,7 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, bucket_name).Namespace(namespace).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error Reading Buckets",
+			"Error importing Buckets",
 			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
 		)
 		return
@@ -1453,16 +1471,12 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 		namespace,
 		"", // No bucket policy from state
 		true,
-		types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.ListType{ElemType: types.StringType}}}),
-		types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.ListType{ElemType: types.StringType}}}),
-		types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.ListType{ElemType: types.StringType}}}),
+		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
+		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
+		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
 		resp.Diagnostics,
 	)
 	if resp.Diagnostics.HasError() {
-		return
-	}
-	if data == nil {
-		resp.Diagnostics.AddError("Error setting value in state", "Failed to set the bucket resource state after import.")
 		return
 	}
 
@@ -1545,7 +1559,7 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 		BlockSize:        helper.TfInt64(b.BlockSize),
 		NotificationSize: helper.TfInt64(b.NotificationSize),
 		FsAccessEnabled:  helper.TfBool(b.FsAccessEnabled),
-		Tag: helper.ListNotNull(b.TagSet,
+		Tag: helper.SetNotNull(b.TagSet,
 			func(v clientgen.BucketServiceCreateBucketRequestTagSetInner) types.Object {
 				return helper.Object(models.Tags{
 					Key:   helper.TfStringNN(v.Key),
@@ -1571,7 +1585,8 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 		IsStaleAllowed:                    helper.TfBool(b.IsStaleAllowed),
 		IsObjectLockWithAdoAllowed:        helper.TfBool(b.IsObjectLockWithAdoAllowed),
 		IsTsoReadOnly:                     helper.TfBool(b.IsTsoReadOnly),
-		SearchMetadata: helper.ListNotNull(b.SearchMetadata.Metadata,
+		DefaultRetention:                  helper.TfInt64(b.DefaultRetention),
+		SearchMetadata: helper.SetNotNull(b.SearchMetadata.Metadata,
 			func(v clientgen.BucketServiceCreateBucketRequestSearchMetadataInner) types.Object {
 				return helper.Object(models.MetadataModel{
 					Type:     helper.TfString(v.Type),
@@ -1604,7 +1619,7 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 	return m
 }
 
-func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool, planUserAcl, planGroupAcl, planCustomGroupAcl types.List, respDiagnostics diag.Diagnostics) *models.BucketResourceModel {
+func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool, planUserAcl, planGroupAcl, planCustomGroupAcl types.Set, respDiagnostics diag.Diagnostics) *models.BucketResourceModel {
 	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, name).Namespace(namespace).Execute()
 	if err != nil {
 		respDiagnostics.AddError(
@@ -1616,7 +1631,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 
 	// Fetch bucket policy if not provided
 	if bucketPolicy == "" {
-		policyResp, _, err := r.client.GenClient.BucketApi.
+		_, _, err := r.client.GenClient.BucketApi.
 			BucketServiceGetBucketPolicy(ctx, name).
 			Namespace(namespace).
 			Execute()
@@ -1626,11 +1641,6 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 				fmt.Sprintf("An error was encountered reading bucket policy from ObjectScale IAM: %s", err.Error()),
 			)
 			return nil
-		}
-		if policyResp != nil {
-			if policyBytes, err := json.Marshal(policyResp); err == nil {
-				bucketPolicy = string(policyBytes)
-			}
 		}
 	}
 
@@ -1655,7 +1665,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 				if u.User != nil {
 					userAclList = append(userAclList, models.AclModel{
 						Name:       types.StringValue(*u.User),
-						Permission: helper.ListNotNull(u.Permission, types.StringValue),
+						Permission: helper.SetNotNull(u.Permission, types.StringValue),
 					})
 				}
 			}
@@ -1663,7 +1673,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 				if g.Group != nil {
 					groupAclList = append(groupAclList, models.AclModel{
 						Name:       types.StringValue(*g.Group),
-						Permission: helper.ListNotNull(g.Permission, types.StringValue),
+						Permission: helper.SetNotNull(g.Permission, types.StringValue),
 					})
 				}
 			}
@@ -1671,7 +1681,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 				if c.Customgroup != nil {
 					customGroupAclList = append(customGroupAclList, models.AclModel{
 						Name:       types.StringValue(*c.Customgroup),
-						Permission: helper.ListNotNull(c.Permission, types.StringValue),
+						Permission: helper.SetNotNull(c.Permission, types.StringValue),
 					})
 				}
 			}
@@ -1690,7 +1700,7 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 	// Always set ACLs to a known, non-null value (empty list if none from API)
 	aclAttrTypes := map[string]attr.Type{
 		"name":       types.StringType,
-		"permission": types.ListType{ElemType: types.StringType},
+		"permission": types.SetType{ElemType: types.StringType},
 	}
 	aclObjectType := types.ObjectType{AttrTypes: aclAttrTypes}
 	//aclListType := types.ListType{ElemType: aclObjectType}
@@ -1708,9 +1718,9 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 		return objs
 	}
 
-	userAclListVal, _ := types.ListValue(aclObjectType, aclModelsToList(userAclList))
-	groupAclListVal, _ := types.ListValue(aclObjectType, aclModelsToList(groupAclList))
-	customGroupAclListVal, _ := types.ListValue(aclObjectType, aclModelsToList(customGroupAclList))
+	userAclListVal, _ := types.SetValue(aclObjectType, aclModelsToList(userAclList))
+	groupAclListVal, _ := types.SetValue(aclObjectType, aclModelsToList(groupAclList))
+	customGroupAclListVal, _ := types.SetValue(aclObjectType, aclModelsToList(customGroupAclList))
 
 	data.UserAcl = userAclListVal
 	data.GroupAcl = groupAclListVal

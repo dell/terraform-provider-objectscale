@@ -50,7 +50,7 @@ description: |-
 - `auto_commit_period` (Number) Auto-commit period in seconds.
 - `block_size` (Number) Size of each block in bytes.
 - `bucket_policy` (String) Bucket policy in JSON format.
-- `custom_group_acl` (Attributes List) List of custom group ACLs for the bucket. (see [below for nested schema](#nestedatt--custom_group_acl))
+- `custom_group_acl` (Attributes Set) List of custom group ACLs for the bucket. (see [below for nested schema](#nestedatt--custom_group_acl))
 - `default_group` (String) Default group name.
 - `default_group_dir_execute_permission` (Boolean) Default group directory execute permission.
 - `default_group_dir_read_permission` (Boolean) Default group directory read permission.
@@ -61,10 +61,10 @@ description: |-
 - `default_object_lock_retention_days` (Number) Default object lock retention days.
 - `default_object_lock_retention_mode` (String) Default object lock retention mode.
 - `default_object_lock_retention_years` (Number) Default object lock retention years.
-- `default_retention` (Number) Default retention period.
+- `default_retention` (Number) Default retention period in seconds.
 - `enable_advanced_metadata_search` (Boolean) Enable advanced metadata search.
 - `filesystem_enabled` (Boolean) Enable filesystem access.
-- `group_acl` (Attributes List) List of group ACLs for the bucket. (see [below for nested schema](#nestedatt--group_acl))
+- `group_acl` (Attributes Set) List of group ACLs for the bucket. (see [below for nested schema](#nestedatt--group_acl))
 - `is_encryption_enabled` (Boolean) Enable server-side encryption.
 - `is_metadata_enabled` (Boolean) Is search metadata enabled.
 - `is_object_lock_enabled` (Boolean) Enable object lock.
@@ -79,9 +79,9 @@ description: |-
 - `min_max_governor` (Attributes) Retention governance settings. (see [below for nested schema](#nestedatt--min_max_governor))
 - `notification_size` (Number) Size threshold for notifications.
 - `retention` (Number) Retention period in days.
-- `search_metadata` (Attributes List) List of metadata definitions. (see [below for nested schema](#nestedatt--search_metadata))
-- `tag` (Attributes List) Key-value tags for the bucket. (see [below for nested schema](#nestedatt--tag))
-- `user_acl` (Attributes List) List of user ACLs for the bucket. (see [below for nested schema](#nestedatt--user_acl))
+- `search_metadata` (Attributes Set) List of metadata definitions. (see [below for nested schema](#nestedatt--search_metadata))
+- `tag` (Attributes Set) Key-value tags for the bucket. (see [below for nested schema](#nestedatt--tag))
+- `user_acl` (Attributes Set) List of user ACLs for the bucket. (see [below for nested schema](#nestedatt--user_acl))
 - `versioning_status` (String) Versioning status (Enabled/Suspended).
 
 ### Read-Only
@@ -103,7 +103,7 @@ description: |-
 Required:
 
 - `name` (String) Custom group for the ACL entry.
-- `permission` (List of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
+- `permission` (Set of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
 
 
 <a id="nestedatt--group_acl"></a>
@@ -112,7 +112,7 @@ Required:
 Required:
 
 - `name` (String) Group for the ACL entry.
-- `permission` (List of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
+- `permission` (Set of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
 
 
 <a id="nestedatt--min_max_governor"></a>
@@ -152,7 +152,7 @@ Required:
 Required:
 
 - `name` (String) User for the ACL entry.
-- `permission` (List of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
+- `permission` (Set of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
 
 Unless specified otherwise, all fields of this resource can be updated.
 

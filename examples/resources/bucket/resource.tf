@@ -23,7 +23,7 @@ resource "objectscale_bucket" "example_bucket" {
   owner = "admin1"
 
   # Required: Name of the bucket
-  name = "example-bucket"
+  name = "example-bucket-2"
 
   # Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
   replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
@@ -60,7 +60,7 @@ resource "objectscale_bucket" "example_bucket" {
   # default_group_dir_execute_permission  = "true"
 
   # Optional: Default group name
-  default_group = "default-group-test"
+  # default_group = "default"
 
   # Optional: Auto-commit period in seconds
   auto_commit_period = 28
@@ -75,7 +75,7 @@ resource "objectscale_bucket" "example_bucket" {
   is_object_lock_with_ado_allowed = true
 
   # Optional: Enable TSO read-only mode
-  is_tso_read_only = true
+  # is_tso_read_only = true
 
   # Optional: Enable metadata search
   is_metadata_enabled = true
@@ -107,7 +107,7 @@ resource "objectscale_bucket" "example_bucket" {
   audit_delete_expiration = 90
 
   # Optional: Enable object lock
-  is_object_lock_enabled = true
+  # is_object_lock_enabled = true
 
   # Optional: Enable advanced metadata search
   # enable_advanced_metadata_search = true
@@ -136,7 +136,7 @@ resource "objectscale_bucket" "example_bucket" {
         Effect    = "Allow",
         Principal = "*",
         Action    = "s3:GetObject",
-        Resource  = "arn:aws:s3:::example-bucket/*"
+        Resource  = "arn:aws:s3:::example-bucket-2/*"
       }
     ]
   })
@@ -144,14 +144,21 @@ resource "objectscale_bucket" "example_bucket" {
   # Optional: User ACLs
   user_acl = [
     {
-      name       = "root"
-      permission = ["read", "write"]
-    },
-    {
       name       = "admin1"
       permission = ["full_control"]
+    },
+    {
+      name       = "root"
+      permission = ["read", "write"]
     }
+  ]
 
+  # Optional: User ACLs
+  group_acl = [
+    {
+      name       = "all_users"
+      permission = ["full_control"]
+    }
   ]
 }
 # After the execution of above resource block, bucket would have been created on the ObjectScale array. For more information, Please check the terraform state file. 

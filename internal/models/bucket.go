@@ -121,7 +121,7 @@ type BucketResourceModel struct {
 	NotificationSize                   types.Int64  `tfsdk:"notification_size"`
 	AutoCommitPeriod                   types.Int64  `tfsdk:"auto_commit_period"`
 	ApiType                            types.String `tfsdk:"api_type"`
-	Tag                                types.List   `tfsdk:"tag"`
+	Tag                                types.Set    `tfsdk:"tag"`
 	Retention                          types.Int64  `tfsdk:"retention"`
 	DefaultGroupFileReadPermission     types.Bool   `tfsdk:"default_group_file_read_permission"`
 	DefaultGroupFileWritePermission    types.Bool   `tfsdk:"default_group_file_write_permission"`
@@ -130,7 +130,7 @@ type BucketResourceModel struct {
 	DefaultGroupDirWritePermission     types.Bool   `tfsdk:"default_group_dir_write_permission"`
 	DefaultGroupDirExecutePermission   types.Bool   `tfsdk:"default_group_dir_execute_permission"`
 	DefaultGroup                       types.String `tfsdk:"default_group"`
-	SearchMetadata                     types.List   `tfsdk:"search_metadata"`
+	SearchMetadata                     types.Set    `tfsdk:"search_metadata"`
 	IsEnabled                          types.Bool   `tfsdk:"is_metadata_enabled"`
 	MdTokens                           types.Bool   `tfsdk:"md_tokens"`
 	MaxKeys                            types.Int64  `tfsdk:"max_keys"`
@@ -158,12 +158,12 @@ type BucketResourceModel struct {
 	BucketPolicy types.String `tfsdk:"bucket_policy"`
 
 	//ACL related fields
-	UserAcl        types.List `tfsdk:"user_acl"`
-	GroupAcl       types.List `tfsdk:"group_acl"`
-	CustomGroupAcl types.List `tfsdk:"custom_group_acl"`
+	UserAcl        types.Set `tfsdk:"user_acl"`
+	GroupAcl       types.Set `tfsdk:"group_acl"`
+	CustomGroupAcl types.Set `tfsdk:"custom_group_acl"`
 }
 
 type AclModel struct {
 	Name       types.String `tfsdk:"name"`
-	Permission types.List   `tfsdk:"permission"`
+	Permission types.Set    `tfsdk:"permission"`
 }
