@@ -199,6 +199,11 @@ Class | Method | HTTP request | Description
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
 *NamespaceApi* | [**NamespaceServiceUpdateNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceupdatenamespacequota) | **Put** /object/namespaces/namespace/{namespace}/quota | Updates the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
+*ObjectVarrayApi* | [**ObjectVarrayServiceCreateVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicecreatevirtualarray) | **Post** /vdc/data-services/varrays | Create a storage pool with the specified details
+*ObjectVarrayApi* | [**ObjectVarrayServiceDeleteVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicedeletevirtualarray) | **Delete** /vdc/data-services/varrays/{id} | Deletes the storage pool for the specified identifier
+*ObjectVarrayApi* | [**ObjectVarrayServiceGetVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicegetvirtualarray) | **Get** /vdc/data-services/varrays/{id} | Gets the details for the specified storage pool
+*ObjectVarrayApi* | [**ObjectVarrayServiceGetVirtualArrays**](docs/ObjectVarrayApi.md#objectvarrayservicegetvirtualarrays) | **Get** /vdc/data-services/varrays | Gets a list of storage pools from the local VDC
+*ObjectVarrayApi* | [**ObjectVarrayServiceUpdateVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayserviceupdatevirtualarray) | **Put** /vdc/data-services/varrays/{id} | Updates storage pool for the specified identifier
 *ZoneInfoApi* | [**ZoneInfoServiceGetLocalVdc**](docs/ZoneInfoApi.md#zoneinfoservicegetlocalvdc) | **Get** /object/vdcs/vdc/local | Gets the details for the local VDC
 *ZoneInfoApi* | [**ZoneInfoServiceGetVdcById**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyid) | **Get** /object/vdcs/vdcid/{vdcId} | Gets the details for a VDC specified by VDC Id
 *ZoneInfoApi* | [**ZoneInfoServiceGetVdcByName**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyname) | **Get** /object/vdcs/vdc/{vdcName} | Gets the details for a VDC specified by name
@@ -358,6 +363,12 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceUpdateNamespaceQuotaRequest](docs/NamespaceServiceUpdateNamespaceQuotaRequest.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
  - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
+ - [ObjectVarrayServiceCreateVirtualArrayRequest](docs/ObjectVarrayServiceCreateVirtualArrayRequest.md)
+ - [ObjectVarrayServiceCreateVirtualArrayResponse](docs/ObjectVarrayServiceCreateVirtualArrayResponse.md)
+ - [ObjectVarrayServiceGetVirtualArrayResponse](docs/ObjectVarrayServiceGetVirtualArrayResponse.md)
+ - [ObjectVarrayServiceGetVirtualArraysResponse](docs/ObjectVarrayServiceGetVirtualArraysResponse.md)
+ - [ObjectVarrayServiceUpdateVirtualArrayRequest](docs/ObjectVarrayServiceUpdateVirtualArrayRequest.md)
+ - [ObjectVarrayServiceUpdateVirtualArrayResponse](docs/ObjectVarrayServiceUpdateVirtualArrayResponse.md)
  - [Vdc](docs/Vdc.md)
  - [ZoneInfoServiceInsertVdcInfoRequest](docs/ZoneInfoServiceInsertVdcInfoRequest.md)
  - [ZoneInfoServiceListAllVdcResponse](docs/ZoneInfoServiceListAllVdcResponse.md)

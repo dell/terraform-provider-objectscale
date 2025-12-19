@@ -4,6 +4,7 @@ api_bucket.go
 api_data_vpool.go
 api_iam.go
 api_namespace.go
+api_object_varray.go
 api_zone_info.go
 client.go
 configuration.go
@@ -12,6 +13,7 @@ docs/BucketApi.md
 docs/DataVpoolApi.md
 docs/IamApi.md
 docs/NamespaceApi.md
+docs/ObjectVarrayApi.md
 docs/ZoneInfoApi.md
 model_basic_response.go
 model_bucket_service_add_bucket_tags_request.go
@@ -163,6 +165,12 @@ model_namespace_service_get_retention_classes_response.go
 model_namespace_service_update_namespace_quota_request.go
 model_namespace_service_update_namespace_request.go
 model_namespace_service_update_retention_class_request.go
+model_object_varray_service_create_virtual_array_request.go
+model_object_varray_service_create_virtual_array_response.go
+model_object_varray_service_get_virtual_array_response.go
+model_object_varray_service_get_virtual_arrays_response.go
+model_object_varray_service_update_virtual_array_request.go
+model_object_varray_service_update_virtual_array_response.go
 model_vdc.go
 model_zone_info_service_insert_vdc_info_request.go
 model_zone_info_service_list_all_vdc_response.go

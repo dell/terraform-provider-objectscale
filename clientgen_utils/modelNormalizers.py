@@ -379,6 +379,19 @@ def _normalizeObjectScaleVDCs(json_obj: dict) -> dict:
 
     json_obj['components']['schemas']['Vdc'] = commonVdcType
     return json_obj
+
+def _normalizeObjectScaleStoragePools(json_obj: dict) -> dict:
+    """
+    ObjectVarrayService_getVirtualArraysResponse.properties.varray.items, if equal to ObjectVarrayService_getVirtualArrayResponse,
+    should be normalized to ObjectVarrayService_getVirtualArrayResponse
+    """
+    commonVarrayType = json_obj['components']['schemas']['ObjectVarrayService_getVirtualArrayResponse']
+    if json_obj['components']['schemas']['ObjectVarrayService_getVirtualArraysResponse']['properties']['varray']['items'] == commonVarrayType:
+        json_obj['components']['schemas']['ObjectVarrayService_getVirtualArraysResponse']['properties']['varray']['items'] = {
+            "$ref": "#/components/schemas/ObjectVarrayService_getVirtualArrayResponse"
+        }
+    return json_obj
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
@@ -391,4 +404,5 @@ def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     ret = _normalizeObjectScaleIamRoleResponse(ret)
     ret = _NormalizeObjectScalePutRolePermissionsBoundaryParameter(ret)
     ret = _normalizeObjectScaleVDCs(ret)
+    ret = _normalizeObjectScaleStoragePools(ret)
     return ret

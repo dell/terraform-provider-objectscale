@@ -1039,6 +1039,389 @@
 				}
 			}
 		},
+		"/vdc/data-services/varrays": {
+			"post": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Create a storage pool with the specified details",
+				"description": "Create a storage pool with the specified details.",
+				"operationId": "ObjectVarrayService_createVirtualArray",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created virtual array details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_createVirtualArrayResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"name": "varray_4",
+											"isProtected": "false",
+											"isColdStorageEnabled": "false",
+											"description": " varray desc 4"
+										}
+									},
+									"example_1": {
+										"value": {
+											"id": "urn:storageos:VirtualArray:dd751e72-0142-4598-a440-b4f833e93b61",
+											"name": "varray_4",
+											"isProtected": false,
+											"isColdStorageEnabled": "false"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ObjectVarrayService_createVirtualArrayRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Gets a list of storage pools from the local VDC",
+				"description": "Gets a list of storage pools from the local VDC.",
+				"operationId": "ObjectVarrayService_getVirtualArrays",
+				"parameters": [
+					{
+						"name": "vdc-id",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "virtual data center identifier for which list of storage poold is to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Storage pool details for the given virtual data center identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_getVirtualArraysResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"varray": [
+												{
+													"id": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804",
+													"name": "CommodityvPool",
+													"isProtected": false,
+													"isColdStorageEnabled": "false"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-services/varrays/{id}": {
+			"delete": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Deletes the storage pool for the specified identifier",
+				"description": "Deletes the storage pool for the specified identifier.",
+				"operationId": "ObjectVarrayService_deleteVirtualArray",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "storage pool identifier to be deleted"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete storage pool",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Updates storage pool for the specified identifier",
+				"description": "Updates storage pool for the specified identifier.",
+				"operationId": "ObjectVarrayService_updateVirtualArray",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Storage pool identifier to be updated"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Updated virtual array details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_updateVirtualArrayResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"virtual_array_update": {
+												"name": "CommodityvPool",
+												"isProtected": "true",
+												"description": "desc"
+											}
+										}
+									},
+									"example_1": {
+										"value": {
+											"varray": {
+												"id": "urn:storageos:VirtualArray:82cf257b-0782-433c-92ca-2ee6161b917e",
+												"name": "CommodityvPool",
+												"isProtected": "true"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ObjectVarrayService_updateVirtualArrayRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Gets the details for the specified storage pool",
+				"description": "Gets the details for the specified storage pool.",
+				"operationId": "ObjectVarrayService_getVirtualArray",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Storage pool identifier to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Storage pool details for the given identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_getVirtualArrayResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"id": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804",
+											"name": "CommodityvPool",
+											"isProtected": false
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/object/namespaces": {
 			"get": {
 				"tags": [
@@ -11905,6 +12288,284 @@
 							"$ref": "#/components/schemas/Vdc"
 						},
 						"description": "A list of vdc"
+					}
+				}
+			},
+			"ObjectVarrayService_createVirtualArrayRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Virtual array name"
+					},
+					"isProtected": {
+						"type": "boolean",
+						"description": "Only false is valid. Protected varray is not supported."
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Is ColdStorage enabled on the virtual array"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of data blocks for configurable EC scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of code blocks for configurable EC scheme"
+					},
+					"numberOfStorageServerInstances": {
+						"type": "integer",
+						"description": "Number of storage server instances for validation of configurable EC scheme"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive Technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string",
+						"description": "Drive Technology of VArray"
+					}
+				},
+				"required": [
+					"name",
+					"isProtected"
+				]
+			},
+			"ObjectVarrayService_createVirtualArrayResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Storage pool id"
+					},
+					"name": {
+						"type": "string",
+						"description": "Storage pool name"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Flag indicating that cold storage encoding is enabled"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of Data Blocks in EC Scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of Code Blocks in EC Scheme"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string"
+					}
+				}
+			},
+			"ObjectVarrayService_updateVirtualArrayRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Name of virtual array to be updated"
+					},
+					"isProtected": {
+						"type": "boolean",
+						"description": "Set true if varray is protected, false otherwise"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description. If no description found, then \"Virtual Array\" is used by default"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Is ColdStorage enabled on the virtual array"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of data blocks for configurable EC scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of code blocks for configurable EC scheme"
+					},
+					"numberOfStorageServerInstances": {
+						"type": "integer",
+						"description": "Number of storage server instances for validation of configurable EC scheme"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					}
+				},
+				"required": [
+					"name",
+					"isProtected"
+				]
+			},
+			"ObjectVarrayService_updateVirtualArrayResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Storage pool id"
+					},
+					"name": {
+						"type": "string",
+						"description": "Storage pool name"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Flag indicating that cold storage encoding is enabled"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of Data Blocks in EC Scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of Code Blocks in EC Scheme"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string"
+					}
+				}
+			},
+			"ObjectVarrayService_getVirtualArrayResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Storage pool id"
+					},
+					"name": {
+						"type": "string",
+						"description": "Storage pool name"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Flag indicating that cold storage encoding is enabled"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of Data Blocks in EC Scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of Code Blocks in EC Scheme"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string"
+					}
+				}
+			},
+			"ObjectVarrayService_getVirtualArraysResponse": {
+				"type": "object",
+				"properties": {
+					"varray": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ObjectVarrayService_getVirtualArrayResponse"
+						},
+						"description": "List of storage pools"
 					}
 				}
 			},

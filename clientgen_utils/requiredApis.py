@@ -136,4 +136,8 @@ RequiredAPIs = [
     "/object/vdcs/vdcid/{vdcId}",
     "/object/vdcs/vdc/local",
     "/object/vdcs/vdc/list",
+
+    # storage pools
+    "/vdc/data-services/varrays/{id}",
+    "/vdc/data-services/varrays",
 ]
