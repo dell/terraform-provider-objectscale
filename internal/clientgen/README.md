@@ -199,6 +199,19 @@ Class | Method | HTTP request | Description
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
 *NamespaceApi* | [**NamespaceServiceUpdateNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceupdatenamespacequota) | **Put** /object/namespaces/namespace/{namespace}/quota | Updates the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
+*UserManagementApi* | [**UserManagementServiceAddUser**](docs/UserManagementApi.md#usermanagementserviceadduser) | **Post** /object/users | Creates a user for the specified namespace
+*UserManagementApi* | [**UserManagementServiceAddUserTag**](docs/UserManagementApi.md#usermanagementserviceaddusertag) | **Post** /object/users/{uid}/tags | Updates user tags for the specified user - this is append operation
+*UserManagementApi* | [**UserManagementServiceGetAllUsers**](docs/UserManagementApi.md#usermanagementservicegetallusers) | **Get** /object/users | Gets identifiers for all configured users
+*UserManagementApi* | [**UserManagementServiceGetUserInfo**](docs/UserManagementApi.md#usermanagementservicegetuserinfo) | **Get** /object/users/{uid}/info | Gets user details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceGetUserLockWithNamespace**](docs/UserManagementApi.md#usermanagementservicegetuserlockwithnamespace) | **Get** /object/users/lock/{uid}/{namespace} | Gets the user lock details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceGetUserLockWithoutNamespace**](docs/UserManagementApi.md#usermanagementservicegetuserlockwithoutnamespace) | **Get** /object/users/lock/{uid} | Gets the user lock details for the specified user
+*UserManagementApi* | [**UserManagementServiceGetUserTagsWithNamespace**](docs/UserManagementApi.md#usermanagementservicegetusertagswithnamespace) | **Get** /object/users/{uid}/tags | Gets the user tags details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceGetUsersForNamespace**](docs/UserManagementApi.md#usermanagementservicegetusersfornamespace) | **Get** /object/users/{namespace} | Gets all user identifiers for the specified namespace
+*UserManagementApi* | [**UserManagementServiceQueryUsers**](docs/UserManagementApi.md#usermanagementservicequeryusers) | **Get** /object/users/query | Gets user details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceRemoveUser**](docs/UserManagementApi.md#usermanagementserviceremoveuser) | **Post** /object/users/deactivate | Deletes the specified user and its associated secret keys
+*UserManagementApi* | [**UserManagementServiceRemoveUserTags**](docs/UserManagementApi.md#usermanagementserviceremoveusertags) | **Delete** /object/users/{uid}/tags | Deletes user tags for specified user
+*UserManagementApi* | [**UserManagementServiceSetUserLock**](docs/UserManagementApi.md#usermanagementservicesetuserlock) | **Put** /object/users/lock | Locks the specified user
+*UserManagementApi* | [**UserManagementServiceUpdateUserTag**](docs/UserManagementApi.md#usermanagementserviceupdateusertag) | **Put** /object/users/{uid}/tags | Updates user tags for the specified user
 
 
 ## Documentation For Models
@@ -353,6 +366,23 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceUpdateNamespaceQuotaRequest](docs/NamespaceServiceUpdateNamespaceQuotaRequest.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
  - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
+ - [UserManagementServiceAddUserRequest](docs/UserManagementServiceAddUserRequest.md)
+ - [UserManagementServiceAddUserRequestTagsInner](docs/UserManagementServiceAddUserRequestTagsInner.md)
+ - [UserManagementServiceAddUserResponse](docs/UserManagementServiceAddUserResponse.md)
+ - [UserManagementServiceAddUserResponseLink](docs/UserManagementServiceAddUserResponseLink.md)
+ - [UserManagementServiceAddUserTagRequest](docs/UserManagementServiceAddUserTagRequest.md)
+ - [UserManagementServiceGetAllUsersResponse](docs/UserManagementServiceGetAllUsersResponse.md)
+ - [UserManagementServiceGetAllUsersResponseBlobuserInner](docs/UserManagementServiceGetAllUsersResponseBlobuserInner.md)
+ - [UserManagementServiceGetUserInfoResponse](docs/UserManagementServiceGetUserInfoResponse.md)
+ - [UserManagementServiceGetUserLockWithNamespaceResponse](docs/UserManagementServiceGetUserLockWithNamespaceResponse.md)
+ - [UserManagementServiceGetUserLockWithoutNamespaceResponse](docs/UserManagementServiceGetUserLockWithoutNamespaceResponse.md)
+ - [UserManagementServiceGetUserTagsWithNamespaceResponse](docs/UserManagementServiceGetUserTagsWithNamespaceResponse.md)
+ - [UserManagementServiceGetUsersForNamespaceResponse](docs/UserManagementServiceGetUsersForNamespaceResponse.md)
+ - [UserManagementServiceQueryUsersResponse](docs/UserManagementServiceQueryUsersResponse.md)
+ - [UserManagementServiceRemoveUserRequest](docs/UserManagementServiceRemoveUserRequest.md)
+ - [UserManagementServiceRemoveUserTagsRequest](docs/UserManagementServiceRemoveUserTagsRequest.md)
+ - [UserManagementServiceSetUserLockRequest](docs/UserManagementServiceSetUserLockRequest.md)
+ - [UserManagementServiceUpdateUserTagRequest](docs/UserManagementServiceUpdateUserTagRequest.md)
 
 
 ## Documentation For Authorization
