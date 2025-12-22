@@ -32,15 +32,24 @@ type IamPolicyDataSourceModel struct {
 
 // IamPolicyDataSourceIamPolicyModel represents the schema for the iam_policies attribute
 type IamPolicyDataSourceIamPolicyModel struct {
-	ARN                           types.String `tfsdk:"arn"`
-	AttachmentCount               types.Int32  `tfsdk:"attachment_count"`
-	CreateDate                    types.String `tfsdk:"create_date"`
-	DefaultVersionID              types.String `tfsdk:"default_version_id"`
-	Description                   types.String `tfsdk:"description"`
-	IsAttachable                  types.Bool   `tfsdk:"is_attachable"`
-	Path                          types.String `tfsdk:"path"`
-	PermissionsBoundaryUsageCount types.Int32  `tfsdk:"permissions_boundary_usage_count"`
-	PolicyID                      types.String `tfsdk:"policy_id"`
-	PolicyName                    types.String `tfsdk:"policy_name"`
-	UpdateDate                    types.String `tfsdk:"update_date"`
+	ARN                           types.String                               `tfsdk:"arn"`
+	AttachmentCount               types.Int32                                `tfsdk:"attachment_count"`
+	CreateDate                    types.String                               `tfsdk:"create_date"`
+	DefaultVersionID              types.String                               `tfsdk:"default_version_id"`
+	Description                   types.String                               `tfsdk:"description"`
+	IsAttachable                  types.Bool                                 `tfsdk:"is_attachable"`
+	Path                          types.String                               `tfsdk:"path"`
+	PermissionsBoundaryUsageCount types.Int32                                `tfsdk:"permissions_boundary_usage_count"`
+	PolicyID                      types.String                               `tfsdk:"policy_id"`
+	PolicyName                    types.String                               `tfsdk:"policy_name"`
+	UpdateDate                    types.String                               `tfsdk:"update_date"`
+	Versions                      []IamPolicyDataSourceIamPolicyVersionModel `tfsdk:"versions"`
+}
+
+// IamPolicyDataSourceIamPolicyVersionModel represents the schema for the versions attribute
+type IamPolicyDataSourceIamPolicyVersionModel struct {
+	IsDefaultVersion types.Bool   `tfsdk:"is_default_version"`
+	VersionID        types.String `tfsdk:"version_id"`
+	CreateDate       types.String `tfsdk:"create_date"`
+	Document         types.String `tfsdk:"document"`
 }

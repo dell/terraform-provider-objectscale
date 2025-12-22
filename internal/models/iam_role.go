@@ -48,3 +48,15 @@ type IAMRolePermissionsBoundary struct {
 	PermissionsBoundaryArn  types.String `tfsdk:"permissions_boundary_arn"`
 	PermissionsBoundaryType types.String `tfsdk:"permissions_boundary_type"`
 }
+
+type IAMRoleResourceModel struct {
+	Name                     types.String `tfsdk:"name"`
+	Namespace                types.String `tfsdk:"namespace"`
+	AssumeRolePolicyDocument types.String `tfsdk:"assume_role_policy_document"`
+	Description              types.String `tfsdk:"description"`
+	MaxSessionDuration       types.Int32  `tfsdk:"max_session_duration"`
+	Path                     types.String `tfsdk:"path"`
+	PermissionsBoundaryArn   types.String `tfsdk:"permissions_boundary_arn"`
+	PermissionsBoundaryType  types.String `tfsdk:"permissions_boundary_type"`
+	Tags                     types.List   `tfsdk:"tags"`
+}

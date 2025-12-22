@@ -4088,6 +4088,182 @@ func (a *IamApiService) IamServiceGetPolicyExecute(r ApiIamServiceGetPolicyReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiIamServiceGetPolicyVersionRequest struct {
+	ctx           context.Context
+	ApiService    *IamApiService
+	policyArn     *string
+	versionId     *string
+	xEmcNamespace *string
+}
+
+// ARN of the IAM Managed policy to retrieve.
+func (r ApiIamServiceGetPolicyVersionRequest) PolicyArn(policyArn string) ApiIamServiceGetPolicyVersionRequest {
+	r.policyArn = &policyArn
+	return r
+}
+
+// Policy Version to retrieve.
+func (r ApiIamServiceGetPolicyVersionRequest) VersionId(versionId string) ApiIamServiceGetPolicyVersionRequest {
+	r.versionId = &versionId
+	return r
+}
+
+// ECS namespace IAM entity belongs to, only required when request performed by management user
+func (r ApiIamServiceGetPolicyVersionRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceGetPolicyVersionRequest {
+	r.xEmcNamespace = &xEmcNamespace
+	return r
+}
+
+func (r ApiIamServiceGetPolicyVersionRequest) Execute() (*IamServiceGetPolicyVersionResponse, *http.Response, error) {
+	return r.ApiService.IamServiceGetPolicyVersionExecute(r)
+}
+
+/*
+IamServiceGetPolicyVersion Retrieve version of Managed Policy.
+
+Retrieve version of Managed Policy.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiIamServiceGetPolicyVersionRequest
+*/
+func (a *IamApiService) IamServiceGetPolicyVersion(ctx context.Context) ApiIamServiceGetPolicyVersionRequest {
+	return ApiIamServiceGetPolicyVersionRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return IamServiceGetPolicyVersionResponse
+func (a *IamApiService) IamServiceGetPolicyVersionExecute(r ApiIamServiceGetPolicyVersionRequest) (*IamServiceGetPolicyVersionResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IamServiceGetPolicyVersionResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceGetPolicyVersion")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/iam?Action=GetPolicyVersion"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.policyArn != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
+	}
+	if r.versionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "VersionId", r.versionId, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.xEmcNamespace != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiIamServiceGetRoleRequest struct {
 	ctx           context.Context
 	ApiService    *IamApiService
@@ -6330,6 +6506,192 @@ func (a *IamApiService) IamServiceListPoliciesExecute(r ApiIamServiceListPolicie
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiIamServiceListPolicyVersionsRequest struct {
+	ctx           context.Context
+	ApiService    *IamApiService
+	marker        *string
+	maxItems      *int32
+	policyArn     *string
+	xEmcNamespace *string
+}
+
+// For pagination, the value of the Marker element in the response that you received to indicate where the next call should start.
+func (r ApiIamServiceListPolicyVersionsRequest) Marker(marker string) ApiIamServiceListPolicyVersionsRequest {
+	r.marker = &marker
+	return r
+}
+
+// Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from.
+func (r ApiIamServiceListPolicyVersionsRequest) MaxItems(maxItems int32) ApiIamServiceListPolicyVersionsRequest {
+	r.maxItems = &maxItems
+	return r
+}
+
+// ARN of the IAM Managed policy to list.
+func (r ApiIamServiceListPolicyVersionsRequest) PolicyArn(policyArn string) ApiIamServiceListPolicyVersionsRequest {
+	r.policyArn = &policyArn
+	return r
+}
+
+// ECS namespace IAM entity belongs to, only required when request performed by management user
+func (r ApiIamServiceListPolicyVersionsRequest) XEmcNamespace(xEmcNamespace string) ApiIamServiceListPolicyVersionsRequest {
+	r.xEmcNamespace = &xEmcNamespace
+	return r
+}
+
+func (r ApiIamServiceListPolicyVersionsRequest) Execute() (*IamServiceListPolicyVersionsResponse, *http.Response, error) {
+	return r.ApiService.IamServiceListPolicyVersionsExecute(r)
+}
+
+/*
+IamServiceListPolicyVersions List versions of IAM Managed Policy.
+
+List versions of IAM Managed Policy.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiIamServiceListPolicyVersionsRequest
+*/
+func (a *IamApiService) IamServiceListPolicyVersions(ctx context.Context) ApiIamServiceListPolicyVersionsRequest {
+	return ApiIamServiceListPolicyVersionsRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return IamServiceListPolicyVersionsResponse
+func (a *IamApiService) IamServiceListPolicyVersionsExecute(r ApiIamServiceListPolicyVersionsRequest) (*IamServiceListPolicyVersionsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IamServiceListPolicyVersionsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IamApiService.IamServiceListPolicyVersions")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/iam?Action=ListPolicyVersions"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.marker != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "Marker", r.marker, "")
+	}
+	if r.maxItems != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "MaxItems", r.maxItems, "")
+	}
+	if r.policyArn != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.xEmcNamespace != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "x-emc-namespace", r.xEmcNamespace, "")
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["AuthToken"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["X-SDS-AUTH-TOKEN"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiIamServiceListRolePoliciesRequest struct {
 	ctx           context.Context
 	ApiService    *IamApiService
@@ -7633,16 +7995,16 @@ func (a *IamApiService) IamServicePutGroupPolicyExecute(r ApiIamServicePutGroupP
 }
 
 type ApiIamServicePutRolePermissionsBoundaryRequest struct {
-	ctx           context.Context
-	ApiService    *IamApiService
-	policyArn     *string
-	roleName      *string
-	xEmcNamespace *string
+	ctx                 context.Context
+	ApiService          *IamApiService
+	permissionsBoundary *string
+	roleName            *string
+	xEmcNamespace       *string
 }
 
 // Arn that identifies the policy.
-func (r ApiIamServicePutRolePermissionsBoundaryRequest) PolicyArn(policyArn string) ApiIamServicePutRolePermissionsBoundaryRequest {
-	r.policyArn = &policyArn
+func (r ApiIamServicePutRolePermissionsBoundaryRequest) PermissionsBoundary(permissionsBoundary string) ApiIamServicePutRolePermissionsBoundaryRequest {
+	r.permissionsBoundary = &permissionsBoundary
 	return r
 }
 
@@ -7699,8 +8061,8 @@ func (a *IamApiService) IamServicePutRolePermissionsBoundaryExecute(r ApiIamServ
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.policyArn != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "PolicyArn", r.policyArn, "")
+	if r.permissionsBoundary != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "PermissionsBoundary", r.permissionsBoundary, "")
 	}
 	if r.roleName != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "RoleName", r.roleName, "")

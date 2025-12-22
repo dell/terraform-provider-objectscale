@@ -127,5 +127,25 @@ RequiredAPIs = [
     "/iam?Action=AttachRolePolicy",
     "/iam?Action=DetachRolePolicy",
     "/iam?Action=AttachUserPolicy",
-    "/iam?Action=DetachUserPolicy"
+    "/iam?Action=DetachUserPolicy",
+    "/iam?Action=ListPolicyVersions",
+    "/iam?Action=GetPolicyVersion",
+
+    # vdcs
+    "/object/vdcs/vdc/{vdcName}",
+    "/object/vdcs/vdcid/{vdcId}",
+    "/object/vdcs/vdc/local",
+    "/object/vdcs/vdc/list",
+
+    # storage pools
+    "/vdc/data-services/varrays/{id}",
+    "/vdc/data-services/varrays",
+    
+    # Object User API endpoints
+    "/object/users*",
+
+    # Management User API endpoints
+    "/vdc/users",
+    "/vdc/users/{userid}",
+    "/vdc/users/{userid}/deactivate",
 ]

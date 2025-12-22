@@ -13,6 +13,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+def _normalizeObjectScaleLink(json_obj: dict) -> dict:
+    """
+    Look recursively through all schemas.
+    Any property that looks like a link, should be normalised to Link.
+    """
+    common_type = {
+        "type": "object",
+        "properties": {
+            "rel": {
+                "type": "string",
+                "description": "Relationship type of the hyperlink"
+            },
+            "href": {
+                "type": "string",
+                "description": "Hyperlink URL to the related resource"
+            }
+        },
+        "description": "Hyperlink to the details for this resource"
+    }
+    common_ref = {
+        "$ref": "#/components/schemas/Link"
+    }
+    def _rec_helper(obj: any) -> bool:
+        if obj == common_type:
+            return True
+        elif isinstance(obj, dict):
+            for key, item in obj.items():
+                if _rec_helper(item):
+                    obj[key] = common_ref
+        elif isinstance(obj, list):
+            for i, item in enumerate(obj):
+                if _rec_helper(item):
+                    obj[i] = common_ref
+        return False
+    _rec_helper(json_obj['components']['schemas'])
+    json_obj['components']['schemas']['Link'] = common_type
+    return json_obj
+
+
 def _normalizeObjectScaleIamRoleResponse(json_obj: dict) -> dict:
     """In GetRoleResponse, Result property should be GetRoleResult.
        Inner property Role should be normalised to IamRole.
@@ -173,16 +212,26 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
     2.IamService_ListAttachedGroupPoliciesResponse.ListAttachedGroupPoliciesResult.AttachedPolicies
     IamService_ListAttachedUserPoliciesResponse.ListAttachedUserPoliciesResult.AttachedPolicies
     IamService_ListAttachedRolePoliciesResponse.ListAttachedRolePoliciesResult.AttachedPolicies are all same.
+    3. Normalize IamService_GetPolicyVersionResponse.GetPolicyVersionResult.PolicyVersioin to another schema IamPolicyVersion
+    4. Rename IamService_GetPolicyVersionResponse.GetPolicyVersionResult.[PolicyVersioin -> PolicyVersion]
+    5. Use IamPolicyVersion as the common schema for IamService_ListPolicyVersionsResponse.ListPolicyVersionsResult.PolicyVersions
+    6. Rename IamService_ListPolicyVersionsResponse.ListPolicyVersionsResult.[PolicyVersions -> Versions]
     """
     common_policy_type = json_obj['components']['schemas']['IamService_GetPolicyResponse']\
         ['properties']['GetPolicyResult']\
         ['properties']['Policy']
+    common_policy_version = json_obj['components']['schemas']['IamService_GetPolicyVersionResponse']\
+        ['properties']['GetPolicyVersionResult']\
+        ['properties']['PolicyVersioin']
     common_policy_ref = {
         "$ref": "#/components/schemas/IamPolicy"
     }
     common_policy_attached_ref = {
         "$ref": "#/components/schemas/IamPolicyAttached"
     }
+    common_policy_version_ref = {
+        "$ref": "#/components/schemas/IamPolicyVersion"
+    }    
 
     # add the common schema
     json_obj['components']['schemas']['IamPolicy'] = common_policy_type
@@ -199,13 +248,15 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
             }
         }
     }
-    # add common ref to all places
+    json_obj['components']['schemas']['IamPolicyVersion'] = common_policy_version
+    # add common policy ref to all places
     json_obj['components']['schemas']['IamService_GetPolicyResponse']\
         ['properties']['GetPolicyResult']\
         ['properties']['Policy'] = common_policy_ref
     json_obj['components']['schemas']['IamService_ListPoliciesResponse']\
         ['properties']['ListPoliciesResult']\
         ['properties']['Policies']['items'] = common_policy_ref
+    # add common policy attached ref to all places
     json_obj['components']['schemas']['IamService_ListAttachedGroupPoliciesResponse']\
         ['properties']['ListAttachedGroupPoliciesResult']\
         ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
@@ -215,6 +266,22 @@ def _normalizeObjectScalePolicies(json_obj: dict) -> dict:
     json_obj['components']['schemas']['IamService_ListAttachedRolePoliciesResponse']\
         ['properties']['ListAttachedRolePoliciesResult']\
         ['properties']['AttachedPolicies']['items'] = common_policy_attached_ref
+    # add common policy version ref to all places
+    json_obj['components']['schemas']['IamService_GetPolicyVersionResponse']\
+        ['properties']['GetPolicyVersionResult']\
+        ['properties']['PolicyVersion'] = common_policy_version_ref
+    del json_obj['components']['schemas']['IamService_GetPolicyVersionResponse']\
+        ['properties']['GetPolicyVersionResult']\
+        ['properties']['PolicyVersioin']
+    json_obj['components']['schemas']['IamService_ListPolicyVersionsResponse']\
+        ['properties']['ListPolicyVersionsResult']\
+        ['properties']['PolicyVersions']['items'] = common_policy_version_ref
+    json_obj['components']['schemas']['IamService_ListPolicyVersionsResponse']\
+        ['properties']['ListPolicyVersionsResult']\
+        ['properties']['Versions'] = json_obj['components']['schemas']['IamService_ListPolicyVersionsResponse']\
+        ['properties']['ListPolicyVersionsResult']\
+        ['properties'].pop('PolicyVersions')
+        
     return json_obj
 
 def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:
@@ -274,13 +341,68 @@ def _normalizeObjectScaleIamTags(json_obj: dict) -> dict:
                 json_obj['components']['schemas']['IamTagKeyValue'] = commonTagKeyValueType
     return json_obj
 
+# change API header parameter for /iam?Action=PutRolePermissionsBoundary to use PermissionsBoundary instead of PolicyArn
+def _NormalizeObjectScalePutRolePermissionsBoundaryParameter(json_obj: dict) -> dict:
+    """
+    Normalize ObjectScale PutRolePermissionsBoundary API parameter.
+    Change PolicyArn to PermissionsBoundary.
+    """
+    for obj in json_obj['paths']['/iam?Action=PutRolePermissionsBoundary']['post']['parameters']:
+        if obj['name'] == 'PolicyArn':
+            obj['name'] = 'PermissionsBoundary'
+    return json_obj
+
+def _normalizeObjectScaleVDCs(json_obj: dict) -> dict:
+    # ZoneInfoService_getVdcByNameResponse, 
+    # ZoneInfoService_getVdcByIdResponse,
+    # ZoneInfoService_getLocalVdcResponse and 
+    # ZoneInfoService_listAllVdcResponse.properties.vdc.items
+    # should be normalized to Vdc
+    commonVdcType = json_obj['components']['schemas']['ZoneInfoService_getVdcByNameResponse']
+    commonVdcRef = {"$ref": "#/components/schemas/Vdc"}
+    for key, container in [
+        ('ZoneInfoService_getVdcByNameResponse', json_obj['components']['schemas']),
+        ('ZoneInfoService_getVdcByIdResponse', json_obj['components']['schemas']),
+        ('ZoneInfoService_getLocalVdcResponse', json_obj['components']['schemas']),
+        ('items', json_obj['components']['schemas']['ZoneInfoService_listAllVdcResponse']['properties']['vdc'])
+        ]:
+        if container[key] == commonVdcType:
+            container[key] = commonVdcRef
+        else:
+            a = container[key]
+            b = commonVdcType
+            added   = b.keys() - a.keys()
+            removed = a.keys() - b.keys()
+            print("Key:", key)
+            print("Added:", added)
+            print("Removed:", removed)
+
+    json_obj['components']['schemas']['Vdc'] = commonVdcType
+    return json_obj
+
+def _normalizeObjectScaleStoragePools(json_obj: dict) -> dict:
+    """
+    ObjectVarrayService_getVirtualArraysResponse.properties.varray.items, if equal to ObjectVarrayService_getVirtualArrayResponse,
+    should be normalized to ObjectVarrayService_getVirtualArrayResponse
+    """
+    commonVarrayType = json_obj['components']['schemas']['ObjectVarrayService_getVirtualArrayResponse']
+    if json_obj['components']['schemas']['ObjectVarrayService_getVirtualArraysResponse']['properties']['varray']['items'] == commonVarrayType:
+        json_obj['components']['schemas']['ObjectVarrayService_getVirtualArraysResponse']['properties']['varray']['items'] = {
+            "$ref": "#/components/schemas/ObjectVarrayService_getVirtualArrayResponse"
+        }
+    return json_obj
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
     """
-    ret = _normalizeObjectScaleIamResponseMetadata(json_obj)
+    ret = _normalizeObjectScaleLink(json_obj)
+    ret = _normalizeObjectScaleIamResponseMetadata(ret)
     ret = _normalizeObjectScaleBasicResponseMetadata(ret)
     ret = _normalizeObjectScalePolicies(ret)
     ret = _normalizeObjectScaleIamTags(ret)
     ret = _normalizeObjectScaleIamRoleResponse(ret)
+    ret = _NormalizeObjectScalePutRolePermissionsBoundaryParameter(ret)
+    ret = _normalizeObjectScaleVDCs(ret)
+    ret = _normalizeObjectScaleStoragePools(ret)
     return ret

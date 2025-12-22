@@ -102,7 +102,7 @@ func TfObject[tfT any, jT any](in *jT, transform func(jT) tfT) tfT {
 // We can add more types in the future when required
 
 type GoTypes interface {
-	~bool | ~string | ~int64
+	~bool | ~string | ~int64 | ~int32
 }
 
 func ValueToPointer[T GoTypes, VT attr.Value](in VT) *T {
@@ -117,6 +117,8 @@ func ValueToPointer[T GoTypes, VT attr.Value](in VT) *T {
 		ret = inv.ValueBool()
 	case types.Int64:
 		ret = inv.ValueInt64()
+	case types.Int32:
+		ret = inv.ValueInt32()
 	}
 
 	switch retv := ret.(type) {

@@ -27,6 +27,7 @@ Method | HTTP request | Description
 [**IamServiceGetGroup**](IamApi.md#IamServiceGetGroup) | **Post** /iam?Action&#x3D;GetGroup | Retrieve list of users in IAM group.
 [**IamServiceGetGroupPolicy**](IamApi.md#IamServiceGetGroupPolicy) | **Post** /iam?Action&#x3D;GetGroupPolicy | Get specific inlinePolicy for IAM Group.
 [**IamServiceGetPolicy**](IamApi.md#IamServiceGetPolicy) | **Post** /iam?Action&#x3D;GetPolicy | Retrieve Managed Policy
+[**IamServiceGetPolicyVersion**](IamApi.md#IamServiceGetPolicyVersion) | **Post** /iam?Action&#x3D;GetPolicyVersion | Retrieve version of Managed Policy.
 [**IamServiceGetRole**](IamApi.md#IamServiceGetRole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 [**IamServiceGetRolePolicy**](IamApi.md#IamServiceGetRolePolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
 [**IamServiceGetUser**](IamApi.md#IamServiceGetUser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
@@ -39,6 +40,7 @@ Method | HTTP request | Description
 [**IamServiceListGroups**](IamApi.md#IamServiceListGroups) | **Post** /iam?Action&#x3D;ListGroups | Lists the IAM groups.
 [**IamServiceListGroupsForUser**](IamApi.md#IamServiceListGroupsForUser) | **Post** /iam?Action&#x3D;ListGroupsForUser | List Groups for IAM User
 [**IamServiceListPolicies**](IamApi.md#IamServiceListPolicies) | **Post** /iam?Action&#x3D;ListPolicies | Lists the IAM users.
+[**IamServiceListPolicyVersions**](IamApi.md#IamServiceListPolicyVersions) | **Post** /iam?Action&#x3D;ListPolicyVersions | List versions of IAM Managed Policy.
 [**IamServiceListRolePolicies**](IamApi.md#IamServiceListRolePolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
 [**IamServiceListRoleTags**](IamApi.md#IamServiceListRoleTags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
 [**IamServiceListRoles**](IamApi.md#IamServiceListRoles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
@@ -1673,6 +1675,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceGetPolicyVersion
+
+> IamServiceGetPolicyVersionResponse IamServiceGetPolicyVersion(ctx).PolicyArn(policyArn).VersionId(versionId).XEmcNamespace(xEmcNamespace).Execute()
+
+Retrieve version of Managed Policy.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | ARN of the IAM Managed policy to retrieve. (optional)
+    versionId := "versionId_example" // string | Policy Version to retrieve. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceGetPolicyVersion(context.Background()).PolicyArn(policyArn).VersionId(versionId).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceGetPolicyVersion``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceGetPolicyVersion`: IamServiceGetPolicyVersionResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceGetPolicyVersion`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceGetPolicyVersionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | ARN of the IAM Managed policy to retrieve. | 
+ **versionId** | **string** | Policy Version to retrieve. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceGetPolicyVersionResponse**](IamServiceGetPolicyVersionResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceGetRole
 
 > IamServiceGetRoleResponse IamServiceGetRole(ctx).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
@@ -2539,6 +2611,78 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceListPolicyVersions
+
+> IamServiceListPolicyVersionsResponse IamServiceListPolicyVersions(ctx).Marker(marker).MaxItems(maxItems).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+
+List versions of IAM Managed Policy.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. (optional)
+    maxItems := int32(56) // int32 | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. (optional)
+    policyArn := "policyArn_example" // string | ARN of the IAM Managed policy to list. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListPolicyVersions(context.Background()).Marker(marker).MaxItems(maxItems).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListPolicyVersions``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListPolicyVersions`: IamServiceListPolicyVersionsResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListPolicyVersions`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListPolicyVersionsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. | 
+ **maxItems** | **int32** | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. | 
+ **policyArn** | **string** | ARN of the IAM Managed policy to list. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListPolicyVersionsResponse**](IamServiceListPolicyVersionsResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceListRolePolicies
 
 > IamServiceListRolePoliciesResponse IamServiceListRolePolicies(ctx).Marker(marker).MaxItems(maxItems).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
@@ -3045,7 +3189,7 @@ Name | Type | Description  | Notes
 
 ## IamServicePutRolePermissionsBoundary
 
-> BasicResponse IamServicePutRolePermissionsBoundary(ctx).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+> BasicResponse IamServicePutRolePermissionsBoundary(ctx).PermissionsBoundary(permissionsBoundary).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
 
 Adds or updates the policy that is specified as the IAM role's permissions boundary.
 
@@ -3064,13 +3208,13 @@ import (
 )
 
 func main() {
-    policyArn := "policyArn_example" // string | Arn that identifies the policy. (optional)
+    permissionsBoundary := "permissionsBoundary_example" // string | Arn that identifies the policy. (optional)
     roleName := "roleName_example" // string | Simple name identifying the role. (optional)
     xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.IamApi.IamServicePutRolePermissionsBoundary(context.Background()).PolicyArn(policyArn).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
+    resp, r, err := apiClient.IamApi.IamServicePutRolePermissionsBoundary(context.Background()).PermissionsBoundary(permissionsBoundary).RoleName(roleName).XEmcNamespace(xEmcNamespace).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServicePutRolePermissionsBoundary``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3091,7 +3235,7 @@ Other parameters are passed through a pointer to a apiIamServicePutRolePermissio
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **policyArn** | **string** | Arn that identifies the policy. | 
+ **permissionsBoundary** | **string** | Arn that identifies the policy. | 
  **roleName** | **string** | Simple name identifying the role. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
