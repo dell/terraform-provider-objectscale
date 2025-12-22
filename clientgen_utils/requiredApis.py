@@ -130,4 +130,9 @@ RequiredAPIs = [
     "/iam?Action=DetachUserPolicy",
     "/iam?Action=ListPolicyVersions",
     "/iam?Action=GetPolicyVersion",
+    "/iam?Action=CreatePolicy",
+    "/iam?Action=DeletePolicy",
+    "/iam?Action=CreatePolicyVersion",
+    "/iam?Action=DeletePolicyVersion",
+    "/iam?Action=SetDefaultPolicyVersion",
 ]

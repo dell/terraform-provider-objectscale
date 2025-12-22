@@ -6308,6 +6308,236 @@
 				}
 			}
 		},
+		"/iam?Action=CreatePolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Create Managed Policy",
+				"description": "Create Managed Policy",
+				"operationId": "IamService_CreatePolicy",
+				"parameters": [
+					{
+						"name": "Description",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "A friendly description of the policy."
+					},
+					{
+						"name": "Path",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The path for the policy. Optional, defaults to \"/\" and only \"/\" is allowed."
+					},
+					{
+						"name": "PolicyDocument",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The policy document in JSON format."
+					},
+					{
+						"name": "PolicyName",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Simple name identifying the policy."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_CreatePolicyResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1b48a:0"
+											},
+											"CreatePolicyResult": {
+												"Policy": {
+													"Arn": "urn:ecs:iam::ns:policy/FinanceTeamPolicy",
+													"AttachmentCount": 0,
+													"CreateDate": "2020-04-13T20:22:53Z",
+													"DefaultVersionId": "v1",
+													"Description": "Policy_for_the_finaince_team.",
+													"IsAttachable": true,
+													"Path": "/",
+													"PermissionsBoundaryUsageCount": 0,
+													"PolicyId": "ANPA3A9A5604CF9266D2",
+													"PolicyName": "FinanceTeamPolicy",
+													"UpdateDate": "2020-04-13T20:22:53Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=CreatePolicyVersion": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Create a new version of the specified managed policy.",
+				"description": "Create a new version of the specified managed policy.",
+				"operationId": "IamService_CreatePolicyVersion",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ARN of the IAM policy to add a new version."
+					},
+					{
+						"name": "PolicyDocument",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The policy document in JSON format."
+					},
+					{
+						"name": "SetAsDefault",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						},
+						"description": "Specifies whether to set this version as the policy's default version."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_CreatePolicyVersionResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:fb56:21"
+											},
+											"CreatePolicyVersionResult": {
+												"PolicyVersion": {
+													"CreateDate": "2020-04-15T21:57:14Z",
+													"Document": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Action%22%3A%5B%22iam%3AGetPolicyVersion%22%2C%22iam%3AGetUser%22%2C%22iam%3AGetPolicy%22%2C%22iam%3AGetGroupPolicy%22%2C%22iam%3AGetRole%22%2C%22iam%3AGetAccessKeyLastUsed%22%2C%22iam%3AGetGroup%22%2C%22iam%3AGetUserPolicy%22%5D%2C%22Resource%22%3A%22*%22%2C%22Effect%22%3A%22Allow%22%2C%22Sid%22%3A%22VisualEditor0%22%7D%5D%7D",
+													"IsDefaultVersion": true,
+													"VersionId": "v2"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=CreateRole": {
 			"post": {
 				"tags": [
@@ -6807,6 +7037,177 @@
 										"value": {
 											"ResponseMetadata": {
 												"RequestId": "0af9f5b8:17178fe9282:9b49:9a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeletePolicy": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete Managed Policy",
+				"description": "Delete Managed Policy",
+				"operationId": "IamService_DeletePolicy",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Arn of the policy to delete."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:f44a:0"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeletePolicyVersion": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete a version of Managed Policy.",
+				"description": "Delete a version of Managed Policy.",
+				"operationId": "IamService_DeletePolicyVersion",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ARN of the IAM Managed policy to delete."
+					},
+					{
+						"name": "VersionId",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The policy version to delete."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:10632:1f"
 											}
 										}
 									}
@@ -10722,6 +11123,96 @@
 										"value": {
 											"ResponseMetadata": {
 												"RequestId": "0af9f5b8:17178fe9282:9257:35"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=SetDefaultPolicyVersion": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "set default version of Managed Policy.",
+				"description": "set default version of Managed Policy.",
+				"operationId": "IamService_SetDefaultPolicyVersion",
+				"parameters": [
+					{
+						"name": "PolicyArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ARN of the IAM Managed policy to set default version."
+					},
+					{
+						"name": "VersionId",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Policy Version to be set as default."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:10831:0"
 											}
 										}
 									}
@@ -14987,6 +15478,106 @@
 								}
 							}
 						}
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamService_CreatePolicyResponse": {
+				"type": "object",
+				"properties": {
+					"CreatePolicyResult": {
+						"type": "object",
+						"properties": {
+							"Policy": {
+								"type": "object",
+								"properties": {
+									"Arn": {
+										"type": "string",
+										"description": "The resource name of the policy."
+									},
+									"AttachmentCount": {
+										"type": "integer",
+										"description": "The number of entities (users, groups, and roles) that the policy is attached to."
+									},
+									"CreateDate": {
+										"type": "string",
+										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+									},
+									"DefaultVersionId": {
+										"type": "string",
+										"description": "The identifier for the version of the policy that is set as the default version."
+									},
+									"Description": {
+										"type": "string",
+										"description": "A friendly description of the policy."
+									},
+									"IsAttachable": {
+										"type": "boolean",
+										"description": "Specifies whether the policy can be attached to user, group, or role."
+									},
+									"Path": {
+										"type": "string",
+										"description": "The path to the policy"
+									},
+									"PermissionsBoundaryUsageCount": {
+										"type": "integer",
+										"description": "Resource name of the policy that is used to set permissions boundary for the policy."
+									},
+									"PolicyId": {
+										"type": "string",
+										"description": "The stable and unique string identifying the policy."
+									},
+									"PolicyName": {
+										"type": "string",
+										"description": "The friendly name of the policy."
+									},
+									"UpdateDate": {
+										"type": "string",
+										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+									}
+								},
+								"description": "Get policy"
+							}
+						},
+						"description": "Get createPolicyResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamService_CreatePolicyVersionResponse": {
+				"type": "object",
+				"properties": {
+					"CreatePolicyVersionResult": {
+						"type": "object",
+						"properties": {
+							"PolicyVersion": {
+								"type": "object",
+								"properties": {
+									"CreateDate": {
+										"type": "string",
+										"description": "The date and time, in ISO 8601 date-time format, when the policy was created."
+									},
+									"Document": {
+										"type": "string",
+										"description": "The policy document, URL-encoded compliant with RFC 3986."
+									},
+									"IsDefaultVersion": {
+										"type": "boolean",
+										"description": "Specifies whether the policy version is set as the policy's default version."
+									},
+									"VersionId": {
+										"type": "string",
+										"description": "The identifier for the policy version."
+									}
+								},
+								"description": "Get policyVersion"
+							}
+						},
+						"description": "Get createPolicyVersionResult"
 					},
 					"ResponseMetadata": {
 						"$ref": "#/components/schemas/IamResponseMetadata"
