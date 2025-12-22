@@ -132,8 +132,8 @@ func (d *IAMGroupsDataSource) Read(ctx context.Context, req datasource.ReadReque
 		groups, err := d.listGroupsForUser(ctx, ns, userName)
 		if err != nil {
 			resp.Diagnostics.AddError(
-				"Error listing groups for user",
-				fmt.Sprintf("Unable to list groups for user %s: %s", userName, err.Error()),
+				"Error retrieving groups for user",
+				fmt.Sprintf("Unable to retrieve groups for user %s: %s", userName, err.Error()),
 			)
 			return
 		}
@@ -162,13 +162,24 @@ func (d *IAMGroupsDataSource) Read(ctx context.Context, req datasource.ReadReque
 		groups, err := d.listAllGroups(ctx, ns)
 		if err != nil {
 			resp.Diagnostics.AddError(
-				"Error listing IAM groups",
-				fmt.Sprintf("Failed to list groups: %s", err.Error()),
+				"Error retrieving IAM groups",
+				fmt.Sprintf("Failed to retrieve groups: %s", err.Error()),
 			)
 			return
 		}
 
 		finalGroups = groups
+	}
+
+	if len(finalGroups) == 0 {
+		resp.Diagnostics.AddError(
+			"Invalid namespace",
+			fmt.Sprintf(
+				"The namespace %q does not exist.",
+				ns,
+			),
+		)
+		return
 	}
 
 	// Save state
@@ -209,10 +220,11 @@ func (d *IAMGroupsDataSource) getGroupByName(ctx context.Context, namespace, gro
 
 	return []models.IAMGroupModel{
 		{
-			GroupName: helper.TfString(v.GetGroupResult.Group.GroupName),
-			GroupId:   helper.TfString(v.GetGroupResult.Group.GroupId),
-			Arn:       helper.TfString(v.GetGroupResult.Group.Arn),
-			Path:      helper.TfString(v.GetGroupResult.Group.Path),
+			GroupName:  helper.TfString(v.GetGroupResult.Group.GroupName),
+			GroupId:    helper.TfString(v.GetGroupResult.Group.GroupId),
+			Arn:        helper.TfString(v.GetGroupResult.Group.Arn),
+			Path:       helper.TfString(v.GetGroupResult.Group.Path),
+			CreateDate: helper.TfString(v.GetGroupResult.Group.CreateDate),
 		},
 	}, nil
 }
@@ -228,10 +240,11 @@ func (d *IAMGroupsDataSource) listAllGroups(ctx context.Context, namespace strin
 
 	return helper.SliceTransform(items, func(v clientgen.IamServiceListGroupsResponseListGroupsResultGroupsInner) models.IAMGroupModel {
 		return models.IAMGroupModel{
-			GroupName: types.StringValue(v.GroupName),
-			GroupId:   types.StringValue(v.GroupId),
-			Arn:       types.StringValue(v.Arn),
-			Path:      types.StringValue(v.Path),
+			GroupName:  types.StringValue(v.GroupName),
+			GroupId:    types.StringValue(v.GroupId),
+			Arn:        types.StringValue(v.Arn),
+			Path:       types.StringValue(v.Path),
+			CreateDate: types.StringValue(v.CreateDate),
 		}
 	}), nil
 }

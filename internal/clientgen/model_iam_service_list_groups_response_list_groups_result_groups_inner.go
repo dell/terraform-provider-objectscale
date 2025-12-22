@@ -10,15 +10,11 @@ API version: 4.0.0
 
 package clientgen
 
-import (
-	"time"
-)
-
 // IamServiceListGroupsResponseListGroupsResultGroupsInner struct for IamServiceListGroupsResponseListGroupsResultGroupsInner
 type IamServiceListGroupsResponseListGroupsResultGroupsInner struct {
-	Arn        string    `json:"Arn"`
-	CreateDate time.Time `json:"CreateDate"`
-	GroupId    string    `json:"GroupId"`
-	GroupName  string    `json:"GroupName"`
-	Path       string    `json:"Path"`
+	Arn        string `json:"Arn"`
+	CreateDate string `json:"CreateDate"`
+	GroupId    string `json:"GroupId"`
+	GroupName  string `json:"GroupName"`
+	Path       string `json:"Path"`
 }

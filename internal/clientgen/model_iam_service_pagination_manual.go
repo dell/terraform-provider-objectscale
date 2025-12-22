@@ -89,3 +89,27 @@ func (a *IamServiceListRolesResponse) GetNextMarker() *string {
 func (o *IamServiceListRolesResponse) GetPaginatedResp() []IamRole {
 	return o.ListRolesResult.Roles
 }
+
+func (a *IamServiceListRolePoliciesResponse) GetNextMarker() *string {
+	return a.ListRolePoliciesResult.Marker
+}
+
+func (o *IamServiceListRolePoliciesResponse) GetPaginatedResp() []string {
+	return o.ListRolePoliciesResult.PolicyNames
+}
+
+func (a *IamServiceListUserPoliciesResponse) GetNextMarker() *string {
+	return a.ListUserPoliciesResult.Marker
+}
+
+func (o *IamServiceListUserPoliciesResponse) GetPaginatedResp() []string {
+	return o.ListUserPoliciesResult.PolicyNames
+}
+
+func (a *IamServiceListGroupPoliciesResponse) GetNextMarker() *string {
+	return a.ListGroupPoliciesResult.Marker
+}
+
+func (o *IamServiceListGroupPoliciesResponse) GetPaginatedResp() []string {
+	return o.ListGroupPoliciesResult.PolicyNames
+}
