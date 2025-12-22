@@ -615,7 +615,7 @@ func TestAccBucketResourcePositive(t *testing.T) {
 }
 
 func TestAccBucketResourcePositive2(t *testing.T) {
-	if os.Getenv("TF_ACC") == "" {
+	if os.Getenv("TF_ACC") == "0" {
 		t.Skip("Dont run with unit tests because it will try to create the context")
 	}
 	defer testUserTokenCleanup(t)
@@ -1579,6 +1579,7 @@ func TestAccBucketResourceImport(t *testing.T) {
 					namespace = "ns1"
 					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
 					block_size = 4096
+					versioning_status = "Enabled"
 				}
 				`,
 			},
@@ -1587,14 +1588,14 @@ func TestAccBucketResourceImport(t *testing.T) {
 				ImportState:       true,
 				ImportStateId:     "example-bucket:ns1",
 				ImportStateVerify: true,
-				ExpectError:       regexp.MustCompile(`Error importing Bucket`),
+				ExpectError:       regexp.MustCompile(`Error Reading Buckets`),
 			},
 			{
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateId:     "example-bucket-positive-invalid:ns1",
 				ImportStateVerify: true,
-				ExpectError:       regexp.MustCompile(`Error importing Buckets`),
+				ExpectError:       regexp.MustCompile(`Error Reading Buckets`),
 			},
 			{
 				ResourceName:  resourceName,

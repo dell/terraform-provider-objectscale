@@ -730,7 +730,7 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	// Use setStateFromAPI to populate state from API after creation
 	aclFromPlan := len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0
-	data := r.setStateFromAPI(
+	data, diags := r.setStateFromAPI(
 		ctx,
 		plan.Name.ValueString(),
 		plan.Namespace.ValueString(),
@@ -739,8 +739,8 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		plan.UserAcl,
 		plan.GroupAcl,
 		plan.CustomGroupAcl,
-		resp.Diagnostics,
 	)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -761,7 +761,7 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 
 	// Use setStateFromAPI to populate state from API after creation
 	aclFromPlan := len(state.UserAcl.Elements()) > 0 || len(state.GroupAcl.Elements()) > 0 || len(state.CustomGroupAcl.Elements()) > 0
-	data := r.setStateFromAPI(
+	data, diags := r.setStateFromAPI(
 		ctx,
 		state.Name.ValueString(),
 		state.Namespace.ValueString(),
@@ -770,8 +770,8 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 		state.UserAcl,
 		state.GroupAcl,
 		state.CustomGroupAcl,
-		resp.Diagnostics,
 	)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -1379,7 +1379,7 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	// Use setStateFromAPI to populate state from API after creation
 	aclFromPlan := len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0
 
-	data := r.setStateFromAPI(
+	data, diags := r.setStateFromAPI(
 		ctx,
 		plan.Name.ValueString(),
 		plan.Namespace.ValueString(),
@@ -1388,8 +1388,8 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		plan.UserAcl,
 		plan.GroupAcl,
 		plan.CustomGroupAcl,
-		resp.Diagnostics,
 	)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -1429,7 +1429,7 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 	bucket_name := parts[0]
 	namespace := parts[1]
 
-	data := r.setStateFromAPI(
+	data, diags := r.setStateFromAPI(
 		ctx,
 		bucket_name,
 		namespace,
@@ -1438,8 +1438,8 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
 		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
 		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
-		resp.Diagnostics,
 	)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -1477,12 +1477,20 @@ func (r *BucketResource) modelToJson(plan models.BucketResourceModel) clientgen.
 
 	minMaxGovernor := helper.ValueObjectTransform(plan.MinMaxGovernor, r.minMaxGovernorJson)
 
+	// If VersioningStatus is set (not null/unknown and not empty) and FilesystemEnabled is not mentioned (null/unknown), set FilesystemEnabled to false
+	filesystemEnabled := helper.ValueToPointer[bool](plan.FsAccessEnabled)
+	if !plan.VersioningStatus.IsNull() && !plan.VersioningStatus.IsUnknown() && plan.VersioningStatus.ValueString() != "" &&
+		(plan.FsAccessEnabled.IsNull() || plan.FsAccessEnabled.IsUnknown()) {
+		val := false
+		filesystemEnabled = &val
+	}
+
 	return clientgen.BucketServiceCreateBucketRequest{
 		Name:                               plan.Name.ValueString(),
 		Owner:                              helper.ValueToPointer[string](plan.Owner),
 		Namespace:                          helper.ValueToPointer[string](plan.Namespace),
 		Vpool:                              helper.ValueToPointer[string](plan.ReplicationGroup),
-		FilesystemEnabled:                  helper.ValueToPointer[bool](plan.FsAccessEnabled),
+		FilesystemEnabled:                  filesystemEnabled,
 		BlockSize:                          helper.ValueToPointer[int64](plan.BlockSize),
 		NotificationSize:                   helper.ValueToPointer[int64](plan.NotificationSize),
 		AutocommitPeriod:                   helper.ValueToPointer[int64](plan.AutoCommitPeriod),
@@ -1583,14 +1591,16 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 	return m
 }
 
-func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool, planUserAcl, planGroupAcl, planCustomGroupAcl types.Set, respDiagnostics diag.Diagnostics) *models.BucketResourceModel {
+func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool, planUserAcl, planGroupAcl, planCustomGroupAcl types.Set) (*models.BucketResourceModel, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, name).Namespace(namespace).Execute()
 	if err != nil {
-		respDiagnostics.AddError(
+		diags.AddError(
 			"Error Reading Buckets",
 			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
 		)
-		return nil
+		return nil, diags
 	}
 
 	// Fetch bucket policy if not provided
@@ -1600,11 +1610,11 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 			Namespace(namespace).
 			Execute()
 		if err != nil {
-			respDiagnostics.AddError(
+			diags.AddError(
 				"Error Reading Bucket Policy",
 				fmt.Sprintf("An error was encountered reading bucket policy from ObjectScale IAM: %s", err.Error()),
 			)
-			return nil
+			return nil, diags
 		}
 	}
 
@@ -1618,11 +1628,11 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 			Namespace(namespace).
 			Execute()
 		if err != nil {
-			respDiagnostics.AddError(
+			diags.AddError(
 				"Error Reading Bucket ACL",
 				fmt.Sprintf("An error was encountered reading bucket ACL from ObjectScale IAM: %s", err.Error()),
 			)
-			return nil
+			return nil, diags
 		}
 		if aclResp != nil && aclResp.Acl != nil {
 			for _, u := range aclResp.Acl.UserAcl {
@@ -1689,5 +1699,5 @@ func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, b
 	data.UserAcl = userAclListVal
 	data.GroupAcl = groupAclListVal
 	data.CustomGroupAcl = customGroupAclListVal
-	return &data
+	return &data, diags
 }
