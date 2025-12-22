@@ -728,20 +728,11 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 	}
 
-	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Buckets",
-			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
-		)
-		return
-	}
-
 	// Use setStateFromAPI to populate state from API after creation
 	aclFromPlan := len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0
 	data := r.setStateFromAPI(
 		ctx,
-		*bucketData.Name,
+		plan.Name.ValueString(),
 		plan.Namespace.ValueString(),
 		plan.BucketPolicy.ValueString(),
 		aclFromPlan,
@@ -768,20 +759,11 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Buckets",
-			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
-		)
-		return
-	}
-
 	// Use setStateFromAPI to populate state from API after creation
 	aclFromPlan := len(state.UserAcl.Elements()) > 0 || len(state.GroupAcl.Elements()) > 0 || len(state.CustomGroupAcl.Elements()) > 0
 	data := r.setStateFromAPI(
 		ctx,
-		*bucketData.Name,
+		state.Name.ValueString(),
 		state.Namespace.ValueString(),
 		state.BucketPolicy.ValueString(),
 		aclFromPlan,
@@ -1394,21 +1376,12 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	// Refresh state after owner update
-	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, state.Name.ValueString()).Namespace(state.Namespace.ValueString()).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Buckets",
-			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
-		)
-		return
-	}
-
 	// Use setStateFromAPI to populate state from API after creation
 	aclFromPlan := len(plan.UserAcl.Elements()) > 0 || len(plan.GroupAcl.Elements()) > 0 || len(plan.CustomGroupAcl.Elements()) > 0
 
 	data := r.setStateFromAPI(
 		ctx,
-		*bucketData.Name,
+		plan.Name.ValueString(),
 		plan.Namespace.ValueString(),
 		plan.BucketPolicy.ValueString(),
 		aclFromPlan,
@@ -1456,18 +1429,9 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 	bucket_name := parts[0]
 	namespace := parts[1]
 
-	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, bucket_name).Namespace(namespace).Execute()
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error importing Buckets",
-			fmt.Sprintf("An error was encountered reading buckets from ObjectScale IAM: %s", err.Error()),
-		)
-		return
-	}
-
 	data := r.setStateFromAPI(
 		ctx,
-		*bucketData.Name,
+		bucket_name,
 		namespace,
 		"", // No bucket policy from state
 		true,
