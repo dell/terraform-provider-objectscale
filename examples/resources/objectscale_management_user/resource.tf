@@ -25,7 +25,7 @@ resource "objectscale_management_user" "example" {
   # Required. Format is "user1" for LOCAL_USER and "user1@domain" for AD_LDAP_USER/AD_LDAP_GROUP 
   name = "localuser1"
 
-  # Required only for LOCAL_USER creation, optional for update.
+  # Required for LOCAL_USER and not applicable for AD_LDAP_USER/AD_LDAP_GROUP
   password = "pass123"
 
   # Optional parameters. If set to true, assigns the management user to that role.

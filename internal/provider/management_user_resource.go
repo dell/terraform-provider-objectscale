@@ -95,8 +95,8 @@ func (r *ManagementUserResource) Schema(_ context.Context, _ resource.SchemaRequ
 				},
 			},
 			"password": schema.StringAttribute{
-				Description:         "Password for the management user. Required **only** when creating LOCAL_USER; ignored for AD/LDAP users and groups.",
-				MarkdownDescription: "Password for the management user. Required **only** when creating LOCAL_USER; ignored for AD/LDAP users and groups.",
+				Description:         "Password for the management user. Password is required for LOCAL_USER and is not applicable for AD_LDAP_USER/AD_LDAP_GROUP.",
+				MarkdownDescription: "Password for the management user. Password is required for LOCAL_USER and is not applicable for AD_LDAP_USER/AD_LDAP_GROUP.",
 				Optional:            true,
 				Sensitive:           true,
 			},
@@ -122,6 +122,55 @@ func (r *ManagementUserResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Default:             booldefault.StaticBool(false),
 			},
 		},
+	}
+}
+
+// ValidateConfig performs custom validation of the resource configuration.
+func (r *ManagementUserResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var cfg models.ManagementUserResourceModel
+	diags := req.Config.Get(ctx, &cfg)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	userID := cfg.Name.ValueString()
+	mgmtUserType := cfg.Type.ValueString()
+
+	// Validate name format and password depending on type: LOCAL_USER vs AD/LDAP
+	hasAt := strings.Contains(userID, "@")
+	isPasswordProvided := isNonEmptyString(cfg.Password)
+	switch mgmtUserType {
+	case ManagementUserTypeLocal:
+		if hasAt {
+			resp.Diagnostics.AddError(
+				"Invalid Name Format for LOCAL_USER",
+				"For type LOCAL_USER, 'name' must not contain '@'. Please provide a valid name format.",
+			)
+			return
+		}
+		if !isPasswordProvided {
+			resp.Diagnostics.AddError(
+				"Password is required for LOCAL_USER",
+				"For type LOCAL_USER, 'password' must be provided.",
+			)
+			return
+		}
+	case ManagementUserTypeADLDAPUser, ManagementUserTypeADLDAPGroup:
+		if !hasAt {
+			resp.Diagnostics.AddError(
+				"Invalid Name Format for AD_LDAP_USER/AD_LDAP_GROUP",
+				"For type AD_LDAP_USER or AD_LDAP_GROUP, 'name' must contain '@'. Please provide a valid name format.",
+			)
+			return
+		}
+		if isPasswordProvided {
+			resp.Diagnostics.AddError(
+				"Password is not applicable for AD_LDAP_USER/AD_LDAP_GROUP",
+				"For type AD_LDAP_USER or AD_LDAP_GROUP, 'password' must not be provided.",
+			)
+			return
+		}
 	}
 }
 
@@ -160,31 +209,6 @@ func (r *ManagementUserResource) Create(ctx context.Context, req resource.Create
 
 	userID := plan.Name.ValueString()
 	mgmtUserType := plan.Type.ValueString()
-
-	// Validate name format based on type
-	if mgmtUserType == ManagementUserTypeLocal && strings.Contains(userID, "@") {
-		resp.Diagnostics.AddError(
-			"Invalid Name Format for LOCAL_USER",
-			"For type LOCAL_USER, 'name' must not contain '@'. Please provide a valid name format.",
-		)
-		return
-	}
-	if (mgmtUserType == ManagementUserTypeADLDAPUser || mgmtUserType == ManagementUserTypeADLDAPGroup) && !strings.Contains(userID, "@") {
-		resp.Diagnostics.AddError(
-			"Invalid Name Format for AD_LDAP_USER/AD_LDAP_GROUP",
-			"For type AD_LDAP_USER or AD_LDAP_GROUP, 'name' must contain '@'. Please provide a valid name format.",
-		)
-		return
-	}
-
-	// Validate conditional password for LOCAL_USER
-	if mgmtUserType == ManagementUserTypeLocal && !isNonEmptyString(plan.Password) {
-		resp.Diagnostics.AddError(
-			"Password is required for LOCAL_USER",
-			"For type LOCAL_USER, 'password' must be provided during creation.",
-		)
-		return
-	}
 
 	// build create request payload
 	createRequest := clientgen.MgmtUserInfoServiceCreateLocalUserInfoRequest{
@@ -255,7 +279,7 @@ func (r *ManagementUserResource) Update(ctx context.Context, req resource.Update
 		IsSecurityAdmin: helper.ValueToPointer[bool](plan.SecurityAdministrator),
 	}
 
-	// Only LOCAL_USER can change password; include only if explicitly provided
+	// Only LOCAL_USER can change password
 	if mgmtUserType == ManagementUserTypeLocal && isNonEmptyString(plan.Password) {
 		// Optional: only send if changed vs state
 		if state.Password.IsNull() || state.Password.IsUnknown() || plan.Password.ValueString() != state.Password.ValueString() {
@@ -310,7 +334,6 @@ func (r *ManagementUserResource) Delete(ctx context.Context, req resource.Delete
 // ImportState imports the existing resource into the Terraform state.
 func (r *ManagementUserResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	userID := req.ID
-	prevPassword := types.StringNull()
 
 	// get management user
 	getResp, _, err := r.client.GenClient.MgmtUserInfoApi.MgmtUserInfoServiceGetLocalUserInfo(ctx, userID).Execute()
@@ -319,7 +342,7 @@ func (r *ManagementUserResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 
-	newState := mapToModel(getResp, prevPassword)
+	newState := mapToModel(getResp, types.StringNull())
 	diags := resp.State.Set(ctx, &newState)
 	resp.Diagnostics.Append(diags...)
 }

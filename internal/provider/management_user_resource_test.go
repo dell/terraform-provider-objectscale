@@ -177,40 +177,50 @@ func TestAccManagementUserResourceForErrorScenarios(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// invalid type
-			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig1(),
-				ExpectError: regexp.MustCompile("Invalid Attribute Value Match"),
-			},
 			// absent type
 			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig2(),
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig1(),
 				ExpectError: regexp.MustCompile("Missing required argument"),
 			},
 			// absent name
 			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig3(),
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig2(),
 				ExpectError: regexp.MustCompile("Missing required argument"),
 			},
-			// absent password when creating Local User
+			// invalid type
 			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig4(),
-				ExpectError: regexp.MustCompile("Password is required for LOCAL_USER"),
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig3(),
+				ExpectError: regexp.MustCompile("Invalid Attribute Value Match"),
 			},
 			// invalid name format for Local User
 			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig5(),
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig4(),
 				ExpectError: regexp.MustCompile("Invalid Name Format for LOCAL_USER"),
 			},
 			// invalid name format for AD/LDAP User
 			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig6(),
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig5(),
 				ExpectError: regexp.MustCompile("Invalid Name Format for AD_LDAP_USER/AD_LDAP_GROUP"),
 			},
 			// invalid name format for AD/LDAP Group
 			{
-				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig7(),
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig6(),
 				ExpectError: regexp.MustCompile("Invalid Name Format for AD_LDAP_USER/AD_LDAP_GROUP"),
+			},
+			// absent password when creating Local User
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig7(),
+				ExpectError: regexp.MustCompile("Password is required for LOCAL_USER"),
+			},
+			// present password when creating AD/LDAP User
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig8(),
+				ExpectError: regexp.MustCompile("Password is not applicable for AD_LDAP_USER/AD_LDAP_GROUP"),
+			},
+			// present password when creating AD/LDAP Group
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserResourceErrorConfig9(),
+				ExpectError: regexp.MustCompile("Password is not applicable for AD_LDAP_USER/AD_LDAP_GROUP"),
 			},
 		},
 	})
@@ -284,7 +294,6 @@ func testAccManagementUserResourceADLDAPGroupConfig2() string {
 func testAccManagementUserResourceErrorConfig1() string {
 	return `
     resource "objectscale_management_user" "example" {
-        type = "INVALID_TYPE"
         name = "localuser1"
     }
     `
@@ -293,7 +302,7 @@ func testAccManagementUserResourceErrorConfig1() string {
 func testAccManagementUserResourceErrorConfig2() string {
 	return `
     resource "objectscale_management_user" "example" {
-        name = "localuser1"
+        type = "LOCAL_USER"
     }
     `
 }
@@ -301,7 +310,8 @@ func testAccManagementUserResourceErrorConfig2() string {
 func testAccManagementUserResourceErrorConfig3() string {
 	return `
     resource "objectscale_management_user" "example" {
-        type = "LOCAL_USER"
+        type = "INVALID_TYPE"
+        name = "localuser1"
     }
     `
 }
@@ -310,21 +320,12 @@ func testAccManagementUserResourceErrorConfig4() string {
 	return `
     resource "objectscale_management_user" "example" {
         type = "LOCAL_USER"
-        name = "localuser1"
-    }
-    `
-}
-
-func testAccManagementUserResourceErrorConfig5() string {
-	return `
-    resource "objectscale_management_user" "example" {
-        type = "LOCAL_USER"
         name = "invalid@name"
     }
     `
 }
 
-func testAccManagementUserResourceErrorConfig6() string {
+func testAccManagementUserResourceErrorConfig5() string {
 	return `
     resource "objectscale_management_user" "example" {
         type = "AD_LDAP_USER"
@@ -333,11 +334,40 @@ func testAccManagementUserResourceErrorConfig6() string {
     `
 }
 
-func testAccManagementUserResourceErrorConfig7() string {
+func testAccManagementUserResourceErrorConfig6() string {
 	return `
     resource "objectscale_management_user" "example" {
         type = "AD_LDAP_GROUP"
         name = "invalid_name"
+    }
+    `
+}
+
+func testAccManagementUserResourceErrorConfig7() string {
+	return `
+    resource "objectscale_management_user" "example" {
+        type = "LOCAL_USER"
+        name = "localuser1"
+    }
+    `
+}
+
+func testAccManagementUserResourceErrorConfig8() string {
+	return `
+    resource "objectscale_management_user" "example" {
+        type = "AD_LDAP_USER"
+        name = "user1@domain"
+		password = "pass123"
+    }
+    `
+}
+
+func testAccManagementUserResourceErrorConfig9() string {
+	return `
+    resource "objectscale_management_user" "example" {
+        type = "AD_LDAP_GROUP"
+        name = "group1@domain"
+		password = "pass123"
     }
     `
 }

@@ -57,7 +57,7 @@ resource "objectscale_management_user" "example" {
   # Required. Format is "user1" for LOCAL_USER and "user1@domain" for AD_LDAP_USER/AD_LDAP_GROUP 
   name = "localuser1"
 
-  # Required only for LOCAL_USER creation, optional for update.
+  # Required for LOCAL_USER and not applicable for AD_LDAP_USER/AD_LDAP_GROUP
   password = "pass123"
 
   # Optional parameters. If set to true, assigns the management user to that role.
@@ -77,7 +77,7 @@ resource "objectscale_management_user" "example" {
 
 ### Optional
 
-- `password` (String, Sensitive) Password for the management user. Required **only** when creating LOCAL_USER; ignored for AD/LDAP users and groups.
+- `password` (String, Sensitive) Password for the management user. Password is required for LOCAL_USER and is not applicable for AD_LDAP_USER/AD_LDAP_GROUP.
 - `security_administrator` (Boolean) If set to true, assigns the management user to the Security Admin role. Security Administrators perform user management and security related administration.
 - `system_administrator` (Boolean) If set to true, assigns the management user to the System Admin role. System Administrators perform system level administration (VDC administration) and namespace administration.
 - `system_monitor` (Boolean) If set to true, assigns the management user to the System Monitor role. System Monitors have read-only access to the ObjectScale Portal.
