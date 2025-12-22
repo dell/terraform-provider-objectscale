@@ -221,6 +221,11 @@ func (r *IAMPolicyResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
+	if helper.IsChangedNN(plan.PolicyName, state.PolicyName) || helper.IsChangedNN(plan.Description, state.Description) {
+		resp.Diagnostics.AddError("Unexpected Update Parameter : Only Policy Document is updateable", "Invalid Update")
+		return
+	}
+
 	listreq := r.client.GenClient.IamApi.IamServiceListPolicyVersions(ctx).
 		PolicyArn(state.Arn.ValueString()).
 		XEmcNamespace(plan.Namespace.ValueString())
@@ -251,20 +256,6 @@ func (r *IAMPolicyResource) Update(ctx context.Context, req resource.UpdateReque
 			}
 		}
 	}
-
-	// dreq := r.client.GenClient.IamApi.IamServiceDeletePolicyVersion(ctx).
-	// 	PolicyArn(state.Arn.ValueString()).
-	// 	VersionId(state.VersionId.ValueString()).
-	// 	XEmcNamespace(plan.Namespace.ValueString())
-
-	// _, _, err := dreq.Execute()
-	// if err != nil {
-	// 	resp.Diagnostics.AddError(
-	// 		"Error updating IAM Policy",
-	// 		"Could not update IAM Policy: "+err.Error(),
-	// 	)
-	// 	return
-	// }
 
 	updReq := r.client.GenClient.IamApi.IamServiceCreatePolicyVersion(ctx).
 		PolicyArn(state.Arn.ValueString()).

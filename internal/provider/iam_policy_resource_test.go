@@ -207,7 +207,50 @@ func TestAccIamPolicyResource(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(".*Error creating new IAM Policy Version.*"),
 			},
-			// Step 5: Update policy (OK)
+			// Step 5: Update policy (INVALID PARAMETER)
+			{
+				PreConfig: func() {
+					apiMocker.UnPatch()
+				},
+				Config: ProviderConfigForTesting + `
+				resource "objectscale_iam_policy" "testacc_policy" {
+					name = "testacc_policy"
+					namespace = "ns1"
+					description = "An example policy UPDATED"
+					policy_document = jsonencode({
+  
+						"Version": "2012-10-17",
+						
+						"Statement": [
+							
+							{
+							
+							"Action": [
+								
+								"s3:ListBucket",
+								
+								"s3:ListAllMyBuckets",
+
+        						"iam:GetUserPolicy"
+							
+							],
+							
+							"Resource": "*",
+							
+							"Effect": "Allow",
+							
+							"Sid": "VisualEditor0"
+							
+							}
+						
+						]
+
+						})
+				}
+				`,
+				ExpectError: regexp.MustCompile(".*Invalid Update.*"),
+			},
+			// Step 6: Update policy (OK)
 			{
 				PreConfig: func() {
 					apiMocker.UnPatch()
@@ -254,7 +297,7 @@ func TestAccIamPolicyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("objectscale_iam_policy.testacc_policy", "description", "An example policy"),
 				),
 			},
-			// Step 6: Update policy with deletion of redundant policy statements (OK)
+			// Step 7: Update policy with deletion of redundant policy statements (OK)
 			{
 				Config: ProviderConfigForTesting + `
 				resource "objectscale_iam_policy" "testacc_policy" {
@@ -296,7 +339,7 @@ func TestAccIamPolicyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("objectscale_iam_policy.testacc_policy", "description", "An example policy"),
 				),
 			},
-			// Step 7: Import state
+			// Step 8: Import state
 			{
 				ResourceName: "objectscale_iam_policy.testacc_policy",
 				// get resource arn for import : "policy_arn:namespace"
