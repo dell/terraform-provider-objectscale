@@ -204,6 +204,11 @@ Class | Method | HTTP request | Description
 *NamespaceApi* | [**NamespaceServiceUpdateNamespace**](docs/NamespaceApi.md#namespaceserviceupdatenamespace) | **Put** /object/namespaces/namespace/{namespace} | Updates namespace details like replication group list, namespace admins and user mappings
 *NamespaceApi* | [**NamespaceServiceUpdateNamespaceQuota**](docs/NamespaceApi.md#namespaceserviceupdatenamespacequota) | **Put** /object/namespaces/namespace/{namespace}/quota | Updates the namespace quota for a specified namespace
 *NamespaceApi* | [**NamespaceServiceUpdateRetentionClass**](docs/NamespaceApi.md#namespaceserviceupdateretentionclass) | **Put** /object/namespaces/namespace/{namespace}/retention/{class} | Updates the retention class details for a specified retention class for a namespace
+*ObjectVarrayApi* | [**ObjectVarrayServiceCreateVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicecreatevirtualarray) | **Post** /vdc/data-services/varrays | Create a storage pool with the specified details
+*ObjectVarrayApi* | [**ObjectVarrayServiceDeleteVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicedeletevirtualarray) | **Delete** /vdc/data-services/varrays/{id} | Deletes the storage pool for the specified identifier
+*ObjectVarrayApi* | [**ObjectVarrayServiceGetVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicegetvirtualarray) | **Get** /vdc/data-services/varrays/{id} | Gets the details for the specified storage pool
+*ObjectVarrayApi* | [**ObjectVarrayServiceGetVirtualArrays**](docs/ObjectVarrayApi.md#objectvarrayservicegetvirtualarrays) | **Get** /vdc/data-services/varrays | Gets a list of storage pools from the local VDC
+*ObjectVarrayApi* | [**ObjectVarrayServiceUpdateVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayserviceupdatevirtualarray) | **Put** /vdc/data-services/varrays/{id} | Updates storage pool for the specified identifier
 *UserManagementApi* | [**UserManagementServiceAddUser**](docs/UserManagementApi.md#usermanagementserviceadduser) | **Post** /object/users | Creates a user for the specified namespace
 *UserManagementApi* | [**UserManagementServiceAddUserTag**](docs/UserManagementApi.md#usermanagementserviceaddusertag) | **Post** /object/users/{uid}/tags | Updates user tags for the specified user - this is append operation
 *UserManagementApi* | [**UserManagementServiceGetAllUsers**](docs/UserManagementApi.md#usermanagementservicegetallusers) | **Get** /object/users | Gets identifiers for all configured users
@@ -217,6 +222,11 @@ Class | Method | HTTP request | Description
 *UserManagementApi* | [**UserManagementServiceRemoveUserTags**](docs/UserManagementApi.md#usermanagementserviceremoveusertags) | **Delete** /object/users/{uid}/tags | Deletes user tags for specified user
 *UserManagementApi* | [**UserManagementServiceSetUserLock**](docs/UserManagementApi.md#usermanagementservicesetuserlock) | **Put** /object/users/lock | Locks the specified user
 *UserManagementApi* | [**UserManagementServiceUpdateUserTag**](docs/UserManagementApi.md#usermanagementserviceupdateusertag) | **Put** /object/users/{uid}/tags | Updates user tags for the specified user
+*ZoneInfoApi* | [**ZoneInfoServiceGetLocalVdc**](docs/ZoneInfoApi.md#zoneinfoservicegetlocalvdc) | **Get** /object/vdcs/vdc/local | Gets the details for the local VDC
+*ZoneInfoApi* | [**ZoneInfoServiceGetVdcById**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyid) | **Get** /object/vdcs/vdcid/{vdcId} | Gets the details for a VDC specified by VDC Id
+*ZoneInfoApi* | [**ZoneInfoServiceGetVdcByName**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyname) | **Get** /object/vdcs/vdc/{vdcName} | Gets the details for a VDC specified by name
+*ZoneInfoApi* | [**ZoneInfoServiceInsertVdcInfo**](docs/ZoneInfoApi.md#zoneinfoserviceinsertvdcinfo) | **Put** /object/vdcs/vdc/{vdcName} | Inserts attributes for the current VDC or a VDC to connect to
+*ZoneInfoApi* | [**ZoneInfoServiceListAllVdc**](docs/ZoneInfoApi.md#zoneinfoservicelistallvdc) | **Get** /object/vdcs/vdc/list | Gets the details of all configured VDCs
 
 
 ## Documentation For Models
@@ -352,6 +362,7 @@ Class | Method | HTTP request | Description
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
  - [IamTagKey](docs/IamTagKey.md)
  - [IamTagKeyValue](docs/IamTagKeyValue.md)
+ - [Link](docs/Link.md)
  - [MgmtUserInfoServiceCreateLocalUserInfoRequest](docs/MgmtUserInfoServiceCreateLocalUserInfoRequest.md)
  - [MgmtUserInfoServiceCreateLocalUserInfoResponse](docs/MgmtUserInfoServiceCreateLocalUserInfoResponse.md)
  - [MgmtUserInfoServiceGetLocalUserInfoResponse](docs/MgmtUserInfoServiceGetLocalUserInfoResponse.md)
@@ -365,7 +376,6 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceGetNamespaceResponse](docs/NamespaceServiceGetNamespaceResponse.md)
  - [NamespaceServiceGetNamespacesResponse](docs/NamespaceServiceGetNamespacesResponse.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInner.md)
- - [NamespaceServiceGetNamespacesResponseNamespaceInnerLink](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerLink.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClasses.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerRetentionClassesRetentionClassInner.md)
  - [NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner](docs/NamespaceServiceGetNamespacesResponseNamespaceInnerUserMappingInner.md)
@@ -377,6 +387,12 @@ Class | Method | HTTP request | Description
  - [NamespaceServiceUpdateNamespaceQuotaRequest](docs/NamespaceServiceUpdateNamespaceQuotaRequest.md)
  - [NamespaceServiceUpdateNamespaceRequest](docs/NamespaceServiceUpdateNamespaceRequest.md)
  - [NamespaceServiceUpdateRetentionClassRequest](docs/NamespaceServiceUpdateRetentionClassRequest.md)
+ - [ObjectVarrayServiceCreateVirtualArrayRequest](docs/ObjectVarrayServiceCreateVirtualArrayRequest.md)
+ - [ObjectVarrayServiceCreateVirtualArrayResponse](docs/ObjectVarrayServiceCreateVirtualArrayResponse.md)
+ - [ObjectVarrayServiceGetVirtualArrayResponse](docs/ObjectVarrayServiceGetVirtualArrayResponse.md)
+ - [ObjectVarrayServiceGetVirtualArraysResponse](docs/ObjectVarrayServiceGetVirtualArraysResponse.md)
+ - [ObjectVarrayServiceUpdateVirtualArrayRequest](docs/ObjectVarrayServiceUpdateVirtualArrayRequest.md)
+ - [ObjectVarrayServiceUpdateVirtualArrayResponse](docs/ObjectVarrayServiceUpdateVirtualArrayResponse.md)
  - [UserManagementServiceAddUserRequest](docs/UserManagementServiceAddUserRequest.md)
  - [UserManagementServiceAddUserRequestTagsInner](docs/UserManagementServiceAddUserRequestTagsInner.md)
  - [UserManagementServiceAddUserResponse](docs/UserManagementServiceAddUserResponse.md)
@@ -394,6 +410,9 @@ Class | Method | HTTP request | Description
  - [UserManagementServiceRemoveUserTagsRequest](docs/UserManagementServiceRemoveUserTagsRequest.md)
  - [UserManagementServiceSetUserLockRequest](docs/UserManagementServiceSetUserLockRequest.md)
  - [UserManagementServiceUpdateUserTagRequest](docs/UserManagementServiceUpdateUserTagRequest.md)
+ - [Vdc](docs/Vdc.md)
+ - [ZoneInfoServiceInsertVdcInfoRequest](docs/ZoneInfoServiceInsertVdcInfoRequest.md)
+ - [ZoneInfoServiceListAllVdcResponse](docs/ZoneInfoServiceListAllVdcResponse.md)
 
 
 ## Documentation For Authorization

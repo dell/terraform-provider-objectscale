@@ -626,6 +626,419 @@
 				}
 			}
 		},
+		"/object/vdcs/vdc/{vdcName}": {
+			"put": {
+				"tags": [
+					"Zone Info"
+				],
+				"summary": "Inserts attributes for the current VDC or a VDC to connect to",
+				"description": "Insert the attributes for the current VDC or a VDC which you want the current VDC to connect.  Enables\n the name of the VDC, the end points that can be used to communicate with it, and a secret key used\n to encrypt traffic between VDCs to be set.",
+				"operationId": "ZoneInfoService_insertVdcInfo",
+				"parameters": [
+					{
+						"name": "vdcName",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "VDC name for which mapping needs to be inserted"
+					},
+					{
+						"name": "skipMemoryProfileChecks",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": ""
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to insert VDC",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"vdcName": "vdc2",
+											"interVdcEndPoints": "10.245.134.106,10.245.134.107,10.245.134.108",
+											"secretKeys": "123456"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ZoneInfoService_insertVdcInfoRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Zone Info"
+				],
+				"summary": "Gets the details for a VDC specified by name",
+				"description": "Gets the details for a VDC the identify of which is specified by its name.",
+				"operationId": "ZoneInfoService_getVdcByName",
+				"parameters": [
+					{
+						"name": "vdcName",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "VDC name for which VDC Information is to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "VDC information for the specified name",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ZoneInfoService_getVdcByNameResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "vdc1",
+											"id": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+											"link": {
+												"rel": "self",
+												"href": "/object/vdcs/vdc/vdc1"
+											},
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"tags": [],
+											"vdcId": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+											"vdcName": "vdc1",
+											"interVdcEndPoints": "10.247.179.238",
+											"secretKeys": "12345",
+											"permanentlyFailed": false
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/vdcs/vdcid/{vdcId}": {
+			"get": {
+				"tags": [
+					"Zone Info"
+				],
+				"summary": "Gets the details for a VDC specified by VDC Id",
+				"description": "Gets the details for a VDC the identity of which is specified by its VDC identifier.",
+				"operationId": "ZoneInfoService_getVdcById",
+				"parameters": [
+					{
+						"name": "vdcId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "VDC identifier for which VDC Information is to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "VDC information for the specified VDC identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ZoneInfoService_getVdcByIdResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "vdc1",
+											"id": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+											"link": {
+												"rel": "self",
+												"href": "/object/vdcs/vdc/vdc1"
+											},
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"tags": [],
+											"vdcId": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+											"vdcName": "vdc1",
+											"interVdcEndPoints": "10.247.179.238",
+											"secretKeys": "12345",
+											"permanentlyFailed": false
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/vdcs/vdc/local": {
+			"get": {
+				"tags": [
+					"Zone Info"
+				],
+				"summary": "Gets the details for the local VDC",
+				"description": "Gets the details for the local VDC.",
+				"operationId": "ZoneInfoService_getLocalVdc",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Local VDC information configured in system",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ZoneInfoService_getLocalVdcResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"name": "vdc1",
+											"id": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+											"link": {
+												"rel": "self",
+												"href": "/object/vdcs/vdc/vdc1"
+											},
+											"inactive": false,
+											"global": null,
+											"remote": null,
+											"vdc": null,
+											"tags": [],
+											"vdcId": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+											"vdcName": "vdc1",
+											"interVdcEndPoints": "10.247.179.238",
+											"secretKeys": "12345",
+											"permanentlyFailed": false
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/vdcs/vdc/list": {
+			"get": {
+				"tags": [
+					"Zone Info"
+				],
+				"summary": "Gets the details of all configured VDCs",
+				"description": "Gets all details of all configured VDCs.",
+				"operationId": "ZoneInfoService_listAllVdc",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of VDC Information available in the system",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ZoneInfoService_listAllVdcResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"vdc": [
+												{
+													"name": "vdc1",
+													"id": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+													"link": {
+														"rel": "self",
+														"href": "/object/vdcs/vdc/vdc1"
+													},
+													"inactive": false,
+													"global": null,
+													"remote": null,
+													"vdc": null,
+													"tags": [],
+													"vdcId": "urn:storageos:VirtualDataCenterData:04af4230-fcc3-4555-aaac-a23fbdd542a2",
+													"vdcName": "vdc1",
+													"interVdcEndPoints": "10.247.179.238",
+													"secretKeys": "12345",
+													"permanentlyFailed": false
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/vdc/users": {
 			"post": {
 				"tags": [
@@ -945,6 +1358,389 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/MgmtUserInfoService_getLocalUserInfoResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-services/varrays": {
+			"post": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Create a storage pool with the specified details",
+				"description": "Create a storage pool with the specified details.",
+				"operationId": "ObjectVarrayService_createVirtualArray",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created virtual array details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_createVirtualArrayResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"name": "varray_4",
+											"isProtected": "false",
+											"isColdStorageEnabled": "false",
+											"description": " varray desc 4"
+										}
+									},
+									"example_1": {
+										"value": {
+											"id": "urn:storageos:VirtualArray:dd751e72-0142-4598-a440-b4f833e93b61",
+											"name": "varray_4",
+											"isProtected": false,
+											"isColdStorageEnabled": "false"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ObjectVarrayService_createVirtualArrayRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Gets a list of storage pools from the local VDC",
+				"description": "Gets a list of storage pools from the local VDC.",
+				"operationId": "ObjectVarrayService_getVirtualArrays",
+				"parameters": [
+					{
+						"name": "vdc-id",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "virtual data center identifier for which list of storage poold is to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Storage pool details for the given virtual data center identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_getVirtualArraysResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"varray": [
+												{
+													"id": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804",
+													"name": "CommodityvPool",
+													"isProtected": false,
+													"isColdStorageEnabled": "false"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/data-services/varrays/{id}": {
+			"delete": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Deletes the storage pool for the specified identifier",
+				"description": "Deletes the storage pool for the specified identifier.",
+				"operationId": "ObjectVarrayService_deleteVirtualArray",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "storage pool identifier to be deleted"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete storage pool",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Updates storage pool for the specified identifier",
+				"description": "Updates storage pool for the specified identifier.",
+				"operationId": "ObjectVarrayService_updateVirtualArray",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Storage pool identifier to be updated"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Updated virtual array details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_updateVirtualArrayResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"virtual_array_update": {
+												"name": "CommodityvPool",
+												"isProtected": "true",
+												"description": "desc"
+											}
+										}
+									},
+									"example_1": {
+										"value": {
+											"varray": {
+												"id": "urn:storageos:VirtualArray:82cf257b-0782-433c-92ca-2ee6161b917e",
+												"name": "CommodityvPool",
+												"isProtected": "true"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ObjectVarrayService_updateVirtualArrayRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Object Varray"
+				],
+				"summary": "Gets the details for the specified storage pool",
+				"description": "Gets the details for the specified storage pool.",
+				"operationId": "ObjectVarrayService_getVirtualArray",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "Storage pool identifier to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Storage pool details for the given identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ObjectVarrayService_getVirtualArrayResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"id": "urn:storageos:VirtualArray:c7fc54dc-6616-4b7e-a86c-0210ef9a8804",
+											"name": "CommodityvPool",
+											"isProtected": false
+										}
+									}
 								}
 							}
 						}
@@ -12882,6 +13678,52 @@
 	},
 	"components": {
 		"schemas": {
+			"ZoneInfoService_insertVdcInfoRequest": {
+				"type": "object",
+				"properties": {
+					"vdcName": {
+						"type": "string",
+						"description": "Name of VDC to be inserted"
+					},
+					"interVdcEndPoints": {
+						"type": "string",
+						"description": "End points for the VDC"
+					},
+					"interVdcCmdEndPoints": {
+						"type": "string",
+						"description": "Control Plane end points for the VDC"
+					},
+					"secretKeys": {
+						"type": "string",
+						"description": "Secret key to encrypt communication between VDC"
+					},
+					"managementEndPoints": {
+						"type": "string",
+						"description": "The management end points for the VDC"
+					}
+				}
+			},
+			"ZoneInfoService_getVdcByNameResponse": {
+				"$ref": "#/components/schemas/Vdc"
+			},
+			"ZoneInfoService_getVdcByIdResponse": {
+				"$ref": "#/components/schemas/Vdc"
+			},
+			"ZoneInfoService_getLocalVdcResponse": {
+				"$ref": "#/components/schemas/Vdc"
+			},
+			"ZoneInfoService_listAllVdcResponse": {
+				"type": "object",
+				"properties": {
+					"vdc": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/Vdc"
+						},
+						"description": "A list of vdc"
+					}
+				}
+			},
 			"MgmtUserInfoService_createLocalUserInfoRequest": {
 				"type": "object",
 				"properties": {
@@ -13040,6 +13882,284 @@
 							}
 						},
 						"description": "List of management user infos"
+					}
+				}
+			},
+			"ObjectVarrayService_createVirtualArrayRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Virtual array name"
+					},
+					"isProtected": {
+						"type": "boolean",
+						"description": "Only false is valid. Protected varray is not supported."
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Is ColdStorage enabled on the virtual array"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of data blocks for configurable EC scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of code blocks for configurable EC scheme"
+					},
+					"numberOfStorageServerInstances": {
+						"type": "integer",
+						"description": "Number of storage server instances for validation of configurable EC scheme"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive Technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string",
+						"description": "Drive Technology of VArray"
+					}
+				},
+				"required": [
+					"name",
+					"isProtected"
+				]
+			},
+			"ObjectVarrayService_createVirtualArrayResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Storage pool id"
+					},
+					"name": {
+						"type": "string",
+						"description": "Storage pool name"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Flag indicating that cold storage encoding is enabled"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of Data Blocks in EC Scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of Code Blocks in EC Scheme"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string"
+					}
+				}
+			},
+			"ObjectVarrayService_updateVirtualArrayRequest": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Name of virtual array to be updated"
+					},
+					"isProtected": {
+						"type": "boolean",
+						"description": "Set true if varray is protected, false otherwise"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description. If no description found, then \"Virtual Array\" is used by default"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Is ColdStorage enabled on the virtual array"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of data blocks for configurable EC scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of code blocks for configurable EC scheme"
+					},
+					"numberOfStorageServerInstances": {
+						"type": "integer",
+						"description": "Number of storage server instances for validation of configurable EC scheme"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					}
+				},
+				"required": [
+					"name",
+					"isProtected"
+				]
+			},
+			"ObjectVarrayService_updateVirtualArrayResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Storage pool id"
+					},
+					"name": {
+						"type": "string",
+						"description": "Storage pool name"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Flag indicating that cold storage encoding is enabled"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of Data Blocks in EC Scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of Code Blocks in EC Scheme"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string"
+					}
+				}
+			},
+			"ObjectVarrayService_getVirtualArrayResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Storage pool id"
+					},
+					"name": {
+						"type": "string",
+						"description": "Storage pool name"
+					},
+					"description": {
+						"type": "string",
+						"description": "Description"
+					},
+					"isColdStorageEnabled": {
+						"type": "boolean",
+						"description": "Flag indicating that cold storage encoding is enabled"
+					},
+					"numberOfDataBlocks": {
+						"type": "integer",
+						"description": "Number of Data Blocks in EC Scheme"
+					},
+					"numberOfCodeBlocks": {
+						"type": "integer",
+						"description": "Number of Code Blocks in EC Scheme"
+					},
+					"warningAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which warning alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"errorAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which error alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"criticalAlertAt": {
+						"type": "integer",
+						"description": "Threshold percent at which critical alert is raised.\n Valid values are from -1 to 100. Value of -1 means do not alert"
+					},
+					"status": {
+						"type": "integer",
+						"description": "flag for status, -1 for null, 0 ~ 6 for value"
+					},
+					"label": {
+						"type": "string",
+						"description": "Drive technology of VArray"
+					},
+					"driveTechnology": {
+						"type": "string"
+					}
+				}
+			},
+			"ObjectVarrayService_getVirtualArraysResponse": {
+				"type": "object",
+				"properties": {
+					"varray": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ObjectVarrayService_getVirtualArrayResponse"
+						},
+						"description": "List of storage pools"
 					}
 				}
 			},
@@ -13211,18 +14331,7 @@
 									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 								},
 								"link": {
-									"type": "object",
-									"properties": {
-										"rel": {
-											"type": "string",
-											"description": "Relationship type of the hyperlink"
-										},
-										"href": {
-											"type": "string",
-											"description": "Hyperlink URL to the related resource"
-										}
-									},
-									"description": "Hyperlink to the details for this resource"
+									"$ref": "#/components/schemas/Link"
 								},
 								"creation_time": {
 									"type": "integer",
@@ -13459,18 +14568,7 @@
 						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 					},
 					"link": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship type of the hyperlink"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hyperlink URL to the related resource"
-							}
-						},
-						"description": "Hyperlink to the details for this resource"
+						"$ref": "#/components/schemas/Link"
 					},
 					"creation_time": {
 						"type": "integer",
@@ -13934,18 +15032,7 @@
 						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 					},
 					"link": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship type of the hyperlink"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hyperlink URL to the related resource"
-							}
-						},
-						"description": "Hyperlink to the details for this resource"
+						"$ref": "#/components/schemas/Link"
 					},
 					"creation_time": {
 						"type": "integer",
@@ -14169,18 +15256,7 @@
 									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 								},
 								"link": {
-									"type": "object",
-									"properties": {
-										"rel": {
-											"type": "string",
-											"description": "Relationship type of the hyperlink"
-										},
-										"href": {
-											"type": "string",
-											"description": "Hyperlink URL to the related resource"
-										}
-									},
-									"description": "Hyperlink to the details for this resource"
+									"$ref": "#/components/schemas/Link"
 								},
 								"creation_time": {
 									"type": "integer",
@@ -14288,18 +15364,7 @@
 						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 					},
 					"link": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship type of the hyperlink"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hyperlink URL to the related resource"
-							}
-						},
-						"description": "Hyperlink to the details for this resource"
+						"$ref": "#/components/schemas/Link"
 					},
 					"creation_time": {
 						"type": "integer",
@@ -14537,18 +15602,7 @@
 						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 					},
 					"link": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship type of the hyperlink"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hyperlink URL to the related resource"
-							}
-						},
-						"description": "Hyperlink to the details for this resource"
+						"$ref": "#/components/schemas/Link"
 					},
 					"creation_time": {
 						"type": "integer",
@@ -15357,18 +16411,7 @@
 						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 					},
 					"link": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship type of the hyperlink"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hyperlink URL to the related resource"
-							}
-						},
-						"description": "Hyperlink to the details for this resource"
+						"$ref": "#/components/schemas/Link"
 					},
 					"creation_time": {
 						"type": "integer",
@@ -15484,18 +16527,7 @@
 									"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 								},
 								"link": {
-									"type": "object",
-									"properties": {
-										"rel": {
-											"type": "string",
-											"description": "Relationship type of the hyperlink"
-										},
-										"href": {
-											"type": "string",
-											"description": "Hyperlink URL to the related resource"
-										}
-									},
-									"description": "Hyperlink to the details for this resource"
+									"$ref": "#/components/schemas/Link"
 								},
 								"created": {
 									"type": "string",
@@ -16002,18 +17034,7 @@
 						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
 					},
 					"link": {
-						"type": "object",
-						"properties": {
-							"rel": {
-								"type": "string",
-								"description": "Relationship type of the hyperlink"
-							},
-							"href": {
-								"type": "string",
-								"description": "Hyperlink URL to the related resource"
-							}
-						},
-						"description": "Hyperlink to the details for this resource"
+						"$ref": "#/components/schemas/Link"
 					},
 					"created": {
 						"type": "string",
@@ -17795,6 +18816,20 @@
 					}
 				}
 			},
+			"Link": {
+				"type": "object",
+				"properties": {
+					"rel": {
+						"type": "string",
+						"description": "Relationship type of the hyperlink"
+					},
+					"href": {
+						"type": "string",
+						"description": "Hyperlink URL to the related resource"
+					}
+				},
+				"description": "Hyperlink to the details for this resource"
+			},
 			"IamResponseMetadata": {
 				"type": "object",
 				"properties": {
@@ -17981,6 +19016,107 @@
 				"properties": {
 					"Role": {
 						"$ref": "#/components/schemas/IamRole"
+					}
+				}
+			},
+			"Vdc": {
+				"type": "object",
+				"properties": {
+					"vdcId": {
+						"type": "string",
+						"description": "VDC id"
+					},
+					"vdcName": {
+						"type": "string",
+						"description": "VDC name"
+					},
+					"interVdcEndPoints": {
+						"type": "string",
+						"description": "VDC end points"
+					},
+					"interVdcCmdEndPoints": {
+						"type": "string",
+						"description": "VDC cmd end points"
+					},
+					"secretKeys": {
+						"type": "string",
+						"description": "Secret key for this VDC"
+					},
+					"permanentlyFailed": {
+						"type": "boolean",
+						"description": "True of vdc is permanently failed, false otherwise."
+					},
+					"local": {
+						"type": "boolean",
+						"description": "True of this vdc is local, false otherwise"
+					},
+					"is_encryption_enabled": {
+						"type": "boolean",
+						"description": "True of this vdc is enabled for encryption, false otherwise"
+					},
+					"managementEndPoints": {
+						"type": "string",
+						"description": "The management end points for the VDC"
+					},
+					"hosted": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name assigned to this resource in ECS. The resource name is set by\n a user and can be changed at any time. It is not a unique identifier."
+					},
+					"id": {
+						"type": "string",
+						"format": "uri",
+						"description": "Identifier that is generated by ECS when the resource is created.\n The resource Id is guaranteed to be unique  and  immutable across all\n virtual data centers for all time."
+					},
+					"link": {
+						"$ref": "#/components/schemas/Link"
+					},
+					"creation_time": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Timestamp that shows when this resource was created in ECS"
+					},
+					"inactive": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is inactive. When a user removes\n a resource, the resource is put in this state before\n it is removed from the ECS database."
+					},
+					"global": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is global."
+					},
+					"remote": {
+						"type": "boolean",
+						"description": "Indicates whether the resource is remote."
+					},
+					"vdc": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"format": "uri",
+								"description": "ECS Id of the related object"
+							},
+							"link": {
+								"type": "object",
+								"properties": {
+									"rel": {
+										"type": "string",
+										"description": "Relationship type of the hyperlink"
+									},
+									"href": {
+										"type": "string",
+										"description": "Hyperlink URL to the related resource"
+									}
+								},
+								"description": "Hyperlink to the related object"
+							}
+						}
+					},
+					"internal": {
+						"type": "boolean",
+						"description": "Indicated whether the resource is an internal resource"
 					}
 				}
 			}
