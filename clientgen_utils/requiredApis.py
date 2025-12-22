@@ -140,4 +140,12 @@ RequiredAPIs = [
     # storage pools
     "/vdc/data-services/varrays/{id}",
     "/vdc/data-services/varrays",
+    
+    # Object User API endpoints
+    "/object/users*",
+
+    # Management User API endpoints
+    "/vdc/users",
+    "/vdc/users/{userid}",
+    "/vdc/users/{userid}/deactivate",
 ]

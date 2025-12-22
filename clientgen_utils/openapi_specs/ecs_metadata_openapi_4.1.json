@@ -49277,7 +49277,7 @@
             "type": "string",
             "description": "Namespace identifier to associate with the user"
           },
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49590,7 +49590,7 @@
             "type": "string",
             "description": "User name"
           },
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49612,7 +49612,7 @@
       "UserManagementService_addUserTagRequest": {
         "type": "object",
         "properties": {
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49634,7 +49634,7 @@
       "UserManagementService_updateUserTagRequest": {
         "type": "object",
         "properties": {
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49656,7 +49656,7 @@
       "UserManagementService_removeUserTagsRequest": {
         "type": "object",
         "properties": {
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",

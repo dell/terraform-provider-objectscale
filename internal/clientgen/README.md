@@ -187,6 +187,11 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceUpdateAccessKey**](docs/IamApi.md#iamserviceupdateaccesskey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 *IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 *IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceCreateLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicecreatelocaluserinfo) | **Post** /vdc/users | Creates a local VDC user with the specified details
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceDeleteLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicedeletelocaluserinfo) | **Post** /vdc/users/{userid}/deactivate | Deletes local user information for the specified user identifier
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceGetLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicegetlocaluserinfo) | **Get** /vdc/users/{userid} | Gets local user details for the specified user identifier
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceGetLocalUserInfos**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicegetlocaluserinfos) | **Get** /vdc/users | Lists all local management users
+*MgmtUserInfoApi* | [**MgmtUserInfoServiceModifyLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicemodifylocaluserinfo) | **Put** /vdc/users/{userid} | Updates local user details for the specified user identifier
 *NamespaceApi* | [**NamespaceServiceCreateNamespace**](docs/NamespaceApi.md#namespaceservicecreatenamespace) | **Post** /object/namespaces/namespace | Creates a namespace with the given details
 *NamespaceApi* | [**NamespaceServiceCreateRetentionClass**](docs/NamespaceApi.md#namespaceservicecreateretentionclass) | **Post** /object/namespaces/namespace/{namespace}/retention | Creates a retention class for the specified namespace
 *NamespaceApi* | [**NamespaceServiceDeactivateNamespace**](docs/NamespaceApi.md#namespaceservicedeactivatenamespace) | **Post** /object/namespaces/namespace/{namespace}/deactivate | Deactivates and deletes the given namespace and all associated user mappings
@@ -204,6 +209,19 @@ Class | Method | HTTP request | Description
 *ObjectVarrayApi* | [**ObjectVarrayServiceGetVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayservicegetvirtualarray) | **Get** /vdc/data-services/varrays/{id} | Gets the details for the specified storage pool
 *ObjectVarrayApi* | [**ObjectVarrayServiceGetVirtualArrays**](docs/ObjectVarrayApi.md#objectvarrayservicegetvirtualarrays) | **Get** /vdc/data-services/varrays | Gets a list of storage pools from the local VDC
 *ObjectVarrayApi* | [**ObjectVarrayServiceUpdateVirtualArray**](docs/ObjectVarrayApi.md#objectvarrayserviceupdatevirtualarray) | **Put** /vdc/data-services/varrays/{id} | Updates storage pool for the specified identifier
+*UserManagementApi* | [**UserManagementServiceAddUser**](docs/UserManagementApi.md#usermanagementserviceadduser) | **Post** /object/users | Creates a user for the specified namespace
+*UserManagementApi* | [**UserManagementServiceAddUserTag**](docs/UserManagementApi.md#usermanagementserviceaddusertag) | **Post** /object/users/{uid}/tags | Updates user tags for the specified user - this is append operation
+*UserManagementApi* | [**UserManagementServiceGetAllUsers**](docs/UserManagementApi.md#usermanagementservicegetallusers) | **Get** /object/users | Gets identifiers for all configured users
+*UserManagementApi* | [**UserManagementServiceGetUserInfo**](docs/UserManagementApi.md#usermanagementservicegetuserinfo) | **Get** /object/users/{uid}/info | Gets user details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceGetUserLockWithNamespace**](docs/UserManagementApi.md#usermanagementservicegetuserlockwithnamespace) | **Get** /object/users/lock/{uid}/{namespace} | Gets the user lock details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceGetUserLockWithoutNamespace**](docs/UserManagementApi.md#usermanagementservicegetuserlockwithoutnamespace) | **Get** /object/users/lock/{uid} | Gets the user lock details for the specified user
+*UserManagementApi* | [**UserManagementServiceGetUserTagsWithNamespace**](docs/UserManagementApi.md#usermanagementservicegetusertagswithnamespace) | **Get** /object/users/{uid}/tags | Gets the user tags details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceGetUsersForNamespace**](docs/UserManagementApi.md#usermanagementservicegetusersfornamespace) | **Get** /object/users/{namespace} | Gets all user identifiers for the specified namespace
+*UserManagementApi* | [**UserManagementServiceQueryUsers**](docs/UserManagementApi.md#usermanagementservicequeryusers) | **Get** /object/users/query | Gets user details for the specified user belonging to specified namespace
+*UserManagementApi* | [**UserManagementServiceRemoveUser**](docs/UserManagementApi.md#usermanagementserviceremoveuser) | **Post** /object/users/deactivate | Deletes the specified user and its associated secret keys
+*UserManagementApi* | [**UserManagementServiceRemoveUserTags**](docs/UserManagementApi.md#usermanagementserviceremoveusertags) | **Delete** /object/users/{uid}/tags | Deletes user tags for specified user
+*UserManagementApi* | [**UserManagementServiceSetUserLock**](docs/UserManagementApi.md#usermanagementservicesetuserlock) | **Put** /object/users/lock | Locks the specified user
+*UserManagementApi* | [**UserManagementServiceUpdateUserTag**](docs/UserManagementApi.md#usermanagementserviceupdateusertag) | **Put** /object/users/{uid}/tags | Updates user tags for the specified user
 *ZoneInfoApi* | [**ZoneInfoServiceGetLocalVdc**](docs/ZoneInfoApi.md#zoneinfoservicegetlocalvdc) | **Get** /object/vdcs/vdc/local | Gets the details for the local VDC
 *ZoneInfoApi* | [**ZoneInfoServiceGetVdcById**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyid) | **Get** /object/vdcs/vdcid/{vdcId} | Gets the details for a VDC specified by VDC Id
 *ZoneInfoApi* | [**ZoneInfoServiceGetVdcByName**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyname) | **Get** /object/vdcs/vdc/{vdcName} | Gets the details for a VDC specified by name
@@ -345,6 +363,12 @@ Class | Method | HTTP request | Description
  - [IamTagKey](docs/IamTagKey.md)
  - [IamTagKeyValue](docs/IamTagKeyValue.md)
  - [Link](docs/Link.md)
+ - [MgmtUserInfoServiceCreateLocalUserInfoRequest](docs/MgmtUserInfoServiceCreateLocalUserInfoRequest.md)
+ - [MgmtUserInfoServiceCreateLocalUserInfoResponse](docs/MgmtUserInfoServiceCreateLocalUserInfoResponse.md)
+ - [MgmtUserInfoServiceGetLocalUserInfoResponse](docs/MgmtUserInfoServiceGetLocalUserInfoResponse.md)
+ - [MgmtUserInfoServiceGetLocalUserInfosResponse](docs/MgmtUserInfoServiceGetLocalUserInfosResponse.md)
+ - [MgmtUserInfoServiceGetLocalUserInfosResponseMgmtUserInfoInner](docs/MgmtUserInfoServiceGetLocalUserInfosResponseMgmtUserInfoInner.md)
+ - [MgmtUserInfoServiceModifyLocalUserInfoRequest](docs/MgmtUserInfoServiceModifyLocalUserInfoRequest.md)
  - [NamespaceServiceCreateNamespaceRequest](docs/NamespaceServiceCreateNamespaceRequest.md)
  - [NamespaceServiceCreateNamespaceResponse](docs/NamespaceServiceCreateNamespaceResponse.md)
  - [NamespaceServiceCreateRetentionClassRequest](docs/NamespaceServiceCreateRetentionClassRequest.md)
@@ -369,6 +393,23 @@ Class | Method | HTTP request | Description
  - [ObjectVarrayServiceGetVirtualArraysResponse](docs/ObjectVarrayServiceGetVirtualArraysResponse.md)
  - [ObjectVarrayServiceUpdateVirtualArrayRequest](docs/ObjectVarrayServiceUpdateVirtualArrayRequest.md)
  - [ObjectVarrayServiceUpdateVirtualArrayResponse](docs/ObjectVarrayServiceUpdateVirtualArrayResponse.md)
+ - [UserManagementServiceAddUserRequest](docs/UserManagementServiceAddUserRequest.md)
+ - [UserManagementServiceAddUserRequestTagsInner](docs/UserManagementServiceAddUserRequestTagsInner.md)
+ - [UserManagementServiceAddUserResponse](docs/UserManagementServiceAddUserResponse.md)
+ - [UserManagementServiceAddUserResponseLink](docs/UserManagementServiceAddUserResponseLink.md)
+ - [UserManagementServiceAddUserTagRequest](docs/UserManagementServiceAddUserTagRequest.md)
+ - [UserManagementServiceGetAllUsersResponse](docs/UserManagementServiceGetAllUsersResponse.md)
+ - [UserManagementServiceGetAllUsersResponseBlobuserInner](docs/UserManagementServiceGetAllUsersResponseBlobuserInner.md)
+ - [UserManagementServiceGetUserInfoResponse](docs/UserManagementServiceGetUserInfoResponse.md)
+ - [UserManagementServiceGetUserLockWithNamespaceResponse](docs/UserManagementServiceGetUserLockWithNamespaceResponse.md)
+ - [UserManagementServiceGetUserLockWithoutNamespaceResponse](docs/UserManagementServiceGetUserLockWithoutNamespaceResponse.md)
+ - [UserManagementServiceGetUserTagsWithNamespaceResponse](docs/UserManagementServiceGetUserTagsWithNamespaceResponse.md)
+ - [UserManagementServiceGetUsersForNamespaceResponse](docs/UserManagementServiceGetUsersForNamespaceResponse.md)
+ - [UserManagementServiceQueryUsersResponse](docs/UserManagementServiceQueryUsersResponse.md)
+ - [UserManagementServiceRemoveUserRequest](docs/UserManagementServiceRemoveUserRequest.md)
+ - [UserManagementServiceRemoveUserTagsRequest](docs/UserManagementServiceRemoveUserTagsRequest.md)
+ - [UserManagementServiceSetUserLockRequest](docs/UserManagementServiceSetUserLockRequest.md)
+ - [UserManagementServiceUpdateUserTagRequest](docs/UserManagementServiceUpdateUserTagRequest.md)
  - [Vdc](docs/Vdc.md)
  - [ZoneInfoServiceInsertVdcInfoRequest](docs/ZoneInfoServiceInsertVdcInfoRequest.md)
  - [ZoneInfoServiceListAllVdcResponse](docs/ZoneInfoServiceListAllVdcResponse.md)

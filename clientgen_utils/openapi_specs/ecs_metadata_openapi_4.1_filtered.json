@@ -1039,6 +1039,362 @@
 				}
 			}
 		},
+		"/vdc/users": {
+			"post": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Creates a local VDC user with the specified details",
+				"description": "Creates local users for the VDC. These users can be assigned to VDC-wide management roles and are not\n associated with a namespace. User account can be assigned to the System Admin role by setting the\n isSystemAdmin flag in the request payload.",
+				"operationId": "MgmtUserInfoService_createLocalUserInfo",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created management user information.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MgmtUserInfoService_createLocalUserInfoResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"userId": "SampleJsonUser",
+											"password": "SampleJsonPwd",
+											"isSystemAdmin": "true",
+											"isSystemMonitor": "false",
+											"isSecurityAdmin": "false"
+										}
+									},
+									"example_1": {
+										"value": {
+											"userId": "SampleJsonUser",
+											"isSystemAdmin": true,
+											"isSystemMonitor": "false",
+											"isSecurityAdmin": "false"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MgmtUserInfoService_createLocalUserInfoRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Lists all local management users",
+				"description": "Gets all configured local management users.",
+				"operationId": "MgmtUserInfoService_getLocalUserInfos",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "List of management user information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MgmtUserInfoService_getLocalUserInfosResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"mgmt_user_info": [
+												{
+													"isSystemAdmin": "true",
+													"isSystemMonitor": "false",
+													"isSecurityAdmin": "false",
+													"userId": "root"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/users/{userid}/deactivate": {
+			"post": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Deletes local user information for the specified user identifier",
+				"description": "Deletes local management user information for the specified user identifier.",
+				"operationId": "MgmtUserInfoService_deleteLocalUserInfo",
+				"parameters": [
+					{
+						"name": "userid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User identifier for which local user information needs to be deleted."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete local user information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/vdc/users/{userid}": {
+			"put": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Updates local user details for the specified user identifier",
+				"description": "Updates user details for the specified local management user.",
+				"operationId": "MgmtUserInfoService_modifyLocalUserInfo",
+				"parameters": [
+					{
+						"name": "userid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User identifier for which local user information needs to be updated."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to update local user information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"mgmt_user_info_update": {
+												"password": "password",
+												"isSystemAdmin": "true",
+												"isSystemMonitor": "false",
+												"isSecurityAdmin": "false"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MgmtUserInfoService_modifyLocalUserInfoRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Mgmt User Info"
+				],
+				"summary": "Gets local user details for the specified user identifier",
+				"description": "Gets details for the specified local management user.",
+				"operationId": "MgmtUserInfoService_getLocalUserInfo",
+				"parameters": [
+					{
+						"name": "userid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User identifier for which local user information needs to be retrieved"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Management user information for the given user identifier",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MgmtUserInfoService_getLocalUserInfoResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/vdc/data-services/varrays": {
 			"post": {
 				"tags": [
@@ -2894,6 +3250,1083 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/DataServiceVpoolService_removeFromVpoolRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users": {
+			"post": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Creates a user for the specified namespace",
+				"description": "Creates a user for a specified namespace.  The user must subsequently be assigned a secret key in\n order to access the object store.",
+				"operationId": "UserManagementService_addUser",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created user details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_addUserResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"namespace": "s3",
+											"user": "wuser1@SANITY.LOCAL"
+										}
+									},
+									"example_1": {
+										"value": {
+											"user_secret_key": {
+												"secret_key": " ",
+												"link": {
+													"-href": "/object/user-secret-keys/wuser1@sanity.local",
+													"-rel": "self"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserManagementService_addUserRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets identifiers for all configured users",
+				"description": "Gets identifiers for all configured users.",
+				"operationId": "UserManagementService_getAllUsers",
+				"parameters": [
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Number of objects requested in current fetch."
+					},
+					{
+						"name": "marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Reference to last object returned."
+					},
+					{
+						"name": "userid",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": ""
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of user information configured into the system",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_getAllUsersResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"users": {
+												"blobuser": [
+													{
+														"namespace": "s3",
+														"userid": "wuser1@sanity.local"
+													},
+													{
+														"namespace": "s3",
+														"userid": "wuser2@sanity.local"
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/deactivate": {
+			"post": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Deletes the specified user and its associated secret keys",
+				"description": "Deletes the specified user and its secret keys.",
+				"operationId": "UserManagementService_removeUser",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"user": "wuser2@sanity.local"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserManagementService_removeUserRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/{uid}/info": {
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets user details for the specified user belonging to specified namespace",
+				"description": "Gets user details for the specified user belong to the specified namespace.",
+				"operationId": "UserManagementService_getUserInfo",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Valid user identifier"
+					},
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Optional when userscope is GLOBAL. Required when userscope is NAMESPACE. The namespace to which user belong"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "User information for specified user belonging to specified namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_getUserInfoResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"namespace": "s3",
+											"name": "testlogin",
+											"locked": false,
+											"created": "Wed Feb 25 11:16:48 UTC 2015"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/{namespace}": {
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets all user identifiers for the specified namespace",
+				"description": "Gets all users for the specified namespace.",
+				"operationId": "UserManagementService_getUsersForNamespace",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for which users should be returned"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Number of objects requested in current fetch."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "UsersList List of user information for the specific Namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_getUsersForNamespaceResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"blobuser": [
+												{
+													"namespace": "s3",
+													"userid": "testlogin"
+												},
+												{
+													"namespace": "s3",
+													"userid": "wuser1@sanity.local"
+												},
+												{
+													"namespace": "s3",
+													"userid": "wuser2@sanity.local"
+												},
+												{
+													"namespace": "s3",
+													"userid": "wuser3@sanity.local"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/query": {
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets user details for the specified user belonging to specified namespace",
+				"description": "Gets all user info with specific user tag.",
+				"operationId": "UserManagementService_queryUsers",
+				"parameters": [
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for which users should be returned"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Number of objects requested in current fetch."
+					},
+					{
+						"name": "marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Reference to last object returned."
+					},
+					{
+						"name": "tag",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User Tag Name"
+					},
+					{
+						"name": "value",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User Tag Value"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "User information for specified user belonging to specified namespace",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_queryUsersResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"users": {
+												"Filter": "namespace=ns1&amp;limit=1000&amp;tag=casprofile1&amp;value=",
+												"MaxUsers": 1000
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/lock": {
+			"put": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Locks the specified user",
+				"description": "Locks or unlocks the specified user. If the user belongs to a namespace, the namespace must be supplied.",
+				"operationId": "UserManagementService_setUserLock",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to local user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"user_lock_param": {
+												"user": "wuser2@sanity.local",
+												"namespace": "s3",
+												"isLocked": "true"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserManagementService_setUserLockRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/lock/{uid}/{namespace}": {
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets the user lock details for the specified user belonging to specified namespace",
+				"description": "Gets the user lock state for the specified user belonging to the specified namespace.",
+				"operationId": "UserManagementService_getUserLockWithNamespace",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User name for which user lock status should be returned"
+					},
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace to which user belongs"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "The user lock state for the specified user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_getUserLockWithNamespaceResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"object_user_lock": {
+												"isLocked": false,
+												"user_name": "casprofile1"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/lock/{uid}": {
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets the user lock details for the specified user",
+				"description": "Gets the user lock state for the specified user. If the API is called by a <b>Namespace Admin</b>, the user must\n belong to their namespace. If called by <b>System Admin</b>, the user must be a VDC management user.",
+				"operationId": "UserManagementService_getUserLockWithoutNamespace",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User name for which user lock details should be returned"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "UserLockRestRep Returns the user lock for the specified user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_getUserLockWithoutNamespaceResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/users/{uid}/tags": {
+			"get": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Gets the user tags details for the specified user belonging to specified namespace",
+				"description": "Gets the user tags for the specified user belonging to the specified namespace.",
+				"operationId": "UserManagementService_getUserTagsWithNamespace",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User name for which user tags should be returned"
+					},
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace to which user belongs"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "The user tags for the specified user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserManagementService_getUserTagsWithNamespaceResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"object_user_tag": {
+												"user_name": "casprofile1",
+												"tags": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Updates user tags for the specified user - this is append operation",
+				"description": "Updates the tags provided tags for the specified user.\n Note that the operation will append tags with the new values",
+				"operationId": "UserManagementService_addUserTag",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User Name for the User Tags which are being added"
+					},
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for the User Tags which are being added"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to local user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserManagementService_addUserTagRequest"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Updates user tags for the specified user",
+				"description": "Updates the tags provided tags for the specified user.\n Note that the operation will over write the existing tags with the new values\n All the specified tags must be present in the User.\n If any one of the tags is missing in the User, this will throw appropriate Error code (TBD)",
+				"operationId": "UserManagementService_updateUserTag",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "User Name for the User Tags which are being modified"
+					},
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for the User Tags which are being modified"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to local user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserManagementService_updateUserTagRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"User Management"
+				],
+				"summary": "Deletes user tags for specified user",
+				"description": "Deletes specific user tags for specified user.",
+				"operationId": "UserManagementService_removeUserTags",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "UserName for User Tags which is being deleted"
+					},
+					{
+						"name": "namespace",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Namespace for the User Tags which are being deleted"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>Success</b> or <b>Failure</b> to delete user tags",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserManagementService_removeUserTagsRequest"
 							}
 						}
 					}
@@ -12291,6 +13724,167 @@
 					}
 				}
 			},
+			"MgmtUserInfoService_createLocalUserInfoRequest": {
+				"type": "object",
+				"properties": {
+					"userId": {
+						"type": "string",
+						"description": "Management user id"
+					},
+					"password": {
+						"type": "string",
+						"description": "Password for the management user"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "If set to true, assigns the  management user to the System Admin role"
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "If set to true, assigns the management user to the System Monitor role"
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "If set to true, assigns the management user to the Security Admin role"
+					},
+					"is_external_group": {
+						"type": "boolean",
+						"description": "If set to true, its a domain."
+					}
+				},
+				"required": [
+					"userId"
+				]
+			},
+			"MgmtUserInfoService_createLocalUserInfoResponse": {
+				"type": "object",
+				"properties": {
+					"userId": {
+						"type": "string",
+						"description": "User Id"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Admin"
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Monitor"
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is Security Admin"
+					},
+					"is_external_group": {
+						"type": "boolean",
+						"description": "If set to true, its a domain."
+					},
+					"is_locked": {
+						"type": "boolean",
+						"description": "If set to true, the user is locked."
+					},
+					"last_time_password_changed": {
+						"type": "string",
+						"description": "Value of last time password changed"
+					}
+				}
+			},
+			"MgmtUserInfoService_modifyLocalUserInfoRequest": {
+				"type": "object",
+				"properties": {
+					"password": {
+						"type": "string",
+						"description": "Password for the management user"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "Assigns or removes management user to /from System Admin role."
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "Assigns or removes management user to /from System Monitor role."
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "Assigns or removes management user to/from Security Admin role."
+					}
+				}
+			},
+			"MgmtUserInfoService_getLocalUserInfoResponse": {
+				"type": "object",
+				"properties": {
+					"userId": {
+						"type": "string",
+						"description": "User Id"
+					},
+					"isSystemAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Admin"
+					},
+					"isSystemMonitor": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is System Monitor"
+					},
+					"isSecurityAdmin": {
+						"type": "boolean",
+						"description": "Flag indicating whether management user is Security Admin"
+					},
+					"is_external_group": {
+						"type": "boolean",
+						"description": "If set to true, its a domain."
+					},
+					"is_locked": {
+						"type": "boolean",
+						"description": "If set to true, the user is locked."
+					},
+					"last_time_password_changed": {
+						"type": "string",
+						"description": "Value of last time password changed"
+					}
+				}
+			},
+			"MgmtUserInfoService_getLocalUserInfosResponse": {
+				"type": "object",
+				"properties": {
+					"mgmt_user_info": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"userId": {
+									"type": "string",
+									"description": "User Id"
+								},
+								"isSystemAdmin": {
+									"type": "boolean",
+									"description": "Flag indicating whether management user is System Admin"
+								},
+								"isSystemMonitor": {
+									"type": "boolean",
+									"description": "Flag indicating whether management user is System Monitor"
+								},
+								"isSecurityAdmin": {
+									"type": "boolean",
+									"description": "Flag indicating whether management user is Security Admin"
+								},
+								"is_external_group": {
+									"type": "boolean",
+									"description": "If set to true, its a domain."
+								},
+								"is_locked": {
+									"type": "boolean",
+									"description": "If set to true, the user is locked."
+								},
+								"last_time_password_changed": {
+									"type": "string",
+									"description": "Value of last time password changed"
+								}
+							}
+						},
+						"description": "List of management user infos"
+					}
+				}
+			},
 			"ObjectVarrayService_createVirtualArrayRequest": {
 				"type": "object",
 				"properties": {
@@ -14054,6 +15648,421 @@
 					"internal": {
 						"type": "boolean",
 						"description": "Indicated whether the resource is an internal resource"
+					}
+				}
+			},
+			"UserManagementService_addUserRequest": {
+				"type": "object",
+				"properties": {
+					"user": {
+						"type": "string",
+						"description": "User to be created"
+					},
+					"namespace": {
+						"type": "string",
+						"description": "Namespace identifier to associate with the user"
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of a tag"
+								},
+								"value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "A list of arbitrary tags to assign to the new user.  These\n can be used to track additional information about the user."
+					}
+				},
+				"required": [
+					"user",
+					"namespace"
+				]
+			},
+			"UserManagementService_addUserResponse": {
+				"type": "object",
+				"properties": {
+					"secret_key": {
+						"type": "string",
+						"description": "Secret key"
+					},
+					"key_timestamp": {
+						"type": "string",
+						"description": "Secret key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp": {
+						"type": "string",
+						"description": "Secret key expiry timestamp in ISO-8601 format"
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "A link for this resource"
+					},
+					"secret_key_id": {
+						"type": "string",
+						"description": "SHA-256 hash of Secret key"
+					}
+				}
+			},
+			"UserManagementService_removeUserRequest": {
+				"type": "object",
+				"properties": {
+					"user": {
+						"type": "string",
+						"description": "User to be deleted"
+					},
+					"namespace": {
+						"type": "string",
+						"description": "Namespace identifier to associate with the user"
+					}
+				},
+				"required": [
+					"user"
+				]
+			},
+			"UserManagementService_getUserInfoResponse": {
+				"type": "object",
+				"properties": {
+					"namespace": {
+						"type": "string",
+						"format": "uri",
+						"description": "Namespace that owns the user"
+					},
+					"name": {
+						"type": "string",
+						"format": "uri",
+						"description": "User name"
+					},
+					"locked": {
+						"type": "boolean",
+						"description": "Set true if user needs to be is to be locked, false otherwise"
+					},
+					"created": {
+						"type": "string",
+						"description": "Gets the user's creation date as an ISO-8601 timestamp."
+					},
+					"tag": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of a tag"
+								},
+								"value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Gets the tags associated with this user. May be null if the user has no\n tags."
+					},
+					"centerapassword": {
+						"type": "string",
+						"description": "Gets the user's centerapassword."
+					},
+					"swiftpassword": {
+						"type": "string",
+						"description": "Gets the user's swiftpassword."
+					}
+				},
+				"required": [
+					"namespace",
+					"name",
+					"locked",
+					"created",
+					"centerapassword",
+					"swiftpassword"
+				]
+			},
+			"UserManagementService_getAllUsersResponse": {
+				"type": "object",
+				"properties": {
+					"blobuser": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"userid": {
+									"type": "string",
+									"format": "uri",
+									"description": "Userid of the user"
+								},
+								"namespace": {
+									"type": "string",
+									"format": "uri",
+									"description": "Namespace associated with the corresponding user"
+								}
+							},
+							"required": [
+								"userid"
+							]
+						},
+						"description": "A list of users provisioned with the object service",
+						"x-is-paginated-resp": "true"
+					},
+					"MaxUsers": {
+						"type": "integer",
+						"description": "Number of users requested."
+					},
+					"NextMarker": {
+						"type": "string",
+						"description": "Reference object to retrieve next set of objects."
+					},
+					"Filter": {
+						"type": "string",
+						"description": "filter used to get the objects."
+					},
+					"NextPageLink": {
+						"type": "string",
+						"description": "link to get the next page."
+					}
+				},
+				"x-is-paginated": "true"
+			},
+			"UserManagementService_getUsersForNamespaceResponse": {
+				"type": "object",
+				"properties": {
+					"blobuser": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"userid": {
+									"type": "string",
+									"format": "uri",
+									"description": "Userid of the user"
+								},
+								"namespace": {
+									"type": "string",
+									"format": "uri",
+									"description": "Namespace associated with the corresponding user"
+								}
+							},
+							"required": [
+								"userid"
+							]
+						},
+						"description": "A list of users provisioned with the object service",
+						"x-is-paginated-resp": "true"
+					},
+					"MaxUsers": {
+						"type": "integer",
+						"description": "Number of users requested."
+					},
+					"NextMarker": {
+						"type": "string",
+						"description": "Reference object to retrieve next set of objects."
+					},
+					"Filter": {
+						"type": "string",
+						"description": "filter used to get the objects."
+					},
+					"NextPageLink": {
+						"type": "string",
+						"description": "link to get the next page."
+					}
+				},
+				"x-is-paginated": "true"
+			},
+			"UserManagementService_queryUsersResponse": {
+				"type": "object",
+				"properties": {
+					"blobuser": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"userid": {
+									"type": "string",
+									"format": "uri",
+									"description": "Userid of the user"
+								},
+								"namespace": {
+									"type": "string",
+									"format": "uri",
+									"description": "Namespace associated with the corresponding user"
+								}
+							},
+							"required": [
+								"userid"
+							]
+						},
+						"description": "A list of users provisioned with the object service",
+						"x-is-paginated-resp": "true"
+					},
+					"MaxUsers": {
+						"type": "integer",
+						"description": "Number of users requested."
+					},
+					"NextMarker": {
+						"type": "string",
+						"description": "Reference object to retrieve next set of objects."
+					},
+					"Filter": {
+						"type": "string",
+						"description": "filter used to get the objects."
+					},
+					"NextPageLink": {
+						"type": "string",
+						"description": "link to get the next page."
+					}
+				},
+				"x-is-paginated": "true"
+			},
+			"UserManagementService_setUserLockRequest": {
+				"type": "object",
+				"properties": {
+					"user": {
+						"type": "string",
+						"description": "User name to be locked/unlocked"
+					},
+					"namespace": {
+						"type": "string",
+						"description": "Namespace for this user"
+					},
+					"isLocked": {
+						"type": "boolean",
+						"description": "Set true if user needs to be is to be locked, false otherwise."
+					}
+				},
+				"required": [
+					"user",
+					"isLocked"
+				]
+			},
+			"UserManagementService_getUserLockWithNamespaceResponse": {
+				"type": "object",
+				"properties": {
+					"user_name": {
+						"type": "string",
+						"description": "User name"
+					},
+					"isLocked": {
+						"type": "boolean",
+						"description": "True if user is locked, false otherwise."
+					}
+				}
+			},
+			"UserManagementService_getUserLockWithoutNamespaceResponse": {
+				"type": "object",
+				"properties": {
+					"user_name": {
+						"type": "string",
+						"description": "User name"
+					},
+					"isLocked": {
+						"type": "boolean",
+						"description": "True if user is locked, false otherwise."
+					}
+				}
+			},
+			"UserManagementService_getUserTagsWithNamespaceResponse": {
+				"type": "object",
+				"properties": {
+					"user_name": {
+						"type": "string",
+						"description": "User name"
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of a tag"
+								},
+								"value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Gets the tags associated with this user. Required."
+					}
+				}
+			},
+			"UserManagementService_addUserTagRequest": {
+				"type": "object",
+				"properties": {
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of a tag"
+								},
+								"value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Tags - List of user Tags"
+					}
+				}
+			},
+			"UserManagementService_updateUserTagRequest": {
+				"type": "object",
+				"properties": {
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of a tag"
+								},
+								"value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Tags - List of user Tags"
+					}
+				}
+			},
+			"UserManagementService_removeUserTagsRequest": {
+				"type": "object",
+				"properties": {
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of a tag"
+								},
+								"value": {
+									"type": "string",
+									"description": "The value of a tag"
+								}
+							}
+						},
+						"description": "Tags - List of user tags"
 					}
 				}
 			},
