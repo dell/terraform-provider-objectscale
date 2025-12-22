@@ -47,7 +47,7 @@ func (d *IAMPolicyDataSource) Metadata(ctx context.Context, req datasource.Metad
 	resp.TypeName = req.ProviderTypeName + "_iam_policy"
 }
 
-// datasource item schema
+// datasource item schema.
 func (d *IAMPolicyDataSource) itemSchema() schema.ListNestedAttribute {
 	return schema.ListNestedAttribute{
 		Description:         "List of IAM Policies.",
@@ -332,7 +332,7 @@ func (d IAMPolicyDataSource) updateState(iam_policys []iamPolicyDsResult) []mode
 }
 
 // Policy Version API returns document in URL encoded format
-// This function decodes the document
+// This function decodes the document.
 func (d IAMPolicyDataSource) decodeDocument(in *string) types.String {
 	if in == nil {
 		return types.StringValue("")
@@ -347,7 +347,7 @@ func (d IAMPolicyDataSource) decodeDocument(in *string) types.String {
 }
 
 // attached policy APIs return basic data
-// This function fetches full details of attached policies
+// This function fetches full details of attached policies.
 func (d IAMPolicyDataSource) populateAttachedPolicies(ctx context.Context, namespace string, iam_policys []clientgen.IamPolicy) ([]clientgen.IamPolicy, error) {
 	var ret []clientgen.IamPolicy
 	for _, v := range iam_policys {
@@ -361,13 +361,13 @@ func (d IAMPolicyDataSource) populateAttachedPolicies(ctx context.Context, names
 	return ret, nil
 }
 
-// a struct that stores a IAM policy and its version details together
+// a struct that stores a IAM policy and its version details together.
 type iamPolicyDsResult struct {
 	Policy   clientgen.IamPolicy
 	Versions []clientgen.IamPolicyVersion
 }
 
-// Populate version details for each policy
+// Populate version details for each policy.
 func (d IAMPolicyDataSource) populateVersions(ctx context.Context, namespace string, iam_policys []clientgen.IamPolicy) ([]iamPolicyDsResult, error) {
 	var ret []iamPolicyDsResult
 	for _, v := range iam_policys {

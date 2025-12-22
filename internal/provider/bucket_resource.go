@@ -652,11 +652,27 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert aclVal to types.Object for user_acl")
 				return
 			}
-			user := acl.Attributes()["name"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.Set)
+			userVal, ok := acl.Attributes()["name"].(types.String)
+			if !ok {
+				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert acl.Attributes()[\"name\"] to types.String for user_acl")
+				return
+			}
+			user := userVal.ValueString()
+			permAttr, ok := acl.Attributes()["permission"]
+			if !ok {
+				continue
+			}
+			permList, ok := permAttr.(types.Set)
+			if !ok {
+				continue
+			}
 			var permissions []string
 			for _, p := range permList.Elements() {
-				permissions = append(permissions, p.(types.String).ValueString())
+				permStr, ok := p.(types.String)
+				if !ok {
+					continue
+				}
+				permissions = append(permissions, permStr.ValueString())
 			}
 			userAclList = append(userAclList, clientgen.BucketServiceSetBucketACLRequestAclUserAclInner{
 				User:       &user,
@@ -669,11 +685,27 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert aclVal to types.Object for group_acl")
 				return
 			}
-			group := acl.Attributes()["name"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.Set)
+			groupVal, ok := acl.Attributes()["name"].(types.String)
+			if !ok {
+				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert acl.Attributes()[\"name\"] to types.String for group_acl")
+				return
+			}
+			group := groupVal.ValueString()
+			permAttr, ok := acl.Attributes()["permission"]
+			if !ok {
+				continue
+			}
+			permList, ok := permAttr.(types.Set)
+			if !ok {
+				continue
+			}
 			var permissions []string
 			for _, p := range permList.Elements() {
-				permissions = append(permissions, p.(types.String).ValueString())
+				permStr, ok := p.(types.String)
+				if !ok {
+					continue
+				}
+				permissions = append(permissions, permStr.ValueString())
 			}
 			groupAclList = append(groupAclList, clientgen.BucketServiceSetBucketACLRequestAclGroupAclInner{
 				Group:      &group,
@@ -686,11 +718,27 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert aclVal to types.Object for custom_group_acl")
 				return
 			}
-			customGroup := acl.Attributes()["name"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.Set)
+			nameAttr, ok := acl.Attributes()["name"].(types.String)
+			if !ok {
+				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert acl.Attributes()[\"name\"] to types.String for custom_group_acl")
+				return
+			}
+			customGroup := nameAttr.ValueString()
+			permAttr, ok := acl.Attributes()["permission"]
+			if !ok {
+				continue
+			}
+			permList, ok := permAttr.(types.Set)
+			if !ok {
+				continue
+			}
 			var permissions []string
 			for _, p := range permList.Elements() {
-				permissions = append(permissions, p.(types.String).ValueString())
+				permStr, ok := p.(types.String)
+				if !ok {
+					continue
+				}
+				permissions = append(permissions, permStr.ValueString())
 			}
 			customAclList = append(customAclList, clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner{
 				Customgroup: &customGroup,
@@ -997,7 +1045,11 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	stateTags := make(map[string]string)
 	for _, tagObj := range state.Tag.Elements() {
-		tagMap := tagObj.(types.Object).Attributes()
+		tagObjTyped, ok := tagObj.(types.Object)
+		if !ok {
+			continue
+		}
+		tagMap := tagObjTyped.Attributes()
 		keyVal, _ := tagMap["key"].(types.String)
 		valueVal, _ := tagMap["value"].(types.String)
 		stateTags[keyVal.ValueString()] = valueVal.ValueString()
@@ -1005,7 +1057,11 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	planTags := make(map[string]string)
 	for _, tagObj := range plan.Tag.Elements() {
-		tagMap := tagObj.(types.Object).Attributes()
+		tagObjTyped, ok := tagObj.(types.Object)
+		if !ok {
+			continue
+		}
+		tagMap := tagObjTyped.Attributes()
 		keyVal, _ := tagMap["key"].(types.String)
 		valueVal, _ := tagMap["value"].(types.String)
 		planTags[keyVal.ValueString()] = valueVal.ValueString()
@@ -1278,12 +1334,30 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 	aclMap := func(acls types.Set) map[string][]string {
 		result := make(map[string][]string)
 		for _, aclVal := range acls.Elements() {
-			acl := aclVal.(types.Object)
-			user := acl.Attributes()["name"].(types.String).ValueString()
-			permList := acl.Attributes()["permission"].(types.Set)
+			acl, ok := aclVal.(types.Object)
+			if !ok {
+				continue
+			}
+			nameAttr, ok := acl.Attributes()["name"].(types.String)
+			if !ok {
+				continue
+			}
+			user := nameAttr.ValueString()
+			permAttr, ok := acl.Attributes()["permission"]
+			if !ok {
+				continue
+			}
+			permList, ok := permAttr.(types.Set)
+			if !ok {
+				continue
+			}
 			var permissions []string
 			for _, p := range permList.Elements() {
-				permissions = append(permissions, p.(types.String).ValueString())
+				permStr, ok := p.(types.String)
+				if !ok {
+					continue
+				}
+				permissions = append(permissions, permStr.ValueString())
 			}
 			result[user] = permissions
 		}

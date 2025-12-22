@@ -46,7 +46,7 @@ func (d *VDCDataSource) Metadata(ctx context.Context, req datasource.MetadataReq
 	resp.TypeName = req.ProviderTypeName + "_vdc"
 }
 
-// datasource item schema
+// datasource item schema.
 func (d *VDCDataSource) itemSchema() schema.ListNestedAttribute {
 	return schema.ListNestedAttribute{
 		Description:         "List of Virtual Data Centers fetched using this datasource.",

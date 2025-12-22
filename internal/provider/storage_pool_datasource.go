@@ -46,7 +46,7 @@ func (d *StoragePoolDataSource) Metadata(ctx context.Context, req datasource.Met
 	resp.TypeName = req.ProviderTypeName + "_storage_pool"
 }
 
-// datasource item schema
+// datasource item schema.
 func (d *StoragePoolDataSource) itemSchema() schema.ListNestedAttribute {
 	return schema.ListNestedAttribute{
 		Description:         "List of Storage Pools fetched using this datasource.",
