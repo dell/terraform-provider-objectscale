@@ -647,7 +647,11 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		var groupAclList []clientgen.BucketServiceSetBucketACLRequestAclGroupAclInner
 		var customAclList []clientgen.BucketServiceSetBucketACLRequestAclCustomgroupAclInner
 		for _, aclVal := range plan.UserAcl.Elements() {
-			acl := aclVal.(types.Object)
+			acl, ok := aclVal.(types.Object)
+			if !ok {
+				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert aclVal to types.Object for user_acl")
+				return
+			}
 			user := acl.Attributes()["name"].(types.String).ValueString()
 			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
@@ -660,7 +664,11 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			})
 		}
 		for _, aclVal := range plan.GroupAcl.Elements() {
-			acl := aclVal.(types.Object)
+			acl, ok := aclVal.(types.Object)
+			if !ok {
+				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert aclVal to types.Object for group_acl")
+				return
+			}
 			group := acl.Attributes()["name"].(types.String).ValueString()
 			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
@@ -673,7 +681,11 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			})
 		}
 		for _, aclVal := range plan.CustomGroupAcl.Elements() {
-			acl := aclVal.(types.Object)
+			acl, ok := aclVal.(types.Object)
+			if !ok {
+				resp.Diagnostics.AddError("Type Assertion Error", "Failed to assert aclVal to types.Object for custom_group_acl")
+				return
+			}
 			customGroup := acl.Attributes()["name"].(types.String).ValueString()
 			permList := acl.Attributes()["permission"].(types.Set)
 			var permissions []string
@@ -703,7 +715,13 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			Execute()
 		if err != nil {
 			resp.Diagnostics.AddError("Error setting bucket ACL", err.Error())
-			r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
+			_, _, err := r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error deleting Bucket",
+					err.Error(),
+				)
+			}
 			return
 		}
 	}
@@ -723,7 +741,13 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 			Execute()
 		if err != nil {
 			resp.Diagnostics.AddError("Error setting bucket policy", err.Error())
-			r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
+			_, _, err := r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error deleting Bucket",
+					err.Error(),
+				)
+			}
 			return
 		}
 	}
@@ -736,9 +760,6 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		plan.Namespace.ValueString(),
 		plan.BucketPolicy.ValueString(),
 		aclFromPlan,
-		plan.UserAcl,
-		plan.GroupAcl,
-		plan.CustomGroupAcl,
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -767,9 +788,6 @@ func (r *BucketResource) Read(ctx context.Context, req resource.ReadRequest, res
 		state.Namespace.ValueString(),
 		state.BucketPolicy.ValueString(),
 		aclFromPlan,
-		state.UserAcl,
-		state.GroupAcl,
-		state.CustomGroupAcl,
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -1257,12 +1275,6 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 	}
 
-	// Handle user_acl, group_acl, and custom_group_acl updates
-	// Convert state and plan ACLs to maps for comparison
-	type aclEntry struct {
-		User        string
-		Permissions []string
-	}
 	aclMap := func(acls types.Set) map[string][]string {
 		result := make(map[string][]string)
 		for _, aclVal := range acls.Elements() {
@@ -1385,9 +1397,6 @@ func (r *BucketResource) Update(ctx context.Context, req resource.UpdateRequest,
 		plan.Namespace.ValueString(),
 		plan.BucketPolicy.ValueString(),
 		aclFromPlan,
-		plan.UserAcl,
-		plan.GroupAcl,
-		plan.CustomGroupAcl,
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -1435,9 +1444,6 @@ func (r *BucketResource) ImportState(ctx context.Context, req resource.ImportSta
 		namespace,
 		"", // No bucket policy from state
 		true,
-		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
-		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
-		types.SetNull(types.ObjectType{AttrTypes: map[string]attr.Type{"name": types.StringType, "permission": types.SetType{ElemType: types.StringType}}}),
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -1591,7 +1597,7 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 	return m
 }
 
-func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool, planUserAcl, planGroupAcl, planCustomGroupAcl types.Set) (*models.BucketResourceModel, diag.Diagnostics) {
+func (r *BucketResource) setStateFromAPI(ctx context.Context, name, namespace, bucketPolicy string, aclFromPlan bool) (*models.BucketResourceModel, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	bucketData, _, err := r.client.GenClient.BucketApi.BucketServiceGetBucketInfo(ctx, name).Namespace(namespace).Execute()
