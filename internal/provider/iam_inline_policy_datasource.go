@@ -160,7 +160,7 @@ func (d *IAMInlinePolicyDataSource) Read(ctx context.Context, req datasource.Rea
 		if strings.Contains(err.Error(), `"Code":"NoSuchEntity"`) {
 
 			resp.Diagnostics.AddError(
-				"Namespace does not exist or No inline policies found", err.Error(),
+				"Namespace does not exist or Entity does not exist.", err.Error(),
 			)
 			return
 		}

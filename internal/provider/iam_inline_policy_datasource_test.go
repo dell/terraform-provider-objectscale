@@ -141,7 +141,7 @@ func TestAccIAMInlinePolicyDataSource_NegativeScenarios(t *testing.T) {
 					}
 				`,
 				ExpectError: regexp.MustCompile(
-					"Namespace does not exist or No inline policies found",
+					"Namespace does not exist or Entity does not exist.",
 				),
 			},
 		},
