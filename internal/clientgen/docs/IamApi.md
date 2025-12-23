@@ -10,11 +10,15 @@ Method | HTTP request | Description
 [**IamServiceAttachUserPolicy**](IamApi.md#IamServiceAttachUserPolicy) | **Post** /iam?Action&#x3D;AttachUserPolicy | Attach a Managed Policy to User.
 [**IamServiceCreateAccessKey**](IamApi.md#IamServiceCreateAccessKey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 [**IamServiceCreateGroup**](IamApi.md#IamServiceCreateGroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
+[**IamServiceCreatePolicy**](IamApi.md#IamServiceCreatePolicy) | **Post** /iam?Action&#x3D;CreatePolicy | Create Managed Policy
+[**IamServiceCreatePolicyVersion**](IamApi.md#IamServiceCreatePolicyVersion) | **Post** /iam?Action&#x3D;CreatePolicyVersion | Create a new version of the specified managed policy.
 [**IamServiceCreateRole**](IamApi.md#IamServiceCreateRole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
 [**IamServiceCreateUser**](IamApi.md#IamServiceCreateUser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
 [**IamServiceDeleteAccessKey**](IamApi.md#IamServiceDeleteAccessKey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 [**IamServiceDeleteGroup**](IamApi.md#IamServiceDeleteGroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 [**IamServiceDeleteGroupPolicy**](IamApi.md#IamServiceDeleteGroupPolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
+[**IamServiceDeletePolicy**](IamApi.md#IamServiceDeletePolicy) | **Post** /iam?Action&#x3D;DeletePolicy | Delete Managed Policy
+[**IamServiceDeletePolicyVersion**](IamApi.md#IamServiceDeletePolicyVersion) | **Post** /iam?Action&#x3D;DeletePolicyVersion | Delete a version of Managed Policy.
 [**IamServiceDeleteRole**](IamApi.md#IamServiceDeleteRole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
 [**IamServiceDeleteRolePermissionsBoundary**](IamApi.md#IamServiceDeleteRolePermissionsBoundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 [**IamServiceDeleteRolePolicy**](IamApi.md#IamServiceDeleteRolePolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
@@ -53,6 +57,7 @@ Method | HTTP request | Description
 [**IamServicePutUserPermissionsBoundary**](IamApi.md#IamServicePutUserPermissionsBoundary) | **Post** /iam?Action&#x3D;PutUserPermissionsBoundary | Update User&#39;s PermissionsBoundary.
 [**IamServicePutUserPolicy**](IamApi.md#IamServicePutUserPolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
 [**IamServiceRemoveUserFromGroup**](IamApi.md#IamServiceRemoveUserFromGroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
+[**IamServiceSetDefaultPolicyVersion**](IamApi.md#IamServiceSetDefaultPolicyVersion) | **Post** /iam?Action&#x3D;SetDefaultPolicyVersion | set default version of Managed Policy.
 [**IamServiceTagRole**](IamApi.md#IamServiceTagRole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
 [**IamServiceTagUser**](IamApi.md#IamServiceTagUser) | **Post** /iam?Action&#x3D;TagUser | Adds one or more tags to a specified IAM User.
 [**IamServiceUntagRole**](IamApi.md#IamServiceUntagRole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
@@ -481,6 +486,152 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceCreatePolicy
+
+> IamServiceCreatePolicyResponse IamServiceCreatePolicy(ctx).Description(description).Path(path).PolicyDocument(policyDocument).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+
+Create Managed Policy
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    description := "description_example" // string | A friendly description of the policy. (optional)
+    path := "path_example" // string | The path for the policy. Optional, defaults to \"/\" and only \"/\" is allowed. (optional)
+    policyDocument := "policyDocument_example" // string | The policy document in JSON format. (optional)
+    policyName := "policyName_example" // string | Simple name identifying the policy. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreatePolicy(context.Background()).Description(description).Path(path).PolicyDocument(policyDocument).PolicyName(policyName).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreatePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreatePolicy`: IamServiceCreatePolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreatePolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreatePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **description** | **string** | A friendly description of the policy. | 
+ **path** | **string** | The path for the policy. Optional, defaults to \&quot;/\&quot; and only \&quot;/\&quot; is allowed. | 
+ **policyDocument** | **string** | The policy document in JSON format. | 
+ **policyName** | **string** | Simple name identifying the policy. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreatePolicyResponse**](IamServiceCreatePolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceCreatePolicyVersion
+
+> IamServiceCreatePolicyVersionResponse IamServiceCreatePolicyVersion(ctx).PolicyArn(policyArn).PolicyDocument(policyDocument).SetAsDefault(setAsDefault).XEmcNamespace(xEmcNamespace).Execute()
+
+Create a new version of the specified managed policy.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | ARN of the IAM policy to add a new version. (optional)
+    policyDocument := "policyDocument_example" // string | The policy document in JSON format. (optional)
+    setAsDefault := true // bool | Specifies whether to set this version as the policy's default version. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreatePolicyVersion(context.Background()).PolicyArn(policyArn).PolicyDocument(policyDocument).SetAsDefault(setAsDefault).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreatePolicyVersion``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreatePolicyVersion`: IamServiceCreatePolicyVersionResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreatePolicyVersion`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreatePolicyVersionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | ARN of the IAM policy to add a new version. | 
+ **policyDocument** | **string** | The policy document in JSON format. | 
+ **setAsDefault** | **bool** | Specifies whether to set this version as the policy&#39;s default version. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreatePolicyVersionResponse**](IamServiceCreatePolicyVersionResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceCreateRole
 
 > IamServiceCreateRoleResponse IamServiceCreateRole(ctx).RoleName(roleName).AssumeRolePolicyDocument(assumeRolePolicyDocument).MaxSessionDuration(maxSessionDuration).Description(description).Path(path).PermissionsBoundary(permissionsBoundary).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
@@ -823,6 +974,144 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **groupName** | **string** | Name of the group to delete the inline policy. | 
  **policyName** | **string** | Name of the policy whose Policy Document needs to be deleted. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeletePolicy
+
+> BasicResponse IamServiceDeletePolicy(ctx).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete Managed Policy
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | Arn of the policy to delete. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeletePolicy(context.Background()).PolicyArn(policyArn).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeletePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeletePolicy`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeletePolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeletePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | Arn of the policy to delete. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeletePolicyVersion
+
+> BasicResponse IamServiceDeletePolicyVersion(ctx).PolicyArn(policyArn).VersionId(versionId).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete a version of Managed Policy.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | ARN of the IAM Managed policy to delete. (optional)
+    versionId := "versionId_example" // string | The policy version to delete. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeletePolicyVersion(context.Background()).PolicyArn(policyArn).VersionId(versionId).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeletePolicyVersion``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeletePolicyVersion`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeletePolicyVersion`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeletePolicyVersionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | ARN of the IAM Managed policy to delete. | 
+ **versionId** | **string** | The policy version to delete. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
 ### Return type
@@ -3521,6 +3810,76 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **groupName** | **string** | The name of the group to update. | 
  **userName** | **string** | The name of the user to be removed. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceSetDefaultPolicyVersion
+
+> BasicResponse IamServiceSetDefaultPolicyVersion(ctx).PolicyArn(policyArn).VersionId(versionId).XEmcNamespace(xEmcNamespace).Execute()
+
+set default version of Managed Policy.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    policyArn := "policyArn_example" // string | ARN of the IAM Managed policy to set default version. (optional)
+    versionId := "versionId_example" // string | Policy Version to be set as default. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceSetDefaultPolicyVersion(context.Background()).PolicyArn(policyArn).VersionId(versionId).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceSetDefaultPolicyVersion``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceSetDefaultPolicyVersion`: BasicResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceSetDefaultPolicyVersion`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceSetDefaultPolicyVersionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **policyArn** | **string** | ARN of the IAM Managed policy to set default version. | 
+ **versionId** | **string** | Policy Version to be set as default. | 
  **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
 
 ### Return type

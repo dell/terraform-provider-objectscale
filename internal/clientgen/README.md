@@ -137,11 +137,15 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceAttachUserPolicy**](docs/IamApi.md#iamserviceattachuserpolicy) | **Post** /iam?Action&#x3D;AttachUserPolicy | Attach a Managed Policy to User.
 *IamApi* | [**IamServiceCreateAccessKey**](docs/IamApi.md#iamservicecreateaccesskey) | **Post** /iam?Action&#x3D;CreateAccessKey | Create AccessKey for User.
 *IamApi* | [**IamServiceCreateGroup**](docs/IamApi.md#iamservicecreategroup) | **Post** /iam?Action&#x3D;CreateGroup | Creates a new IAM Group.
+*IamApi* | [**IamServiceCreatePolicy**](docs/IamApi.md#iamservicecreatepolicy) | **Post** /iam?Action&#x3D;CreatePolicy | Create Managed Policy
+*IamApi* | [**IamServiceCreatePolicyVersion**](docs/IamApi.md#iamservicecreatepolicyversion) | **Post** /iam?Action&#x3D;CreatePolicyVersion | Create a new version of the specified managed policy.
 *IamApi* | [**IamServiceCreateRole**](docs/IamApi.md#iamservicecreaterole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
 *IamApi* | [**IamServiceCreateUser**](docs/IamApi.md#iamservicecreateuser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
 *IamApi* | [**IamServiceDeleteAccessKey**](docs/IamApi.md#iamservicedeleteaccesskey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 *IamApi* | [**IamServiceDeleteGroup**](docs/IamApi.md#iamservicedeletegroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
 *IamApi* | [**IamServiceDeleteGroupPolicy**](docs/IamApi.md#iamservicedeletegrouppolicy) | **Post** /iam?Action&#x3D;DeleteGroupPolicy | Delete specific inlinePolicy for IAM Group.
+*IamApi* | [**IamServiceDeletePolicy**](docs/IamApi.md#iamservicedeletepolicy) | **Post** /iam?Action&#x3D;DeletePolicy | Delete Managed Policy
+*IamApi* | [**IamServiceDeletePolicyVersion**](docs/IamApi.md#iamservicedeletepolicyversion) | **Post** /iam?Action&#x3D;DeletePolicyVersion | Delete a version of Managed Policy.
 *IamApi* | [**IamServiceDeleteRole**](docs/IamApi.md#iamservicedeleterole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePermissionsBoundary**](docs/IamApi.md#iamservicedeleterolepermissionsboundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePolicy**](docs/IamApi.md#iamservicedeleterolepolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
@@ -180,6 +184,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServicePutUserPermissionsBoundary**](docs/IamApi.md#iamserviceputuserpermissionsboundary) | **Post** /iam?Action&#x3D;PutUserPermissionsBoundary | Update User&#39;s PermissionsBoundary.
 *IamApi* | [**IamServicePutUserPolicy**](docs/IamApi.md#iamserviceputuserpolicy) | **Post** /iam?Action&#x3D;PutUserPolicy | Add or Update Inline Policy for IAM User.
 *IamApi* | [**IamServiceRemoveUserFromGroup**](docs/IamApi.md#iamserviceremoveuserfromgroup) | **Post** /iam?Action&#x3D;RemoveUserFromGroup | Remove User from a Group.
+*IamApi* | [**IamServiceSetDefaultPolicyVersion**](docs/IamApi.md#iamservicesetdefaultpolicyversion) | **Post** /iam?Action&#x3D;SetDefaultPolicyVersion | set default version of Managed Policy.
 *IamApi* | [**IamServiceTagRole**](docs/IamApi.md#iamservicetagrole) | **Post** /iam?Action&#x3D;TagRole | Adds one or more tags to a specified IAM Role.
 *IamApi* | [**IamServiceTagUser**](docs/IamApi.md#iamservicetaguser) | **Post** /iam?Action&#x3D;TagUser | Adds one or more tags to a specified IAM User.
 *IamApi* | [**IamServiceUntagRole**](docs/IamApi.md#iamserviceuntagrole) | **Post** /iam?Action&#x3D;UntagRole | Removes the specified tags from a specified IAM Role.
@@ -305,6 +310,12 @@ Class | Method | HTTP request | Description
  - [IamServiceCreateGroupResponse](docs/IamServiceCreateGroupResponse.md)
  - [IamServiceCreateGroupResponseCreateGroupResult](docs/IamServiceCreateGroupResponseCreateGroupResult.md)
  - [IamServiceCreateGroupResponseCreateGroupResultGroup](docs/IamServiceCreateGroupResponseCreateGroupResultGroup.md)
+ - [IamServiceCreatePolicyResponse](docs/IamServiceCreatePolicyResponse.md)
+ - [IamServiceCreatePolicyResponseCreatePolicyResult](docs/IamServiceCreatePolicyResponseCreatePolicyResult.md)
+ - [IamServiceCreatePolicyResponseCreatePolicyResultPolicy](docs/IamServiceCreatePolicyResponseCreatePolicyResultPolicy.md)
+ - [IamServiceCreatePolicyVersionResponse](docs/IamServiceCreatePolicyVersionResponse.md)
+ - [IamServiceCreatePolicyVersionResponseCreatePolicyVersionResult](docs/IamServiceCreatePolicyVersionResponseCreatePolicyVersionResult.md)
+ - [IamServiceCreatePolicyVersionResponseCreatePolicyVersionResultPolicyVersion](docs/IamServiceCreatePolicyVersionResponseCreatePolicyVersionResultPolicyVersion.md)
  - [IamServiceCreateRoleResponse](docs/IamServiceCreateRoleResponse.md)
  - [IamServiceCreateUserResponse](docs/IamServiceCreateUserResponse.md)
  - [IamServiceCreateUserResponseCreateUserResult](docs/IamServiceCreateUserResponseCreateUserResult.md)

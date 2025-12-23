@@ -17,7 +17,10 @@ limitations under the License.
 
 package models
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 // IamPolicyDataSourceModel represents the schema for the IamPolicy data source.
 type IamPolicyDataSourceModel struct {
@@ -52,4 +55,14 @@ type IamPolicyDataSourceIamPolicyVersionModel struct {
 	VersionID        types.String `tfsdk:"version_id"`
 	CreateDate       types.String `tfsdk:"create_date"`
 	Document         types.String `tfsdk:"document"`
+}
+
+type IamPolicyResourceModel struct {
+	PolicyName     types.String         `tfsdk:"name"`
+	PolicyDocument jsontypes.Normalized `tfsdk:"policy_document"`
+	Namespace      types.String         `tfsdk:"namespace"`
+	Description    types.String         `tfsdk:"description"`
+	Arn            types.String         `tfsdk:"arn"`
+	CreateDate     types.String         `tfsdk:"create_date"`
+	VersionId      types.String         `tfsdk:"version_id"`
 }
