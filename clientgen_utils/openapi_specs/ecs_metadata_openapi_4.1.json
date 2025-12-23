@@ -62602,8 +62602,7 @@
                       "type": "string"
                     },
                     "CreateDate": {
-                      "type": "string",
-                      "format": "date-time"
+                      "type": "string"
                     },
                     "GroupId": {
                       "type": "string"
