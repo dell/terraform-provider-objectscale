@@ -35,7 +35,7 @@ output "objectscale_iam_inline_policy_groupname" {
 
 data "objectscale_iam_inline_policy" "rolenamefilter" {
   namespace = "ns1"
-  rolename  = "role_Test1"
+  rolename  = "roleTest1"
 }
 
 output "objectscale_iam_inline_policy_rolename" {
