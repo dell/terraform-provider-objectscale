@@ -57,8 +57,8 @@ func (r *IAMPolicyResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Required:            true,
 			},
 			"policy_document": schema.StringAttribute{
-				Description:         "A map of policy document versions to their JSON content.",
-				MarkdownDescription: "A map of policy document versions to their JSON content.",
+				Description:         "The Policy Document defining the IAM Policy versions in JSON format.",
+				MarkdownDescription: "The Policy Document defining the IAM Policy versions in JSON format.",
 				Required:            true,
 				CustomType:          jsontypes.NormalizedType{},
 			},
@@ -215,8 +215,8 @@ func (r *IAMPolicyResource) Update(ctx context.Context, req resource.UpdateReque
 	versionsResp, _, err := listreq.Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error updating IAM Policy",
-			"Could not update IAM Policy: "+err.Error(),
+			"Error fetching IAM Policy Versions",
+			err.Error(),
 		)
 		return
 	}
