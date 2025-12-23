@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
@@ -156,8 +157,16 @@ func (d *IAMInlinePolicyDataSource) Read(ctx context.Context, req datasource.Rea
 	}
 
 	if err != nil {
+		if strings.Contains(err.Error(), `"Code":"NoSuchEntity"`) {
+
+			resp.Diagnostics.AddError(
+				"Namespace does not exist or No inline policies found", err.Error(),
+			)
+			return
+		}
+
 		resp.Diagnostics.AddError(
-			"Namespace does not exist or error reading IAM inline policies",
+			"Error reading IAM inline policies",
 			err.Error(),
 		)
 		return
@@ -261,10 +270,7 @@ func (d *IAMInlinePolicyDataSource) listRoleInlinePolicies(ctx context.Context, 
 
 	items, err := helper.GetAllInstances(req)
 	if err != nil {
-		return nil, fmt.Errorf(
-			"error listing role policy names for role %s: %w",
-			rolename, err,
-		)
+		return nil, err
 	}
 
 	policies := make([]models.IAMInlinePolicyModel, 0, len(items))
