@@ -6318,6 +6318,16 @@
 						"description": "namespace of the bucket"
 					}
 				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object"
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "Response indicating <b>Success</b> or <b>Failure</b> of the operation",
@@ -16171,7 +16181,7 @@
 						"type": "boolean",
 						"description": "enable the Access During Outage option, which allows read access"
 					},
-					"metadata": {
+					"search_metadata": {
 						"type": "array",
 						"items": {
 							"type": "object",
@@ -16790,7 +16800,7 @@
 			"BucketService_updateBucketTagsRequest": {
 				"type": "object",
 				"properties": {
-					"Tag": {
+					"TagSet": {
 						"type": "array",
 						"items": {
 							"type": "object",
@@ -16816,7 +16826,7 @@
 			"BucketService_addBucketTagsRequest": {
 				"type": "object",
 				"properties": {
-					"Tag": {
+					"TagSet": {
 						"type": "array",
 						"items": {
 							"type": "object",
@@ -16842,7 +16852,7 @@
 			"BucketService_deleteBucketTagsRequest": {
 				"type": "object",
 				"properties": {
-					"Tag": {
+					"TagSet": {
 						"type": "array",
 						"items": {
 							"type": "object",
@@ -17120,7 +17130,7 @@
 						"type": "string",
 						"description": "API type"
 					},
-					"Tag": {
+					"TagSet": {
 						"type": "array",
 						"items": {
 							"type": "object",

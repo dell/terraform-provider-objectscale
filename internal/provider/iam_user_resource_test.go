@@ -22,7 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-// Test to Create and Update User Resource
+// Test to Create and Update User Resource.
 func TestAccIamUserResource(t *testing.T) {
 	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{

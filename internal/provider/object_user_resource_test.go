@@ -25,7 +25,7 @@ import (
 	"terraform-provider-objectscale/internal/clientgen"
 )
 
-// Test to Create and Update User Resource
+// Test to Create and Update User Resource.
 func TestAccObjectUserResource(t *testing.T) {
 	defer testUserTokenCleanup(t)
 	var upM *mockey.Mocker

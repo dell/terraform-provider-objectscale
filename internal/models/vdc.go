@@ -19,7 +19,7 @@ package models
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-// VDC Ds Model
+// VDC Ds Model.
 type VDCDataSourceModel struct {
 	// Filters (inputs)
 	ID    types.String `tfsdk:"id"`
@@ -30,7 +30,7 @@ type VDCDataSourceModel struct {
 	Vdcs []VdcDsItem `tfsdk:"vdcs"`
 }
 
-// VDC Ds Item tfsdk model
+// VDC Ds Item tfsdk model.
 type VdcDsItem struct {
 	// VDC id
 	VdcId types.String `tfsdk:"vdc_id"`

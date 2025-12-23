@@ -13,7 +13,7 @@ package clientgen
 // BucketServiceDeleteBucketTagsRequest struct for BucketServiceDeleteBucketTagsRequest
 type BucketServiceDeleteBucketTagsRequest struct {
 	// Tags - list of tags set for the Bucket
-	Tag []BucketServiceCreateBucketRequestTagSetInner `json:"Tag,omitempty"`
+	TagSet []BucketServiceCreateBucketRequestTagSetInner `json:"TagSet,omitempty"`
 	// Namespace associated with the user/tenant that is allowed to access the bucket
 	Namespace *string `json:"namespace,omitempty"`
 }

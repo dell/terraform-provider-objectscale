@@ -34,7 +34,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-// Constants for valid type values (used in Schema validators)
+// Constants for valid type values (used in Schema validators).
 const (
 	ManagementUserTypeLocal       = "LOCAL_USER"
 	ManagementUserTypeADLDAPUser  = "AD_LDAP_USER"
