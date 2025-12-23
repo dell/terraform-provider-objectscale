@@ -15,34 +15,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 resource "objectscale_iam_policy" "testacc_policy" {
-					name = "testacc_policy"
-					namespace = "ns1"
-					description = "An example policy"
-					policy_document = jsonencode({
-  
-						"Version": "2012-10-17",
-						
-						"Statement": [
-							
-							{
-							
-							"Action": [
-								
-								"s3:ListBucket",
-			
-        						"iam:GetUserPolicy"
-							
-							],
-							
-							"Resource": "*",
-							
-							"Effect": "Allow",
-							
-							"Sid": "VisualEditor0"
-							
-							}
-						
-						]
+  name        = "testacc_policy"
+  namespace   = "ns1"
+  description = "An example policy"
+  policy_document = jsonencode({
 
-						})
-				}
+    "Version" : "2012-10-17",
+
+    "Statement" : [
+
+      {
+
+        "Action" : [
+
+          "s3:ListBucket",
+
+          "iam:GetUserPolicy"
+
+        ],
+
+        "Resource" : "*",
+
+        "Effect" : "Allow",
+
+        "Sid" : "VisualEditor0"
+
+      }
+
+    ]
+
+  })
+}

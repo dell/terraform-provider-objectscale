@@ -36,11 +36,10 @@ Manages an ObjectScale IAM Policy.
 
 - `name` (String) The name of the IAM Policy.
 - `namespace` (String) The namespace in which to create the IAM Policy.
-- `policy_document` (String) A map of policy document versions to their JSON content.
+- `policy_document` (String) The Policy Document defining the IAM Policy versions in JSON format.
 
 ### Optional
 
-- `default_version` (Boolean) Whether to set the specified policy document version as the default version.
 - `description` (String) The description of the IAM Policy.
 
 ### Read-Only
