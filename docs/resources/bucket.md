@@ -44,8 +44,13 @@ description: |-
 - `advanced_metadata_search_target_name` (String) Advanced metadata search target name.
 - `advanced_metadata_search_target_stream` (String) Advanced metadata search target stream.
 - `audit_delete_expiration` (Number) Days after which audited delete expires.
+									- If not set, or set to -1 or -2, reflections are retained infinitely.
+									- If set to 0, reflections are deleted immediately and not retained.
+									- Any other positive value specifies the number of days to retain reflections before deletion.
 - `auto_commit_period` (Number) Auto-commit period in seconds.
 - `block_size` (Number) Size of each block in bytes.
+- `bucket_policy` (String) Bucket policy in JSON format.
+- `custom_group_acl` (Attributes Set) List of custom group ACLs for the bucket. (see [below for nested schema](#nestedatt--custom_group_acl))
 - `default_group` (String) Default group name.
 - `default_group_dir_execute_permission` (Boolean) Default group directory execute permission.
 - `default_group_dir_read_permission` (Boolean) Default group directory read permission.
@@ -56,24 +61,27 @@ description: |-
 - `default_object_lock_retention_days` (Number) Default object lock retention days.
 - `default_object_lock_retention_mode` (String) Default object lock retention mode.
 - `default_object_lock_retention_years` (Number) Default object lock retention years.
-- `default_retention` (Number) Default retention period.
+- `default_retention` (Number) Default retention period in seconds.
 - `enable_advanced_metadata_search` (Boolean) Enable advanced metadata search.
-- `fs_access_enabled` (Boolean) Enable filesystem access.
-- `is_enabled` (Boolean) Is search metadata enabled.
-- `is_encryption_enabled` (String) Enable server-side encryption.
+- `filesystem_enabled` (Boolean) Enable filesystem access.
+- `group_acl` (Attributes Set) List of group ACLs for the bucket. (see [below for nested schema](#nestedatt--group_acl))
+- `is_encryption_enabled` (Boolean) Enable server-side encryption.
+- `is_metadata_enabled` (Boolean) Is search metadata enabled.
 - `is_object_lock_enabled` (Boolean) Enable object lock.
 - `is_object_lock_with_ado_allowed` (Boolean) Allow object lock with ADO.
 - `is_stale_allowed` (Boolean) Allow stale reads.
 - `is_tso_read_only` (Boolean) Enable TSO read-only mode.
-- `local_object_metadata_reads` (Boolean) Enable local metadata reads.
-- `max_keys` (Number) Maximum number of keys for search.
-- `md_tokens` (Boolean) Metadata tokens for advanced search.
-- `metadata` (Attributes List) List of metadata definitions. (see [below for nested schema](#nestedatt--metadata))
+- `local_object_metadata_reads` (Boolean) Enable or disable local object metadata reads for OBS CAS ADO RW buckets.
+
+				- When enabled, the bucket will attempt to read object metadata from locally replicated data, improving availability and reducing latency if the remote VDC is far away or unavailable.
+				- This may result in stale object metadata being returned if the metadata is not fully replicated to the local VDC. For example, deletion status, Litigation Hold, or Event Based Retention information may be outdated.
+				- If the object metadata is not available locally, it will be requested from the remote VDC.
 - `min_max_governor` (Attributes) Retention governance settings. (see [below for nested schema](#nestedatt--min_max_governor))
 - `notification_size` (Number) Size threshold for notifications.
 - `retention` (Number) Retention period in days.
-- `soft_quota` (String) Soft quota for the bucket.
-- `tag` (Attributes List) Key-value tags for the bucket. (see [below for nested schema](#nestedatt--tag))
+- `search_metadata` (Attributes Set) List of metadata definitions. (see [below for nested schema](#nestedatt--search_metadata))
+- `tag` (Attributes Set) Key-value tags for the bucket. (see [below for nested schema](#nestedatt--tag))
+- `user_acl` (Attributes Set) List of user ACLs for the bucket. (see [below for nested schema](#nestedatt--user_acl))
 - `versioning_status` (String) Versioning status (Enabled/Suspended).
 
 ### Read-Only
@@ -84,16 +92,27 @@ description: |-
 - `id` (String) Unique identifier for the bucket resource.
 - `is_empty_bucket_in_progress` (Boolean) Indicates if empty bucket operation is in progress.
 - `locked` (Boolean) Indicates if the bucket is locked.
+- `max_keys` (Number) Maximum number of keys for search.
+- `md_tokens` (Boolean) Metadata tokens for advanced search.
 - `notification_size_in_count` (Number) Notification size in count.
+- `soft_quota` (String) Soft quota for the bucket.
 
-<a id="nestedatt--metadata"></a>
-### Nested Schema for `metadata`
+<a id="nestedatt--custom_group_acl"></a>
+### Nested Schema for `custom_group_acl`
 
-Optional:
+Required:
 
-- `datatype` (String) Metadata datatype.
-- `name` (String) Metadata name.
-- `type` (String) Metadata type.
+- `name` (String) Custom group for the ACL entry.
+- `permission` (Set of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
+
+
+<a id="nestedatt--group_acl"></a>
+### Nested Schema for `group_acl`
+
+Required:
+
+- `name` (String) Group for the ACL entry.
+- `permission` (Set of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
 
 
 <a id="nestedatt--min_max_governor"></a>
@@ -108,6 +127,16 @@ Optional:
 - `minimum_variable_retention` (Number) Minimum variable retention.
 
 
+<a id="nestedatt--search_metadata"></a>
+### Nested Schema for `search_metadata`
+
+Optional:
+
+- `datatype` (String) Metadata datatype.
+- `name` (String) Metadata name.
+- `type` (String) Metadata type.
+
+
 <a id="nestedatt--tag"></a>
 ### Nested Schema for `tag`
 
@@ -115,6 +144,15 @@ Required:
 
 - `key` (String) Tag key.
 - `value` (String) Tag value.
+
+
+<a id="nestedatt--user_acl"></a>
+### Nested Schema for `user_acl`
+
+Required:
+
+- `name` (String) User for the ACL entry.
+- `permission` (Set of String) List of permissions for the custom group. Valid values: `full_control`, `read`, `delete`, `write`, `write_acl`, `read_acl`, `execute`, `privileged_write`, `none`.
 
 Unless specified otherwise, all fields of this resource can be updated.
 

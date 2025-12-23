@@ -144,6 +144,8 @@ func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.R
 		NewIAMGroupMembershipResource,
 		NewIAMUserAccessKeyResource,
 		NewIAMRoleResource,
+		NewObjectUserResource,
+		NewManagementUserResource,
 		NewIAMPolicyResource,
 	}
 }
@@ -158,6 +160,9 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 		NewIAMPolicyDataSource,
 		NewIAMRoleDataSource,
 		NewBucketDataSource,
+		NewIAMInlinePolicyDataSource,
+		NewVDCDataSource,
+		NewStoragePoolDataSource,
 	}
 }
 
@@ -170,7 +175,7 @@ func New(version string) func() provider.Provider {
 	}
 }
 
-// datasourceProviderConfig defines the provider config struct
+// datasourceProviderConfig defines the provider config struct.
 type datasourceProviderConfig struct {
 	client *client.Client
 }
@@ -194,7 +199,7 @@ func (d *datasourceProviderConfig) Configure(ctx context.Context, req datasource
 	d.client = client
 }
 
-// resourceProviderConfig defines the provider config struct
+// resourceProviderConfig defines the provider config struct.
 type resourceProviderConfig struct {
 	client *client.Client
 }

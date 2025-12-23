@@ -1,3 +1,20 @@
+/*
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+
+Licensed under the Mozilla Public License Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://mozilla.org/MPL/2.0/
+
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package provider
 
 import (
@@ -91,6 +108,16 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
 				ExpectError: regexp.MustCompile(`namespace`),
 			},
 
+			// Invalid namespace → error
+			{
+				Config: ProviderConfigForTesting + `
+					data "objectscale_iam_groups" "bad_ns" {
+						namespace  = "INVALID_NS"
+					}
+				`,
+				ExpectError: regexp.MustCompile(`The namespace "INVALID_NS" does not exist.`),
+			},
+
 			// Invalid group_name → error
 			{
 				Config: ProviderConfigForTesting + `
@@ -102,7 +129,7 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
 				ExpectError: regexp.MustCompile(`Failed to retrieve group INVALID`),
 			},
 
-			// Nonexistent user → triggers "Error Listing IAM Groups for User"
+			//Nonexistent user → triggers "Error Retrieving IAM Groups for User"
 			{
 				Config: ProviderConfigForTesting + `
                     data "objectscale_iam_groups" "invalid_user" {
@@ -110,7 +137,7 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
                         user_name  = "nonexistent_user_12345"
                     }
                 `,
-				ExpectError: regexp.MustCompile(`(?i)Error listing groups for user`),
+				ExpectError: regexp.MustCompile(`(?i)Error retrieving groups for user`),
 			},
 		},
 	})

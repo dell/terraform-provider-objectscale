@@ -103,7 +103,7 @@ func TestNamespaceDataSource_updateNamespaceState(t *testing.T) {
 								},
 							},
 						},
-						Link: &clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerLink{
+						Link: &clientgen.Link{
 							Rel:  getpointer(""),
 							Href: getpointer(""),
 						},
@@ -118,7 +118,7 @@ func TestNamespaceDataSource_updateNamespaceState(t *testing.T) {
 					{
 						Name: getpointer("namespace1"),
 						Id:   getpointer("id1"),
-						Link: &clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerLink{
+						Link: &clientgen.Link{
 							Rel:  getpointer(""),
 							Href: getpointer(""),
 						},
@@ -126,7 +126,7 @@ func TestNamespaceDataSource_updateNamespaceState(t *testing.T) {
 					{
 						Name: getpointer("namespace2"),
 						Id:   getpointer("id2"),
-						Link: &clientgen.NamespaceServiceGetNamespacesResponseNamespaceInnerLink{
+						Link: &clientgen.Link{
 							Rel:  getpointer(""),
 							Href: getpointer(""),
 						},

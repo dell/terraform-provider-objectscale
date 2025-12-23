@@ -55,7 +55,7 @@ type BucketServiceCreateBucketRequest struct {
 	// enable the Access During Outage option, which allows read access
 	IsTsoReadOnly *bool `json:"is_tso_read_only,omitempty"`
 	// Searchable tags assigned to objects created within the bucket.
-	Metadata []BucketServiceCreateBucketRequestMetadataInner `json:"metadata,omitempty"`
+	SearchMetadata []BucketServiceCreateBucketRequestSearchMetadataInner `json:"search_metadata,omitempty"`
 	// metadata search: whether to treat metadata value as array of values (true) or single value (false)
 	MetadataTokens *bool `json:"metadata_tokens,omitempty"`
 	// Bucket owner

@@ -115,13 +115,13 @@ type BucketResourceModel struct {
 	ReplicationGroup                   types.String `tfsdk:"replication_group"`
 	Created                            types.String `tfsdk:"created"`
 	SoftQuota                          types.String `tfsdk:"soft_quota"`
-	FsAccessEnabled                    types.Bool   `tfsdk:"fs_access_enabled"`
+	FsAccessEnabled                    types.Bool   `tfsdk:"filesystem_enabled"`
 	Locked                             types.Bool   `tfsdk:"locked"`
 	BlockSize                          types.Int64  `tfsdk:"block_size"`
 	NotificationSize                   types.Int64  `tfsdk:"notification_size"`
 	AutoCommitPeriod                   types.Int64  `tfsdk:"auto_commit_period"`
 	ApiType                            types.String `tfsdk:"api_type"`
-	Tag                                types.List   `tfsdk:"tag"`
+	Tag                                types.Set    `tfsdk:"tag"`
 	Retention                          types.Int64  `tfsdk:"retention"`
 	DefaultGroupFileReadPermission     types.Bool   `tfsdk:"default_group_file_read_permission"`
 	DefaultGroupFileWritePermission    types.Bool   `tfsdk:"default_group_file_write_permission"`
@@ -130,8 +130,8 @@ type BucketResourceModel struct {
 	DefaultGroupDirWritePermission     types.Bool   `tfsdk:"default_group_dir_write_permission"`
 	DefaultGroupDirExecutePermission   types.Bool   `tfsdk:"default_group_dir_execute_permission"`
 	DefaultGroup                       types.String `tfsdk:"default_group"`
-	Metadata                           types.List   `tfsdk:"metadata"`
-	IsEnabled                          types.Bool   `tfsdk:"is_enabled"`
+	SearchMetadata                     types.Set    `tfsdk:"search_metadata"`
+	IsEnabled                          types.Bool   `tfsdk:"is_metadata_enabled"`
 	MdTokens                           types.Bool   `tfsdk:"md_tokens"`
 	MaxKeys                            types.Int64  `tfsdk:"max_keys"`
 	MinMaxGovernor                     types.Object `tfsdk:"min_max_governor"`
@@ -143,7 +143,7 @@ type BucketResourceModel struct {
 	DefaultObjectLockRetentionMode     types.String `tfsdk:"default_object_lock_retention_mode"`
 	DefaultObjectLockRetentionYears    types.Int64  `tfsdk:"default_object_lock_retention_years"`
 	DefaultObjectLockRetentionDays     types.Int64  `tfsdk:"default_object_lock_retention_days"`
-	IsEncryptionEnabled                types.String `tfsdk:"is_encryption_enabled"`
+	IsEncryptionEnabled                types.Bool   `tfsdk:"is_encryption_enabled"`
 	DefaultRetention                   types.Int64  `tfsdk:"default_retention"`
 	IsEmptyBucketInProgress            types.Bool   `tfsdk:"is_empty_bucket_in_progress"`
 	BlockSizeInCount                   types.Int64  `tfsdk:"block_size_in_count"`
@@ -153,4 +153,17 @@ type BucketResourceModel struct {
 	AdvancedMetadataSearchTargetStream types.String `tfsdk:"advanced_metadata_search_target_stream"`
 	LocalObjectMetadataReads           types.Bool   `tfsdk:"local_object_metadata_reads"`
 	VersioningStatus                   types.String `tfsdk:"versioning_status"`
+
+	//Policy related fields
+	BucketPolicy types.String `tfsdk:"bucket_policy"`
+
+	//ACL related fields
+	UserAcl        types.Set `tfsdk:"user_acl"`
+	GroupAcl       types.Set `tfsdk:"group_acl"`
+	CustomGroupAcl types.Set `tfsdk:"custom_group_acl"`
+}
+
+type AclModel struct {
+	Name       types.String `tfsdk:"name"`
+	Permission types.Set    `tfsdk:"permission"`
 }

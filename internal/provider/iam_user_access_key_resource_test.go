@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-// Test to Create and Update IAM User Access Key Resource
+// Test to Create and Update IAM User Access Key Resource.
 func testAccImportStateIDFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		rs, ok := s.RootModule().Resources[resourceName]
@@ -40,7 +40,7 @@ func TestAccIamUserAccessKeyResource(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Step 1: Create accesss key for a user without specifying username (should fail)
+			// Step 1: Create access key for a user without specifying username (should fail)
 			{
 				Config: ProviderConfigForTesting + `
                 resource "objectscale_iam_user_access_key" "test_user_access_key" {
@@ -49,7 +49,7 @@ func TestAccIamUserAccessKeyResource(t *testing.T) {
 				`,
 				ExpectError: regexp.MustCompile(".*The argument \"username\" is required, but no definition was found.*"),
 			},
-			// Step 2: Create accesss key
+			// Step 2: Create access key
 			{
 				Config: ProviderConfigForTesting + `
                 resource "objectscale_iam_user_access_key" "test_user_access_key" {

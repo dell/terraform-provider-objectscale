@@ -17905,6 +17905,16 @@
             "description": "namespace of the bucket"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Response indicating <b>Success</b> or <b>Failure</b> of the operation",
@@ -49277,7 +49287,7 @@
             "type": "string",
             "description": "Namespace identifier to associate with the user"
           },
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49590,7 +49600,7 @@
             "type": "string",
             "description": "User name"
           },
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49612,7 +49622,7 @@
       "UserManagementService_addUserTagRequest": {
         "type": "object",
         "properties": {
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49634,7 +49644,7 @@
       "UserManagementService_updateUserTagRequest": {
         "type": "object",
         "properties": {
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -49656,7 +49666,7 @@
       "UserManagementService_removeUserTagsRequest": {
         "type": "object",
         "properties": {
-          "tag": {
+          "tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -53587,7 +53597,7 @@
             "type": "boolean",
             "description": "enable the Access During Outage option, which allows read access"
           },
-          "metadata": {
+          "search_metadata": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54226,7 +54236,7 @@
       "BucketService_updateBucketTagsRequest": {
         "type": "object",
         "properties": {
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54252,7 +54262,7 @@
       "BucketService_addBucketTagsRequest": {
         "type": "object",
         "properties": {
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54278,7 +54288,7 @@
       "BucketService_deleteBucketTagsRequest": {
         "type": "object",
         "properties": {
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -54567,7 +54577,7 @@
             "type": "string",
             "description": "API type"
           },
-          "Tag": {
+          "TagSet": {
             "type": "array",
             "items": {
               "type": "object",
@@ -62592,8 +62602,7 @@
                       "type": "string"
                     },
                     "CreateDate": {
-                      "type": "string",
-                      "format": "date-time"
+                      "type": "string"
                     },
                     "GroupId": {
                       "type": "string"

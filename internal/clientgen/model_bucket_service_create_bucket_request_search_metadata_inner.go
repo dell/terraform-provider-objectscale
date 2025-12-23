@@ -10,8 +10,8 @@ API version: 4.0.0
 
 package clientgen
 
-// BucketServiceCreateBucketRequestMetadataInner struct for BucketServiceCreateBucketRequestMetadataInner
-type BucketServiceCreateBucketRequestMetadataInner struct {
+// BucketServiceCreateBucketRequestSearchMetadataInner struct for BucketServiceCreateBucketRequestSearchMetadataInner
+type BucketServiceCreateBucketRequestSearchMetadataInner struct {
 	// The meta key type.
 	Type *string `json:"type,omitempty"`
 	// The meta key name.

@@ -22,7 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// IamPolicyDataSourceModel represents the schema for the IamPolicy data source
+// IamPolicyDataSourceModel represents the schema for the IamPolicy data source.
 type IamPolicyDataSourceModel struct {
 	ID          types.String                        `tfsdk:"id"`
 	ARN         types.String                        `tfsdk:"arn"`
@@ -33,7 +33,7 @@ type IamPolicyDataSourceModel struct {
 	IamPolicies []IamPolicyDataSourceIamPolicyModel `tfsdk:"policies"`
 }
 
-// IamPolicyDataSourceIamPolicyModel represents the schema for the iam_policies attribute
+// IamPolicyDataSourceIamPolicyModel represents the schema for the iam_policies attribute.
 type IamPolicyDataSourceIamPolicyModel struct {
 	ARN                           types.String                               `tfsdk:"arn"`
 	AttachmentCount               types.Int32                                `tfsdk:"attachment_count"`
@@ -49,7 +49,7 @@ type IamPolicyDataSourceIamPolicyModel struct {
 	Versions                      []IamPolicyDataSourceIamPolicyVersionModel `tfsdk:"versions"`
 }
 
-// IamPolicyDataSourceIamPolicyVersionModel represents the schema for the versions attribute
+// IamPolicyDataSourceIamPolicyVersionModel represents the schema for the versions attribute.
 type IamPolicyDataSourceIamPolicyVersionModel struct {
 	IsDefaultVersion types.Bool   `tfsdk:"is_default_version"`
 	VersionID        types.String `tfsdk:"version_id"`
