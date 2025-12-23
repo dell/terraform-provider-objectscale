@@ -23,12 +23,9 @@ import (
 	"terraform-provider-objectscale/internal/models"
 
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/boolvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -74,17 +71,6 @@ func (r *IAMPolicyResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Description:         "The description of the IAM Policy.",
 				MarkdownDescription: "The description of the IAM Policy.",
 				Optional:            true,
-			},
-
-			"default_version": schema.BoolAttribute{
-				Description:         "Whether to set the specified policy document version as the default version.",
-				MarkdownDescription: "Whether to set the specified policy document version as the default version.",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-				Validators: []validator.Bool{
-					boolvalidator.Equals(true),
-				},
 			},
 
 			"version_id": schema.StringAttribute{
@@ -138,7 +124,7 @@ func (r *IAMPolicyResource) Create(ctx context.Context, req resource.CreateReque
 		CreateDate:       iam_policy.CreatePolicyResult.Policy.CreateDate,
 		DefaultVersionId: iam_policy.CreatePolicyResult.Policy.DefaultVersionId,
 		Description:      iam_policy.CreatePolicyResult.Policy.Description,
-	}, plan.PolicyDocument, plan.Namespace, plan.DefaultVersion)
+	}, plan.PolicyDocument, plan.Namespace)
 
 	// save into state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -147,8 +133,7 @@ func (r *IAMPolicyResource) Create(ctx context.Context, req resource.CreateReque
 func (r *IAMPolicyResource) getModel(
 	iam_policy *clientgen.IamServiceCreatePolicyResponseCreatePolicyResultPolicy,
 	policyDocument jsontypes.Normalized,
-	namespace types.String,
-	default_version types.Bool) models.IamPolicyResourceModel {
+	namespace types.String) models.IamPolicyResourceModel {
 
 	return models.IamPolicyResourceModel{
 		Arn:            helper.TfStringNN(iam_policy.Arn),
@@ -158,7 +143,6 @@ func (r *IAMPolicyResource) getModel(
 		Description:    helper.TfString(iam_policy.Description),
 		Namespace:      namespace,
 		PolicyDocument: policyDocument,
-		DefaultVersion: default_version,
 	}
 }
 
@@ -194,9 +178,7 @@ func (r *IAMPolicyResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	var policyDocument jsontypes.Normalized
-	var defaultVersion types.Bool
 	policyDocument = jsontypes.NewNormalizedValue(IAMPolicyDataSource{}.decodeDocument(iam_policy_document.GetPolicyVersionResult.PolicyVersion.Document).ValueString())
-	defaultVersion = helper.TfBoolNN(iam_policy_document.GetPolicyVersionResult.PolicyVersion.IsDefaultVersion)
 
 	data := r.getModel(&clientgen.IamServiceCreatePolicyResponseCreatePolicyResultPolicy{
 		PolicyName:       iam_policy.GetPolicyResult.Policy.PolicyName,
@@ -204,7 +186,7 @@ func (r *IAMPolicyResource) Read(ctx context.Context, req resource.ReadRequest, 
 		CreateDate:       iam_policy.GetPolicyResult.Policy.CreateDate,
 		DefaultVersionId: iam_policy.GetPolicyResult.Policy.DefaultVersionId,
 		Description:      iam_policy.GetPolicyResult.Policy.Description,
-	}, policyDocument, state.Namespace, defaultVersion)
+	}, policyDocument, state.Namespace)
 
 	// Save updated plan into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -260,7 +242,7 @@ func (r *IAMPolicyResource) Update(ctx context.Context, req resource.UpdateReque
 	updReq := r.client.GenClient.IamApi.IamServiceCreatePolicyVersion(ctx).
 		PolicyArn(state.Arn.ValueString()).
 		PolicyDocument(plan.PolicyDocument.ValueString()).
-		SetAsDefault(plan.DefaultVersion.ValueBool()).
+		SetAsDefault(true).
 		XEmcNamespace(plan.Namespace.ValueString())
 
 	iam_policy_version, _, err := updReq.Execute()
@@ -283,7 +265,7 @@ func (r *IAMPolicyResource) Update(ctx context.Context, req resource.UpdateReque
 		CreateDate:       &createDateStr,
 		DefaultVersionId: iam_policy_version.CreatePolicyVersionResult.PolicyVersion.VersionId,
 		Description:      &descriptionStr,
-	}, plan.PolicyDocument, plan.Namespace, plan.DefaultVersion)
+	}, plan.PolicyDocument, plan.Namespace)
 
 	// save into state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

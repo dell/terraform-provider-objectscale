@@ -65,5 +65,4 @@ type IamPolicyResourceModel struct {
 	Arn            types.String         `tfsdk:"arn"`
 	CreateDate     types.String         `tfsdk:"create_date"`
 	VersionId      types.String         `tfsdk:"version_id"`
-	DefaultVersion types.Bool           `tfsdk:"default_version"`
 }
