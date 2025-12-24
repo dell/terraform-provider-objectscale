@@ -115,7 +115,7 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
 						namespace  = "INVALID_NS"
 					}
 				`,
-				ExpectError: regexp.MustCompile(`The namespace "INVALID_NS" does not exist.`),
+				ExpectError: regexp.MustCompile(`The namespace does not exist.`),
 			},
 
 			// Invalid group_name → error

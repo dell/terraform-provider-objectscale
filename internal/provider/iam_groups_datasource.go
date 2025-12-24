@@ -174,10 +174,7 @@ func (d *IAMGroupsDataSource) Read(ctx context.Context, req datasource.ReadReque
 	if len(finalGroups) == 0 {
 		resp.Diagnostics.AddError(
 			"Invalid namespace",
-			fmt.Sprintf(
-				"The namespace %q does not exist.",
-				ns,
-			),
+			"The namespace does not exist.",
 		)
 		return
 	}
