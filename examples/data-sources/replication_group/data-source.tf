@@ -16,6 +16,8 @@ limitations under the License.
 */
 
 data "objectscale_replication_group" "all" {
+  #Optional Field
+  # name = "rg1"
 }
 
 output "objectscale_replication_group" {

@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
@@ -37,6 +38,11 @@ func (d *ReplicationGroupDataSource) Schema(ctx context.Context, req datasource.
 				Description:         "Identifier",
 				MarkdownDescription: "Identifier",
 				Computed:            true,
+			},
+			"name": schema.StringAttribute{
+				Description:         "Replication Group Name",
+				MarkdownDescription: "Replication Group Name",
+				Optional:            true,
 			},
 			"replication_groups": schema.ListNestedAttribute{
 				Description:         "List of Replication Groups",
@@ -176,17 +182,34 @@ func (d *ReplicationGroupDataSource) Read(ctx context.Context, req datasource.Re
 	allRGResp, _, err := d.client.GenClient.DataVpoolApi.DataServiceVpoolServiceGetDataServiceVpools(ctx).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error getting the list of replication group",
+			"Error getting the list of replication groups",
 			err.Error(),
 		)
 		return
 	}
 
-	replicationGroupList := helper.UpdateReplicationGroupState(allRGResp.DataServiceVpool)
+	replicationGroups := allRGResp.DataServiceVpool
+
+	// If filter is present, filter the replication groups
+	var replicationGroupList []clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInner
+
+	if !data.Name.IsNull() && !data.Name.IsUnknown() && data.Name.ValueString() != "" {
+		name := data.Name.ValueString()
+		for _, rg := range replicationGroups {
+			if rg.Name != nil && *rg.Name == name {
+				replicationGroupList = append(replicationGroupList, rg)
+				break
+			}
+		}
+	} else {
+		for _, rg := range replicationGroups {
+			replicationGroupList = append(replicationGroupList, rg)
+		}
+	}
 
 	// hardcoding a response value to save into the Terraform state.
 	data.ID = types.StringValue("replication_group_datasource")
-	data.ReplicationGroups = replicationGroupList
+	data.ReplicationGroups = helper.UpdateReplicationGroupState(replicationGroupList)
 
 	tflog.Trace(ctx, "read replication group data source")
 

@@ -15,6 +15,12 @@ var rgDSConfig = `
 	}
 `
 
+var rgDSConfig2 = `
+	data "objectscale_replication_group" "all" {
+		name = "rg1"
+	}
+`
+
 // Test to Fetch Replication Group.
 func TestAccRGDs(t *testing.T) {
 	defer testUserTokenCleanup(t)
@@ -25,6 +31,16 @@ func TestAccRGDs(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: ProviderConfigForTesting + rgDSConfig,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("data.objectscale_replication_group.all", "replication_groups.0.id"),
+					resource.TestCheckResourceAttrSet("data.objectscale_replication_group.all", "replication_groups.1.id"),
+				),
+			},
+			{
+				Config: ProviderConfigForTesting + rgDSConfig2,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("data.objectscale_replication_group.all", "replication_groups.0.id"),
+				),
 			},
 		},
 	})

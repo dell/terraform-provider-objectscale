@@ -22,6 +22,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type ReplicationGroupDatasourceModel struct {
 	ID                types.String             `tfsdk:"id"`
 	ReplicationGroups []ReplicationGroupEntity `tfsdk:"replication_groups"`
+	Name              types.String             `tfsdk:"name"`
 }
 
 type ReplicationGroupEntity struct {
