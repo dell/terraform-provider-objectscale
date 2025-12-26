@@ -31,3 +31,21 @@ type ManagementUserResourceModel struct {
 	SystemMonitor         types.Bool   `tfsdk:"system_monitor"`
 	SecurityAdministrator types.Bool   `tfsdk:"security_administrator"`
 }
+
+// ManagementUserDataSourceModel maps the Management User data source data.
+type ManagementUserDataSourceModel struct {
+	ID              types.String         `tfsdk:"id"`
+	Name            types.String         `tfsdk:"name"`
+	ManagementUsers []ManagementUserInfo `tfsdk:"management_users"`
+}
+
+// ManagementUserInfo represents a single Management User in the data source results.
+type ManagementUserInfo struct {
+	UserId                  types.String `tfsdk:"user_id"`
+	IsSystemAdmin           types.Bool   `tfsdk:"is_system_admin"`
+	IsSystemMonitor         types.Bool   `tfsdk:"is_system_monitor"`
+	IsSecurityAdmin         types.Bool   `tfsdk:"is_security_admin"`
+	IsExternalGroup         types.Bool   `tfsdk:"is_external_group"`
+	IsLocked                types.Bool   `tfsdk:"is_locked"`
+	LastTimePasswordChanged types.String `tfsdk:"last_time_password_changed"`
+}
