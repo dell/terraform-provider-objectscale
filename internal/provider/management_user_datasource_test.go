@@ -16,3 +16,79 @@ limitations under the License.
 */
 
 package provider
+
+import (
+	"regexp"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+)
+
+func TestAccManagementUserDataSourcePositiveScenarios(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
+	datasourceName := "data.objectscale_management_user.example"
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// List all management users
+			{
+				Config: ProviderConfigForTesting + testAccManagementUserDataSourceListConfig(),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(datasourceName, "id", "management_user_datasource"),
+					resource.TestCheckResourceAttrSet(datasourceName, "management_users.#"),
+					resource.TestCheckResourceAttrSet(datasourceName, "management_users.0.user_id"),
+				),
+			},
+			// Get management user by valid name
+			{
+				Config: ProviderConfigForTesting + testAccManagementUserDataSourceGetValidConfig(),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(datasourceName, "id", "management_user_datasource"),
+					resource.TestCheckResourceAttr(datasourceName, "management_users.#", "1"),
+					resource.TestCheckResourceAttr(datasourceName, "management_users.0.user_id", "testlocaluser1"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccManagementUserDataSourceErrorScenarios(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Invalid management user name
+			{
+				Config:      ProviderConfigForTesting + testAccManagementUserDataSourceGetInvalidConfig(),
+				ExpectError: regexp.MustCompile(`Get Management User failed`),
+			},
+		},
+	})
+}
+
+func testAccManagementUserDataSourceListConfig() string {
+	return `
+    data "objectscale_management_user" "example" {
+    }
+    `
+}
+
+func testAccManagementUserDataSourceGetValidConfig() string {
+	return `
+    data "objectscale_management_user" "example" {
+        name = "testlocaluser1"
+    }
+    `
+}
+
+func testAccManagementUserDataSourceGetInvalidConfig() string {
+	return `
+    data "objectscale_management_user" "example" {
+         name = "invalid_name"
+    }
+    `
+}
