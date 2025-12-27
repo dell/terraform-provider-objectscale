@@ -88,7 +88,7 @@ func testAccManagementUserDataSourceGetValidConfig() string {
 func testAccManagementUserDataSourceGetInvalidConfig() string {
 	return `
     data "objectscale_management_user" "example" {
-         name = "invalid_name"
+         name = "invalid@name"
     }
     `
 }
