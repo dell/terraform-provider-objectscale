@@ -57,8 +57,8 @@ func (d *ManagementUserDataSource) Schema(_ context.Context, _ datasource.Schema
 				Computed:            true,
 			},
 			"name": schema.StringAttribute{
-				Description:         "Management user id.",
-				MarkdownDescription: "Management user id.",
+				Description:         "Management user name.",
+				MarkdownDescription: "Management user name.",
 				Optional:            true,
 			},
 			"management_users": schema.ListNestedAttribute{

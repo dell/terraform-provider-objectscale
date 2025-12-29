@@ -61,7 +61,7 @@ data "objectscale_management_user" "specific" {
 
 ### Optional
 
-- `name` (String) Management user id.
+- `name` (String) Management user name.
 
 ### Read-Only
 
