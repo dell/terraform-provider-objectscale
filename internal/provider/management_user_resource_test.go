@@ -25,6 +25,8 @@ import (
 )
 
 func TestAccManagementUserResourceForLocalUserCRUD(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_management_user.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -67,6 +69,8 @@ func TestAccManagementUserResourceForLocalUserCRUD(t *testing.T) {
 }
 
 func TestAccManagementUserResourceForADLDAPUserCRUD(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_management_user.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -107,6 +111,8 @@ func TestAccManagementUserResourceForADLDAPUserCRUD(t *testing.T) {
 }
 
 func TestAccManagementUserResourceForADLDAPGroupCRUD(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_management_user.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -147,6 +153,8 @@ func TestAccManagementUserResourceForADLDAPGroupCRUD(t *testing.T) {
 }
 
 func TestAccManagementUserResourceForImport(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_management_user.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -173,6 +181,8 @@ func TestAccManagementUserResourceForImport(t *testing.T) {
 }
 
 func TestAccManagementUserResourceForErrorScenarios(t *testing.T) {
+	defer testUserTokenCleanup(t)
+	
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
