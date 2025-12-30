@@ -7998,6 +7998,431 @@
 				}
 			}
 		},
+		"/object/user-secret-keys/{uid}": {
+			"get": {
+				"tags": [
+					"User Secret Key"
+				],
+				"summary": "Gets all secret keys for the specified user",
+				"description": "Gets all secret keys for the specified user.",
+				"operationId": "UserSecretKeyService_getKeysForUser",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Valid user identifier to get the keys from"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Representation of secret keys for the user including the timestamps of their creation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserSecretKeyService_getKeysForUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"secret_key_1": "iawfF9GFD7A4GeC9k9KniWArdZbtzofSC42Kcr1z",
+											"key_timestamp_1": "2015-02-25 11:16:50.632",
+											"secret_key_2": "",
+											"key_timestamp_2": "",
+											"link": {
+												"rel": "self",
+												"href": "/object/secret-keys"
+											},
+											"secret_key_id": "0686e69fef958291d7099cf28cce4c91faa3790861f0f75a44840fecdcc6c5b3"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"User Secret Key"
+				],
+				"summary": "Creates a secret key with the given details for the specified user",
+				"description": "Creates a secret key for the specified user. If the user belongs to a namespace, the namespace must be supplied.\n When creating a new secret key, you may pass in an expiration time in minutes for the old key. During the expiration\n interval, both keys will be accepted for requests. This gives you a grace period where you can update applications\n to use the new key.",
+				"operationId": "UserSecretKeyService_createNewKeyForUser",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Valid user identifier to create a key for"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Representation of the secret keys that is created including the timestamps of its creation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserSecretKeyService_createNewKeyForUserResponse"
+								},
+								"examples": {
+									"example_0": {
+										"value": {
+											"user_secret_key_create": {
+												"existing_key_expiry_time_mins": {
+													"-null": "true"
+												},
+												"namespace": "s3",
+												"secretkey": "R6JUtI6hK2rDxY2fKuaQ51OL2tfyoHjPp8xL2y3T"
+											}
+										}
+									},
+									"example_1": {
+										"value": {
+											"secret_key": "R6JUtI6hK2rDxY2fKuaQ51OL2tfyoHjPp8xL2y3T",
+											"key_timestamp": "2013-09-30 20:27:25.946",
+											"key_expiry_timestamp": "2013-10-30 20:27:25.946",
+											"link": {
+												"rel": "self",
+												"href": "/object/user-secret-keys/testlogin"
+											},
+											"secret_key_id": "0686e69fef958291d7099cf28cce4c91faa3790861f0f75a44840fecdcc6c5b3"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserSecretKeyService_createNewKeyForUserRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/user-secret-keys/{uid}/{namespace}": {
+			"get": {
+				"tags": [
+					"User Secret Key"
+				],
+				"summary": "Gets all secret keys for the specified user and namespace",
+				"description": "Gets all secret keys for the specified user and namespace.",
+				"operationId": "UserSecretKeyService_getKeysForUser_1",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Valid user identifier to get the keys from"
+					},
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "the namespace to get all secret keys"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Representation of secret keys for the user including the timestamps of their creation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserSecretKeyService_getKeysForUser_1Response"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"secret_key_1": "E3NLqO/uSK38WV2ZI9V5D95Kf7jq9u9N/8y1Q35H",
+											"key_timestamp_1": "2015-02-25 11:16:52.998",
+											"secret_key_2": "",
+											"key_timestamp_2": "",
+											"link": {
+												"rel": "self",
+												"href": "/object/secret-keys"
+											},
+											"secret_key_1_id": "0686e69fef958291d7099cf28cce4c91faa3790861f0f75a44840fecdcc6c5b3"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/user-secret-keys/exist/{uid}/{namespace}": {
+			"get": {
+				"tags": [
+					"User Secret Key"
+				],
+				"summary": "Returns indication if secret keys for the specified user and namespace exist",
+				"description": "Returns indication if secret keys for the specified user and namespace exist.",
+				"operationId": "UserSecretKeyService_getKeysExistForUser",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Valid user identifier to get the keys from"
+					},
+					{
+						"name": "namespace",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "the namespace to get all secret keys"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Indication if secret keys exist or not.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserSecretKeyService_getKeysExistForUserResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"user_secret_keys": {
+												"secret_key_1": "",
+												"secret_key_1_exist": true,
+												"secret_key_2": "",
+												"secret_key_2_exist": false,
+												"key_expiry_timestamp_1": "",
+												"key_expiry_timestamp_2": "",
+												"key_timestamp_1": "",
+												"key_timestamp_2": "",
+												"link": "",
+												"secret_key_1_id": "",
+												"secret_key_2_id": ""
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/object/user-secret-keys/{uid}/deactivate": {
+			"post": {
+				"tags": [
+					"User Secret Key"
+				],
+				"summary": "Deletes a specified secret key for a user",
+				"description": "Deletes a specified secret key for a user. If the system user scope is NAMESPACE, the user's namespace must be supplied.\n If Hide secret key feature is enabled user need to send SHA-256 of Secret Key to delete",
+				"operationId": "UserSecretKeyService_deleteKeyForUser",
+				"parameters": [
+					{
+						"name": "uid",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Valid user identifier to delete the key from"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Response indicating <b>success</b> or <b>failure</b> to delete secret key",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserSecretKeyService_deleteKeyForUserRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=AddUserToGroup": {
 			"post": {
 				"tags": [
@@ -18441,6 +18866,252 @@
 				"properties": {
 					"TopicConfiguration": {
 						"type": "string"
+					}
+				}
+			},
+			"UserSecretKeyService_getKeysForUserResponse": {
+				"type": "object",
+				"properties": {
+					"secret_key_1": {
+						"type": "string",
+						"description": "First secret key"
+					},
+					"secret_key_1_exist": {
+						"type": "boolean",
+						"description": "First secret key exist"
+					},
+					"key_timestamp_1": {
+						"type": "string",
+						"description": "First key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp_1": {
+						"type": "string",
+						"description": "First key expiration timestamp in ISO-8601 format"
+					},
+					"secret_key_2": {
+						"type": "string",
+						"description": "Second secret key"
+					},
+					"secret_key_2_exist": {
+						"type": "boolean",
+						"description": "Second secret key exist"
+					},
+					"key_timestamp_2": {
+						"type": "string",
+						"description": "Second key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp_2": {
+						"type": "string",
+						"description": "Second key expiry timestamp in ISO-8601 format"
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "User secret key reference link"
+					},
+					"secret_key_1_id": {
+						"type": "string",
+						"description": "SHA-256 hash for secret key 1"
+					},
+					"secret_key_2_id": {
+						"type": "string",
+						"description": "SHA-256 hash for secret key 2"
+					}
+				}
+			},
+			"UserSecretKeyService_getKeysForUser_1Response": {
+				"type": "object",
+				"properties": {
+					"secret_key_1": {
+						"type": "string",
+						"description": "First secret key"
+					},
+					"secret_key_1_exist": {
+						"type": "boolean",
+						"description": "First secret key exist"
+					},
+					"key_timestamp_1": {
+						"type": "string",
+						"description": "First key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp_1": {
+						"type": "string",
+						"description": "First key expiration timestamp in ISO-8601 format"
+					},
+					"secret_key_2": {
+						"type": "string",
+						"description": "Second secret key"
+					},
+					"secret_key_2_exist": {
+						"type": "boolean",
+						"description": "Second secret key exist"
+					},
+					"key_timestamp_2": {
+						"type": "string",
+						"description": "Second key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp_2": {
+						"type": "string",
+						"description": "Second key expiry timestamp in ISO-8601 format"
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "User secret key reference link"
+					},
+					"secret_key_1_id": {
+						"type": "string",
+						"description": "SHA-256 hash for secret key 1"
+					},
+					"secret_key_2_id": {
+						"type": "string",
+						"description": "SHA-256 hash for secret key 2"
+					}
+				}
+			},
+			"UserSecretKeyService_getKeysExistForUserResponse": {
+				"type": "object",
+				"properties": {
+					"secret_key_1": {
+						"type": "string",
+						"description": "First secret key"
+					},
+					"secret_key_1_exist": {
+						"type": "boolean",
+						"description": "First secret key exist"
+					},
+					"key_timestamp_1": {
+						"type": "string",
+						"description": "First key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp_1": {
+						"type": "string",
+						"description": "First key expiration timestamp in ISO-8601 format"
+					},
+					"secret_key_2": {
+						"type": "string",
+						"description": "Second secret key"
+					},
+					"secret_key_2_exist": {
+						"type": "boolean",
+						"description": "Second secret key exist"
+					},
+					"key_timestamp_2": {
+						"type": "string",
+						"description": "Second key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp_2": {
+						"type": "string",
+						"description": "Second key expiry timestamp in ISO-8601 format"
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "User secret key reference link"
+					},
+					"secret_key_1_id": {
+						"type": "string",
+						"description": "SHA-256 hash for secret key 1"
+					},
+					"secret_key_2_id": {
+						"type": "string",
+						"description": "SHA-256 hash for secret key 2"
+					}
+				}
+			},
+			"UserSecretKeyService_createNewKeyForUserRequest": {
+				"type": "object",
+				"properties": {
+					"existing_key_expiry_time_mins": {
+						"type": "string",
+						"description": "Expiry time in minutes for the secret key. Note that nodes may cache secret keys for up to two minutes so old keys\n may not expire immediately."
+					},
+					"namespace": {
+						"type": "string",
+						"description": "Namespace for User qualifier if User Scope is NAMESPACE"
+					},
+					"secretkey": {
+						"type": "string",
+						"description": "Secret key associated with this user. If not provided, system will generate one"
+					}
+				}
+			},
+			"UserSecretKeyService_createNewKeyForUserResponse": {
+				"type": "object",
+				"properties": {
+					"secret_key": {
+						"type": "string",
+						"description": "Secret key"
+					},
+					"key_timestamp": {
+						"type": "string",
+						"description": "Secret key creation timestamp in ISO-8601 format"
+					},
+					"key_expiry_timestamp": {
+						"type": "string",
+						"description": "Secret key expiry timestamp in ISO-8601 format"
+					},
+					"link": {
+						"type": "object",
+						"properties": {
+							"rel": {
+								"type": "string",
+								"description": "Relationship type of the hyperlink"
+							},
+							"href": {
+								"type": "string",
+								"description": "Hyperlink URL to the related resource"
+							}
+						},
+						"description": "A link for this resource"
+					},
+					"secret_key_id": {
+						"type": "string",
+						"description": "SHA-256 hash of Secret key"
+					}
+				}
+			},
+			"UserSecretKeyService_deleteKeyForUserRequest": {
+				"type": "object",
+				"properties": {
+					"secret_key": {
+						"type": "string",
+						"description": "Identity of the secret key"
+					},
+					"namespace": {
+						"type": "string",
+						"description": "User qualifier if the User Scope is NAMESPACE"
+					},
+					"secret_key_id": {
+						"type": "string",
+						"description": "SHA-256 hash for Secret key to be deleted"
 					}
 				}
 			},
