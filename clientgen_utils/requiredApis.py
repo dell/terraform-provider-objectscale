@@ -148,6 +148,7 @@ RequiredAPIs = [
     
     # Object User API endpoints
     "/object/users*",
+    "/object/user-secret-keys/*",
 
     # Management User API endpoints
     "/vdc/users",
