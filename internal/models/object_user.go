@@ -36,3 +36,34 @@ type ObjectUserTags struct {
 	// Attributes
 	Value types.String `tfsdk:"value"`
 }
+
+type ObjectUser struct {
+	Name      types.String                `tfsdk:"name"`
+	Namespace types.String                `tfsdk:"namespace"`
+	Id        types.String                `tfsdk:"id"`
+	Tag       types.String                `tfsdk:"tag"`
+	Value     types.String                `tfsdk:"value"`
+	Users     []ObjectUserDatasourceModel `tfsdk:"users"`
+}
+type ObjectUserDatasourceModel struct {
+	Tags      types.List          `tfsdk:"tags"`
+	Name      types.String        `tfsdk:"name"`
+	Namespace types.String        `tfsdk:"namespace"`
+	Locked    types.Bool          `tfsdk:"locked"`
+	Created   types.String        `tfsdk:"created"`
+	Id        types.String        `tfsdk:"id"`
+	SecretKey ObjectUserAccessKey `tfsdk:"secret_keys"`
+}
+
+type ObjectUserAccessKey struct {
+	SecretKey1Id        types.String `tfsdk:"secret_key_1_id"`
+	SecretKey1          types.String `tfsdk:"secret_key_1"`
+	SecretKey1Exist     types.Bool   `tfsdk:"secret_key_1_exist"`
+	KeyTimestamp1       types.String `tfsdk:"key_timestamp_1"`
+	KeyExpiryTimestamp1 types.String `tfsdk:"key_expiry_timestamp_1"`
+	SecretKey2Id        types.String `tfsdk:"secret_key_2_id"`
+	SecretKey2          types.String `tfsdk:"secret_key_2"`
+	SecretKey2Exist     types.Bool   `tfsdk:"secret_key_2_exist"`
+	KeyTimestamp2       types.String `tfsdk:"key_timestamp_2"`
+	KeyExpiryTimestamp2 types.String `tfsdk:"key_expiry_timestamp_2"`
+}
