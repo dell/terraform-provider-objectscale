@@ -182,7 +182,7 @@ func TestAccManagementUserResourceForImport(t *testing.T) {
 
 func TestAccManagementUserResourceForErrorScenarios(t *testing.T) {
 	defer testUserTokenCleanup(t)
-	
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
