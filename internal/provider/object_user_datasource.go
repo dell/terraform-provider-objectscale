@@ -28,7 +28,7 @@ func NewObjectUserDataSource() datasource.DataSource {
 }
 
 func (d *ObjectUserDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_object_users"
+	resp.TypeName = req.ProviderTypeName + "_object_user"
 }
 
 func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
@@ -187,14 +187,14 @@ func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.Schema
 }
 
 func (d *ObjectUserDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data models.ObjectUser
+	var data models.ObjectUserDatasourceModel
 	// Load inputs
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var finalUsers []models.ObjectUserDatasourceModel
+	var finalUsers []models.ObjectUser
 	if !data.Name.IsNull() {
 		// CASE 1 — USERNAME PROVIDED
 		username := data.Name.ValueString()
@@ -257,7 +257,7 @@ func (d *ObjectUserDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (d *ObjectUserDataSource) listUsersByNamespace(ctx context.Context, namespace string) ([]models.ObjectUserDatasourceModel, error) {
+func (d *ObjectUserDataSource) listUsersByNamespace(ctx context.Context, namespace string) ([]models.ObjectUser, error) {
 
 	listResp, _, err := d.client.GenClient.UserManagementApi.
 		UserManagementServiceGetUsersForNamespace(ctx, namespace).
@@ -268,20 +268,23 @@ func (d *ObjectUserDataSource) listUsersByNamespace(ctx context.Context, namespa
 
 	items := listResp.Blobuser
 
-	var users []models.ObjectUserDatasourceModel
-	var user_list models.ObjectUserDatasourceModel
+	var users []models.ObjectUser
+	var user_list models.ObjectUser
 	for _, u := range items {
 		user_list, err = d.getUser(ctx, u.Userid)
+		if err != nil {
+			return nil, fmt.Errorf("listing object users for namespace %q: %w", namespace, err)
+		}
 		users = append(users, user_list)
 	}
 
 	return users, nil
 }
 
-func (d *ObjectUserDataSource) listUsersByName(ctx context.Context, name string) ([]models.ObjectUserDatasourceModel, error) {
+func (d *ObjectUserDataSource) listUsersByName(ctx context.Context, name string) ([]models.ObjectUser, error) {
 
-	var users []models.ObjectUserDatasourceModel
-	var user_list models.ObjectUserDatasourceModel
+	var users []models.ObjectUser
+	var user_list models.ObjectUser
 	user_list, err := d.getUser(ctx, name)
 	if err != nil {
 		return nil, fmt.Errorf("listing users for user %q: %w", name, err)
@@ -291,7 +294,7 @@ func (d *ObjectUserDataSource) listUsersByName(ctx context.Context, name string)
 	return users, nil
 }
 
-func (d *ObjectUserDataSource) listUsersByTag(ctx context.Context, namespace, tag, value string) ([]models.ObjectUserDatasourceModel, error) {
+func (d *ObjectUserDataSource) listUsersByTag(ctx context.Context, namespace, tag, value string) ([]models.ObjectUser, error) {
 
 	if tag != "" && value == "" || tag == "" && value != "" {
 		return nil, fmt.Errorf("value and tag are required together.")
@@ -320,16 +323,19 @@ func (d *ObjectUserDataSource) listUsersByTag(ctx context.Context, namespace, ta
 
 	items := listResp.Blobuser
 
-	var users []models.ObjectUserDatasourceModel
-	var user_list models.ObjectUserDatasourceModel
+	var users []models.ObjectUser
+	var user_list models.ObjectUser
 	for _, u := range items {
 		user_list, err = d.getUser(ctx, u.Userid)
+		if err != nil {
+			return nil, fmt.Errorf("listing users for tag %q and value %q: %w", tag, value, err)
+		}
 		users = append(users, user_list)
 	}
 
 	return users, nil
 }
-func (d *ObjectUserDataSource) listAllUsers(ctx context.Context) ([]models.ObjectUserDatasourceModel, error) {
+func (d *ObjectUserDataSource) listAllUsers(ctx context.Context) ([]models.ObjectUser, error) {
 
 	listResp, _, err := d.client.GenClient.UserManagementApi.
 		UserManagementServiceGetAllUsers(ctx).
@@ -340,34 +346,37 @@ func (d *ObjectUserDataSource) listAllUsers(ctx context.Context) ([]models.Objec
 
 	items := listResp.Blobuser
 
-	var users []models.ObjectUserDatasourceModel
-	var user_list models.ObjectUserDatasourceModel
+	var users []models.ObjectUser
+	var user_list models.ObjectUser
 	for _, u := range items {
 		user_list, err = d.getUser(ctx, u.Userid)
+		if err != nil {
+			return nil, fmt.Errorf("listing all users: %w", err)
+		}
 		users = append(users, user_list)
 	}
 
 	return users, nil
 }
 
-func (d *ObjectUserDataSource) getUser(ctx context.Context, username string) (models.ObjectUserDatasourceModel, error) {
-	objectUser, _, err := d.client.GenClient.UserManagementApi.
+func (d *ObjectUserDataSource) getUser(ctx context.Context, username string) (models.ObjectUser, error) {
+	objectUser, _, err_user := d.client.GenClient.UserManagementApi.
 		UserManagementServiceGetUserInfo(ctx, username).
 		Execute()
-	if err != nil {
-		return models.ObjectUserDatasourceModel{}, fmt.Errorf("reading user %q: %w", username, err)
+	if err_user != nil {
+		return models.ObjectUser{}, fmt.Errorf("reading user %q: %w", username, err_user)
 	}
 
-	obj_access_key, _, err := d.client.GenClient.UserSecretKeyApi.
+	obj_access_key, _, err_access_key := d.client.GenClient.UserSecretKeyApi.
 		UserSecretKeyServiceGetKeysForUser(ctx, username).
 		Execute()
 
-	if err != nil {
-		return models.ObjectUserDatasourceModel{}, fmt.Errorf("reading user secret keys %q: %w", username, err)
+	if err_access_key != nil {
+		return models.ObjectUser{}, fmt.Errorf("reading user secret keys %q: %w", username, err_access_key)
 	}
 
-	var obj_user models.ObjectUserDatasourceModel
-	obj_user = models.ObjectUserDatasourceModel{
+	var obj_user models.ObjectUser
+	obj_user = models.ObjectUser{
 		Id:        helper.TfString(&objectUser.Name),
 		Name:      helper.TfString(&objectUser.Name),
 		Namespace: helper.TfString(&objectUser.Namespace),

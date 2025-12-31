@@ -37,15 +37,15 @@ type ObjectUserTags struct {
 	Value types.String `tfsdk:"value"`
 }
 
-type ObjectUser struct {
-	Name      types.String                `tfsdk:"name"`
-	Namespace types.String                `tfsdk:"namespace"`
-	Id        types.String                `tfsdk:"id"`
-	Tag       types.String                `tfsdk:"tag"`
-	Value     types.String                `tfsdk:"value"`
-	Users     []ObjectUserDatasourceModel `tfsdk:"users"`
-}
 type ObjectUserDatasourceModel struct {
+	Name      types.String `tfsdk:"name"`
+	Namespace types.String `tfsdk:"namespace"`
+	Id        types.String `tfsdk:"id"`
+	Tag       types.String `tfsdk:"tag"`
+	Value     types.String `tfsdk:"value"`
+	Users     []ObjectUser `tfsdk:"users"`
+}
+type ObjectUser struct {
 	Tags      types.List          `tfsdk:"tags"`
 	Name      types.String        `tfsdk:"name"`
 	Namespace types.String        `tfsdk:"namespace"`
@@ -66,4 +66,11 @@ type ObjectUserAccessKey struct {
 	SecretKey2Exist     types.Bool   `tfsdk:"secret_key_2_exist"`
 	KeyTimestamp2       types.String `tfsdk:"key_timestamp_2"`
 	KeyExpiryTimestamp2 types.String `tfsdk:"key_expiry_timestamp_2"`
+}
+
+type ObjectUserSecretKeyResourceModel struct {
+	SecretKeyId        types.String `tfsdk:"secret_key_id"`
+	SecretKey          types.String `tfsdk:"secret_key"`
+	KeyTimestamp       types.String `tfsdk:"key_timestamp"`
+	KeyExpiryTimestamp types.String `tfsdk:"key_expiry_timestamp"`
 }

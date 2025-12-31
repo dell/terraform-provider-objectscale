@@ -15,6 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-data "objectscale_object_users" "all" {
+data "objectscale_object_user" "all" {
   namespace = "ns3"
 }
