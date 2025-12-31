@@ -297,7 +297,7 @@ func (d *ObjectUserDataSource) listUsersByName(ctx context.Context, name string)
 func (d *ObjectUserDataSource) listUsersByTag(ctx context.Context, namespace, tag, value string) ([]models.ObjectUser, error) {
 
 	if tag != "" && value == "" || tag == "" && value != "" {
-		return nil, fmt.Errorf("value and tag are required together.")
+		return nil, fmt.Errorf("value and tag are required together")
 	}
 
 	req := d.client.GenClient.UserManagementApi.
