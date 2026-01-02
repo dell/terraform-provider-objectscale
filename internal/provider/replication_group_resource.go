@@ -205,7 +205,8 @@ func (r *ReplicationGroupResource) isAsymmetricReplication(in []clientgen.DataSe
 }
 
 // helper function to check if all zones are known
-func (r *ReplicationGroupResource) checkAllZonesKnown(in types.Set) bool {
+func (r *ReplicationGroupResource) checkAllZonesKnown(inM models.ReplicationGroupResourceModel) bool {
+	in := inM.ZoneMappings
 	if in.IsUnknown() {
 		return false
 	}
@@ -235,7 +236,7 @@ func (r *ReplicationGroupResource) ValidateConfig(ctx context.Context, req resou
 	}
 
 	// zone mapping validations
-	if r.checkAllZonesKnown(conf.ZoneMappings) {
+	if r.checkAllZonesKnown(conf) {
 		// unmarshal zone mappings
 		zoneMappings := r.getZoneList(conf)
 
@@ -276,7 +277,7 @@ func (r *ReplicationGroupResource) ModifyPlan(ctx context.Context, req resource.
 	// If the entire state is null, the resource is planned for creation.
 	// create plan validations
 	if req.State.Raw.IsNull() {
-		if r.checkAllZonesKnown(plan.ZoneMappings) {
+		if r.checkAllZonesKnown(plan) {
 			// Action 1: Compute Active/Passive
 			asymmetricReplicationPlan := r.isAsymmetricReplication(r.getZoneList(plan))
 			resp.Diagnostics.Append(resp.Plan.SetAttribute(ctx, path.Root("type"), types.StringValue(map[bool]string{
@@ -305,7 +306,7 @@ func (r *ReplicationGroupResource) ModifyPlan(ctx context.Context, req resource.
 	}
 
 	// if plan zone mappings is known, run zone mapping validations
-	if r.checkAllZonesKnown(plan.ZoneMappings) {
+	if r.checkAllZonesKnown(plan) {
 		// Validation 1: A replication group cannot be converted from Active to Passive configuration
 		// No use checking for passive to active, since its possible to remove the passive zone (making its Terraform configuration indistinguishable from active).
 		asymmetricReplicationPlan := r.isAsymmetricReplication(r.getZoneList(plan))
@@ -357,11 +358,9 @@ func (r *ReplicationGroupResource) Create(ctx context.Context, req resource.Crea
 	// run the API call
 	createdRG, _, err := r.client.GenClient.DataVpoolApi.DataServiceVpoolServiceCreateDataServiceVpool(ctx).
 		DataServiceVpoolServiceCreateDataServiceVpoolRequest(clientgen.DataServiceVpoolServiceCreateDataServiceVpoolRequest{
-			Name:         plan.Name.ValueString(),
-			ZoneMappings: zoneMappings,
-			Description:  helper.ValueToPointer[string](plan.Description),
-			// EnableRebalancing:    rgRsIsTrue(plan.EnableRebalancing),
-			// IsAllowAllNamespaces: rgRsIsTrue(plan.AllowAllNamespaces),
+			Name:                 plan.Name.ValueString(),
+			ZoneMappings:         zoneMappings,
+			Description:          helper.ValueToPointer[string](plan.Description),
 			EnableRebalancing:    helper.ValueToPointer[bool](plan.EnableRebalancing),
 			IsAllowAllNamespaces: helper.ValueToPointer[bool](plan.AllowAllNamespaces),
 			IsFullRep:            rgRsIsTrue(plan.FullRep),
