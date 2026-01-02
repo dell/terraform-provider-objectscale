@@ -15856,9 +15856,6 @@
 						"type": "boolean",
 						"description": "Parameter to check for full replication"
 					},
-					"use_replication_target": {
-						"type": "boolean"
-					},
 					"id": {
 						"type": "string",
 						"format": "uri",
@@ -15911,6 +15908,9 @@
 					"internal": {
 						"type": "boolean",
 						"description": "Indicated whether the resource is an internal resource"
+					},
+					"useReplicationTarget": {
+						"type": "boolean"
 					}
 				}
 			},
@@ -15933,10 +15933,7 @@
 						"type": "boolean",
 						"description": "AllowAllNamespaces to update"
 					}
-				},
-				"required": [
-					"name"
-				]
+				}
 			},
 			"DataServiceVpoolService_addToVpoolRequest": {
 				"type": "object",
@@ -16047,7 +16044,6 @@
 					}
 				},
 				"required": [
-					"id",
 					"name"
 				]
 			},
@@ -16093,9 +16089,6 @@
 					"isFullRep": {
 						"type": "boolean",
 						"description": "Parameter to check for full replication"
-					},
-					"use_replication_target": {
-						"type": "boolean"
 					},
 					"id": {
 						"type": "string",
@@ -16149,6 +16142,9 @@
 					"internal": {
 						"type": "boolean",
 						"description": "Indicated whether the resource is an internal resource"
+					},
+					"useReplicationTarget": {
+						"type": "boolean"
 					}
 				}
 			},

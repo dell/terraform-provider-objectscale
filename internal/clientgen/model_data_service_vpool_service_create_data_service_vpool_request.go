@@ -13,7 +13,7 @@ package clientgen
 // DataServiceVpoolServiceCreateDataServiceVpoolRequest struct for DataServiceVpoolServiceCreateDataServiceVpoolRequest
 type DataServiceVpoolServiceCreateDataServiceVpoolRequest struct {
 	// Identifier for this replication group
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Unique name identifying this classification of replication group
 	Name string `json:"name"`
 	// Description of this replication group

@@ -13,7 +13,7 @@ package clientgen
 // DataServiceVpoolServicePutDataServiceVpoolRequest struct for DataServiceVpoolServicePutDataServiceVpoolRequest
 type DataServiceVpoolServicePutDataServiceVpoolRequest struct {
 	// New name fro the replication group
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 	// New description for the replication group
 	Description *string `json:"description,omitempty"`
 	// set if geo rebalancing is enabled

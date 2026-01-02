@@ -106,7 +106,7 @@ import (
 )
 
 func main() {
-    dataServiceVpoolServiceCreateDataServiceVpoolRequest := *openapiclient.NewDataServiceVpoolServiceCreateDataServiceVpoolRequest("Id_example", "Name_example") // DataServiceVpoolServiceCreateDataServiceVpoolRequest | 
+    dataServiceVpoolServiceCreateDataServiceVpoolRequest := *openapiclient.NewDataServiceVpoolServiceCreateDataServiceVpoolRequest("Name_example") // DataServiceVpoolServiceCreateDataServiceVpoolRequest | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -304,7 +304,7 @@ import (
 
 func main() {
     id := "id_example" // string | Replication group identifier for which details needs to be updated
-    dataServiceVpoolServicePutDataServiceVpoolRequest := *openapiclient.NewDataServiceVpoolServicePutDataServiceVpoolRequest("Name_example") // DataServiceVpoolServicePutDataServiceVpoolRequest | 
+    dataServiceVpoolServicePutDataServiceVpoolRequest := *openapiclient.NewDataServiceVpoolServicePutDataServiceVpoolRequest() // DataServiceVpoolServicePutDataServiceVpoolRequest | 
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
