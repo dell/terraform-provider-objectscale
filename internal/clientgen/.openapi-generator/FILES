@@ -7,6 +7,7 @@ api_mgmt_user_info.go
 api_namespace.go
 api_object_varray.go
 api_user_management.go
+api_user_secret_key.go
 api_zone_info.go
 client.go
 configuration.go
@@ -18,6 +19,7 @@ docs/MgmtUserInfoApi.md
 docs/NamespaceApi.md
 docs/ObjectVarrayApi.md
 docs/UserManagementApi.md
+docs/UserSecretKeyApi.md
 docs/ZoneInfoApi.md
 model_basic_response.go
 model_bucket_service_add_bucket_tags_request.go
@@ -204,6 +206,13 @@ model_user_management_service_remove_user_request.go
 model_user_management_service_remove_user_tags_request.go
 model_user_management_service_set_user_lock_request.go
 model_user_management_service_update_user_tag_request.go
+model_user_secret_key_service_create_new_key_for_user_request.go
+model_user_secret_key_service_create_new_key_for_user_response.go
+model_user_secret_key_service_delete_key_for_user_request.go
+model_user_secret_key_service_get_keys_exist_for_user_response.go
+model_user_secret_key_service_get_keys_for_user_1_response.go
+model_user_secret_key_service_get_keys_for_user_response.go
+model_user_secret_key_service_get_keys_for_user_response_link.go
 model_vdc.go
 model_zone_info_service_insert_vdc_info_request.go
 model_zone_info_service_list_all_vdc_response.go

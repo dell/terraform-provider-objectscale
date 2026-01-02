@@ -164,6 +164,7 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 		NewVDCDataSource,
 		NewStoragePoolDataSource,
 		NewManagementUserDataSource,
+		NewObjectUserDataSource,
 	}
 }
 

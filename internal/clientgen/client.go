@@ -64,6 +64,8 @@ type APIClient struct {
 
 	UserManagementApi *UserManagementApiService
 
+	UserSecretKeyApi *UserSecretKeyApiService
+
 	ZoneInfoApi *ZoneInfoApiService
 }
 
@@ -91,6 +93,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.NamespaceApi = (*NamespaceApiService)(&c.common)
 	c.ObjectVarrayApi = (*ObjectVarrayApiService)(&c.common)
 	c.UserManagementApi = (*UserManagementApiService)(&c.common)
+	c.UserSecretKeyApi = (*UserSecretKeyApiService)(&c.common)
 	c.ZoneInfoApi = (*ZoneInfoApiService)(&c.common)
 
 	return c
