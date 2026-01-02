@@ -147,6 +147,7 @@ func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.R
 		NewObjectUserResource,
 		NewManagementUserResource,
 		NewIAMPolicyResource,
+		NewReplicationGroupResource,
 	}
 }
 

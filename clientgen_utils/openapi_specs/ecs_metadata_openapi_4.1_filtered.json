@@ -15856,7 +15856,7 @@
 						"type": "boolean",
 						"description": "Parameter to check for full replication"
 					},
-					"use_replication_target": {
+					"useReplicationTarget": {
 						"type": "boolean"
 					},
 					"id": {
@@ -15933,10 +15933,7 @@
 						"type": "boolean",
 						"description": "AllowAllNamespaces to update"
 					}
-				},
-				"required": [
-					"name"
-				]
+				}
 			},
 			"DataServiceVpoolService_addToVpoolRequest": {
 				"type": "object",
@@ -16047,7 +16044,6 @@
 					}
 				},
 				"required": [
-					"id",
 					"name"
 				]
 			},
@@ -16094,7 +16090,7 @@
 						"type": "boolean",
 						"description": "Parameter to check for full replication"
 					},
-					"use_replication_target": {
+					"useReplicationTarget": {
 						"type": "boolean"
 					},
 					"id": {
