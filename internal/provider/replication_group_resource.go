@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ func (r *ReplicationGroupResource) Metadata(ctx context.Context, req resource.Me
 
 func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages Replication Groups in ObjectScale.",
-		MarkdownDescription: "Manages Replication Groups in ObjectScale.",
+		Description:         "Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.",
+		MarkdownDescription: "Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier of the Replication Group.",
@@ -64,24 +64,24 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				Description:         "Name of the Replication Group. Required",
-				MarkdownDescription: "Name of the Replication Group. Required",
+				Description:         "Name of the Replication Group.",
+				MarkdownDescription: "Name of the Replication Group.",
 				Required:            true,
 			},
 			"zone_mappings": schema.SetNestedAttribute{
-				Description:         "List of zone mappings. Required",
-				MarkdownDescription: "List of zone mappings. Required",
+				Description:         "List of zones (VDC + Storage Pool) which will be used for replication.",
+				MarkdownDescription: "List of zones (VDC + Storage Pool) which will be used for replication.",
 				Required:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"vdc": schema.StringAttribute{
-							Description:         "Virtual Data Center ID. Required",
-							MarkdownDescription: "Virtual Data Center ID. Required",
+							Description:         "Virtual Data Center ID.",
+							MarkdownDescription: "Virtual Data Center ID.",
 							Required:            true,
 						},
 						"storage_pool": schema.StringAttribute{
-							Description:         "Storage Pool ID. Required",
-							MarkdownDescription: "Storage Pool ID. Required",
+							Description:         "Storage Pool ID.",
+							MarkdownDescription: "Storage Pool ID.",
 							Required:            true,
 						},
 						"is_replication_target": schema.BoolAttribute{
@@ -95,16 +95,16 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"type": schema.StringAttribute{
-				Description:         "Type of the Replication Group (Active/Passive).",
-				MarkdownDescription: "Type of the Replication Group (Active/Passive).",
+				Description:         "Type of the Replication Group (Active/Passive). Cannot be updated.",
+				MarkdownDescription: "Type of the Replication Group (Active/Passive). Cannot be updated.",
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"description": schema.StringAttribute{
-				Description:         "Description of the Replication Group. Optional",
-				MarkdownDescription: "Description of the Replication Group. Optional",
+				Description:         "Description of the Replication Group.",
+				MarkdownDescription: "Description of the Replication Group.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
@@ -112,8 +112,8 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"enable_rebalancing": schema.BoolAttribute{
-				Description:         "Enable Rebalancing. Optional",
-				MarkdownDescription: "Enable Rebalancing. Optional",
+				Description:         "Enable Rebalancing.",
+				MarkdownDescription: "Enable Rebalancing.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.Bool{
@@ -262,8 +262,8 @@ func (r *ReplicationGroupResource) ValidateConfig(ctx context.Context, req resou
 func (r *ReplicationGroupResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	// If the entire plan is null, the resource is planned for destruction.
 	if req.Plan.Raw.IsNull() {
-		resp.Diagnostics.AddError("Deletion of Replication Group is not supported.",
-			"Please contact Dell Technologies customer support if want to delete this replication group.")
+		resp.Diagnostics.AddWarning("Deletion of Replication Group is not supported.",
+			"If this plan is applied, this resource will be removed from the state, but will not be destroyed on ObjectScale.")
 		return
 	}
 
@@ -513,9 +513,8 @@ func (r *ReplicationGroupResource) Update(ctx context.Context, req resource.Upda
 
 // Delete
 func (r *ReplicationGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	// should never get here. Should be stopped at ModifyPlan
-	resp.Diagnostics.AddError("Deletion of Replication Group is not supported.",
-		"Please contact Dell Technologies customer support if want to remove this replication group.")
+	// just remove from state
+	resp.State.RemoveResource(ctx)
 }
 
 // ImportState
