@@ -15856,9 +15856,6 @@
 						"type": "boolean",
 						"description": "Parameter to check for full replication"
 					},
-					"useReplicationTarget": {
-						"type": "boolean"
-					},
 					"id": {
 						"type": "string",
 						"format": "uri",
@@ -15911,6 +15908,9 @@
 					"internal": {
 						"type": "boolean",
 						"description": "Indicated whether the resource is an internal resource"
+					},
+					"useReplicationTarget": {
+						"type": "boolean"
 					}
 				}
 			},
@@ -16090,9 +16090,6 @@
 						"type": "boolean",
 						"description": "Parameter to check for full replication"
 					},
-					"useReplicationTarget": {
-						"type": "boolean"
-					},
 					"id": {
 						"type": "string",
 						"format": "uri",
@@ -16145,6 +16142,9 @@
 					"internal": {
 						"type": "boolean",
 						"description": "Indicated whether the resource is an internal resource"
+					},
+					"useReplicationTarget": {
+						"type": "boolean"
 					}
 				}
 			},
