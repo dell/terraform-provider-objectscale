@@ -203,7 +203,7 @@ func (d *ObjectUserDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error retrieving object user by name",
-				fmt.Sprintf("Failed retrieving user %s: %v", username, err),
+				fmt.Sprintf("Failed retrieving user %s: %s", username, err),
 			)
 			return
 		}
@@ -218,7 +218,7 @@ func (d *ObjectUserDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error retrieving users by tag",
-				fmt.Sprintf("Unable to retrieve object users with tag filter: %v", err),
+				fmt.Sprintf("Unable to retrieve object users with tag filter: %s", err),
 			)
 			return
 		}
@@ -232,7 +232,7 @@ func (d *ObjectUserDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error retrieving namespace object users",
-				fmt.Sprintf("Unable to retrieve namespace object users %q: %v", Namespace, err),
+				fmt.Sprintf("Unable to retrieve namespace object users %s: %s", Namespace, err),
 			)
 			return
 		}
@@ -244,7 +244,7 @@ func (d *ObjectUserDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error listing Object users",
-				fmt.Sprintf("Error listing Object users: %v", err),
+				fmt.Sprintf("Error listing Object users: %s", err),
 			)
 			return
 		}
