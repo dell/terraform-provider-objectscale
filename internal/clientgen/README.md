@@ -227,6 +227,11 @@ Class | Method | HTTP request | Description
 *UserManagementApi* | [**UserManagementServiceRemoveUserTags**](docs/UserManagementApi.md#usermanagementserviceremoveusertags) | **Delete** /object/users/{uid}/tags | Deletes user tags for specified user
 *UserManagementApi* | [**UserManagementServiceSetUserLock**](docs/UserManagementApi.md#usermanagementservicesetuserlock) | **Put** /object/users/lock | Locks the specified user
 *UserManagementApi* | [**UserManagementServiceUpdateUserTag**](docs/UserManagementApi.md#usermanagementserviceupdateusertag) | **Put** /object/users/{uid}/tags | Updates user tags for the specified user
+*UserSecretKeyApi* | [**UserSecretKeyServiceCreateNewKeyForUser**](docs/UserSecretKeyApi.md#usersecretkeyservicecreatenewkeyforuser) | **Post** /object/user-secret-keys/{uid} | Creates a secret key with the given details for the specified user
+*UserSecretKeyApi* | [**UserSecretKeyServiceDeleteKeyForUser**](docs/UserSecretKeyApi.md#usersecretkeyservicedeletekeyforuser) | **Post** /object/user-secret-keys/{uid}/deactivate | Deletes a specified secret key for a user
+*UserSecretKeyApi* | [**UserSecretKeyServiceGetKeysExistForUser**](docs/UserSecretKeyApi.md#usersecretkeyservicegetkeysexistforuser) | **Get** /object/user-secret-keys/exist/{uid}/{namespace} | Returns indication if secret keys for the specified user and namespace exist
+*UserSecretKeyApi* | [**UserSecretKeyServiceGetKeysForUser**](docs/UserSecretKeyApi.md#usersecretkeyservicegetkeysforuser) | **Get** /object/user-secret-keys/{uid} | Gets all secret keys for the specified user
+*UserSecretKeyApi* | [**UserSecretKeyServiceGetKeysForUser1**](docs/UserSecretKeyApi.md#usersecretkeyservicegetkeysforuser1) | **Get** /object/user-secret-keys/{uid}/{namespace} | Gets all secret keys for the specified user and namespace
 *ZoneInfoApi* | [**ZoneInfoServiceGetLocalVdc**](docs/ZoneInfoApi.md#zoneinfoservicegetlocalvdc) | **Get** /object/vdcs/vdc/local | Gets the details for the local VDC
 *ZoneInfoApi* | [**ZoneInfoServiceGetVdcById**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyid) | **Get** /object/vdcs/vdcid/{vdcId} | Gets the details for a VDC specified by VDC Id
 *ZoneInfoApi* | [**ZoneInfoServiceGetVdcByName**](docs/ZoneInfoApi.md#zoneinfoservicegetvdcbyname) | **Get** /object/vdcs/vdc/{vdcName} | Gets the details for a VDC specified by name
@@ -421,6 +426,13 @@ Class | Method | HTTP request | Description
  - [UserManagementServiceRemoveUserTagsRequest](docs/UserManagementServiceRemoveUserTagsRequest.md)
  - [UserManagementServiceSetUserLockRequest](docs/UserManagementServiceSetUserLockRequest.md)
  - [UserManagementServiceUpdateUserTagRequest](docs/UserManagementServiceUpdateUserTagRequest.md)
+ - [UserSecretKeyServiceCreateNewKeyForUserRequest](docs/UserSecretKeyServiceCreateNewKeyForUserRequest.md)
+ - [UserSecretKeyServiceCreateNewKeyForUserResponse](docs/UserSecretKeyServiceCreateNewKeyForUserResponse.md)
+ - [UserSecretKeyServiceDeleteKeyForUserRequest](docs/UserSecretKeyServiceDeleteKeyForUserRequest.md)
+ - [UserSecretKeyServiceGetKeysExistForUserResponse](docs/UserSecretKeyServiceGetKeysExistForUserResponse.md)
+ - [UserSecretKeyServiceGetKeysForUser1Response](docs/UserSecretKeyServiceGetKeysForUser1Response.md)
+ - [UserSecretKeyServiceGetKeysForUserResponse](docs/UserSecretKeyServiceGetKeysForUserResponse.md)
+ - [UserSecretKeyServiceGetKeysForUserResponseLink](docs/UserSecretKeyServiceGetKeysForUserResponseLink.md)
  - [Vdc](docs/Vdc.md)
  - [ZoneInfoServiceInsertVdcInfoRequest](docs/ZoneInfoServiceInsertVdcInfoRequest.md)
  - [ZoneInfoServiceListAllVdcResponse](docs/ZoneInfoServiceListAllVdcResponse.md)
