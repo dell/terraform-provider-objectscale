@@ -96,7 +96,7 @@ func (r *IAMUserResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: "Type of the permissions boundary.",
 				Computed:            true,
 			},
-			"tags": schema.ListNestedAttribute{
+			"tags": schema.SetNestedAttribute{
 				Description:         "Tags associated to the user. Default: []. Updatable.",
 				MarkdownDescription: "Tags associated to the user. Default: []. Updatable.",
 				Optional:            true,
@@ -117,9 +117,6 @@ func (r *IAMUserResource) Schema(ctx context.Context, req resource.SchemaRequest
 						},
 					},
 				},
-				// PlanModifiers: []planmodifier.List{
-				// 	listplanmodifier.UseStateForUnknown(),
-				// },
 			},
 		},
 	}
@@ -235,7 +232,7 @@ func (r *IAMUserResource) getModel(
 		Path:                    helper.TfStringNN(iam_user.Path),
 		PermissionsBoundaryType: permissionsBoundaryType,
 		PermissionsBoundaryArn:  permissionsBoundaryArn,
-		Tags: helper.ListNotNull(iam_user.Tags,
+		Tags: helper.SetNotNull(iam_user.Tags,
 			func(v clientgen.IamServiceGetUserResponseGetUserResultUserTagsInner) types.Object {
 				return helper.Object(models.Tags{
 					Key:   helper.TfStringNN(v.Key),
