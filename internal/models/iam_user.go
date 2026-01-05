@@ -27,7 +27,7 @@ type IAMUserResourceModel struct {
 	Path                    types.String `tfsdk:"path"`
 	PermissionsBoundaryArn  types.String `tfsdk:"permissions_boundary_arn"`
 	PermissionsBoundaryType types.String `tfsdk:"permissions_boundary_type"`
-	Tags                    types.Set   `tfsdk:"tags"`
+	Tags                    types.Set    `tfsdk:"tags"`
 	Id                      types.String `tfsdk:"id"`
 	Name                    types.String `tfsdk:"name"`
 	Namespace               types.String `tfsdk:"namespace"`
