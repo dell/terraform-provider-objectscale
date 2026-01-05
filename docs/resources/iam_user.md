@@ -80,7 +80,7 @@ resource "objectscale_iam_user" "example_iam_user" {
 ### Optional
 
 - `permissions_boundary_arn` (String) Arn of the permissions boundary.
-- `tags` (Attributes List) Tags associated to the user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
+- `tags` (Attributes Set) Tags associated to the user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
 
 ### Read-Only
 
