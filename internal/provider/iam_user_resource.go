@@ -247,9 +247,9 @@ func (r *IAMUserResource) getModel(
 func iamTagsDiff(first, second []clientgen.IamTagKeyValue) []clientgen.IamTagKeyValue {
 	var diff []clientgen.IamTagKeyValue
 	type kv struct {
-					Key   string
-					Value string
-			}
+		Key   string
+		Value string
+	}
 	smap := make(map[kv]struct{}, len(second))
 
 	for _, v := range second {
