@@ -92,3 +92,30 @@ type VdcLink struct {
 	Rel  types.String `tfsdk:"rel"`
 	Href types.String `tfsdk:"href"`
 }
+
+// resource
+
+// ReplicationGroupResourceModel describes the resource data model.
+type ReplicationGroupResourceModel struct {
+	ID           types.String `tfsdk:"id"`
+	Name         types.String `tfsdk:"name"`
+	ZoneMappings types.Set    `tfsdk:"zone_mappings"`
+	Type         types.String `tfsdk:"type"`
+	// Optional
+	Description        types.String `tfsdk:"description"`
+	EnableRebalancing  types.Bool   `tfsdk:"enable_rebalancing"`
+	AllowAllNamespaces types.Bool   `tfsdk:"allow_all_namespaces"`
+	FullRep            types.Bool   `tfsdk:"replicate_to_all_sites"`
+}
+
+// ReplicationGroupResourceZoneMapping describes the resource zone mapping data model.
+type ReplicationGroupResourceZoneMapping struct {
+	// Virtual data center ID
+	Name types.String `tfsdk:"vdc"`
+
+	// Storage pool ID
+	Value types.String `tfsdk:"storage_pool"`
+
+	// Indicates if this is a replication target
+	IsReplicationTarget types.Bool `tfsdk:"is_replication_target"`
+}

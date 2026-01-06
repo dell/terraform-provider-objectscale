@@ -368,14 +368,6 @@ def _normalizeObjectScaleVDCs(json_obj: dict) -> dict:
         ]:
         if container[key] == commonVdcType:
             container[key] = commonVdcRef
-        else:
-            a = container[key]
-            b = commonVdcType
-            added   = b.keys() - a.keys()
-            removed = a.keys() - b.keys()
-            print("Key:", key)
-            print("Added:", added)
-            print("Removed:", removed)
 
     json_obj['components']['schemas']['Vdc'] = commonVdcType
     return json_obj
@@ -392,6 +384,27 @@ def _normalizeObjectScaleStoragePools(json_obj: dict) -> dict:
         }
     return json_obj
 
+def _normalizeObjectScaleReplicationGroups(json_obj: dict) -> dict:
+    # "use_replication_target" -> "useReplicationTarget" in
+    # DataServiceVpoolService_createDataServiceVpoolResponse and DataServiceVpoolService_getDataServiceStoreResponse
+    if 'use_replication_target' in json_obj['components']['schemas']['DataServiceVpoolService_createDataServiceVpoolResponse']['properties']:
+        json_obj['components']['schemas']['DataServiceVpoolService_createDataServiceVpoolResponse']['properties']['useReplicationTarget'] = \
+            json_obj['components']['schemas']['DataServiceVpoolService_createDataServiceVpoolResponse']['properties']['use_replication_target']
+        del json_obj['components']['schemas']['DataServiceVpoolService_createDataServiceVpoolResponse']['properties']['use_replication_target']
+    if 'use_replication_target' in json_obj['components']['schemas']['DataServiceVpoolService_getDataServiceStoreResponse']['properties']:
+        json_obj['components']['schemas']['DataServiceVpoolService_getDataServiceStoreResponse']['properties']['useReplicationTarget'] = \
+            json_obj['components']['schemas']['DataServiceVpoolService_getDataServiceStoreResponse']['properties']['use_replication_target']
+        del json_obj['components']['schemas']['DataServiceVpoolService_getDataServiceStoreResponse']['properties']['use_replication_target']
+    
+    # nothing required in DataServiceVpoolService_putDataServiceVpoolRequest
+    del json_obj['components']['schemas']['DataServiceVpoolService_putDataServiceVpoolRequest']['required']
+
+    # 'id' not required in DataServiceVpoolService_createDataServiceVpoolRequest
+    json_obj['components']['schemas']['DataServiceVpoolService_createDataServiceVpoolRequest']['required'].remove('id')
+
+    return json_obj
+
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
@@ -405,4 +418,5 @@ def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     ret = _NormalizeObjectScalePutRolePermissionsBoundaryParameter(ret)
     ret = _normalizeObjectScaleVDCs(ret)
     ret = _normalizeObjectScaleStoragePools(ret)
+    ret = _normalizeObjectScaleReplicationGroups(ret)
     return ret
