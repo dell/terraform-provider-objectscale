@@ -69,8 +69,11 @@ type ObjectUserAccessKey struct {
 }
 
 type ObjectUserSecretKeyResourceModel struct {
-	SecretKeyId        types.String `tfsdk:"secret_key_id"`
+	Id                 types.String `tfsdk:"id"`
 	SecretKey          types.String `tfsdk:"secret_key"`
 	KeyTimestamp       types.String `tfsdk:"key_timestamp"`
 	KeyExpiryTimestamp types.String `tfsdk:"key_expiry_timestamp"`
+	UserName           types.String `tfsdk:"username"`
+	Namespace          types.String `tfsdk:"namespace"`
+	ExpiryInMins       types.String `tfsdk:"expiry_in_mins"`
 }
