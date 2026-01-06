@@ -245,12 +245,17 @@ func (r *IAMUserResource) getModel(
 // computes the difference between two Iam Tag sets (lists).
 func iamTagsDiff(first, second []clientgen.IamTagKeyValue) []clientgen.IamTagKeyValue {
 	var diff []clientgen.IamTagKeyValue
-	smap := make(map[string]struct{}, len(second))
+	type kv struct {
+			Key   string
+			Value string
+		}
+	smap := make(map[kv]struct{}, len(second))
+
 	for _, v := range second {
-		smap[*v.Key] = struct{}{}
+		smap[kv{Key: *v.Key, Value: *v.Value}] = struct{}{}
 	}
 	for _, v := range first {
-		if _, ok := smap[*v.Key]; !ok {
+		if _, ok := smap[kv{Key: *v.Key, Value: *v.Value}]; !ok {
 			diff = append(diff, v)
 		}
 	}
