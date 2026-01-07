@@ -25,6 +25,8 @@ import (
 	"terraform-provider-objectscale/internal/models"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -32,6 +34,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -67,6 +70,9 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 				Description:         "Name of the Replication Group.",
 				MarkdownDescription: "Name of the Replication Group.",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthAtLeast(1),
+				},
 			},
 			"zone_mappings": schema.SetNestedAttribute{
 				Description:         "List of zones (VDC + Storage Pool) which will be used for replication.",
@@ -93,6 +99,9 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
+				Validators: []validator.Set{
+					setvalidator.SizeAtLeast(1),
+				},
 			},
 			"type": schema.StringAttribute{
 				Description:         "Type of the Replication Group (Active/Passive). Cannot be updated.",
@@ -109,6 +118,9 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+				},
+				Validators: []validator.String{
+					stringvalidator.LengthAtLeast(1),
 				},
 			},
 			"enable_rebalancing": schema.BoolAttribute{
@@ -254,6 +266,30 @@ func (r *ReplicationGroupResource) ValidateConfig(ctx context.Context, req resou
 			} else {
 				// add to map so we can check for duplicates in next set of items
 				zmap[id] = struct{}{}
+			}
+		}
+
+		// Validation 2: A Passive Replication Group must have exactly three zones, 2 source and 1 target
+		asymmetricReplicationPlan := r.isAsymmetricReplication(zoneMappings)
+		if asymmetricReplicationPlan {
+			if len(zoneMappings) != 3 {
+				resp.Diagnostics.AddError(
+					"Invalid number of zones for Passive Replication Group",
+					"A Passive Replication Group must have exactly three zones, 2 source and 1 target",
+				)
+			} else {
+				targetZones := 0
+				for _, zm := range zoneMappings {
+					if zm.IsReplicationTarget != nil && *zm.IsReplicationTarget {
+						targetZones++
+					}
+				}
+				if targetZones != 1 {
+					resp.Diagnostics.AddError(
+						"Invalid number of source and target zones for Passive Replication Group",
+						"A Passive Replication Group must have exactly two source zones and exactly one target zone.",
+					)
+				}
 			}
 		}
 	}
