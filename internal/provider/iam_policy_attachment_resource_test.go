@@ -50,6 +50,8 @@ func init() {
 }
 
 func TestAccIAMPolicyAttachmentResourceForUserCRUD(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -84,6 +86,8 @@ func TestAccIAMPolicyAttachmentResourceForUserCRUD(t *testing.T) {
 }
 
 func TestAccIAMPolicyAttachmentResourceForGroupCRUD(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -118,6 +122,8 @@ func TestAccIAMPolicyAttachmentResourceForGroupCRUD(t *testing.T) {
 }
 
 func TestAccIAMPolicyAttachmentResourceForRoleCRUD(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -152,6 +158,8 @@ func TestAccIAMPolicyAttachmentResourceForRoleCRUD(t *testing.T) {
 }
 
 func TestAccIAMPolicyAttachmentResourceForErrorScenarios(t *testing.T) {
+	defer testUserTokenCleanup(t)
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -169,8 +177,9 @@ func TestAccIAMPolicyAttachmentResourceForErrorScenarios(t *testing.T) {
 }
 
 func TestAccIAMPolicyAttachmentResourceForImport(t *testing.T) {
-	resourceName := "objectscale_iam_policy_attachment.example"
+	defer testUserTokenCleanup(t)
 
+	resourceName := "objectscale_iam_policy_attachment.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

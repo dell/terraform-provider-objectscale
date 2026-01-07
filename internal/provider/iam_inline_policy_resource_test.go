@@ -169,6 +169,7 @@ func init() {
 
 func TestAccIAMInlinePolicyResourceForUserCRUD(t *testing.T) {
 	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -204,6 +205,7 @@ func TestAccIAMInlinePolicyResourceForUserCRUD(t *testing.T) {
 
 func TestAccIAMInlinePolicyResourceForGroupCRUD(t *testing.T) {
 	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -239,6 +241,7 @@ func TestAccIAMInlinePolicyResourceForGroupCRUD(t *testing.T) {
 
 func TestAccIAMInlinePolicyResourceForRoleCRUD(t *testing.T) {
 	defer testUserTokenCleanup(t)
+
 	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -274,6 +277,7 @@ func TestAccIAMInlinePolicyResourceForRoleCRUD(t *testing.T) {
 
 func TestAccIAMInlinePolicyResourceForErrorScenarios(t *testing.T) {
 	defer testUserTokenCleanup(t)
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -292,8 +296,8 @@ func TestAccIAMInlinePolicyResourceForErrorScenarios(t *testing.T) {
 
 func TestAccIAMInlinePolicyResourceForImport(t *testing.T) {
 	defer testUserTokenCleanup(t)
-	resourceName := "objectscale_iam_inline_policy.example"
 
+	resourceName := "objectscale_iam_inline_policy.example"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
