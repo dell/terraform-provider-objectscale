@@ -45,7 +45,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"
@@ -82,7 +82,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"
@@ -124,7 +124,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"
@@ -164,7 +164,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"
@@ -206,7 +206,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"
@@ -242,7 +242,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"
@@ -280,7 +280,7 @@ func TestAccIamRoleResource(t *testing.T) {
 						Effect = "Allow"
 						Principal = {
 						AWS = [
-							"urn:ecs:iam::ns1:user/sample_user_1"
+							"urn:ecs:iam::ns1:user/iam_role_acc_user"
 						]
 						}
 						Action = "sts:AssumeRole"

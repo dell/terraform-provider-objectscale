@@ -106,7 +106,7 @@ func (r *IAMRoleResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Computed:            true,
 			},
 
-			"tags": schema.ListNestedAttribute{
+			"tags": schema.SetNestedAttribute{
 				Description:         "The list of Tags associated with the role.. Default: []. Updatable.",
 				MarkdownDescription: "The list of Tags associated with the role.. Default: []. Updatable.",
 				Optional:            true,
@@ -250,7 +250,7 @@ func (r *IAMRoleResource) getModel(
 		Path:                     helper.TfStringNN(iam_role.Path),
 		PermissionsBoundaryType:  permissionsBoundaryType,
 		PermissionsBoundaryArn:   permissionsBoundaryArn,
-		Tags: helper.ListNotNull(iam_role.Tags, func(tag clientgen.IamTagKeyValue) types.Object {
+		Tags: helper.SetNotNull(iam_role.Tags, func(tag clientgen.IamTagKeyValue) types.Object {
 			return helper.Object(models.IAMRoleTag{
 				Key:   helper.TfStringNN(tag.Key),
 				Value: helper.TfStringNN(tag.Value),
