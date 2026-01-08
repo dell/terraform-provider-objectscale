@@ -58,5 +58,5 @@ type IAMRoleResourceModel struct {
 	Path                     types.String `tfsdk:"path"`
 	PermissionsBoundaryArn   types.String `tfsdk:"permissions_boundary_arn"`
 	PermissionsBoundaryType  types.String `tfsdk:"permissions_boundary_type"`
-	Tags                     types.List   `tfsdk:"tags"`
+	Tags                     types.Set   `tfsdk:"tags"`
 }

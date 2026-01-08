@@ -94,7 +94,7 @@ resource "objectscale_iam_role" "example" {
 - `max_session_duration` (Number) The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default maximum of one hour is applied. This setting can have a value from 1 hour to 12 hours.
 - `permissions_boundary_arn` (String) Arn of the permissions boundary.
 - `permissions_boundary_type` (String) Type of the permissions boundary.
-- `tags` (Attributes List) The list of Tags associated with the role.. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
+- `tags` (Attributes Set) The list of Tags associated with the role.. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
 
 ### Read-Only
 
