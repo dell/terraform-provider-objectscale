@@ -305,6 +305,15 @@ func (r *IAMPolicyResource) ImportState(ctx context.Context, req resource.Import
 	}
 	policyArn := parts[0]
 	namespace := parts[1]
+	// validate namespace and policyArn are not empty
+	if namespace == "" {
+		resp.Diagnostics.AddError("Error importing IAM Policy", "namespace cannot be empty")
+		return
+	}
+	if policyArn == "" {
+		resp.Diagnostics.AddError("Error importing IAM Policy", "policy ARN cannot be empty")
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("arn"), policyArn)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("namespace"), namespace)...)
 }
