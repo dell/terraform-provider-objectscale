@@ -105,6 +105,53 @@ func TestAccRgRs(t *testing.T) {
 				ExpectError: regexp.MustCompile("replicate_to_all_sites can be set to true only for Active replication"),
 			},
 			{
+				// Create Passive with 2 zones only - Negative
+				Config: ProviderConfigForRgTesting + `
+				resource objectscale_replication_group test_replication_group {
+					name = "test"
+					zone_mappings = [
+						{
+							vdc = data.objectscale_vdc.vdc1.vdcs[0].id
+							storage_pool = data.objectscale_storage_pool.sp1.storage_pools[0].id
+						},
+						{
+						    vdc = data.objectscale_vdc.vdc2.vdcs[0].id
+						    storage_pool = data.objectscale_storage_pool.sp2.storage_pools[0].id
+							is_replication_target = true
+						},
+					]
+				}
+				`,
+				PlanOnly:    true,
+				ExpectError: regexp.MustCompile("Invalid number of zones for Passive Replication Group"),
+			},
+			{
+				// Create Passive with no 2 targets and 1 source - Negative
+				Config: ProviderConfigForRgTesting + `
+				resource objectscale_replication_group test_replication_group {
+					name = "test"
+					zone_mappings = [
+						{
+							vdc = data.objectscale_vdc.vdc1.vdcs[0].id
+							storage_pool = data.objectscale_storage_pool.sp1.storage_pools[0].id
+							is_replication_target = true
+						},
+						{
+						    vdc = data.objectscale_vdc.vdc2.vdcs[0].id
+						    storage_pool = data.objectscale_storage_pool.sp2.storage_pools[0].id
+							is_replication_target = true
+						},
+						{
+						    vdc = data.objectscale_vdc.vdc3.vdcs[0].id
+						    storage_pool = data.objectscale_storage_pool.sp3.storage_pools[0].id
+						}
+					]
+				}
+				`,
+				PlanOnly:    true,
+				ExpectError: regexp.MustCompile("Invalid number of source and target zones for Passive Replication Group"),
+			},
+			{
 				// Create mock error
 				PreConfig: func() {
 					mockAPI = mockey.Mock((*clientgen.DataVpoolApiService).DataServiceVpoolServiceCreateDataServiceVpoolExecute).Return(

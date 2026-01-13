@@ -9,8 +9,11 @@ import (
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -59,11 +62,13 @@ func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.Schema
 				Optional:            true,
 				Description:         "Filter object users by tag. 'tag' and 'value' are required together.",
 				MarkdownDescription: "Filter object users by tag. 'tag' and 'value' are required together.",
+				Validators:          []validator.String{stringvalidator.AlsoRequires(path.MatchRelative().AtParent().AtName("value"))},
 			},
 			"value": schema.StringAttribute{
 				Optional:            true,
 				Description:         "Filter object users by tag value. 'tag' and 'value' are required together.",
 				MarkdownDescription: "Filter object users by tag value. 'tag' and 'value' are required together.",
+				Validators:          []validator.String{stringvalidator.AlsoRequires(path.MatchRelative().AtParent().AtName("tag"))},
 			},
 			"users": schema.ListNestedAttribute{
 				Computed:            true,
@@ -295,10 +300,6 @@ func (d *ObjectUserDataSource) listUsersByName(ctx context.Context, name string)
 }
 
 func (d *ObjectUserDataSource) listUsersByTag(ctx context.Context, namespace, tag, value string) ([]models.ObjectUser, error) {
-
-	if tag != "" && value == "" || tag == "" && value != "" {
-		return nil, fmt.Errorf("value and tag are required together")
-	}
 
 	req := d.client.GenClient.UserManagementApi.
 		UserManagementServiceQueryUsers(ctx)
