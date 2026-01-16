@@ -71,6 +71,7 @@ func (r *IAMPolicyResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Description:         "The description of the IAM Policy.",
 				MarkdownDescription: "The description of the IAM Policy.",
 				Optional:            true,
+				Computed:            true,
 			},
 
 			"version_id": schema.StringAttribute{
@@ -203,7 +204,7 @@ func (r *IAMPolicyResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	if helper.IsChangedNN(plan.PolicyName, state.PolicyName) || helper.IsChangedNN(plan.Description, state.Description) {
+	if helper.IsChangedNN(plan.PolicyName, state.PolicyName) || helper.IsChangedNN(plan.Description, state.Description) || helper.IsChangedNN(plan.Namespace, state.Namespace) {
 		resp.Diagnostics.AddError("Unexpected Update Parameter : Only Policy Document is updateable", "Invalid Update")
 		return
 	}
@@ -304,6 +305,15 @@ func (r *IAMPolicyResource) ImportState(ctx context.Context, req resource.Import
 	}
 	policyArn := parts[0]
 	namespace := parts[1]
+	// validate namespace and policyArn are not empty
+	if namespace == "" {
+		resp.Diagnostics.AddError("Error importing IAM Policy", "namespace cannot be empty")
+		return
+	}
+	if policyArn == "" {
+		resp.Diagnostics.AddError("Error importing IAM Policy", "policy ARN cannot be empty")
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("arn"), policyArn)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("namespace"), namespace)...)
 }
