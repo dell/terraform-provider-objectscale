@@ -75,12 +75,12 @@ resource "objectscale_object_user" "test_object_user" {
 
 ### Optional
 
-- `locked` (Boolean) Timestamp of the secret key for the object user.
-- `tags` (Attributes List) Tags associated to the user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
+- `locked` (Boolean) Lock status of the object user.
+- `tags` (Attributes List) Tags associated to the object user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
 
 ### Read-Only
 
-- `created` (String) Secret key of the object user
+- `created` (String) Timestamp of the creation of the object user.
 - `id` (String) ID of the user. Required.
 
 <a id="nestedatt--tags"></a>

@@ -72,7 +72,7 @@ resource "objectscale_iam_user_access_key" "test_iam_user_access_key" {
 
 ### Optional
 
-- `status` (String) Status of the access attached to the user.
+- `status` (String) Status of the access key attached to the user.
 
 ### Read-Only
 
