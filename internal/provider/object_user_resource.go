@@ -69,19 +69,19 @@ func (r *ObjectUserResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Required:            true,
 			},
 			"created": schema.StringAttribute{
-				Description:         "Secret key of the object user",
-				MarkdownDescription: "Secret key of the object user",
+				Description:         "Timestamp of the creation of the object user.",
+				MarkdownDescription: "Timestamp of the creation of the object user.",
 				Computed:            true,
 			},
 			"locked": schema.BoolAttribute{
-				Description:         "Timestamp of the secret key for the object user.",
-				MarkdownDescription: "Timestamp of the secret key for the object user.",
+				Description:         "Lock status of the object user.",
+				MarkdownDescription: "Lock status of the object user.",
 				Computed:            true,
 				Optional:            true,
 			},
 			"tags": schema.ListNestedAttribute{
-				Description:         "Tags associated to the user. Default: []. Updatable.",
-				MarkdownDescription: "Tags associated to the user. Default: []. Updatable.",
+				Description:         "Tags associated to the object user. Default: []. Updatable.",
+				MarkdownDescription: "Tags associated to the object user. Default: []. Updatable.",
 				Optional:            true,
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
