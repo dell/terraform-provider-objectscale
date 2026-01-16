@@ -129,6 +129,10 @@ func (r *ObjectUserResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if !plan.Locked.IsNull() && !plan.Locked.IsUnknown() && plan.Locked.ValueBool() {
+		resp.Diagnostics.AddError("Error creating user", "Cannot create a locked user")
+		return
+	}
 	planJson := r.modelToJson(plan)
 	object_user_req := r.client.GenClient.UserManagementApi.UserManagementServiceAddUser(ctx)
 	_, _, err := object_user_req.UserManagementServiceAddUserRequest(
