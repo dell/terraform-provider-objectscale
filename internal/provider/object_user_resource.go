@@ -79,7 +79,7 @@ func (r *ObjectUserResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:            true,
 				Optional:            true,
 			},
-			"tags": schema.ListNestedAttribute{
+			"tags": schema.SetNestedAttribute{
 				Description:         "Tags associated to the object user. Default: []. Updatable.",
 				MarkdownDescription: "Tags associated to the object user. Default: []. Updatable.",
 				Optional:            true,
@@ -204,7 +204,7 @@ func (r *ObjectUserResource) getModel(
 		Namespace: helper.TfStringNN(&object_user.Namespace),
 		Name:      helper.TfStringNN(&object_user.Name),
 		Id:        user_id,
-		Tags: helper.ListNotNull(object_user.Tag,
+		Tags: helper.SetNotNull(object_user.Tag,
 			func(v clientgen.UserManagementServiceAddUserRequestTagsInner) types.Object {
 				return helper.Object(models.ObjectUserTags{
 					Name:  helper.TfStringNN(v.Name),
@@ -214,7 +214,7 @@ func (r *ObjectUserResource) getModel(
 	}
 }
 
-// computes the difference between two Iam Tag sets (lists).
+// computes the difference between two Iam Tag sets.
 func TagsDiff(first, second []clientgen.UserManagementServiceAddUserRequestTagsInner) []clientgen.UserManagementServiceAddUserRequestTagsInner {
 	var diff []clientgen.UserManagementServiceAddUserRequestTagsInner
 	smap := make(map[string]struct{}, len(second))

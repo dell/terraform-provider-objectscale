@@ -165,7 +165,7 @@ func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.Schema
 								},
 							},
 						},
-						"tags": schema.ListNestedAttribute{
+						"tags": schema.SetNestedAttribute{
 							Description:         "Tags associated to the user.",
 							MarkdownDescription: "Tags associated to the user.",
 							Computed:            true,
@@ -383,7 +383,7 @@ func (d *ObjectUserDataSource) getUser(ctx context.Context, username string) (mo
 		Namespace: helper.TfString(&objectUser.Namespace),
 		Locked:    helper.TfBool(&objectUser.Locked),
 		Created:   helper.TfString(&objectUser.Created),
-		Tags: helper.ListNotNull(objectUser.Tag,
+		Tags: helper.SetNotNull(objectUser.Tag,
 			func(v clientgen.UserManagementServiceAddUserRequestTagsInner) types.Object {
 				return helper.Object(models.ObjectUserTags{
 					Name:  helper.TfStringNN(v.Name),
