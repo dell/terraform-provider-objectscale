@@ -24,7 +24,7 @@ description: |-
 
 # objectscale_object_user_secret_key (Resource)
 
-ObjectScale supports creation and management of IAM Users within a namespace.
+ObjectScale supports creation and management of Secret Keys for an object user.
 
 
 

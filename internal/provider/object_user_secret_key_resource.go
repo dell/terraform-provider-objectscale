@@ -51,8 +51,8 @@ func (r *ObjectUserSecretKeyResource) Metadata(ctx context.Context, req resource
 func (r *ObjectUserSecretKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports creation and management of IAM Users within a namespace.",
-		Description:         "ObjectScale supports creation and management of IAM Users within a namespace.",
+		MarkdownDescription: "ObjectScale supports creation and management of Secret Keys for an object user.",
+		Description:         "ObjectScale supports creation and management of Secret Keys for an object user",
 		Attributes: map[string]schema.Attribute{
 			"username": schema.StringAttribute{
 				Description:         "Name of the user to which the key is attached. Required.",
