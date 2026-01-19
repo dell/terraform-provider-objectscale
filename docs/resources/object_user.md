@@ -26,6 +26,7 @@ description: |-
 
 ObjectScale supports creation and management of Object Users within a namespace.
 
+
 ## Example Usage
 
 ```terraform
