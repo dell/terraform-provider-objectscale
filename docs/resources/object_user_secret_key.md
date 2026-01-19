@@ -19,7 +19,7 @@ linkTitle: "objectscale_object_user_secret_key"
 page_title: "objectscale_object_user_secret_key Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale supports creation and management of IAM Users within a namespace.
+  ObjectScale supports creation and management of Secret Keys for an object user.
 ---
 
 # objectscale_object_user_secret_key (Resource)
