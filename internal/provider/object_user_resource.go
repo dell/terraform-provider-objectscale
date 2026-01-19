@@ -50,8 +50,8 @@ func (r *ObjectUserResource) Metadata(ctx context.Context, req resource.Metadata
 func (r *ObjectUserResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports creation and management of IAM Users within a namespace.",
-		Description:         "ObjectScale supports creation and management of IAM Users within a namespace.",
+		MarkdownDescription: "ObjectScale supports creation and management of Object Users within a namespace.",
+		Description:         "ObjectScale supports creation and management of Object Users within a namespace.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Name of the user. Required.",
@@ -69,19 +69,19 @@ func (r *ObjectUserResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Required:            true,
 			},
 			"created": schema.StringAttribute{
-				Description:         "Secret key of the object user",
-				MarkdownDescription: "Secret key of the object user",
+				Description:         "Timestamp of the creation of the object user.",
+				MarkdownDescription: "Timestamp of the creation of the object user.",
 				Computed:            true,
 			},
 			"locked": schema.BoolAttribute{
-				Description:         "Timestamp of the secret key for the object user.",
-				MarkdownDescription: "Timestamp of the secret key for the object user.",
+				Description:         "Lock status of the object user.",
+				MarkdownDescription: "Lock status of the object user.",
 				Computed:            true,
 				Optional:            true,
 			},
-			"tags": schema.ListNestedAttribute{
-				Description:         "Tags associated to the user. Default: []. Updatable.",
-				MarkdownDescription: "Tags associated to the user. Default: []. Updatable.",
+			"tags": schema.SetNestedAttribute{
+				Description:         "Tags associated to the object user. Default: []. Updatable.",
+				MarkdownDescription: "Tags associated to the object user. Default: []. Updatable.",
 				Optional:            true,
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -204,7 +204,7 @@ func (r *ObjectUserResource) getModel(
 		Namespace: helper.TfStringNN(&object_user.Namespace),
 		Name:      helper.TfStringNN(&object_user.Name),
 		Id:        user_id,
-		Tags: helper.ListNotNull(object_user.Tag,
+		Tags: helper.SetNotNull(object_user.Tag,
 			func(v clientgen.UserManagementServiceAddUserRequestTagsInner) types.Object {
 				return helper.Object(models.ObjectUserTags{
 					Name:  helper.TfStringNN(v.Name),
@@ -214,7 +214,7 @@ func (r *ObjectUserResource) getModel(
 	}
 }
 
-// computes the difference between two Iam Tag sets (lists).
+// computes the difference between two Iam Tag sets.
 func TagsDiff(first, second []clientgen.UserManagementServiceAddUserRequestTagsInner) []clientgen.UserManagementServiceAddUserRequestTagsInner {
 	var diff []clientgen.UserManagementServiceAddUserRequestTagsInner
 	smap := make(map[string]struct{}, len(second))

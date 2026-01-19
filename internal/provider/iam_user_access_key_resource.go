@@ -69,8 +69,8 @@ func (r *IAMUserAccessKeyResource) Schema(ctx context.Context, req resource.Sche
 				Computed:            true,
 			},
 			"status": schema.StringAttribute{
-				Description:         "Status of the access attached to the user.",
-				MarkdownDescription: "Status of the access attached to the user.",
+				Description:         "Status of the access key attached to the user.",
+				MarkdownDescription: "Status of the access key attached to the user.",
 				Optional:            true,
 				Computed:            true,
 				Validators: []validator.String{

@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ linkTitle: "objectscale_object_user"
 page_title: "objectscale_object_user Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale supports creation and management of IAM Users within a namespace.
+  ObjectScale supports creation and management of Object Users within a namespace.
 ---
 
 # objectscale_object_user (Resource)
 
-ObjectScale supports creation and management of IAM Users within a namespace.
+ObjectScale supports creation and management of Object Users within a namespace.
 
 
 ## Example Usage
@@ -75,12 +75,12 @@ resource "objectscale_object_user" "test_object_user" {
 
 ### Optional
 
-- `locked` (Boolean) Timestamp of the secret key for the object user.
-- `tags` (Attributes List) Tags associated to the user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
+- `locked` (Boolean) Lock status of the object user.
+- `tags` (Attributes Set) Tags associated to the object user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
 
 ### Read-Only
 
-- `created` (String) Secret key of the object user
+- `created` (String) Timestamp of the creation of the object user.
 - `id` (String) ID of the user. Required.
 
 <a id="nestedatt--tags"></a>

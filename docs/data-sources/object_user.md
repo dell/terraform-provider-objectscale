@@ -77,7 +77,7 @@ Read-Only:
 - `name` (String) Name of the user.
 - `namespace` (String) Namespace to which the user belongs to.
 - `secret_keys` (Attributes) List of secret keys for the object user. (see [below for nested schema](#nestedatt--users--secret_keys))
-- `tags` (Attributes List) Tags associated to the user. (see [below for nested schema](#nestedatt--users--tags))
+- `tags` (Attributes Set) Tags associated to the user. (see [below for nested schema](#nestedatt--users--tags))
 
 <a id="nestedatt--users--secret_keys"></a>
 ### Nested Schema for `users.secret_keys`

@@ -76,8 +76,8 @@ func (r *IAMUserResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Required:            true,
 			},
 			"create_date": schema.StringAttribute{
-				Description:         "Date of creation of the IAM user",
-				MarkdownDescription: "Date of creation of the IAM user",
+				Description:         "Date of creation of the IAM user.",
+				MarkdownDescription: "Date of creation of the IAM user.",
 				Computed:            true,
 			},
 			"path": schema.StringAttribute{
@@ -242,7 +242,6 @@ func (r *IAMUserResource) getModel(
 	}
 }
 
-// computes the difference between two Iam Tag sets (lists).
 // computes the difference between two Iam Tag sets (lists).
 func iamTagsDiff(first, second []clientgen.IamTagKeyValue) []clientgen.IamTagKeyValue {
 	var diff []clientgen.IamTagKeyValue

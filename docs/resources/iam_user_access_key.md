@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ resource "objectscale_iam_user_access_key" "test_iam_user_access_key" {
 
 ### Optional
 
-- `status` (String) Status of the access attached to the user.
+- `status` (String) Status of the access key attached to the user.
 
 ### Read-Only
 

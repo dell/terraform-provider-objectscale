@@ -22,7 +22,7 @@ import (
 )
 
 type ObjectUserResourceModel struct {
-	Tags      types.List   `tfsdk:"tags"`
+	Tags      types.Set    `tfsdk:"tags"`
 	Name      types.String `tfsdk:"name"`
 	Namespace types.String `tfsdk:"namespace"`
 	Locked    types.Bool   `tfsdk:"locked"`
@@ -46,7 +46,7 @@ type ObjectUserDatasourceModel struct {
 	Users     []ObjectUser `tfsdk:"users"`
 }
 type ObjectUser struct {
-	Tags      types.List          `tfsdk:"tags"`
+	Tags      types.Set           `tfsdk:"tags"`
 	Name      types.String        `tfsdk:"name"`
 	Namespace types.String        `tfsdk:"namespace"`
 	Locked    types.Bool          `tfsdk:"locked"`
