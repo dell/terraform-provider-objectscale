@@ -76,7 +76,7 @@ resource "objectscale_object_user" "test_object_user" {
 ### Optional
 
 - `locked` (Boolean) Lock status of the object user.
-- `tags` (Attributes List) Tags associated to the object user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
+- `tags` (Attributes Set) Tags associated to the object user. Default: []. Updatable. (see [below for nested schema](#nestedatt--tags))
 
 ### Read-Only
 
