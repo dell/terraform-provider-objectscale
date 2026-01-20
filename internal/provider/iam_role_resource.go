@@ -25,6 +25,7 @@ import (
 	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -71,6 +72,7 @@ func (r *IAMRoleResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description:         "The trust relationship policy document that grants an entity permission to assume the role.",
 				MarkdownDescription: "The trust relationship policy document that grants an entity permission to assume the role.",
 				Required:            true,
+				CustomType:          jsontypes.NormalizedType{},
 			},
 
 			"max_session_duration": schema.Int32Attribute{
@@ -176,6 +178,12 @@ func (r *IAMRoleResource) Create(ctx context.Context, req resource.CreateRequest
 		RoleName(plan.Name.ValueString()).
 		XEmcNamespace(plan.Namespace.ValueString()).
 		Execute()
+
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading role", err.Error())
+		return
+	}
+
 	data := r.getModel(&clientgen.IamRole{
 		RoleName:                 iam_role.GetRoleResult.Role.RoleName,
 		AssumeRolePolicyDocument: iam_role.GetRoleResult.Role.AssumeRolePolicyDocument,
@@ -184,11 +192,6 @@ func (r *IAMRoleResource) Create(ctx context.Context, req resource.CreateRequest
 		PermissionsBoundary:      iam_role.GetRoleResult.Role.PermissionsBoundary,
 		Tags:                     iam_role.GetRoleResult.Role.Tags,
 	}, plan.Namespace)
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading role", err.Error())
-		return
-	}
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -208,6 +211,12 @@ func (r *IAMRoleResource) Read(ctx context.Context, req resource.ReadRequest, re
 		RoleName(state.Name.ValueString()).
 		XEmcNamespace(state.Namespace.ValueString()).
 		Execute()
+
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading role", err.Error())
+		return
+	}
+
 	data := r.getModel(&clientgen.IamRole{
 		RoleName:                 iam_role.GetRoleResult.Role.RoleName,
 		AssumeRolePolicyDocument: iam_role.GetRoleResult.Role.AssumeRolePolicyDocument,
@@ -216,11 +225,6 @@ func (r *IAMRoleResource) Read(ctx context.Context, req resource.ReadRequest, re
 		PermissionsBoundary:      iam_role.GetRoleResult.Role.PermissionsBoundary,
 		Tags:                     iam_role.GetRoleResult.Role.Tags,
 	}, state.Namespace)
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading role", err.Error())
-		return
-	}
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -240,11 +244,21 @@ func (r *IAMRoleResource) getModel(
 		permissionsBoundaryArn = types.StringValue("")
 		permissionsBoundaryType = types.StringValue("")
 	}
+
+	var assumerolepolicyDocument jsontypes.Normalized
+
+	if iam_role.AssumeRolePolicyDocument != nil {
+		assumerolepolicyDocument =
+			jsontypes.NewNormalizedValue(*iam_role.AssumeRolePolicyDocument)
+	} else {
+		assumerolepolicyDocument = jsontypes.NewNormalizedNull()
+	}
+
 	return models.IAMRoleResourceModel{
 
 		Name:                     helper.TfStringNN(iam_role.RoleName),
 		Namespace:                namespace,
-		AssumeRolePolicyDocument: helper.TfStringNN(iam_role.AssumeRolePolicyDocument),
+		AssumeRolePolicyDocument: assumerolepolicyDocument,
 		Description:              helper.TfStringNN(iam_role.Description),
 		MaxSessionDuration:       helper.TfInt32NN(iam_role.MaxSessionDuration),
 		Path:                     helper.TfStringNN(iam_role.Path),
@@ -363,6 +377,12 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 		RoleName(plan.Name.ValueString()).
 		XEmcNamespace(plan.Namespace.ValueString()).
 		Execute()
+
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading role", err.Error())
+		return
+	}
+
 	data := r.getModel(&clientgen.IamRole{
 		RoleName:                 iam_role.GetRoleResult.Role.RoleName,
 		AssumeRolePolicyDocument: iam_role.GetRoleResult.Role.AssumeRolePolicyDocument,
@@ -371,11 +391,6 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 		PermissionsBoundary:      iam_role.GetRoleResult.Role.PermissionsBoundary,
 		Tags:                     iam_role.GetRoleResult.Role.Tags,
 	}, plan.Namespace)
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading role", err.Error())
-		return
-	}
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -415,6 +430,12 @@ func (r *IAMRoleResource) ImportState(ctx context.Context, req resource.ImportSt
 		RoleName(role_name).
 		XEmcNamespace(namespace).
 		Execute()
+
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading role", err.Error())
+		return
+	}
+
 	data := r.getModel(&clientgen.IamRole{
 		RoleName:                 iam_role.GetRoleResult.Role.RoleName,
 		AssumeRolePolicyDocument: iam_role.GetRoleResult.Role.AssumeRolePolicyDocument,
@@ -423,11 +444,6 @@ func (r *IAMRoleResource) ImportState(ctx context.Context, req resource.ImportSt
 		PermissionsBoundary:      iam_role.GetRoleResult.Role.PermissionsBoundary,
 		Tags:                     iam_role.GetRoleResult.Role.Tags,
 	}, types.StringValue(namespace))
-
-	if err != nil {
-		resp.Diagnostics.AddError("Error reading role", err.Error())
-		return
-	}
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

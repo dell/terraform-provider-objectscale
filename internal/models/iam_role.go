@@ -17,7 +17,10 @@ limitations under the License.
 
 package models
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type IAMRoleDatasourceModel struct {
 	ID        types.String `tfsdk:"id"`
@@ -52,7 +55,7 @@ type IAMRolePermissionsBoundary struct {
 type IAMRoleResourceModel struct {
 	Name                     types.String `tfsdk:"name"`
 	Namespace                types.String `tfsdk:"namespace"`
-	AssumeRolePolicyDocument types.String `tfsdk:"assume_role_policy_document"`
+	AssumeRolePolicyDocument jsontypes.Normalized `tfsdk:"assume_role_policy_document"`
 	Description              types.String `tfsdk:"description"`
 	MaxSessionDuration       types.Int32  `tfsdk:"max_session_duration"`
 	Path                     types.String `tfsdk:"path"`
