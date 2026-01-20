@@ -284,11 +284,6 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	// check for changes in plan and state
-	// if !(helper.IsChangedNN(plan.MaxSessionDuration, state.MaxSessionDuration) || helper.IsChangedNN(plan.Description, state.Description)) {
-	// 	resp.Diagnostics.AddError("Only 'max_session_duration' or 'description' can be changed", "invalid attribute change detected")
-	// 	return
-	// }
 	if helper.IsChangedNN(plan.MaxSessionDuration, state.MaxSessionDuration) || helper.IsChangedNN(plan.Description, state.Description) {
 
 		updReq := r.client.GenClient.IamApi.IamServiceUpdateRole(ctx).
@@ -346,8 +341,8 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 			}
 		}
 	}
-	// Update permission boundary
 
+	// Update permission boundary
 	if helper.IsChangedNN(plan.PermissionsBoundaryArn, state.PermissionsBoundaryArn) {
 		if !plan.PermissionsBoundaryArn.IsNull() {
 			if plan.PermissionsBoundaryArn.ValueString() == "" && state.PermissionsBoundaryArn.ValueString() != "" {
@@ -370,6 +365,19 @@ func (r *IAMRoleResource) Update(ctx context.Context, req resource.UpdateRequest
 					return
 				}
 			}
+		}
+	}
+
+	// Update Assume Role Policy
+	if helper.IsChangedNN(plan.AssumeRolePolicyDocument, state.AssumeRolePolicyDocument) {
+		_, _, err := r.client.GenClient.IamApi.IamServiceUpdateAssumeRolePolicy(ctx).
+			RoleName(plan.Name.ValueString()).
+			XEmcNamespace(plan.Namespace.ValueString()).
+			PolicyDocument(plan.AssumeRolePolicyDocument.ValueString()).
+			Execute()
+		if err != nil {
+			resp.Diagnostics.AddError("Error updating role policy", err.Error())
+			return
 		}
 	}
 
