@@ -46,7 +46,7 @@ func init() {
 		Namespace:   "ns1",
 		Username:    "userTest1",
 		Groupname:   "groupTest1",
-		Rolename:    "roleTest1",
+		Rolename:    "roleTest01",
 		PolicyName1: "inlinePolicyTest1",
 		PolicyName2: "inlinePolicyTest2",
 		PolicyName3: "inlinePolicyTest3",
