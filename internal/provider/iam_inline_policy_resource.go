@@ -324,6 +324,39 @@ func (r *IAMInlinePolicyResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
+	// Determine entity type and name from plan
+	var entityTypeFromPlan, entityNameFromPlan string
+	if !plan.Username.IsNull() && !plan.Username.IsUnknown() {
+		entityTypeFromPlan = "User"
+		entityNameFromPlan = plan.Username.ValueString()
+	} else if !plan.Groupname.IsNull() && !plan.Groupname.IsUnknown() {
+		entityTypeFromPlan = "Group"
+		entityNameFromPlan = plan.Groupname.ValueString()
+	} else if !plan.Rolename.IsNull() && !plan.Rolename.IsUnknown() {
+		entityTypeFromPlan = "Role"
+		entityNameFromPlan = plan.Rolename.ValueString()
+	}
+
+	// Determine entity type and name from state
+	var entityTypeFromState, entityNameFromState string
+	if !state.Username.IsNull() && !state.Username.IsUnknown() {
+		entityTypeFromState = "User"
+		entityNameFromState = state.Username.ValueString()
+	} else if !state.Groupname.IsNull() && !state.Groupname.IsUnknown() {
+		entityTypeFromState = "Group"
+		entityNameFromState = state.Groupname.ValueString()
+	} else if !state.Rolename.IsNull() && !state.Rolename.IsUnknown() {
+		entityTypeFromState = "Role"
+		entityNameFromState = state.Rolename.ValueString()
+	}
+
+	if plan.Namespace.ValueString() != state.Namespace.ValueString() ||
+		entityTypeFromPlan != entityTypeFromState ||
+		entityNameFromPlan != entityNameFromState {
+		resp.Diagnostics.AddError("Update Error", "The attributes `namespace`,`username`,`groupname`,`rolename` are not updatable")
+		return
+	}
+
 	updatedModel, err := helper.ApplyPolicies(r.client, ctx, plan, &state)
 	if err != nil {
 		resp.Diagnostics.AddError("Update Error", err.Error())
