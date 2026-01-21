@@ -48,15 +48,39 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 
 ## Prerequisites
 
-| **Terraform Provider** | **ObjectScale Version** | **OS** | **Terraform** | **Golang** |
-|------------------------|:------------------------|:-------|---------------|------------|
-| v1.0.0                 |                         |        |               |            |
+| **Terraform Provider** | **ObjectScale Version** |         **OS**         | **Terraform** | **Golang** |
+|------------------------|:------------------------|:-----------------------|---------------|------------|
+| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 24.04 | 1.14.3        | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
-* Example
+* [Bucket](docs/data-sources/bucket.md)
+* [IAM Group](docs/data-sources/iam_groups.md)
+* [IAM Policy](docs/data-sources/iam_policy.md)
+* [IAM Role](docs/data-sources/iam_role.md)
+* [IAM User](docs/data-sources/iam_user.md)
+* [IAM Inline Policy](docs/data-sources/iam_inline_policy.md)
+* [IAM Management User](docs/data-sources/management_user.md)
+* [Namespace](docs/data-sources/namespace.md)
+* [Object User](docs/data-sources/object_user.md)
+* [Replication Group](docs/data-sources/replication_group.md)
+* [Storage Pool](docs/data-sources/storage_pool.md)
+* [VDC](docs/data-sources/vdc.md)
 
 ## List of Resources in Terraform Provider for Dell ObjectScale
-* Example
+* [Bucket](docs/resources/bucket.md)
+* [IAM Group](docs/resources/iam_group.md)
+* [IAM Policy](docs/resources/iam_policy.md)
+* [IAM Inline Policy](docs/resources/iam_inline_policy.md)
+* [IAM Policy Attachment](docs/resources/iam_policy_attachment.md)
+* [IAM Role](docs/resources/iam_role.md)
+* [IAM User](docs/resources/iam_user.md)
+* [IAM User Access Key](docs/resources/iam_user_access_key.md)
+* [IAM Management User](docs/resources/management_user.md)
+* [IAM Group Membership](docs/resources/iam_group_membership.md)
+* [Namespace](docs/resources/namespace.md)
+* [Object User](docs/resources/object_user.md)
+* [Object User Secret Key](docs/resources/object_user_secret_key.md)
+* [Replication Group](docs/resources/replication_group.md)
 
 ## Installation and execution of Terraform Provider for Dell ObjectScale
 
@@ -113,3 +137,9 @@ Terraform Provider for Dell Technologies ObjectScale follows [Semantic Versionin
 New versions will be release regularly if significant changes (bug fix or new feature) are made in the provider.
 
 Released code versions are located on tags in the form of "vx.y.z" where x.y.z corresponds to the version number.
+
+## Documentation
+
+For more detailed information, please refer to 
+  * [Dell Terraform Providers Documentation](https://dell.github.io/terraform-docs/)
+  * [Dell Terraform Registry](https://registry.terraform.io/providers/dell/powerflex/latest/docs)
