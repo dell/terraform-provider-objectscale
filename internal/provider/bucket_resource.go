@@ -780,6 +780,13 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		err := json.Unmarshal([]byte(plan.BucketPolicy.ValueString()), &policyMap)
 		if err != nil {
 			resp.Diagnostics.AddError("Error parsing bucket policy JSON", err.Error())
+			_, _, err := r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error deleting Bucket",
+					err.Error(),
+				)
+			}
 			return
 		}
 		_, _, err = r.client.GenClient.BucketApi.
