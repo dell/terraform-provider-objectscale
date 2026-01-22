@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_role"
 page_title: "objectscale_iam_role Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Fetch IAM role information for a specific ObjectScale namespace.
+  This data source retrieves an ObjectScale IAM role by name/ID and gives its key attributes.
 ---
 
 # objectscale_iam_role (Data Source)
 
-Fetch IAM role information for a specific ObjectScale namespace.
+This data source retrieves an ObjectScale IAM role by name/ID and gives its key attributes.
 
 ## Example Usage
 

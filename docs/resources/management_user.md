@@ -19,12 +19,12 @@ linkTitle: "objectscale_management_user"
 page_title: "objectscale_management_user Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Manages ObjectScale management users. Supported types: LOCALUSER, ADLDAPUSER, ADLDAP_GROUP.
+  This resource manages ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.
 ---
 
 # objectscale_management_user (Resource)
 
-Manages ObjectScale management users. Supported types: LOCAL_USER, AD_LDAP_USER, AD_LDAP_GROUP.
+This resource manages ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.
 
 
 ## Example Usage

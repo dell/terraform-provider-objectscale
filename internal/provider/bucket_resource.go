@@ -63,6 +63,9 @@ func (r *BucketResource) Metadata(ctx context.Context, req resource.MetadataRequ
 
 func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "This resource provisions and manages S3 buckets on Dell ObjectScale.",
+		MarkdownDescription: "This resource provisions and manages S3 buckets on Dell ObjectScale.",
+	
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Unique identifier for the bucket resource.",
@@ -780,6 +783,13 @@ func (r *BucketResource) Create(ctx context.Context, req resource.CreateRequest,
 		err := json.Unmarshal([]byte(plan.BucketPolicy.ValueString()), &policyMap)
 		if err != nil {
 			resp.Diagnostics.AddError("Error parsing bucket policy JSON", err.Error())
+			_, _, err := r.client.GenClient.BucketApi.BucketServiceDeactivateBucket(ctx, plan.Name.ValueString()).Namespace(plan.Namespace.ValueString()).EmptyBucket("false").Execute()
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error deleting Bucket",
+					err.Error(),
+				)
+			}
 			return
 		}
 		_, _, err = r.client.GenClient.BucketApi.

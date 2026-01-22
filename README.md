@@ -53,21 +53,34 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 | v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 24.04 | 1.14.3 and 1.13.5 | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
-* [Bucket](docs/data-sources/bucket.md)
+
+### Identity & Access Management (IAM)
 * [IAM Group](docs/data-sources/iam_groups.md)
 * [IAM Policy](docs/data-sources/iam_policy.md)
 * [IAM Role](docs/data-sources/iam_role.md)
 * [IAM User](docs/data-sources/iam_user.md)
 * [IAM Inline Policy](docs/data-sources/iam_inline_policy.md)
 * [IAM Management User](docs/data-sources/management_user.md)
+
+### Namespacing & Tenancy
 * [Namespace](docs/data-sources/namespace.md)
+
+### Object User
 * [Object User](docs/data-sources/object_user.md)
+
+### Object Storage Containers
+* [Bucket](docs/data-sources/bucket.md)
+
+### Data Protection
 * [Replication Group](docs/data-sources/replication_group.md)
+
+### Storage Topology & Capacity Domains
 * [Storage Pool](docs/data-sources/storage_pool.md)
 * [VDC](docs/data-sources/vdc.md)
 
 ## List of Resources in Terraform Provider for Dell ObjectScale
-* [Bucket](docs/resources/bucket.md)
+
+### Identity & Access Management (IAM)
 * [IAM Group](docs/resources/iam_group.md)
 * [IAM Policy](docs/resources/iam_policy.md)
 * [IAM Inline Policy](docs/resources/iam_inline_policy.md)
@@ -77,9 +90,18 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [IAM User Access Key](docs/resources/iam_user_access_key.md)
 * [IAM Management User](docs/resources/management_user.md)
 * [IAM Group Membership](docs/resources/iam_group_membership.md)
+
+### Object Storage Containers
+* [Bucket](docs/resources/bucket.md)
+
+### Namespace and Tenancy
 * [Namespace](docs/resources/namespace.md)
+
+### Object User
 * [Object User](docs/resources/object_user.md)
 * [Object User Secret Key](docs/resources/object_user_secret_key.md)
+
+### Data Protection
 * [Replication Group](docs/resources/replication_group.md)
 
 ## Installation and execution of Terraform Provider for Dell ObjectScale

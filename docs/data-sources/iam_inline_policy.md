@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_inline_policy"
 page_title: "objectscale_iam_inline_policy Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Retrieve IAM inline policies for a user, group, or role.
+  This data source retrieves an ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
 ---
 
 # objectscale_iam_inline_policy (Data Source)
 
-Retrieve IAM inline policies for a user, group, or role.
+This data source retrieves an ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
 
 ## Example Usage
 

@@ -32,8 +32,8 @@ func (d *IAMUserDataSource) Metadata(_ context.Context, req datasource.MetadataR
 
 func (d *IAMUserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Fetch IAM user information for a specific ObjectScale namespace.",
-		MarkdownDescription: "Fetch IAM user information for a specific ObjectScale namespace.",
+		Description:         "This data source retrieves an ObjectScale IAM user by name or ID and exposes key user attributes.",
+		MarkdownDescription: "This data source retrieves an ObjectScale IAM user by name or ID and exposes key user attributes.",
 
 		Attributes: map[string]schema.Attribute{
 

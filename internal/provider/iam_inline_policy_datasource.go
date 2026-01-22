@@ -33,8 +33,8 @@ func (d *IAMInlinePolicyDataSource) Metadata(ctx context.Context, req datasource
 func (d *IAMInlinePolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		Description:         "Retrieve IAM inline policies for a user, group, or role.",
-		MarkdownDescription: "Retrieve IAM inline policies for a user, group, or role.",
+		Description:         "This data source retrieves an ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.",
+		MarkdownDescription: "This data source retrieves an ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.",
 
 		Attributes: map[string]schema.Attribute{
 

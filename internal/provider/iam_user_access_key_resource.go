@@ -55,8 +55,8 @@ func (r *IAMUserAccessKeyResource) Metadata(ctx context.Context, req resource.Me
 func (r *IAMUserAccessKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports creation and management of IAM Users within a namespace.",
-		Description:         "ObjectScale supports creation and management of IAM Users within a namespace.",
+		MarkdownDescription: "This resource Enables the creation and management of secure programmatic access for ObjectScale users by provisioning and controlling S3 compatible access keys.",
+		Description:         "This resource Enables the creation and management of secure programmatic access for ObjectScale users by provisioning and controlling S3 compatible access keys.",
 		Attributes: map[string]schema.Attribute{
 			"username": schema.StringAttribute{
 				Description:         "Name of the user to which the key is attached. Required.",

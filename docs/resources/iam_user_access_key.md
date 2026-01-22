@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_user_access_key"
 page_title: "objectscale_iam_user_access_key Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale supports creation and management of IAM Users within a namespace.
+  This resource Enables the creation and management of secure programmatic access for ObjectScale users by provisioning and controlling S3 compatible access keys.
 ---
 
 # objectscale_iam_user_access_key (Resource)
 
-ObjectScale supports creation and management of IAM Users within a namespace.
+This resource Enables the creation and management of secure programmatic access for ObjectScale users by provisioning and controlling S3 compatible access keys.
 
 
 ## Example Usage

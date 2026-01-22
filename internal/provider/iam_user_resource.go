@@ -52,8 +52,8 @@ func (r *IAMUserResource) Metadata(ctx context.Context, req resource.MetadataReq
 func (r *IAMUserResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports creation and management of IAM Users within a namespace.",
-		Description:         "ObjectScale supports creation and management of IAM Users within a namespace.",
+		MarkdownDescription: "This resource manages the full lifecycle of an ObjectScale IAM user.",
+		Description:         "This resource manages the full lifecycle of an ObjectScale IAM user.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Name of the user. Required.",

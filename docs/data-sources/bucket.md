@@ -19,12 +19,12 @@ linkTitle: "objectscale_bucket"
 page_title: "objectscale_bucket Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Retrieve IAM Groups from ObjectScale IAM.
+  This Data source Retrieves an ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)
 ---
 
 # objectscale_bucket (Data Source)
 
-Retrieve IAM Groups from ObjectScale IAM.
+This Data source Retrieves an ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)
 
 ## Example Usage
 

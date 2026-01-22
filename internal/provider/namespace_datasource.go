@@ -32,8 +32,8 @@ func (d *NamespaceDataSource) Metadata(ctx context.Context, req datasource.Metad
 func (d *NamespaceDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.",
-		Description:         "ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.",
+		MarkdownDescription: "This data source retrieves an existing Dell ObjectScale namespace and gives its configuration (e.g.tenant)",
+		Description:         "This data source retrieves an existing Dell ObjectScale namespace and gives its configuration (e.g.tenant)",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier",

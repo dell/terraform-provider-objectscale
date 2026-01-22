@@ -19,12 +19,12 @@ linkTitle: "objectscale_replication_group"
 page_title: "objectscale_replication_group Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale Replication Group Data Source to get all replication groups details.
+  This data source retrieves details of all replication groups configured in Dell ObjectScale.
 ---
 
 # objectscale_replication_group (Data Source)
 
-ObjectScale Replication Group Data Source to get all replication groups details.
+This data source retrieves details of all replication groups configured in Dell ObjectScale.
 
 ## Example Usage
 

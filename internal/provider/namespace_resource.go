@@ -56,8 +56,8 @@ func (r *NamespaceResource) Metadata(ctx context.Context, req resource.MetadataR
 func (r *NamespaceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.",
-		Description:         "ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.",
+		MarkdownDescription: "This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.",
+		Description:         "This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Name assigned to this resource in ObjectScale. The resource name is set by a user and can be changed at any time. It is not a unique identifier. Required.",

@@ -19,12 +19,12 @@ linkTitle: "objectscale_replication_group"
 page_title: "objectscale_replication_group Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.
+  This resource allows end user to Provision and manage Dell ObjectScale Replication Groups.
 ---
 
 # objectscale_replication_group (Resource)
 
-Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.
+This resource allows end user to Provision and manage Dell ObjectScale Replication Groups.
 
 
 ## Example Usage

@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_groups"
 page_title: "objectscale_iam_groups Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Retrieve IAM Groups from ObjectScale IAM.
+  This data source retrieves key attributes of Dell ObjectScale IAM groups.
 ---
 
 # objectscale_iam_groups (Data Source)
 
-Retrieve IAM Groups from ObjectScale IAM.
+This data source retrieves key attributes of Dell ObjectScale IAM groups.
 
 ## Example Usage
 

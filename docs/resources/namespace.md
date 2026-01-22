@@ -19,12 +19,12 @@ linkTitle: "objectscale_namespace"
 page_title: "objectscale_namespace Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.
+  This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.
 ---
 
 # objectscale_namespace (Resource)
 
-ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.
+This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.
 
 
 ## Example Usage

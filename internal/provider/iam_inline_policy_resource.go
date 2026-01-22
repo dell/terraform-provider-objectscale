@@ -56,8 +56,8 @@ func (r *IAMInlinePolicyResource) Metadata(_ context.Context, req resource.Metad
 // Schema defines the schema for the resource.
 func (r *IAMInlinePolicyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages IAM inline policies for ObjectScale entities (user, group, or role).",
-		MarkdownDescription: "Manages IAM inline policies for ObjectScale entities (user, group, or role).",
+		Description:         "This resource manages IAM inline policies for ObjectScale entities (user, group, or role).",
+		MarkdownDescription: "This resource manages IAM inline policies for ObjectScale entities (user, group, or role).",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Unique identifier for the IAM inline policy resource.",

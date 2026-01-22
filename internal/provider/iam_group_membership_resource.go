@@ -53,8 +53,8 @@ func (r *IAMGroupMembershipResource) Schema(ctx context.Context, req resource.Sc
 	resp.Schema.Description = "Resource for managing IAM Group Memberships in ObjectScale."
 
 	resp.Schema = schema.Schema{
-		Description:         "Manages Group Membership for a User.",
-		MarkdownDescription: "Manages Group Membership for a User.",
+		Description:         "This resource manages IAM group membership in Dell ObjectScale, letting user declaratively add or remove IAM users from specified groups.",
+		MarkdownDescription: "This resource manages IAM group membership in Dell ObjectScale, letting user declaratively add or remove IAM users from specified groups.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Simple name identifying the group. Required",

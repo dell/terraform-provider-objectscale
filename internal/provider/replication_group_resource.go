@@ -57,8 +57,8 @@ func (r *ReplicationGroupResource) Metadata(ctx context.Context, req resource.Me
 
 func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.",
-		MarkdownDescription: "Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.",
+		Description:         "This resource allows end user to Provision and manage Dell ObjectScale Replication Groups.",
+		MarkdownDescription: "This resource allows end user to Provision and manage Dell ObjectScale Replication Groups.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier of the Replication Group.",

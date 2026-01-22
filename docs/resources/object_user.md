@@ -19,12 +19,12 @@ linkTitle: "objectscale_object_user"
 page_title: "objectscale_object_user Resource - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale supports creation and management of Object Users within a namespace.
+  This resource manages ObjectScale object users within a namespace.
 ---
 
 # objectscale_object_user (Resource)
 
-ObjectScale supports creation and management of Object Users within a namespace.
+This resource manages ObjectScale object users within a namespace.
 
 
 ## Example Usage

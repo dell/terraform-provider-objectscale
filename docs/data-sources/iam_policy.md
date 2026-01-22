@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_policy"
 page_title: "objectscale_iam_policy Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  ObjectScale supports access by multiple tenants, where each tenant is defined by a iam_policy.
+  This data source retrieves the JSON definition and metadata of an IAM inline policy attached to a specified ObjectScale principal (user, group, or role).
 ---
 
 # objectscale_iam_policy (Data Source)
 
-ObjectScale supports access by multiple tenants, where each tenant is defined by a iam_policy.
+This data source retrieves the JSON definition and metadata of an IAM inline policy attached to a specified ObjectScale principal (user, group, or role).
 
 ## Example Usage
 

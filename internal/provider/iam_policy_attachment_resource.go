@@ -55,8 +55,8 @@ func (r *IAMPolicyAttachmentResource) Metadata(_ context.Context, req resource.M
 // Schema defines the schema for the resource.
 func (r *IAMPolicyAttachmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages IAM policy attachments for ObjectScale entities (user, group, or role).",
-		MarkdownDescription: "Manages IAM policy attachments for ObjectScale entities (user, group, or role).",
+		Description:         "This resource attaches an IAM policy to a target principal (user, group, or role) in Dell ObjectScale.",
+		MarkdownDescription: "This resource attaches an IAM policy to a target principal (user, group, or role) in Dell ObjectScale.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Unique identifier for the IAM policy attachment resource.",

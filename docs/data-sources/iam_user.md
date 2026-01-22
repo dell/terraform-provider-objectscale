@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_user"
 page_title: "objectscale_iam_user Data Source - terraform-provider-objectscale"
 subcategory: ""
 description: |-
-  Fetch IAM user information for a specific ObjectScale namespace.
+  This data source retrieves an ObjectScale IAM user by name or ID and exposes key user attributes.
 ---
 
 # objectscale_iam_user (Data Source)
 
-Fetch IAM user information for a specific ObjectScale namespace.
+This data source retrieves an ObjectScale IAM user by name or ID and exposes key user attributes.
 
 
 

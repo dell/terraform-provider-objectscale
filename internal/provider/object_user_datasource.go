@@ -36,8 +36,8 @@ func (d *ObjectUserDataSource) Metadata(_ context.Context, req datasource.Metada
 
 func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Fetch list of Object users.",
-		MarkdownDescription: "Fetch list of Object users.",
+		Description:         "This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)",
+		MarkdownDescription: "This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)",
 
 		Attributes: map[string]schema.Attribute{
 
