@@ -17,7 +17,7 @@
 title: "objectscale_object_user_secret_key resource"
 linkTitle: "objectscale_object_user_secret_key"
 page_title: "objectscale_object_user_secret_key Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object User"
 description: |-
   This resource allows end user to provision and manage an ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.
 ---

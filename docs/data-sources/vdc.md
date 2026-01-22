@@ -17,7 +17,7 @@
 title: "objectscale_vdc data source"
 linkTitle: "objectscale_vdc"
 page_title: "objectscale_vdc Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Storage Topology & Capacity Domains"
 description: |-
   This datasource can be used to fetch details of Virtual Data Centers from Dell ObjectScale.
 ---

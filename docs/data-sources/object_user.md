@@ -17,7 +17,7 @@
 title: "objectscale_object_user data source"
 linkTitle: "objectscale_object_user"
 page_title: "objectscale_object_user Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object User"
 description: |-
   This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)
 ---

@@ -17,7 +17,7 @@
 title: "objectscale_iam_user resource"
 linkTitle: "objectscale_iam_user"
 page_title: "objectscale_iam_user Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
   This resource manages the full lifecycle of an ObjectScale IAM user.
 ---

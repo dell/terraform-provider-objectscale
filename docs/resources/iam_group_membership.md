@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 title: "objectscale_iam_group_membership resource"
 linkTitle: "objectscale_iam_group_membership"
 page_title: "objectscale_iam_group_membership Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
   This resource manages IAM group membership in Dell ObjectScale, letting user declaratively add or remove IAM users from specified groups.
 ---

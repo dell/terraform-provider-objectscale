@@ -17,7 +17,7 @@
 title: "objectscale_iam_user data source"
 linkTitle: "objectscale_iam_user"
 page_title: "objectscale_iam_user Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
   This data source retrieves an ObjectScale IAM user by name or ID and exposes key user attributes.
 ---

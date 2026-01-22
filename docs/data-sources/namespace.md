@@ -17,7 +17,7 @@
 title: "objectscale_namespace data source"
 linkTitle: "objectscale_namespace"
 page_title: "objectscale_namespace Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Namespacing / Tenancy"
 description: |-
   This data source retrieves an existing Dell ObjectScale namespace and gives its configuration (e.g.tenant)
 ---

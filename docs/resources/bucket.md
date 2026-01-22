@@ -17,7 +17,7 @@
 title: "objectscale_bucket resource"
 linkTitle: "objectscale_bucket"
 page_title: "objectscale_bucket Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object Storage Containers"
 description: |-
   This resource provisions and manages S3 buckets on Dell ObjectScale.
 ---

@@ -17,7 +17,7 @@
 title: "objectscale_bucket data source"
 linkTitle: "objectscale_bucket"
 page_title: "objectscale_bucket Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object Storage Containers"
 description: |-
   This Data source Retrieves an ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)
 ---

@@ -17,7 +17,7 @@
 title: "objectscale_namespace resource"
 linkTitle: "objectscale_namespace"
 page_title: "objectscale_namespace Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Namespacing / Tenancy"
 description: |-
   This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.
 ---

@@ -17,7 +17,7 @@
 title: "objectscale_iam_policy_attachment resource"
 linkTitle: "objectscale_iam_policy_attachment"
 page_title: "objectscale_iam_policy_attachment Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
   This resource attaches an IAM policy to a target principal (user, group, or role) in Dell ObjectScale.
 ---

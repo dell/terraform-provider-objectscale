@@ -17,7 +17,7 @@
 title: "objectscale_storage_pool data source"
 linkTitle: "objectscale_storage_pool"
 page_title: "objectscale_storage_pool Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Storage Topology & Capacity Domains"
 description: |-
   This datasource can be used to fetch details of Storage Pools from Dell ObjectScale.
 ---

@@ -17,7 +17,7 @@
 title: "objectscale_object_user resource"
 linkTitle: "objectscale_object_user"
 page_title: "objectscale_object_user Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object User"
 description: |-
   This resource manages ObjectScale object users within a namespace.
 ---

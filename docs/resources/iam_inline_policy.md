@@ -17,7 +17,7 @@
 title: "objectscale_iam_inline_policy resource"
 linkTitle: "objectscale_iam_inline_policy"
 page_title: "objectscale_iam_inline_policy Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
   This resource manages IAM inline policies for ObjectScale entities (user, group, or role).
 ---

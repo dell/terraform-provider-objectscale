@@ -17,7 +17,7 @@
 title: "objectscale_management_user data source"
 linkTitle: "objectscale_management_user"
 page_title: "objectscale_management_user Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Management User"
 description: |-
   This datasource can be used to fetch details of Management Users from ObjectScale.
 ---
