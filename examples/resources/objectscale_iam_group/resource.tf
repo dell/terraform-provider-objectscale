@@ -15,6 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 resource "objectscale_iam_group" "example" {
-  name        = "example-group"
-  namespace   = "ns1"
+  name      = "example-group"
+  namespace = "ns1"
 }
