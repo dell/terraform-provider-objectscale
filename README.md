@@ -48,9 +48,9 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 
 ## Prerequisites
 
-| **Terraform Provider** | **ObjectScale Version** |         **OS**         | **Terraform** | **Golang** |
-|------------------------|:------------------------|:-----------------------|---------------|------------|
-| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 24.04 | 1.14.3        | 1.25.6     |
+| **Terraform Provider** | **ObjectScale Version** |         **OS**         |   **Terraform**   | **Golang** |
+|------------------------|:------------------------|:-----------------------|-------------------|------------|
+| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 24.04 | 1.14.3 and 1.13.5 | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
 * [Bucket](docs/data-sources/bucket.md)
@@ -134,7 +134,7 @@ For SSL verification on Ubuntu, these steps can be performed:
 
 Terraform Provider for Dell Technologies ObjectScale follows [Semantic Versioning](https://semver.org/).
 
-New versions will be release regularly if significant changes (bug fix or new feature) are made in the provider.
+New versions will be released on a regular basis whenever significant updates—such as bug fixes or new features—are introduced to the provider.
 
 Released code versions are located on tags in the form of "vx.y.z" where x.y.z corresponds to the version number.
 
