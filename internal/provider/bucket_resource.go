@@ -63,9 +63,9 @@ func (r *BucketResource) Metadata(ctx context.Context, req resource.MetadataRequ
 
 func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "This resource provisions and manages S3 buckets on Dell ObjectScale.",
+		Description:         "This resource provisions and manages S3 buckets on Dell ObjectScale.",
 		MarkdownDescription: "This resource provisions and manages S3 buckets on Dell ObjectScale.",
-	
+
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Unique identifier for the bucket resource.",

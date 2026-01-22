@@ -202,9 +202,7 @@ func (d *ReplicationGroupDataSource) Read(ctx context.Context, req datasource.Re
 			}
 		}
 	} else {
-		for _, rg := range replicationGroups {
-			replicationGroupList = append(replicationGroupList, rg)
-		}
+		replicationGroupList = append(replicationGroupList, replicationGroups...)
 	}
 
 	// hardcoding a response value to save into the Terraform state.

@@ -152,7 +152,7 @@ func (r *ReplicationGroupResource) Schema(ctx context.Context, req resource.Sche
 	}
 }
 
-// helper function to marshal GET response to tfsdk model
+// helper function to marshal GET response to tfsdk model.
 func (r *ReplicationGroupResource) respToModel(rg *clientgen.DataServiceVpoolServiceGetDataServiceStoreResponse) models.ReplicationGroupResourceModel {
 	return models.ReplicationGroupResourceModel{
 		ID:                 helper.TfStringNN(rg.Id),
@@ -176,7 +176,7 @@ func (r *ReplicationGroupResource) respToModel(rg *clientgen.DataServiceVpoolSer
 	}
 }
 
-// helper func that converts known false values to nil
+// helper func that converts known false values to nil.
 func rgRsIsTrue[T interface{ types.Bool | bool }](in T) *bool {
 	var ret *bool
 	switch inTyped := any(in).(type) {
@@ -186,14 +186,14 @@ func rgRsIsTrue[T interface{ types.Bool | bool }](in T) *bool {
 		ret = &inTyped
 	}
 	// if known true, return it
-	if ret != nil && *ret == true {
+	if ret != nil && *ret {
 		return ret
 	}
 	// everything else is nil
 	return nil
 }
 
-// helper function to unmarshal zone mappings from tfsdk to json
+// helper function to unmarshal zone mappings from tfsdk to json.
 func (r *ReplicationGroupResource) getZoneList(in models.ReplicationGroupResourceModel) []clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner {
 	return helper.ValueListTransform(in.ZoneMappings,
 		func(in models.ReplicationGroupResourceZoneMapping) clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner {
@@ -205,7 +205,7 @@ func (r *ReplicationGroupResource) getZoneList(in models.ReplicationGroupResourc
 		})
 }
 
-// helper function to check if asymmetric replication
+// helper function to check if asymmetric replication.
 func (r *ReplicationGroupResource) isAsymmetricReplication(in []clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner) bool {
 	// if any zone is configured as a replication target, we are in asymmetric replication
 	for _, zm := range in {
@@ -216,7 +216,7 @@ func (r *ReplicationGroupResource) isAsymmetricReplication(in []clientgen.DataSe
 	return false
 }
 
-// helper function to check if all zones are known
+// helper function to check if all zones are known.
 func (r *ReplicationGroupResource) checkAllZonesKnown(inM models.ReplicationGroupResourceModel) bool {
 	in := inM.ZoneMappings
 	if in.IsUnknown() {
@@ -238,7 +238,7 @@ func (r *ReplicationGroupResource) checkAllZonesKnown(inM models.ReplicationGrou
 	return true
 }
 
-// Config Validation
+// Config Validation.
 func (r *ReplicationGroupResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 
 	var conf models.ReplicationGroupResourceModel
@@ -295,7 +295,7 @@ func (r *ReplicationGroupResource) ValidateConfig(ctx context.Context, req resou
 	}
 }
 
-// Plan Modify
+// Plan Modify.
 func (r *ReplicationGroupResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	// If the entire plan is null, the resource is planned for destruction.
 	if req.Plan.Raw.IsNull() {
@@ -378,7 +378,7 @@ func (r *ReplicationGroupResource) ModifyPlan(ctx context.Context, req resource.
 	}
 }
 
-// Create
+// Create.
 func (r *ReplicationGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan models.ReplicationGroupResourceModel
 
@@ -422,7 +422,7 @@ func (r *ReplicationGroupResource) Create(ctx context.Context, req resource.Crea
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
-// Read
+// Read.
 func (r *ReplicationGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state models.ReplicationGroupResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -448,7 +448,7 @@ func (r *ReplicationGroupResource) Read(ctx context.Context, req resource.ReadRe
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state2)...)
 }
 
-// helper function to create diff lists of zone mappings, used in update
+// helper function to create diff lists of zone mappings, used in update.
 func (r *ReplicationGroupResource) zoneDiff(plan, state models.ReplicationGroupResourceModel) (add, remove []clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInnerVarrayMappingsInner) {
 	plist, slist := r.getZoneList(plan), r.getZoneList(state)
 	// each zone has a unique Name + Value.
@@ -478,7 +478,7 @@ func (r *ReplicationGroupResource) zoneDiff(plan, state models.ReplicationGroupR
 	return add, remove
 }
 
-// Update
+// Update.
 func (r *ReplicationGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var state, plan models.ReplicationGroupResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -546,13 +546,13 @@ func (r *ReplicationGroupResource) Update(ctx context.Context, req resource.Upda
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state2)...)
 }
 
-// Delete
+// Delete.
 func (r *ReplicationGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	// just remove from state
 	resp.State.RemoveResource(ctx)
 }
 
-// ImportState
+// ImportState.
 func (r *ReplicationGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	allRGResp, _, err := r.client.GenClient.DataVpoolApi.DataServiceVpoolServiceGetDataServiceVpools(ctx).Execute()
 	if err != nil {

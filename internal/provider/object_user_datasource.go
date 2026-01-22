@@ -376,8 +376,7 @@ func (d *ObjectUserDataSource) getUser(ctx context.Context, username string) (mo
 		return models.ObjectUser{}, fmt.Errorf("reading user secret keys %q: %w", username, err_access_key)
 	}
 
-	var obj_user models.ObjectUser
-	obj_user = models.ObjectUser{
+	var obj_user models.ObjectUser = models.ObjectUser{
 		Id:        helper.TfString(&objectUser.Name),
 		Name:      helper.TfString(&objectUser.Name),
 		Namespace: helper.TfString(&objectUser.Namespace),

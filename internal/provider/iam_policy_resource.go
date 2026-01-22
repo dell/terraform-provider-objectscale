@@ -178,8 +178,7 @@ func (r *IAMPolicyResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	var policyDocument jsontypes.Normalized
-	policyDocument = jsontypes.NewNormalizedValue(IAMPolicyDataSource{}.decodeDocument(iam_policy_document.GetPolicyVersionResult.PolicyVersion.Document).ValueString())
+	var policyDocument jsontypes.Normalized = jsontypes.NewNormalizedValue(IAMPolicyDataSource{}.decodeDocument(iam_policy_document.GetPolicyVersionResult.PolicyVersion.Document).ValueString())
 
 	data := r.getModel(&clientgen.IamServiceCreatePolicyResponseCreatePolicyResultPolicy{
 		PolicyName:       iam_policy.GetPolicyResult.Policy.PolicyName,
@@ -296,7 +295,7 @@ func (r *IAMPolicyResource) Delete(ctx context.Context, req resource.DeleteReque
 
 }
 
-// Import state function
+// Import state function.
 func (r *IAMPolicyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	parts := strings.SplitN(req.ID, "#", 2)
 	if len(parts) != 2 {
