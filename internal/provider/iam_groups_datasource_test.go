@@ -108,16 +108,6 @@ func TestAccIAMGroupsDataSource_ErrorScenarios(t *testing.T) {
 				ExpectError: regexp.MustCompile(`namespace`),
 			},
 
-			// Invalid namespace → error
-			{
-				Config: ProviderConfigForTesting + `
-					data "objectscale_iam_groups" "bad_ns" {
-						namespace  = "INVALID_NS"
-					}
-				`,
-				ExpectError: regexp.MustCompile(`The namespace does not exist.`),
-			},
-
 			// Invalid group_name → error
 			{
 				Config: ProviderConfigForTesting + `

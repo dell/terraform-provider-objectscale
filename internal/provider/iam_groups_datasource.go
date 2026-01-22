@@ -171,14 +171,6 @@ func (d *IAMGroupsDataSource) Read(ctx context.Context, req datasource.ReadReque
 		finalGroups = groups
 	}
 
-	if len(finalGroups) == 0 {
-		resp.Diagnostics.AddError(
-			"Invalid namespace",
-			"The namespace does not exist.",
-		)
-		return
-	}
-
 	// Save state
 	data.ID = types.StringValue("iam_groups_" + ns)
 	data.Groups = finalGroups
