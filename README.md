@@ -21,9 +21,7 @@ limitations under the License.
 
 The Terraform Provider for Dell Technologies (Dell) ObjectScale allows Data Center and IT administrators to use Hashicorp Terraform to automate and orchestrate the provisioning and management of Dell ObjectScale storage systems.
 
-The Terraform Provider can be used to manage account and bucket.
-
-The logged-in user configured in the Terraform provider must possess adequate permissions against the target Dell ObjectScale System
+The logged-in user configured in the Terraform provider must possess adequate permissions against the target Dell ObjectScale System.
 
 ## Table of Contents
 
@@ -44,13 +42,13 @@ The logged-in user configured in the Terraform provider must possess adequate pe
 For any Terraform Provider for Dell ObjectScale issues, questions or feedback, please follow our [support process](https://github.com/dell/dell-terraform-providers/blob/main/docs/SUPPORT.md)
 
 ## License
-The Terraform Provider for Dell ObjectScale is released and licensed under the MPL-2.0 license. See [LICENSE](LICENSE) for the full terms.
+The Terraform Provider for Dell ObjectScale is released and licensed under the MPL-2.0 license. See [LICENSE](https://github.com/dell/terraform-provider-objectscale/blob/main/LICENSE) for the full terms.
 
 ## Prerequisites
 
 | **Terraform Provider** | **ObjectScale Version** |         **OS**         |   **Terraform**   | **Golang** |
 |------------------------|:------------------------|:-----------------------|-------------------|------------|
-| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 24.04 | 1.14.3 and 1.13.5 | 1.25.6     |
+| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.3 and 1.13.5 | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
 
@@ -60,13 +58,13 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [IAM Role](docs/data-sources/iam_role.md)
 * [IAM User](docs/data-sources/iam_user.md)
 * [IAM Inline Policy](docs/data-sources/iam_inline_policy.md)
-* [IAM Management User](docs/data-sources/management_user.md)
 
 ### Namespacing & Tenancy
 * [Namespace](docs/data-sources/namespace.md)
 
-### Object User
+### User Management
 * [Object User](docs/data-sources/object_user.md)
+* [Management User](docs/data-sources/management_user.md)
 
 ### Object Storage Containers
 * [Bucket](docs/data-sources/bucket.md)
@@ -88,7 +86,6 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [IAM Role](docs/resources/iam_role.md)
 * [IAM User](docs/resources/iam_user.md)
 * [IAM User Access Key](docs/resources/iam_user_access_key.md)
-* [IAM Management User](docs/resources/management_user.md)
 * [IAM Group Membership](docs/resources/iam_group_membership.md)
 
 ### Object Storage Containers
@@ -97,9 +94,10 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 ### Namespace and Tenancy
 * [Namespace](docs/resources/namespace.md)
 
-### Object User
-* [Object User](docs/resources/object_user.md)
+### User Management
+* [Object User ](docs/resources/object_user.md)
 * [Object User Secret Key](docs/resources/object_user_secret_key.md)
+* [Management User](docs/data-sources/management_user.md)
 
 ### Data Protection
 * [Replication Group](docs/resources/replication_group.md)
@@ -131,7 +129,6 @@ terraform init
 1. Clone this repo
 2. In the root of this repo run
 ```
-make client-build
 make install
 ```
 Then follow [installation from public repo](#installation-from-public-repository)
@@ -164,4 +161,4 @@ Released code versions are located on tags in the form of "vx.y.z" where x.y.z c
 
 For more detailed information, please refer to 
   * [Dell Terraform Providers Documentation](https://dell.github.io/terraform-docs/)
-  * [Dell Terraform Registry](https://registry.terraform.io/providers/dell/powerflex/latest/docs)
+  * [Dell Terraform Registry](https://registry.terraform.io/providers/dell/objectscale/latest/docs)
