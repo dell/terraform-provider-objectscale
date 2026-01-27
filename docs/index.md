@@ -70,7 +70,7 @@ provider "objectscale" {
 
 ### Required
 
-- `endpoint` (String) The API endpoint, ex. https://10.225.100.1:4443
+- `endpoint` (String) The API endpoint, ex. https://10.10.10.10:4443
 - `password` (String, Sensitive) The password
 - `username` (String) The username
 
