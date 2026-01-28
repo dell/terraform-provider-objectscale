@@ -31,8 +31,8 @@ func (d *BucketDataSource) Metadata(ctx context.Context, req datasource.Metadata
 // Schema describes the data source arguments and results.
 func (d *BucketDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Retrieve IAM Groups from ObjectScale IAM.",
-		Description:         "Retrieve IAM Groups from ObjectScale IAM.",
+		MarkdownDescription: "This Data source Retrieves an Dell ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)",
+		Description:         "This Data source Retrieves an Dell ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)",
 		Attributes: map[string]schema.Attribute{
 
 			"id": schema.StringAttribute{

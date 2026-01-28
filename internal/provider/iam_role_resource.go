@@ -54,8 +54,8 @@ func (r *IAMRoleResource) Metadata(ctx context.Context, req resource.MetadataReq
 
 func (r *IAMRoleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages an ObjectScale IAM Role.",
-		MarkdownDescription: "Manages an ObjectScale IAM Role.",
+		Description:         "This resource manages an Dell ObjectScale IAM role.",
+		MarkdownDescription: "This resource manages an Dell ObjectScale IAM role.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Simple name identifying the Role. Required",

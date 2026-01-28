@@ -21,9 +21,7 @@ limitations under the License.
 
 The Terraform Provider for Dell Technologies (Dell) ObjectScale allows Data Center and IT administrators to use Hashicorp Terraform to automate and orchestrate the provisioning and management of Dell ObjectScale storage systems.
 
-The Terraform Provider can be used to manage account and bucket.
-
-The logged-in user configured in the Terraform provider must possess adequate permissions against the target Dell ObjectScale System
+The logged-in user configured in the Terraform provider must possess adequate permissions against the target Dell ObjectScale System.
 
 ## Table of Contents
 
@@ -44,19 +42,65 @@ The logged-in user configured in the Terraform provider must possess adequate pe
 For any Terraform Provider for Dell ObjectScale issues, questions or feedback, please follow our [support process](https://github.com/dell/dell-terraform-providers/blob/main/docs/SUPPORT.md)
 
 ## License
-The Terraform Provider for Dell ObjectScale is released and licensed under the MPL-2.0 license. See [LICENSE](LICENSE) for the full terms.
+The Terraform Provider for Dell ObjectScale is released and licensed under the MPL-2.0 license. See [LICENSE](https://github.com/dell/terraform-provider-objectscale/blob/main/LICENSE) for the full terms.
 
 ## Prerequisites
 
-| **Terraform Provider** | **ObjectScale Version** | **OS** | **Terraform** | **Golang** |
-|------------------------|:------------------------|:-------|---------------|------------|
-| v1.0.0                 |                         |        |               |            |
+| **Terraform Provider** | **ObjectScale Version** |         **OS**         |   **Terraform**   | **Golang** |
+|------------------------|:------------------------|:-----------------------|-------------------|------------|
+| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.3 and 1.13.5 | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
-* Example
+
+### Identity & Access Management (IAM)
+* [IAM Group](docs/data-sources/iam_groups.md)
+* [IAM Policy](docs/data-sources/iam_policy.md)
+* [IAM Role](docs/data-sources/iam_role.md)
+* [IAM User](docs/data-sources/iam_user.md)
+* [IAM Inline Policy](docs/data-sources/iam_inline_policy.md)
+
+### Namespacing & Tenancy
+* [Namespace](docs/data-sources/namespace.md)
+
+### User Management
+* [Object User](docs/data-sources/object_user.md)
+* [Management User](docs/data-sources/management_user.md)
+
+### Object Storage Containers
+* [Bucket](docs/data-sources/bucket.md)
+
+### Data Protection
+* [Replication Group](docs/data-sources/replication_group.md)
+
+### Storage Topology & Capacity Domains
+* [Storage Pool](docs/data-sources/storage_pool.md)
+* [VDC](docs/data-sources/vdc.md)
 
 ## List of Resources in Terraform Provider for Dell ObjectScale
-* Example
+
+### Identity & Access Management (IAM)
+* [IAM Group](docs/resources/iam_group.md)
+* [IAM Policy](docs/resources/iam_policy.md)
+* [IAM Inline Policy](docs/resources/iam_inline_policy.md)
+* [IAM Policy Attachment](docs/resources/iam_policy_attachment.md)
+* [IAM Role](docs/resources/iam_role.md)
+* [IAM User](docs/resources/iam_user.md)
+* [IAM User Access Key](docs/resources/iam_user_access_key.md)
+* [IAM Group Membership](docs/resources/iam_group_membership.md)
+
+### Object Storage Containers
+* [Bucket](docs/resources/bucket.md)
+
+### Namespace and Tenancy
+* [Namespace](docs/resources/namespace.md)
+
+### User Management
+* [Object User ](docs/resources/object_user.md)
+* [Object User Secret Key](docs/resources/object_user_secret_key.md)
+* [Management User](docs/data-sources/management_user.md)
+
+### Data Protection
+* [Replication Group](docs/resources/replication_group.md)
 
 ## Installation and execution of Terraform Provider for Dell ObjectScale
 
@@ -85,7 +129,6 @@ terraform init
 1. Clone this repo
 2. In the root of this repo run
 ```
-make client-build
 make install
 ```
 Then follow [installation from public repo](#installation-from-public-repository)
@@ -110,6 +153,25 @@ For SSL verification on Ubuntu, these steps can be performed:
 
 Terraform Provider for Dell Technologies ObjectScale follows [Semantic Versioning](https://semver.org/).
 
-New versions will be release regularly if significant changes (bug fix or new feature) are made in the provider.
+New versions will be released on a regular basis whenever significant updates—such as bug fixes or new features—are introduced to the provider.
 
 Released code versions are located on tags in the form of "vx.y.z" where x.y.z corresponds to the version number.
+
+## Documentation
+
+For more detailed information, please refer to 
+  * [Dell Terraform Providers Documentation](https://dell.github.io/terraform-docs/)
+  * [Dell Terraform Registry](https://registry.terraform.io/providers/dell/objectscale/latest/docs)
+
+## New to Terraform?
+**Here are some helpful links to get you started if you are new to terraform before using our provider:**
+
+- Intro to Terraform: https://developer.hashicorp.com/terraform/intro 
+- Providers: https://developer.hashicorp.com/terraform/language/providers 
+- Resources: https://developer.hashicorp.com/terraform/language/resources
+- Datasources: https://developer.hashicorp.com/terraform/language/data-sources
+- Import: https://developer.hashicorp.com/terraform/language/import
+- Variables: https://developer.hashicorp.com/terraform/language/values/variables
+- Modules: https://developer.hashicorp.com/terraform/language/modules
+- State: https://developer.hashicorp.com/terraform/language/state
+- Environment Variables: https://developer.hashicorp.com/terraform/cli/config/environment-variables 

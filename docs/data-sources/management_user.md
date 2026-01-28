@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_management_user data source"
 linkTitle: "objectscale_management_user"
 page_title: "objectscale_management_user Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Management User"
 description: |-
-  This datasource can be used to fetch details of Management Users from ObjectScale.
+  This datasource can be used to fetch details of Management Users from Dell ObjectScale.
 ---
 
 # objectscale_management_user (Data Source)
 
-This datasource can be used to fetch details of Management Users from ObjectScale.
+This datasource can be used to fetch details of Management Users from Dell ObjectScale.
 
 ## Example Usage
 

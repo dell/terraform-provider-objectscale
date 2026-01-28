@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 title: "objectscale_storage_pool data source"
 linkTitle: "objectscale_storage_pool"
 page_title: "objectscale_storage_pool Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Storage Topology & Capacity Domains"
 description: |-
   This datasource can be used to fetch details of Storage Pools from Dell ObjectScale.
 ---

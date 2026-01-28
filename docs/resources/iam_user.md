@@ -17,14 +17,14 @@
 title: "objectscale_iam_user resource"
 linkTitle: "objectscale_iam_user"
 page_title: "objectscale_iam_user Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
-  ObjectScale supports creation and management of IAM Users within a namespace.
+  This resource manages the full lifecycle of an Dell ObjectScale IAM user.
 ---
 
 # objectscale_iam_user (Resource)
 
-ObjectScale supports creation and management of IAM Users within a namespace.
+This resource manages the full lifecycle of an Dell ObjectScale IAM user.
 
 
 ## Example Usage

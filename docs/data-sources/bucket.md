@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_bucket data source"
 linkTitle: "objectscale_bucket"
 page_title: "objectscale_bucket Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object Storage Containers"
 description: |-
-  Retrieve IAM Groups from ObjectScale IAM.
+  This Data source Retrieves an Dell ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)
 ---
 
 # objectscale_bucket (Data Source)
 
-Retrieve IAM Groups from ObjectScale IAM.
+This Data source Retrieves an Dell ObjectScale S3 bucket by name and gives its configuration and metadata (namespace, owner etc.)
 
 ## Example Usage
 

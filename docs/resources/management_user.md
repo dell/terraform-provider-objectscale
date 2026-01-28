@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_management_user resource"
 linkTitle: "objectscale_management_user"
 page_title: "objectscale_management_user Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Management User"
 description: |-
-  Manages ObjectScale management users. Supported types: LOCALUSER, ADLDAPUSER, ADLDAP_GROUP.
+  This resource manages Dell ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.
 ---
 
 # objectscale_management_user (Resource)
 
-Manages ObjectScale management users. Supported types: LOCAL_USER, AD_LDAP_USER, AD_LDAP_GROUP.
+This resource manages Dell ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.
 
 
 ## Example Usage

@@ -65,8 +65,8 @@ func (p *ObjectScaleProvider) Schema(ctx context.Context, req provider.SchemaReq
 		Description:         "The Terraform provider for Dell Objectscale can be used to interact with a Dell Objectscale array in order to manage the array resources.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
-				MarkdownDescription: "The API endpoint, ex. https://10.225.100.1:4443",
-				Description:         "The API endpoint, ex. https://10.225.100.1:4443",
+				MarkdownDescription: "The API endpoint, ex. https://10.10.10.10:4443",
+				Description:         "The API endpoint, ex. https://10.10.10.10:4443",
 				Required:            true,
 			},
 			"username": schema.StringAttribute{

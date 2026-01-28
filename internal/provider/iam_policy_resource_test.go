@@ -25,7 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-// Test to Create and Update User Resource
+// Test to Create and Update User Resource.
 func TestAccIamPolicyResource(t *testing.T) {
 	defer testUserTokenCleanup(t)
 	var apiMocker *mockey.Mocker

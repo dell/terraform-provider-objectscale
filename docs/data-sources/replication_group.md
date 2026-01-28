@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_replication_group data source"
 linkTitle: "objectscale_replication_group"
 page_title: "objectscale_replication_group Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Data Protection"
 description: |-
-  ObjectScale Replication Group Data Source to get all replication groups details.
+  This data source retrieves details of all replication groups configured in Dell ObjectScale.
 ---
 
 # objectscale_replication_group (Data Source)
 
-ObjectScale Replication Group Data Source to get all replication groups details.
+This data source retrieves details of all replication groups configured in Dell ObjectScale.
 
 ## Example Usage
 

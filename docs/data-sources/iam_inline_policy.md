@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_iam_inline_policy data source"
 linkTitle: "objectscale_iam_inline_policy"
 page_title: "objectscale_iam_inline_policy Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
-  Retrieve IAM inline policies for a user, group, or role.
+  This data source retrieves an Dell ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
 ---
 
 # objectscale_iam_inline_policy (Data Source)
 
-Retrieve IAM inline policies for a user, group, or role.
+This data source retrieves an Dell ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
 
 ## Example Usage
 

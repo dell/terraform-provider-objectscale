@@ -17,14 +17,14 @@
 title: "{{.Name }} {{.Type | lower}}"
 linkTitle: "{{.Name }}"
 page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
-subcategory: ""
+subcategory: "<subcategory>"
 description: |-
 {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
 ---
 
 # {{.Name }} ({{.Type}})
 
-{{ .Description | trimspace }}
+{{ .Description | trimspace }}<note>
 
 
 {{ if .HasExample -}}

@@ -32,8 +32,8 @@ func (d *IAMRoleDataSource) Metadata(_ context.Context, req datasource.MetadataR
 
 func (d *IAMRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Fetch IAM role information for a specific ObjectScale namespace.",
-		MarkdownDescription: "Fetch IAM role information for a specific ObjectScale namespace.",
+		Description:         "This data source retrieves an Dell ObjectScale IAM role by name/ID and gives its key attributes.",
+		MarkdownDescription: "This data source retrieves an Dell ObjectScale IAM role by name/ID and gives its key attributes.",
 
 		Attributes: map[string]schema.Attribute{
 

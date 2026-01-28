@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_namespace resource"
 linkTitle: "objectscale_namespace"
 page_title: "objectscale_namespace Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Namespacing / Tenancy"
 description: |-
-  ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.
+  This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.
 ---
 
 # objectscale_namespace (Resource)
 
-ObjectScale supports access by multiple tenants, where each tenant is defined by a namespace.
+This resource manages the full lifecycle of a Dell ObjectScale Namespace; It also configures key tenant-level settings—such as quotas.
 
 
 ## Example Usage

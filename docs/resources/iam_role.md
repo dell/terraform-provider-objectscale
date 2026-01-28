@@ -17,14 +17,14 @@
 title: "objectscale_iam_role resource"
 linkTitle: "objectscale_iam_role"
 page_title: "objectscale_iam_role Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
-  Manages an ObjectScale IAM Role.
+  This resource manages an Dell ObjectScale IAM role.
 ---
 
 # objectscale_iam_role (Resource)
 
-Manages an ObjectScale IAM Role.
+This resource manages an Dell ObjectScale IAM role.
 
 
 ## Example Usage

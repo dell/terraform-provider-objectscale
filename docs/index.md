@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2024-2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2024-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ provider "objectscale" {
 
 ### Required
 
-- `endpoint` (String) The API endpoint, ex. https://10.225.100.1:4443
+- `endpoint` (String) The API endpoint, ex. https://10.10.10.10:4443
 - `password` (String, Sensitive) The password
 - `username` (String) The username
 

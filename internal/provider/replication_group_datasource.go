@@ -31,8 +31,8 @@ func (d *ReplicationGroupDataSource) Metadata(ctx context.Context, req datasourc
 func (d *ReplicationGroupDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale Replication Group Data Source to get all replication groups details.",
-		Description:         "ObjectScale Replication Group Data Source to get all replication groups details.",
+		MarkdownDescription: "This data source retrieves details of all replication groups configured in Dell ObjectScale.",
+		Description:         "This data source retrieves details of all replication groups configured in Dell ObjectScale..",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier",
@@ -202,9 +202,7 @@ func (d *ReplicationGroupDataSource) Read(ctx context.Context, req datasource.Re
 			}
 		}
 	} else {
-		for _, rg := range replicationGroups {
-			replicationGroupList = append(replicationGroupList, rg)
-		}
+		replicationGroupList = append(replicationGroupList, replicationGroups...)
 	}
 
 	// hardcoding a response value to save into the Terraform state.

@@ -50,8 +50,8 @@ func (r *ObjectUserResource) Metadata(ctx context.Context, req resource.Metadata
 func (r *ObjectUserResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "ObjectScale supports creation and management of Object Users within a namespace.",
-		Description:         "ObjectScale supports creation and management of Object Users within a namespace.",
+		MarkdownDescription: "This resource manages Dell ObjectScale object users within a namespace.",
+		Description:         "This resource manages Dell ObjectScale object users within a namespace.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Name of the user. Required.",

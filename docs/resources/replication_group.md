@@ -17,14 +17,21 @@
 title: "objectscale_replication_group resource"
 linkTitle: "objectscale_replication_group"
 page_title: "objectscale_replication_group Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Data Protection"
 description: |-
-  Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.
+  This resource allows end user to Provision and manage Dell ObjectScale Replication Groups.
 ---
 
 # objectscale_replication_group (Resource)
 
-Manages Replication Groups in ObjectScale. A Replication Group in ObjectScale cannot be destroyed.
+This resource allows end user to Provision and manage Dell ObjectScale Replication Groups.
+
+~> **Note:** Deletion of Replication Group is not supported. If this resource gets planned for deletion, it will simply be removed from the state. But the Replication Group will not be destroyed on the ObjectScale array.
+
+!> **Caution:** This resource does support removal of zones from Replication Group. But be cautious that removing zones from replication group may result in data loss.
+We recommend contacting customer support before performing this operation.
+Data loss may occur if prerequisite procedures are not properly followed.
+Verify the following conditions:<br/>- Ensure that Geo replication is up-to-date.<br/>- Replication to/from VDC for the Replication Group will be disabled.<br/>- Recovery will be initiated. Data may not be available until recovery is complete.<br/>- Removal is permanent; the site cannot be added back to this replication group.<br/>- Data associated with this replication group will be permanently deleted from this VDC.<br/>- In cases where XOR encoding is utilized and the RG falls below 3 VDCs, the XOR encoded data will have to be replaced with fully replicated copies, which could significantly increase storage required to fully protect the data.
 
 
 ## Example Usage

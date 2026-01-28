@@ -31,8 +31,8 @@ func (d *IAMGroupsDataSource) Metadata(ctx context.Context, req datasource.Metad
 // Schema describes the data source arguments and results.
 func (d *IAMGroupsDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Retrieve IAM Groups from ObjectScale IAM.",
-		Description:         "Retrieve IAM Groups from ObjectScale IAM.",
+		MarkdownDescription: "This data source retrieves key attributes of Dell ObjectScale IAM groups.",
+		Description:         "This data source retrieves key attributes of Dell ObjectScale IAM groups.",
 		Attributes: map[string]schema.Attribute{
 
 			"id": schema.StringAttribute{

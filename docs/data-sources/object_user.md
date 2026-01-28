@@ -17,14 +17,14 @@
 title: "objectscale_object_user data source"
 linkTitle: "objectscale_object_user"
 page_title: "objectscale_object_user Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object User"
 description: |-
-  Fetch list of Object users.
+  This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)
 ---
 
 # objectscale_object_user (Data Source)
 
-Fetch list of Object users.
+This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)
 
 ## Example Usage
 

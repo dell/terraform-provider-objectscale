@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_iam_policy_attachment resource"
 linkTitle: "objectscale_iam_policy_attachment"
 page_title: "objectscale_iam_policy_attachment Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
-  Manages IAM policy attachments for ObjectScale entities (user, group, or role).
+  This resource attaches an IAM policy to a target principal (user, group, or role) in Dell ObjectScale.
 ---
 
 # objectscale_iam_policy_attachment (Resource)
 
-Manages IAM policy attachments for ObjectScale entities (user, group, or role).
+This resource attaches an IAM policy to a target principal (user, group, or role) in Dell ObjectScale.
 
 
 ## Example Usage

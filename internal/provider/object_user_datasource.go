@@ -36,8 +36,8 @@ func (d *ObjectUserDataSource) Metadata(_ context.Context, req datasource.Metada
 
 func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Fetch list of Object users.",
-		MarkdownDescription: "Fetch list of Object users.",
+		Description:         "This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)",
+		MarkdownDescription: "This data source retrieves an existing Dell ObjectScale namespace and exposes its configuration, policies, and metadata (e.g., quotas)",
 
 		Attributes: map[string]schema.Attribute{
 
@@ -376,8 +376,7 @@ func (d *ObjectUserDataSource) getUser(ctx context.Context, username string) (mo
 		return models.ObjectUser{}, fmt.Errorf("reading user secret keys %q: %w", username, err_access_key)
 	}
 
-	var obj_user models.ObjectUser
-	obj_user = models.ObjectUser{
+	var obj_user models.ObjectUser = models.ObjectUser{
 		Id:        helper.TfString(&objectUser.Name),
 		Name:      helper.TfString(&objectUser.Name),
 		Namespace: helper.TfString(&objectUser.Namespace),

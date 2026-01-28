@@ -17,14 +17,14 @@
 title: "objectscale_object_user_secret_key resource"
 linkTitle: "objectscale_object_user_secret_key"
 page_title: "objectscale_object_user_secret_key Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object User"
 description: |-
-  ObjectScale supports creation and management of Secret Keys for an object user.
+  This resource allows end user to provision and manage an Dell ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.
 ---
 
 # objectscale_object_user_secret_key (Resource)
 
-ObjectScale supports creation and management of Secret Keys for an object user.
+This resource allows end user to provision and manage an Dell ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.
 
 
 ## Example Usage

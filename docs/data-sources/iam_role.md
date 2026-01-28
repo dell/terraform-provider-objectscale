@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 title: "objectscale_iam_role data source"
 linkTitle: "objectscale_iam_role"
 page_title: "objectscale_iam_role Data Source - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
-  Fetch IAM role information for a specific ObjectScale namespace.
+  This data source retrieves an Dell ObjectScale IAM role by name/ID and gives its key attributes.
 ---
 
 # objectscale_iam_role (Data Source)
 
-Fetch IAM role information for a specific ObjectScale namespace.
+This data source retrieves an Dell ObjectScale IAM role by name/ID and gives its key attributes.
 
 ## Example Usage
 

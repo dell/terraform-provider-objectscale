@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Mozilla Public License Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,16 @@
 title: "objectscale_bucket resource"
 linkTitle: "objectscale_bucket"
 page_title: "objectscale_bucket Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Object Storage Containers"
 description: |-
-  
+  This resource provisions and manages S3 buckets on Dell ObjectScale.
 ---
 
 # objectscale_bucket (Resource)
 
+This resource provisions and manages S3 buckets on Dell ObjectScale.
 
+> **Warning:** Deleting a bucket using this resource will also delete all data contained within the bucket. Ensure you have backed up any important data before performing a destroy operation.
 
 
 ## Example Usage

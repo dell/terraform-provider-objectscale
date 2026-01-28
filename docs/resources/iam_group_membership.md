@@ -17,14 +17,14 @@
 title: "objectscale_iam_group_membership resource"
 linkTitle: "objectscale_iam_group_membership"
 page_title: "objectscale_iam_group_membership Resource - terraform-provider-objectscale"
-subcategory: ""
+subcategory: "Identity & Access Management (IAM)"
 description: |-
-  Manages Group Membership for a User.
+  This resource manages IAM group membership in Dell ObjectScale, letting user declaratively add or remove IAM users from specified groups.
 ---
 
 # objectscale_iam_group_membership (Resource)
 
-Manages Group Membership for a User.
+This resource manages IAM group membership in Dell ObjectScale, letting user declaratively add or remove IAM users from specified groups.
 
 
 ## Example Usage
