@@ -60,7 +60,9 @@ var facts = map[string]map[string]map[string]Fact{
 		"namespace": {factTypeResource: {}, factTypeDatasource: {}},
 	},
 	"Object Storage Containers": {
-		"bucket": {factTypeResource: {}, factTypeDatasource: {}},
+		"bucket": {factTypeResource: {
+			Note: "> **Warning:** Deleting a bucket using this resource will also delete all data contained within the bucket. Ensure you have backed up any important data before performing a destroy operation.",
+		}, factTypeDatasource: {}},
 	},
 	"Data Protection": {
 		"replication_group": {

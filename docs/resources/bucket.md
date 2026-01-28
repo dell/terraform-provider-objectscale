@@ -26,6 +26,8 @@ description: |-
 
 This resource provisions and manages S3 buckets on Dell ObjectScale.
 
+> **Warning:** Deleting a bucket using this resource will also delete all data contained within the bucket. Ensure you have backed up any important data before performing a destroy operation.
+
 
 ## Example Usage
 
