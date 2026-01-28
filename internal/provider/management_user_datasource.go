@@ -48,8 +48,8 @@ func (d *ManagementUserDataSource) Metadata(_ context.Context, req datasource.Me
 // Schema defines the schema for the data source.
 func (d *ManagementUserDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "This datasource can be used to fetch details of Management Users from ObjectScale.",
-		MarkdownDescription: "This datasource can be used to fetch details of Management Users from ObjectScale.",
+		Description:         "This datasource can be used to fetch details of Management Users from Dell ObjectScale.",
+		MarkdownDescription: "This datasource can be used to fetch details of Management Users from Dell ObjectScale.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier",

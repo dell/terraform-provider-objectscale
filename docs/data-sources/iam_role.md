@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_role"
 page_title: "objectscale_iam_role Data Source - terraform-provider-objectscale"
 subcategory: "Identity & Access Management (IAM)"
 description: |-
-  This data source retrieves an ObjectScale IAM role by name/ID and gives its key attributes.
+  This data source retrieves an Dell ObjectScale IAM role by name/ID and gives its key attributes.
 ---
 
 # objectscale_iam_role (Data Source)
 
-This data source retrieves an ObjectScale IAM role by name/ID and gives its key attributes.
+This data source retrieves an Dell ObjectScale IAM role by name/ID and gives its key attributes.
 
 ## Example Usage
 

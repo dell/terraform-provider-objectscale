@@ -148,8 +148,8 @@ func (d *IAMPolicyDataSource) itemSchema() schema.ListNestedAttribute {
 func (d *IAMPolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source retrieves the JSON definition and metadata of an IAM inline policy attached to a specified ObjectScale principal (user, group, or role).",
-		Description:         "This data source retrieves the JSON definition and metadata of an IAM inline policy attached to a specified ObjectScale principal (user, group, or role).",
+		MarkdownDescription: "This data source retrieves the JSON definition and metadata of an IAM inline policy attached to a specified Dell ObjectScale principal (user, group, or role).",
+		Description:         "This data source retrieves the JSON definition and metadata of an IAM inline policy attached to a specified Dell ObjectScale principal (user, group, or role).",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Identifier",

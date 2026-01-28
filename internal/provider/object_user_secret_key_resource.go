@@ -51,8 +51,8 @@ func (r *ObjectUserSecretKeyResource) Metadata(ctx context.Context, req resource
 func (r *ObjectUserSecretKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource allows end user to provision and manage an ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.",
-		Description:         "This resource allows end user to provision and manage an ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.",
+		MarkdownDescription: "This resource allows end user to provision and manage an Dell ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.",
+		Description:         "This resource allows end user to provision and manage an Dell ObjectScale user’s S3 credentials—creating, reading, rotating (updating), and deleting an access/secret key pair tied to a specific ObjectScale user.",
 		Attributes: map[string]schema.Attribute{
 			"username": schema.StringAttribute{
 				Description:         "Name of the user to which the key is attached. Required.",

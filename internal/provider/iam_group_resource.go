@@ -52,8 +52,8 @@ func (r *IAMGroupResource) Metadata(ctx context.Context, req resource.MetadataRe
 
 func (r *IAMGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "This resource manages an ObjectScale IAM group.",
-		MarkdownDescription: "This resource manages an ObjectScale IAM group.",
+		Description:         "This resource manages an Dell ObjectScale IAM group.",
+		MarkdownDescription: "This resource manages an Dell ObjectScale IAM group.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "Simple name identifying the group. Required",

@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_user_access_key"
 page_title: "objectscale_iam_user_access_key Resource - terraform-provider-objectscale"
 subcategory: "Identity & Access Management (IAM)"
 description: |-
-  This resource Enables the creation and management of secure programmatic access for ObjectScale users by provisioning and controlling S3 compatible access keys.
+  This resource Enables the creation and management of secure programmatic access for Dell ObjectScale users by provisioning and controlling S3 compatible access keys.
 ---
 
 # objectscale_iam_user_access_key (Resource)
 
-This resource Enables the creation and management of secure programmatic access for ObjectScale users by provisioning and controlling S3 compatible access keys.
+This resource Enables the creation and management of secure programmatic access for Dell ObjectScale users by provisioning and controlling S3 compatible access keys.
 
 
 ## Example Usage

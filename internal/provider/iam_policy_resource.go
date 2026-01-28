@@ -48,8 +48,8 @@ func (r *IAMPolicyResource) Metadata(_ context.Context, req resource.MetadataReq
 
 func (r *IAMPolicyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "This resource manages an ObjectScale IAM policy.",
-		MarkdownDescription: "This resource manages an ObjectScale IAM policy.",
+		Description:         "This resource manages an Dell ObjectScale IAM policy.",
+		MarkdownDescription: "This resource manages an Dell ObjectScale IAM policy.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description:         "The name of the IAM Policy.",

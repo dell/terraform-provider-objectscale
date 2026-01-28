@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_inline_policy"
 page_title: "objectscale_iam_inline_policy Data Source - terraform-provider-objectscale"
 subcategory: "Identity & Access Management (IAM)"
 description: |-
-  This data source retrieves an ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
+  This data source retrieves an Dell ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
 ---
 
 # objectscale_iam_inline_policy (Data Source)
 
-This data source retrieves an ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
+This data source retrieves an Dell ObjectScale IAM inline policy (JSON) for a specified user, group, or role within a namespace.
 
 ## Example Usage
 

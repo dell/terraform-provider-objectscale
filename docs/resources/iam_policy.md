@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_policy"
 page_title: "objectscale_iam_policy Resource - terraform-provider-objectscale"
 subcategory: "Identity & Access Management (IAM)"
 description: |-
-  This resource manages an ObjectScale IAM policy.
+  This resource manages an Dell ObjectScale IAM policy.
 ---
 
 # objectscale_iam_policy (Resource)
 
-This resource manages an ObjectScale IAM policy.
+This resource manages an Dell ObjectScale IAM policy.
 
 
 ## Example Usage

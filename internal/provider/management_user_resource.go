@@ -63,8 +63,8 @@ func (r *ManagementUserResource) Metadata(_ context.Context, req resource.Metada
 // Schema defines the schema for the resource.
 func (r *ManagementUserResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "This resource manages ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.",
-		MarkdownDescription: "This resource manages ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.",
+		Description:         "This resource manages Dell ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.",
+		MarkdownDescription: "This resource manages Dell ObjectScale management users. Supported types include LOCALUSER, ADLDAPUSER, and ADLDAP_GROUP.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description:         "Unique identifier for the management user.",

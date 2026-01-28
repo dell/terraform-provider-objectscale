@@ -19,12 +19,12 @@ linkTitle: "objectscale_iam_group"
 page_title: "objectscale_iam_group Resource - terraform-provider-objectscale"
 subcategory: "Identity & Access Management (IAM)"
 description: |-
-  This resource manages an ObjectScale IAM group.
+  This resource manages an Dell ObjectScale IAM group.
 ---
 
 # objectscale_iam_group (Resource)
 
-This resource manages an ObjectScale IAM group.
+This resource manages an Dell ObjectScale IAM group.
 
 
 ## Example Usage
