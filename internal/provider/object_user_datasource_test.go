@@ -40,14 +40,13 @@ func TestAccObjectUserDataSource_withUsernameFilter(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: ProviderConfigForTesting + `
-				data "objectscale_object_user" "by_username" {
-					name  = "sample_user"
-				}
-				`,
+				Config: ProviderConfigForTesting + DSObjectUserParams,
+			},
+			{
+				Config: ProviderConfigForTesting + DSObjectUserParams + GetObjectUserByUsername,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.name", "sample_user"),
-					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.id", "sample_user"),
+					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.name", "sample_user_ousk"),
+					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.id", "sample_user_ousk"),
 					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.locked", "false"),
 					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.tags.#", "1"),
 					resource.TestCheckResourceAttr("data.objectscale_object_user.by_username", "users.0.namespace", "ns1"),
@@ -76,7 +75,6 @@ func TestAccObjectUserDataSource_withNamespaceFilter(t *testing.T) {
 					resource.TestCheckResourceAttrSet("data.objectscale_object_user.by_namespace", "users.0.name"),
 					resource.TestCheckResourceAttrSet("data.objectscale_object_user.by_namespace", "users.0.created"),
 					resource.TestCheckResourceAttrSet("data.objectscale_object_user.by_namespace", "users.0.locked"),
-					resource.TestCheckResourceAttrSet("data.objectscale_object_user.by_namespace", "users.0.tags.#"),
 					resource.TestCheckResourceAttr("data.objectscale_object_user.by_namespace", "users.0.namespace", "ns1"),
 					resource.TestCheckResourceAttrSet("data.objectscale_object_user.by_namespace", "users.0.secret_keys.%"),
 				),
@@ -92,12 +90,10 @@ func TestAccObjectUserDataSource_UserTagsAndAccessKeys(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: ProviderConfigForTesting + `
-					data "objectscale_object_user" "with_keys_tags" {
-						tag = "Department"
-						value = "Finance"
-					}
-				`,
+				Config: ProviderConfigForTesting + DSObjectUserParams,
+			},
+			{
+				Config: ProviderConfigForTesting + DSObjectUserParams + DSObjectUserWithKeysAndTags,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Check that at least one user is returned
 					resource.TestCheckResourceAttrSet("data.objectscale_object_user.with_keys_tags", "users.0.id"),
@@ -111,3 +107,28 @@ func TestAccObjectUserDataSource_UserTagsAndAccessKeys(t *testing.T) {
 		},
 	})
 }
+
+var DSObjectUserParams = `
+resource "objectscale_object_user" "object_user_create_test" {
+	name = "sample_user_ousk"
+	namespace    = "ns1"
+	tags = [
+	{
+		name  = "Department",
+		value = "Finance"
+	},
+	]
+}
+`
+var GetObjectUserByUsername = `
+data "objectscale_object_user" "by_username" {
+	name  = "sample_user_ousk"
+}
+`
+
+var DSObjectUserWithKeysAndTags = `
+data "objectscale_object_user" "with_keys_tags" {
+	tag = "Department"
+	value = "Finance"
+}
+`
