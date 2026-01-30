@@ -1581,7 +1581,6 @@ func TestAccBucketResourceImport(t *testing.T) {
 	}
 	defer testUserTokenCleanup(t)
 
-
 	ProviderConfigForBucketTesting := ProviderConfigForTesting + `
 		data "objectscale_replication_group" "all" {
 		name = "rg1"
