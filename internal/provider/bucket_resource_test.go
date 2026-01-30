@@ -27,6 +27,13 @@ import (
 
 // Test to Fetch Namespaces.
 func TestAccBucketResourceNegative(t *testing.T) {
+
+	ProviderConfigForBucketTesting := ProviderConfigForTesting + `
+		data "objectscale_replication_group" "all" {
+		name = "rg1"
+	}
+	`
+
 	if os.Getenv("TF_ACC") == "" {
 		t.Skip("Dont run with units tests because it will try to create the context")
 	}
@@ -38,10 +45,10 @@ func TestAccBucketResourceNegative(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Missing required attribute: name
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					owner = "admin1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					namespace = "ns1"
 				}
 				`,
@@ -49,10 +56,10 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Missing required attribute: owner
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					namespace = "ns1"
 				}
 				`,
@@ -60,18 +67,18 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Missing required attribute: namespace
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 				}
 				`,
 				ExpectError: regexp.MustCompile(`(?i).*The argument "namespace" is required.*`),
 			},
 			// Missing required attribute: replication_group
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
@@ -82,12 +89,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Invalid type for block_size (should be int, given string)
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					block_size = "not-an-int"
 				}
 				`,
@@ -95,12 +102,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Validation
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					default_group_file_read_permission = "true"
 					filesystem_enabled = true
 				}
@@ -109,12 +116,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Validation
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					search_metadata = [
 						{
 						type     = "User"
@@ -128,12 +135,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Validation
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					search_metadata = [
 						{
 						type     = "User"
@@ -147,12 +154,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Validation
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					search_metadata = [
 						{
 						type     = "User"
@@ -166,12 +173,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Validation
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					search_metadata = [
 						{
 						type     = "User"
@@ -185,12 +192,12 @@ func TestAccBucketResourceNegative(t *testing.T) {
 			},
 			// Validation
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-2"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					search_metadata = [
 						{
 						type     = "System"
@@ -212,6 +219,12 @@ func TestAccBucketResourcePositive(t *testing.T) {
 	}
 	defer testUserTokenCleanup(t)
 
+	ProviderConfigForBucketTesting := ProviderConfigForTesting + `
+		data "objectscale_replication_group" "all" {
+		name = "rg1"
+	}
+	`
+
 	resourceName := "objectscale_bucket.test"
 
 	resource.Test(t, resource.TestCase{
@@ -220,7 +233,7 @@ func TestAccBucketResourcePositive(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Creation Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "admin1"
 
@@ -228,7 +241,7 @@ func TestAccBucketResourcePositive(t *testing.T) {
 						name = "example-bucket-positive"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -355,14 +368,13 @@ func TestAccBucketResourcePositive(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "name", "example-bucket-positive"),
 					resource.TestCheckResourceAttr(resourceName, "owner", "admin1"),
 					resource.TestCheckResourceAttr(resourceName, "namespace", "ns1"),
-					resource.TestCheckResourceAttr(resourceName, "replication_group", "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"),
 					resource.TestCheckResourceAttr(resourceName, "block_size", "4096"),
 				),
 			},
 			// Update Failure Test Step
 			{
 				// Update block_size to test update, expect error
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "admin1"
 
@@ -370,7 +382,7 @@ func TestAccBucketResourcePositive(t *testing.T) {
 						name = "example-bucket-update"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -465,7 +477,7 @@ func TestAccBucketResourcePositive(t *testing.T) {
 			// Update Successful Test Step
 			{
 				// Update block_size to test update, expect error
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -473,7 +485,7 @@ func TestAccBucketResourcePositive(t *testing.T) {
 						name = "example-bucket-positive"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -606,7 +618,6 @@ func TestAccBucketResourcePositive(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "name", "example-bucket-positive"),
 					resource.TestCheckResourceAttr(resourceName, "owner", "root"),
 					resource.TestCheckResourceAttr(resourceName, "namespace", "ns1"),
-					resource.TestCheckResourceAttr(resourceName, "replication_group", "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"),
 					resource.TestCheckResourceAttr(resourceName, "block_size", "5096"),
 				),
 			},
@@ -620,6 +631,12 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 	}
 	defer testUserTokenCleanup(t)
 
+	ProviderConfigForBucketTesting := ProviderConfigForTesting + `
+		data "objectscale_replication_group" "all" {
+		name = "rg1"
+	}
+	`
+
 	resourceName := "objectscale_bucket.test"
 
 	resource.Test(t, resource.TestCase{
@@ -628,7 +645,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Creation Test Step Negative for Bucket Policy
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "admin1"
 
@@ -636,7 +653,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -727,7 +744,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Creation Test Step Negative for Bucket Policy
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "admin1"
 
@@ -735,7 +752,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -819,7 +836,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Creation Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "admin1"
 
@@ -827,7 +844,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -905,13 +922,12 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "name", "example-bucket-positive-2"),
 					resource.TestCheckResourceAttr(resourceName, "owner", "admin1"),
 					resource.TestCheckResourceAttr(resourceName, "namespace", "ns1"),
-					resource.TestCheckResourceAttr(resourceName, "replication_group", "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"),
 					resource.TestCheckResourceAttr(resourceName, "block_size", "4096"),
 				),
 			},
 			// Update Failure Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -919,7 +935,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -998,7 +1014,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Update Failure Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -1006,7 +1022,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -1087,7 +1103,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Update Failure Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -1095,7 +1111,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -1183,7 +1199,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Update Failure Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -1191,7 +1207,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -1272,7 +1288,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Update Failure Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -1280,7 +1296,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -1359,7 +1375,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Update Failure Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -1367,7 +1383,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -1457,7 +1473,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 			},
 			// Update Successful Test Step
 			{
-				Config: ProviderConfigForTesting + `resource "objectscale_bucket" "test" {
+				Config: ProviderConfigForBucketTesting + `resource "objectscale_bucket" "test" {
 						# Required: Owner of the bucket
 						owner = "root"
 
@@ -1465,7 +1481,7 @@ func TestAccBucketResourcePositive2(t *testing.T) {
 						name = "example-bucket-positive-2"
 
 						# Required: Virtual pool URL associated with the bucket (Get it using Replication Datasource)
-						replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+						replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 
 						# Required: Namespace for bucket isolation
 						namespace = "ns1"
@@ -1565,6 +1581,11 @@ func TestAccBucketResourceImport(t *testing.T) {
 	}
 	defer testUserTokenCleanup(t)
 
+	ProviderConfigForBucketTesting := ProviderConfigForTesting + `
+		data "objectscale_replication_group" "all" {
+		name = "rg1"
+	}
+	`
 	resourceName := "objectscale_bucket.test"
 
 	resource.Test(t, resource.TestCase{
@@ -1572,12 +1593,12 @@ func TestAccBucketResourceImport(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: ProviderConfigForTesting + `
+				Config: ProviderConfigForBucketTesting + `
 				resource "objectscale_bucket" "test" {
 					name = "example-bucket-positive-1"
 					owner = "admin1"
 					namespace = "ns1"
-					replication_group = "urn:storageos:ReplicationGroupInfo:1cb09936-67a2-4692-abd2-eb1277ef7364:global"
+					replication_group = data.objectscale_replication_group.all.replication_groups.0.id
 					block_size = 4096
 					versioning_status = "Enabled"
 				}
