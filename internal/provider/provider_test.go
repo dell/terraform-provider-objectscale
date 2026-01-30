@@ -60,19 +60,18 @@ func init() {
 	logoutUser = setDefault(os.Getenv("OBJECTSCALE_LOGOUT_USERNAME"), "logouttest")
 	logoutPassword = setDefault(os.Getenv("OBJECTSCALE_LOGOUT_PASSWORD"), "logouttest")
 	insecure = setDefault(os.Getenv("OBJECTSCALE_INSECURE"), "true")
-	rgs = fmt.Sprintf(`
+	rgs = `
+		data "objectscale_replication_group" "preq_replication_group" {
+		}
+
 		locals {
 			rgs = {
-				"rg1": "%s",
-				"rg2": "%s",
-				"rg3": "%s",
+				"rg1": data.objectscale_replication_group.preq_replication_group.replication_groups.0.id,
+				"rg2": data.objectscale_replication_group.preq_replication_group.replication_groups.1.id,
+				"rg3": data.objectscale_replication_group.preq_replication_group.replication_groups.2.id,
 			}
 		}
-		`,
-		setDefault(os.Getenv("OBJECTSCALE_RG1"), "urn:storageos:ReplicationGroupInfo:55ca12b2-e908-4bac-a5fe-3fdaa975e3eb:global"),
-		setDefault(os.Getenv("OBJECTSCALE_RG2"), "urn:storageos:ReplicationGroupInfo:cd8bffcb-7a99-4023-82a8-982054fd73c2:global"),
-		setDefault(os.Getenv("OBJECTSCALE_RG3"), "urn:storageos:ReplicationGroupInfo:e0b539a3-6ddd-4412-b4d0-ce08049f64cd:global"),
-	)
+		`
 
 	ProviderConfigForTesting = fmt.Sprintf(`
 		provider "objectscale" {
