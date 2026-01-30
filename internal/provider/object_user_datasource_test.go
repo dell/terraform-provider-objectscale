@@ -8,6 +8,7 @@ import (
 
 // sample_user with tag "Department" and value "Finance" in namespace "ns1" is assumed to exist in the test ObjectScale cluster.
 func TestAccObjectUserDataSource_basic(t *testing.T) {
+	testUserTokenCleanup(t)
 	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
