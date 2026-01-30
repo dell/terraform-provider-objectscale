@@ -427,8 +427,24 @@ func loginMocker() *mockey.Mocker {
 }
 
 func TestAccNsRsCreateError(t *testing.T) {
-	defer testUserTokenCleanup(t)
 	loginM := loginMocker()
+	getAllM := mockey.Mock((*clientgen.DataVpoolApiService).DataServiceVpoolServiceGetDataServiceVpoolsExecute).
+		Return(&clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponse{
+			DataServiceVpool: []clientgen.DataServiceVpoolServiceGetDataServiceVpoolsResponseDataServiceVpoolInner{
+				{
+					Id:   getpointer("id1"),
+					Name: getpointer("rg1"),
+				},
+				{
+					Id:   getpointer("id2"),
+					Name: getpointer("rg2"),
+				},
+				{
+					Id:   getpointer("id3"),
+					Name: getpointer("rg3"),
+				},
+			},
+		}, nil, nil).Build()
 	createM := mockey.Mock((*clientgen.NamespaceApiService).NamespaceServiceCreateNamespaceExecute).
 		Return(nil, nil, fmt.Errorf("error")).Build()
 	deleteM := mockey.Mock((*clientgen.NamespaceApiService).NamespaceServiceDeactivateNamespaceExecute).
@@ -477,6 +493,7 @@ func TestAccNsRsCreateError(t *testing.T) {
 		},
 	})
 	loginM.UnPatch()
+	getAllM.UnPatch()
 	createM.UnPatch()
 	deleteM.UnPatch()
 	rcM.UnPatch()
