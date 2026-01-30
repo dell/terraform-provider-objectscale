@@ -9,6 +9,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
+var namespace_preq_rgs = `
+data "objectscale_replication_group" "all" {
+}
+
+locals {
+  rgs = {
+    for v in data.objectscale_replication_group.all.replication_groups : v.name => v.id
+  }
+}
+`
+
 // Test to Fetch Namespaces.
 func TestAccNSDs(t *testing.T) {
 	if os.Getenv("TF_ACC") == "" {
@@ -27,7 +38,7 @@ func TestAccNSDs(t *testing.T) {
 			},
 			{
 				// fetch invalid
-				Config: ProviderConfigForTesting + rgs + `
+				Config: ProviderConfigForTesting + namespace_preq_rgs + `
 				data "objectscale_namespace" "all" {
 					name = "invalid-id"
 				}
@@ -36,7 +47,7 @@ func TestAccNSDs(t *testing.T) {
 			},
 			{
 				// fetch one
-				Config: ProviderConfigForTesting + rgs + `
+				Config: ProviderConfigForTesting + namespace_preq_rgs + `
 				resource "objectscale_namespace" "preq" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]
@@ -48,7 +59,7 @@ func TestAccNSDs(t *testing.T) {
 			},
 			{
 				// fetch all by prefix
-				Config: ProviderConfigForTesting + rgs + `
+				Config: ProviderConfigForTesting + namespace_preq_rgs + `
 				resource "objectscale_namespace" "preq" {
 					name                        = "testacc_namespace"
 					default_data_services_vpool = local.rgs["rg1"]

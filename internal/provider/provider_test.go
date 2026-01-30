@@ -44,7 +44,7 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 // var FunctionMocker *mockey.Mocker
 
 var ProviderConfigForTesting = ``
-var username, password, endpoint, insecure, rgs string
+var username, password, endpoint, insecure string
 var logoutUser, logoutPassword string
 
 func init() {
@@ -60,18 +60,6 @@ func init() {
 	logoutUser = setDefault(os.Getenv("OBJECTSCALE_LOGOUT_USERNAME"), "logouttest")
 	logoutPassword = setDefault(os.Getenv("OBJECTSCALE_LOGOUT_PASSWORD"), "logouttest")
 	insecure = setDefault(os.Getenv("OBJECTSCALE_INSECURE"), "true")
-	rgs = `
-		data "objectscale_replication_group" "preq_replication_group" {
-		}
-
-		locals {
-			rgs = {
-				"rg1": data.objectscale_replication_group.preq_replication_group.replication_groups.0.id,
-				"rg2": data.objectscale_replication_group.preq_replication_group.replication_groups.1.id,
-				"rg3": data.objectscale_replication_group.preq_replication_group.replication_groups.2.id,
-			}
-		}
-		`
 
 	ProviderConfigForTesting = fmt.Sprintf(`
 		provider "objectscale" {
