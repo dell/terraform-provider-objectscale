@@ -140,12 +140,19 @@ func (r *IAMUserResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	_, _, err := r.client.GenClient.IamApi.IamServiceCreateUser(ctx).
+	creq := r.client.GenClient.IamApi.IamServiceCreateUser(ctx).
 		UserName(plan.Name.ValueString()).
-		XEmcNamespace(plan.Namespace.ValueString()).
-		PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString()).
-		TagsMemberN(helper.ValueListTransform(plan.Tags, r.tagJson)).
-		Execute()
+		XEmcNamespace(plan.Namespace.ValueString())
+
+	if !plan.PermissionsBoundaryArn.IsNull() && plan.PermissionsBoundaryArn.ValueString() != "" {
+		creq = creq.PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString())
+	}
+
+	if !plan.Tags.IsNull() || !plan.Tags.IsUnknown() || len(plan.Tags.Elements()) != 0 {
+		creq = creq.TagsMemberN(helper.ValueListTransform(plan.Tags, r.tagJson))
+	}
+
+	_, _, err := creq.Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating user", err.Error())
 		return
