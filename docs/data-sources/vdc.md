@@ -78,32 +78,32 @@ GET /object/vdcs/vdc/list
 
 ```terraform
 # List all VDCs
-data "objectscale_vdc" "all" {
+data "objectscale_vdc" "federation" {
 }
 
 # Use the first VDC's ID for a storage pool lookup
 data "objectscale_storage_pool" "by_vdc" {
-  vdc_id = data.objectscale_vdc.all.vdcs[0].id
+  vdc_id = data.objectscale_vdc.federation.vdcs[0].id
 }
 ```
 
 ### Example: Iterate over all VDCs
 
 ```terraform
-data "objectscale_vdc" "all" {
+data "objectscale_vdc" "federation" {
 }
 
 # Create a local map of VDC name → VDC ID
 locals {
-  vdc_map = { for v in data.objectscale_vdc.all.vdcs : v.vdc_name => v.id }
+  vdc_map = { for v in data.objectscale_vdc.federation.vdcs : v.vdc_name => v.id }
 }
 
 output "vdc_count" {
-  value = length(data.objectscale_vdc.all.vdcs)
+  value = length(data.objectscale_vdc.federation.vdcs)
 }
 
 output "vdc_names" {
-  value = [for v in data.objectscale_vdc.all.vdcs : v.vdc_name]
+  value = [for v in data.objectscale_vdc.federation.vdcs : v.vdc_name]
 }
 ```
 
