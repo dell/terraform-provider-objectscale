@@ -46,8 +46,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-# Example: Get all VDCs
-data "objectscale_vdc" "all" {
+# Example: Get all VDCs (federation view)
+data "objectscale_vdc" "federation" {
 }
 
 # Example: Get VDC by name
