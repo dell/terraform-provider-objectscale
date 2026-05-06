@@ -19,6 +19,10 @@ limitations under the License.
 data "objectscale_vdc" "all" {
 }
 
+# Example: Get all VDCs (federation view)
+data "objectscale_vdc" "federation" {
+}
+
 # Example: Get VDC by name
 data "objectscale_vdc" "name" {
   name = "vdc1"
