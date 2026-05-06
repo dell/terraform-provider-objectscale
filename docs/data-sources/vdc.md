@@ -68,11 +68,7 @@ data "objectscale_vdc" "id" {
 
 ## Federation Listing (List All VDCs)
 
-When invoked without any filter arguments (`id`, `name`, or `local`), the `objectscale_vdc` data source returns all Virtual Data Centers visible to the authenticated user across a federated ObjectScale deployment. This calls the ObjectScale REST API:
-
-```
-GET /object/vdcs/vdc/list
-```
+When invoked without any filter arguments (`id`, `name`, or `local`), the `objectscale_vdc` data source returns all Virtual Data Centers visible to the authenticated user across a federated ObjectScale deployment.
 
 ### Example: Use federation list to feed downstream resources
 
@@ -109,12 +105,12 @@ output "vdc_names" {
 
 ### Filter Behaviour Summary
 
-| Filter | API Called | Result |
-|--------|-----------|--------|
-| _(none)_ | `GET /object/vdcs/vdc/list` | All VDCs in federation |
-| `name = "vdc1"` | `GET /object/vdcs/vdc/vdc1` | Single VDC by name |
-| `id = "urn:..."` | `GET /object/vdcs/vdcid/{id}` | Single VDC by ID |
-| `local = true` | `GET /object/vdcs/vdc/local` | Local VDC only |
+| Filter | Result |
+|--------|--------|
+| _(none)_ | All VDCs in federation |
+| `name = "vdc1"` | Single VDC by name |
+| `id = "urn:..."` | Single VDC by ID |
+| `local = true` | Local VDC only |
 
 > **Constraint:** Only one of `id`, `name`, or `local` may be set at a time. Setting multiple produces an `Invalid Attribute Combination` error.
 
