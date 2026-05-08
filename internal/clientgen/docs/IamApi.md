@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**IamServiceCreatePolicy**](IamApi.md#IamServiceCreatePolicy) | **Post** /iam?Action&#x3D;CreatePolicy | Create Managed Policy
 [**IamServiceCreatePolicyVersion**](IamApi.md#IamServiceCreatePolicyVersion) | **Post** /iam?Action&#x3D;CreatePolicyVersion | Create a new version of the specified managed policy.
 [**IamServiceCreateRole**](IamApi.md#IamServiceCreateRole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+[**IamServiceCreateSAMLProvider**](IamApi.md#IamServiceCreateSAMLProvider) | **Post** /iam?Action&#x3D;CreateSAMLProvider | Create SAML Identity Provider
 [**IamServiceCreateUser**](IamApi.md#IamServiceCreateUser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
 [**IamServiceDeleteAccessKey**](IamApi.md#IamServiceDeleteAccessKey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 [**IamServiceDeleteGroup**](IamApi.md#IamServiceDeleteGroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
@@ -22,6 +23,7 @@ Method | HTTP request | Description
 [**IamServiceDeleteRole**](IamApi.md#IamServiceDeleteRole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
 [**IamServiceDeleteRolePermissionsBoundary**](IamApi.md#IamServiceDeleteRolePermissionsBoundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 [**IamServiceDeleteRolePolicy**](IamApi.md#IamServiceDeleteRolePolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
+[**IamServiceDeleteSAMLProvider**](IamApi.md#IamServiceDeleteSAMLProvider) | **Post** /iam?Action&#x3D;DeleteSAMLProvider | Delete the SAML Identity Provider.
 [**IamServiceDeleteUser**](IamApi.md#IamServiceDeleteUser) | **Post** /iam?Action&#x3D;DeleteUser | Delete an IAM user.
 [**IamServiceDeleteUserPermissionsBoundary**](IamApi.md#IamServiceDeleteUserPermissionsBoundary) | **Post** /iam?Action&#x3D;DeleteUserPermissionsBoundary | Delete User&#39;s PermissionsBoundary.
 [**IamServiceDeleteUserPolicy**](IamApi.md#IamServiceDeleteUserPolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
@@ -34,6 +36,7 @@ Method | HTTP request | Description
 [**IamServiceGetPolicyVersion**](IamApi.md#IamServiceGetPolicyVersion) | **Post** /iam?Action&#x3D;GetPolicyVersion | Retrieve version of Managed Policy.
 [**IamServiceGetRole**](IamApi.md#IamServiceGetRole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 [**IamServiceGetRolePolicy**](IamApi.md#IamServiceGetRolePolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
+[**IamServiceGetSAMLProvider**](IamApi.md#IamServiceGetSAMLProvider) | **Post** /iam?Action&#x3D;GetSAMLProvider | Retrieve the SAML IdP document.
 [**IamServiceGetUser**](IamApi.md#IamServiceGetUser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 [**IamServiceGetUserPolicy**](IamApi.md#IamServiceGetUserPolicy) | **Post** /iam?Action&#x3D;GetUserPolicy | Get specific inlinePolicy for IAM User.
 [**IamServiceListAccessKeys**](IamApi.md#IamServiceListAccessKeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
@@ -48,6 +51,7 @@ Method | HTTP request | Description
 [**IamServiceListRolePolicies**](IamApi.md#IamServiceListRolePolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
 [**IamServiceListRoleTags**](IamApi.md#IamServiceListRoleTags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
 [**IamServiceListRoles**](IamApi.md#IamServiceListRoles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
+[**IamServiceListSAMLProviders**](IamApi.md#IamServiceListSAMLProviders) | **Post** /iam?Action&#x3D;ListSAMLProviders | List the SAML Identity Providers.
 [**IamServiceListUserPolicies**](IamApi.md#IamServiceListUserPolicies) | **Post** /iam?Action&#x3D;ListUserPolicies | List Inline Policies for IAM User.
 [**IamServiceListUserTags**](IamApi.md#IamServiceListUserTags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 [**IamServiceListUsers**](IamApi.md#IamServiceListUsers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
@@ -65,6 +69,7 @@ Method | HTTP request | Description
 [**IamServiceUpdateAccessKey**](IamApi.md#IamServiceUpdateAccessKey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 [**IamServiceUpdateAssumeRolePolicy**](IamApi.md#IamServiceUpdateAssumeRolePolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 [**IamServiceUpdateRole**](IamApi.md#IamServiceUpdateRole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
+[**IamServiceUpdateSAMLProvider**](IamApi.md#IamServiceUpdateSAMLProvider) | **Post** /iam?Action&#x3D;UpdateSAMLProvider | Update the SAML Identity Provider.
 
 
 
@@ -712,6 +717,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IamServiceCreateSAMLProvider
+
+> IamServiceCreateSAMLProviderResponse IamServiceCreateSAMLProvider(ctx).Name(name).SAMLMetadataDocument(sAMLMetadataDocument).XEmcNamespace(xEmcNamespace).Execute()
+
+Create SAML Identity Provider
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    name := "name_example" // string | The name of the provider to create. (optional)
+    sAMLMetadataDocument := "sAMLMetadataDocument_example" // string | An XML document generated by an identity provider (IdP) that supports SAML 2.0. The document must be generated from  Organization's Identity Management software. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceCreateSAMLProvider(context.Background()).Name(name).SAMLMetadataDocument(sAMLMetadataDocument).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceCreateSAMLProvider``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceCreateSAMLProvider`: IamServiceCreateSAMLProviderResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceCreateSAMLProvider`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceCreateSAMLProviderRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **name** | **string** | The name of the provider to create. | 
+ **sAMLMetadataDocument** | **string** | An XML document generated by an identity provider (IdP) that supports SAML 2.0. The document must be generated from  Organization&#39;s Identity Management software. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceCreateSAMLProviderResponse**](IamServiceCreateSAMLProviderResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## IamServiceCreateUser
 
 > IamServiceCreateUserResponse IamServiceCreateUser(ctx).UserName(userName).Path(path).PermissionsBoundary(permissionsBoundary).TagsMemberN(tagsMemberN).XEmcNamespace(xEmcNamespace).Execute()
@@ -1323,6 +1398,74 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceDeleteSAMLProvider
+
+> IamServiceDeleteSAMLProviderResponse IamServiceDeleteSAMLProvider(ctx).SAMLProviderArn(sAMLProviderArn).XEmcNamespace(xEmcNamespace).Execute()
+
+Delete the SAML Identity Provider.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    sAMLProviderArn := "sAMLProviderArn_example" // string | The ARN of the provider to delete. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceDeleteSAMLProvider(context.Background()).SAMLProviderArn(sAMLProviderArn).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceDeleteSAMLProvider``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceDeleteSAMLProvider`: IamServiceDeleteSAMLProviderResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceDeleteSAMLProvider`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceDeleteSAMLProviderRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sAMLProviderArn** | **string** | The ARN of the provider to delete. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceDeleteSAMLProviderResponse**](IamServiceDeleteSAMLProviderResponse.md)
 
 ### Authorization
 
@@ -2157,6 +2300,74 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceGetRolePolicyResponse**](IamServiceGetRolePolicyResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceGetSAMLProvider
+
+> IamServiceGetSAMLProviderResponse IamServiceGetSAMLProvider(ctx).SAMLProviderArn(sAMLProviderArn).XEmcNamespace(xEmcNamespace).Execute()
+
+Retrieve the SAML IdP document.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    sAMLProviderArn := "sAMLProviderArn_example" // string | The name of the provider to retrieve. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceGetSAMLProvider(context.Background()).SAMLProviderArn(sAMLProviderArn).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceGetSAMLProvider``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceGetSAMLProvider`: IamServiceGetSAMLProviderResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceGetSAMLProvider`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceGetSAMLProviderRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sAMLProviderArn** | **string** | The name of the provider to retrieve. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceGetSAMLProviderResponse**](IamServiceGetSAMLProviderResponse.md)
 
 ### Authorization
 
@@ -3173,6 +3384,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceListRolesResponse**](IamServiceListRolesResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceListSAMLProviders
+
+> IamServiceListSAMLProvidersResponse IamServiceListSAMLProviders(ctx).Marker(marker).MaxItems(maxItems).XEmcNamespace(xEmcNamespace).Execute()
+
+List the SAML Identity Providers.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    marker := "marker_example" // string | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. (optional)
+    maxItems := int32(56) // int32 | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceListSAMLProviders(context.Background()).Marker(marker).MaxItems(maxItems).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceListSAMLProviders``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceListSAMLProviders`: IamServiceListSAMLProvidersResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceListSAMLProviders`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceListSAMLProvidersRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **marker** | **string** | For pagination, the value of the Marker element in the response that you received to indicate where the next call should start. | 
+ **maxItems** | **int32** | Use this only when paginating results to indicate the maximum number of items you want in the response.  If additional items exist beyond the maximum you specify, the IsTruncated response element is true and  Marker contains a value to include in the subsequent call that tells the service where to continue from. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceListSAMLProvidersResponse**](IamServiceListSAMLProvidersResponse.md)
 
 ### Authorization
 
@@ -4379,6 +4660,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IamServiceUpdateRoleResponse**](IamServiceUpdateRoleResponse.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IamServiceUpdateSAMLProvider
+
+> IamServiceUpdateSAMLProviderResponse IamServiceUpdateSAMLProvider(ctx).SAMLProviderArn(sAMLProviderArn).SAMLMetadataDocument(sAMLMetadataDocument).XEmcNamespace(xEmcNamespace).Execute()
+
+Update the SAML Identity Provider.
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID/clientgen"
+)
+
+func main() {
+    sAMLProviderArn := "sAMLProviderArn_example" // string | The ARN of the provider to update. (optional)
+    sAMLMetadataDocument := "sAMLMetadataDocument_example" // string | An XML document generated by an identity provider (IdP) that supports SAML 2.0. The document must be generated from  Organization's Identity Management software. (optional)
+    xEmcNamespace := "xEmcNamespace_example" // string | ECS namespace IAM entity belongs to, only required when request performed by management user (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.IamApi.IamServiceUpdateSAMLProvider(context.Background()).SAMLProviderArn(sAMLProviderArn).SAMLMetadataDocument(sAMLMetadataDocument).XEmcNamespace(xEmcNamespace).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `IamApi.IamServiceUpdateSAMLProvider``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `IamServiceUpdateSAMLProvider`: IamServiceUpdateSAMLProviderResponse
+    fmt.Fprintf(os.Stdout, "Response from `IamApi.IamServiceUpdateSAMLProvider`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIamServiceUpdateSAMLProviderRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sAMLProviderArn** | **string** | The ARN of the provider to update. | 
+ **sAMLMetadataDocument** | **string** | An XML document generated by an identity provider (IdP) that supports SAML 2.0. The document must be generated from  Organization&#39;s Identity Management software. | 
+ **xEmcNamespace** | **string** | ECS namespace IAM entity belongs to, only required when request performed by management user | 
+
+### Return type
+
+[**IamServiceUpdateSAMLProviderResponse**](IamServiceUpdateSAMLProviderResponse.md)
 
 ### Authorization
 

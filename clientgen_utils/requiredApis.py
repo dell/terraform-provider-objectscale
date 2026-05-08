@@ -136,6 +136,13 @@ RequiredAPIs = [
     "/iam?Action=DeletePolicyVersion",
     "/iam?Action=SetDefaultPolicyVersion",
 
+    # SAML Provider API endpoints
+    "/iam?Action=CreateSAMLProvider",
+    "/iam?Action=GetSAMLProvider",
+    "/iam?Action=UpdateSAMLProvider",
+    "/iam?Action=DeleteSAMLProvider",
+    "/iam?Action=ListSAMLProviders",
+
     # vdcs
     "/object/vdcs/vdc/{vdcName}",
     "/object/vdcs/vdcid/{vdcId}",

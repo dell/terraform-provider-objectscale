@@ -52,6 +52,136 @@ def _normalizeObjectScaleLink(json_obj: dict) -> dict:
     return json_obj
 
 
+def _normalizeObjectScaleIamSamlProviderResponses(json_obj: dict) -> dict:
+    """
+    Normalize IAM SAML provider response schemas so the generated client has
+    typed responses and pagination helpers.
+    """
+    schemas = json_obj["components"]["schemas"]
+
+    saml_provider_entry = {
+        "type": "object",
+        "properties": {
+            "Arn": {"type": "string"},
+            "CreateDate": {"type": "string"},
+            "ValidUntil": {"type": "string"},
+        },
+    }
+
+    schemas.setdefault("IamSamlProviderEntry", saml_provider_entry)
+
+    schemas["IamService_CreateSAMLProviderResponse"] = {
+        "type": "object",
+        "properties": {
+            "CreateSAMLProviderResult": {
+                "type": "object",
+                "properties": {
+                    "SAMLProviderArn": {"type": "string"},
+                },
+            },
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    schemas["IamService_GetSAMLProviderResponse"] = {
+        "type": "object",
+        "properties": {
+            "GetSAMLProviderResult": {
+                "type": "object",
+                "properties": {
+                    "SAMLMetadataDocument": {"type": "string"},
+                    "CreateDate": {"type": "string"},
+                    "ValidUntil": {"type": "string"},
+                },
+            },
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    schemas["IamService_UpdateSAMLProviderResponse"] = {
+        "type": "object",
+        "properties": {
+            "UpdateSAMLProviderResult": {
+                "type": "object",
+                "properties": {
+                    "SAMLProviderArn": {"type": "string"},
+                },
+            },
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    schemas["IamService_DeleteSAMLProviderResponse"] = {
+        "type": "object",
+        "properties": {
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    schemas["IamService_ListSAMLProvidersResponse"] = {
+        "type": "object",
+        "properties": {
+            "ListSAMLProvidersResult": {
+                "type": "object",
+                "properties": {
+                    "IsTruncated": {"type": "boolean"},
+                    "Marker": {"type": "string"},
+                    "SAMLProviderList": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/IamSamlProviderEntry"},
+                    },
+                },
+            },
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    # Fix parameter names for SAML provider endpoints
+    if "/iam?Action=CreateSAMLProvider" in json_obj["paths"]:
+        params = json_obj["paths"]["/iam?Action=CreateSAMLProvider"]["post"]["parameters"]
+        for param in params:
+            if param["name"] == "SamlProviderName":
+                param["name"] = "Name"
+            if param["name"] == "SamlProviderMetaDoc":
+                param["name"] = "SAMLMetadataDocument"
+    if "/iam?Action=UpdateSAMLProvider" in json_obj["paths"]:
+        params = json_obj["paths"]["/iam?Action=UpdateSAMLProvider"]["post"]["parameters"]
+        for param in params:
+            if param["name"] == "ProviderArn":
+                param["name"] = "SAMLProviderArn"
+            if param["name"] == "SamlProviderMetaDoc":
+                param["name"] = "SAMLMetadataDocument"
+    if "/iam?Action=GetSAMLProvider" in json_obj["paths"]:
+        params = json_obj["paths"]["/iam?Action=GetSAMLProvider"]["post"]["parameters"]
+        for param in params:
+            if param["name"] == "ProviderArn":
+                param["name"] = "SAMLProviderArn"
+    if "/iam?Action=DeleteSAMLProvider" in json_obj["paths"]:
+        params = json_obj["paths"]["/iam?Action=DeleteSAMLProvider"]["post"]["parameters"]
+        for param in params:
+            if param["name"] == "ProviderArn":
+                param["name"] = "SAMLProviderArn"
+
+    # Update path response schemas to use the normalized models
+    path_map = {
+        "/iam?Action=CreateSAMLProvider": "IamService_CreateSAMLProviderResponse",
+        "/iam?Action=GetSAMLProvider": "IamService_GetSAMLProviderResponse",
+        "/iam?Action=UpdateSAMLProvider": "IamService_UpdateSAMLProviderResponse",
+        "/iam?Action=DeleteSAMLProvider": "IamService_DeleteSAMLProviderResponse",
+        "/iam?Action=ListSAMLProviders": "IamService_ListSAMLProvidersResponse",
+    }
+    for path, schema_name in path_map.items():
+        if path not in json_obj["paths"]:
+            continue
+        responses = json_obj["paths"][path]["post"]["responses"]
+        if "200" in responses:
+            responses["200"]["content"]["application/json"]["schema"] = {
+                "$ref": f"#/components/schemas/{schema_name}"
+            }
+
+    return json_obj
+
+
 def _normalizeObjectScaleIamRoleResponse(json_obj: dict) -> dict:
     """In GetRoleResponse, Result property should be GetRoleResult.
        Inner property Role should be normalised to IamRole.
@@ -419,4 +549,5 @@ def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     ret = _normalizeObjectScaleVDCs(ret)
     ret = _normalizeObjectScaleStoragePools(ret)
     ret = _normalizeObjectScaleReplicationGroups(ret)
+    ret = _normalizeObjectScaleIamSamlProviderResponses(ret)
     return ret
