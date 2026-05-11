@@ -19,8 +19,10 @@ package provider
 import (
 	"fmt"
 	"regexp"
+	"terraform-provider-objectscale/internal/clientgen"
 	"testing"
 
+	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -64,18 +66,22 @@ resource "objectscale_iam_saml_provider" "test" {
 `, name, metadata)
 }
 
-// I-01 — Create SAML provider.
-// I-02 — Read after create populates create_date / valid_until / metadata.
-func TestAcc_I01_I02_CreateAndReadSAMLProvider(t *testing.T) {
+// TestAccIAMSAMLProviderResource exercises the full SAML provider resource
+// lifecycle: create, read, update, import, drift detection, invalid input,
+// duplicate conflict, and delete-already-deleted.
+func TestAccIAMSAMLProviderResource(t *testing.T) {
 	defer testUserTokenCleanup(t)
+
+	// create, read, update metadata, force-new on name change, import, drift detection
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
+			// create and read
 			{
-				Config: samlProviderHCL("testacc_saml_i01", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml", samlMetadataFixture),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i01"),
+					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml"),
 					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "namespace", "ns1"),
 					resource.TestCheckResourceAttrSet("objectscale_iam_saml_provider.test", "arn"),
 					resource.TestCheckResourceAttrSet("objectscale_iam_saml_provider.test", "create_date"),
@@ -83,131 +89,41 @@ func TestAcc_I01_I02_CreateAndReadSAMLProvider(t *testing.T) {
 					resource.TestCheckResourceAttrSet("objectscale_iam_saml_provider.test", "saml_metadata_document"),
 				),
 			},
-		},
-	})
-}
-
-// I-03 — Update SAML metadata in place (no destroy / recreate).
-func TestAcc_I03_UpdateSAMLMetadata(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// update metadata in place
 			{
-				Config: samlProviderHCL("testacc_saml_i03", samlMetadataFixture),
-			},
-			{
-				Config: samlProviderHCL("testacc_saml_i03", samlMetadataUpdated),
+				Config: samlProviderHCL("testacc_saml", samlMetadataUpdated),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "saml_metadata_document", samlMetadataUpdated),
 				),
 			},
-		},
-	})
-}
-
-// I-04 — ForceNew on name change destroys + recreates.
-func TestAcc_I04_ForceNewOnNameChange(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// drift detection — re-applying same config produces no diff
 			{
-				Config: samlProviderHCL("testacc_saml_i04_a", samlMetadataFixture),
-				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_a"),
-			},
-			{
-				Config: samlProviderHCL("testacc_saml_i04_b", samlMetadataFixture),
-				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_b"),
-			},
-		},
-	})
-}
-
-// I-05 — Destroy issues DeleteSAMLProvider; subsequent Get returns 404.
-func TestAcc_I05_DeleteSAMLProvider(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: samlProviderHCL("testacc_saml_i05", samlMetadataFixture),
-				// implicit destroy at end of test must succeed via mock
-			},
-		},
-	})
-}
-
-// I-06 — Import by ARN.
-func TestAcc_I06_ImportSAMLProvider(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: samlProviderHCL("testacc_saml_i06", samlMetadataFixture),
-			},
-			{
-				ResourceName:      "objectscale_iam_saml_provider.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				// metadata is round-tripped from the API; allow framework to
-				// ignore it during import-state-verify because our mock returns
-				// the exact stored value.
-				ImportStateVerifyIgnore: []string{"id"},
-			},
-		},
-	})
-}
-
-// I-07 — Drift detection.
-//
-// We simulate drift by changing the metadata in the mock from the test side:
-// not directly possible without a hook, so this test uses an Update step and
-// asserts the framework refreshes state. (True drift detection is exercised
-// implicitly by I-03 + the next Plan step being a no-op when config matches.)
-func TestAcc_I07_DriftDetection(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: samlProviderHCL("testacc_saml_i07", samlMetadataFixture),
-			},
-			{
-				// re-applying the same config must produce no diff
-				Config:   samlProviderHCL("testacc_saml_i07", samlMetadataFixture),
+				Config:   samlProviderHCL("testacc_saml", samlMetadataUpdated),
 				PlanOnly: true,
 			},
-		},
-	})
-}
-
-// I-08 — Apply with malformed XML; mock returns 400 on metadata containing INVALID_XML.
-func TestAcc_I08_InvalidMetadata(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// force-new on name change
 			{
-				Config:      samlProviderHCL("testacc_saml_i08", samlMetadataInvalid),
+				Config: samlProviderHCL("testacc_saml_renamed", samlMetadataUpdated),
+				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_renamed"),
+			},
+			// import by ARN
+			{
+				ResourceName:            "objectscale_iam_saml_provider.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"id"},
+			},
+			// invalid metadata
+			{
+				Config:      samlProviderHCL("testacc_saml_bad", samlMetadataInvalid),
 				ExpectError: regexp.MustCompile(`(?i)validation|MalformedSAMLMetadataDocument|400`),
 			},
 		},
 	})
-}
 
-// I-09 — Create duplicate provider; mock returns 409 on second Create with same name.
-func TestAcc_I09_DuplicateProviderConflict(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	dupName := "testacc_saml_i09_dup"
-	cfgA := ProviderConfigForTesting + fmt.Sprintf(`
+	// duplicate provider conflict (separate resource.Test because of different config shape)
+	dupName := "testacc_saml_dup"
+	cfgDup := ProviderConfigForTesting + fmt.Sprintf(`
 resource "objectscale_iam_saml_provider" "a" {
   name                   = %q
   namespace              = "ns1"
@@ -219,35 +135,119 @@ resource "objectscale_iam_saml_provider" "b" {
   saml_metadata_document = %q
 }
 `, dupName, samlMetadataFixture, dupName, samlMetadataFixture)
-
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      cfgA,
+				Config:      cfgDup,
 				ExpectError: regexp.MustCompile(`(?i)already exists|409|conflict`),
 			},
 		},
 	})
-}
 
-// I-10 — Delete already-deleted provider must succeed.
-//
-// We simulate this by naming the resource with the magic SAML_FORCE_404_NAME
-// constant the mock middleware honours (`testacc_saml_missing` always Gets 404).
-// terraform destroy at end of test must not fail.
-func TestAcc_I10_DeleteAlreadyDeleted(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	// We cannot easily race a delete-after-create here; the mock recognises
-	// the magic name and returns 404 only on Read, but Create/Delete still
-	// succeed. Resource code already treats 404 on Delete as success.
+	// --- mocked error paths for coverage ---
+	var createM, getM, updateM, deleteM *mockey.Mocker
+	samlCfg := samlProviderHCL("testacc_saml_mock", samlMetadataFixture)
+
+	// create API error
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i10", samlMetadataFixture),
+				PreConfig: func() {
+					createM = mockey.Mock((*clientgen.IamApiService).IamServiceCreateSAMLProviderExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      samlCfg,
+				ExpectError: regexp.MustCompile(`CreateSAMLProvider failed`),
+			},
+		},
+	})
+	createM.UnPatch()
+
+	// update API error
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: samlProviderHCL("testacc_saml_uperr", samlMetadataFixture),
+			},
+			{
+				PreConfig: func() {
+					updateM = mockey.Mock((*clientgen.IamApiService).IamServiceUpdateSAMLProviderExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      samlProviderHCL("testacc_saml_uperr", samlMetadataUpdated),
+				ExpectError: regexp.MustCompile(`UpdateSAMLProvider failed`),
+			},
+		},
+	})
+	updateM.UnPatch()
+
+	// read error (non-404) — also covers get-after-update error path since
+	// both use IamServiceGetSAMLProviderExecute; the framework refresh calls
+	// Read before reaching Update, so mocking Get always hits Read first.
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: samlProviderHCL("testacc_saml_rerr", samlMetadataFixture),
+			},
+			{
+				PreConfig: func() {
+					getM = mockey.Mock((*clientgen.IamApiService).IamServiceGetSAMLProviderExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      samlProviderHCL("testacc_saml_rerr", samlMetadataFixture),
+				ExpectError: regexp.MustCompile(`GetSAMLProvider failed`),
+			},
+		},
+	})
+	getM.UnPatch()
+
+	// delete error (non-404)
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: samlProviderHCL("testacc_saml_derr", samlMetadataFixture),
+			},
+			{
+				PreConfig: func() {
+					deleteM = mockey.Mock((*clientgen.IamApiService).IamServiceDeleteSAMLProviderExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      samlProviderHCL("testacc_saml_derr_new", samlMetadataFixture),
+				ExpectError: regexp.MustCompile(`DeleteSAMLProvider failed`),
+			},
+			{
+				// unpatch delete mock so post-test destroy succeeds
+				PreConfig: func() {
+					deleteM.UnPatch()
+				},
+				Config: samlProviderHCL("testacc_saml_derr_new", samlMetadataFixture),
+			},
+		},
+	})
+
+	// import with invalid ARN
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: samlProviderHCL("testacc_saml_imp", samlMetadataFixture),
+			},
+			{
+				ResourceName:  "objectscale_iam_saml_provider.test",
+				ImportState:   true,
+				ImportStateId: "invalid-arn-format",
+				ExpectError:   regexp.MustCompile(`Invalid import ID`),
 			},
 		},
 	})

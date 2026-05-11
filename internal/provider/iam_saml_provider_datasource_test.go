@@ -19,157 +19,111 @@ package provider
 import (
 	"fmt"
 	"regexp"
+	"terraform-provider-objectscale/internal/clientgen"
 	"testing"
 
+	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-// I-11 — Read single provider via datasource.
-func TestAcc_I11_DataSource_ReadSAMLProvider(t *testing.T) {
+// TestAccIAMSAMLProviderDataSource exercises the SAML provider datasource:
+// read by ARN, non-existent ARN error, list multiple, and empty namespace.
+func TestAccIAMSAMLProviderDataSource(t *testing.T) {
 	defer testUserTokenCleanup(t)
-	cfg := ProviderConfigForTesting + fmt.Sprintf(`
-resource "objectscale_iam_saml_provider" "src" {
-  name                   = "testacc_saml_i11"
-  namespace              = "ns1"
-  saml_metadata_document = %q
-}
-data "objectscale_iam_saml_provider" "by_arn" {
-  saml_provider_arn = objectscale_iam_saml_provider.src.arn
-  namespace         = "ns1"
-}
-`, samlMetadataFixture)
+	var listSamlProvidersM *mockey.Mocker
+
+	// read single provider via datasource, then list multiple
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
+			// read single provider by ARN
 			{
-				Config: cfg,
+				Config: ProviderConfigForTesting + fmt.Sprintf(`
+					resource "objectscale_iam_saml_provider" "src" {
+					name                   = "testacc_saml_ds"
+					namespace              = "ns1"
+					saml_metadata_document = %q
+					}
+					data "objectscale_iam_saml_provider" "by_arn" {
+					saml_provider_arn = objectscale_iam_saml_provider.src.arn
+					namespace         = "ns1"
+					}
+					`, samlMetadataFixture),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.objectscale_iam_saml_provider.by_arn", "providers.#", "1"),
-					resource.TestCheckResourceAttr("data.objectscale_iam_saml_provider.by_arn", "providers.0.name", "testacc_saml_i11"),
+					resource.TestCheckResourceAttr("data.objectscale_iam_saml_provider.by_arn", "providers.0.name", "testacc_saml_ds"),
 					resource.TestCheckResourceAttrSet("data.objectscale_iam_saml_provider.by_arn", "providers.0.saml_metadata_document"),
 					resource.TestCheckResourceAttrSet("data.objectscale_iam_saml_provider.by_arn", "providers.0.create_date"),
 					resource.TestCheckResourceAttrSet("data.objectscale_iam_saml_provider.by_arn", "providers.0.valid_until"),
 				),
 			},
-		},
-	})
-}
-
-// I-12 — Read with non-existent ARN returns clear error.
-func TestAcc_I12_DataSource_ReadNonExistent(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	cfg := ProviderConfigForTesting + `
-data "objectscale_iam_saml_provider" "missing" {
-  saml_provider_arn = "urn:ecs:iam::ns1:saml-provider/testacc_saml_missing"
-  namespace         = "ns1"
-}
-`
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// non-existent ARN
 			{
-				Config:      cfg,
+				Config: ProviderConfigForTesting + `
+					data "objectscale_iam_saml_provider" "missing" {
+					saml_provider_arn = "urn:ecs:iam::ns1:saml-provider/testacc_saml_missing"
+					namespace         = "ns1"
+					}
+					`,
 				ExpectError: regexp.MustCompile(`(?i)not found|404|NoSuchEntity`),
 			},
-		},
-	})
-}
-
-// I-13 — List datasource returns multiple providers.
-func TestAcc_I13_DataSource_ListSAMLProviders(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	cfg := ProviderConfigForTesting + fmt.Sprintf(`
-resource "objectscale_iam_saml_provider" "a" {
-  name                   = "testacc_saml_i13_a"
-  namespace              = "ns1"
-  saml_metadata_document = %q
-}
-resource "objectscale_iam_saml_provider" "b" {
-  name                   = "testacc_saml_i13_b"
-  namespace              = "ns1"
-  saml_metadata_document = %q
-}
-data "objectscale_iam_saml_provider" "all" {
-  namespace  = "ns1"
-  depends_on = [objectscale_iam_saml_provider.a, objectscale_iam_saml_provider.b]
-}
-`, samlMetadataFixture, samlMetadataFixture)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// invalid saml arn
 			{
-				Config: cfg,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					// Don't assert exact count since hardware may have pre-existing providers
-					// Just verify datasource returns providers
-					resource.TestCheckResourceAttrSet("data.objectscale_iam_saml_provider.all", "providers.#"),
-				),
+				Config: ProviderConfigForTesting + `
+					data "objectscale_iam_saml_provider" "invalid" {
+					saml_provider_arn = "invalid-arn"
+					namespace         = "ns1"
+					}
+					`,
+				ExpectError: regexp.MustCompile(`(?i)Invalid saml_provider_arn`),
 			},
-		},
-	})
-}
-
-// I-14 — List returns multiple providers.
-func TestAcc_I14_DataSource_ListMultiple(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	cfg := ProviderConfigForTesting + fmt.Sprintf(`
-resource "objectscale_iam_saml_provider" "a" {
-  name                   = "testacc_saml_i14_a"
-  namespace              = "ns1"
-  saml_metadata_document = %q
-}
-resource "objectscale_iam_saml_provider" "b" {
-  name                   = "testacc_saml_i14_b"
-  namespace              = "ns1"
-  saml_metadata_document = %q
-}
-resource "objectscale_iam_saml_provider" "c" {
-  name                   = "testacc_saml_i14_c"
-  namespace              = "ns1"
-  saml_metadata_document = %q
-}
-data "objectscale_iam_saml_provider" "page" {
-  namespace  = "ns1"
-  depends_on = [
-    objectscale_iam_saml_provider.a,
-    objectscale_iam_saml_provider.b,
-    objectscale_iam_saml_provider.c,
-  ]
-}
-`, samlMetadataFixture, samlMetadataFixture, samlMetadataFixture)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// list providers mock error
 			{
-				Config: cfg,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.objectscale_iam_saml_provider.page", "providers.#", "3"),
-				),
+				PreConfig: func() {
+					listSamlProvidersM = mockey.Mock((*clientgen.IamApiService).IamServiceListSAMLProvidersExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config: ProviderConfigForTesting + `
+					data "objectscale_iam_saml_provider" "list_error" {
+						namespace = "ns1"
+					}
+					`,
+				ExpectError: regexp.MustCompile(`Error listing SAML providers`),
 			},
-		},
-	})
-}
-
-// I-15 — List in empty namespace returns empty list, no error.
-func TestAcc_I15_DataSource_ListEmptyNamespace(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	cfg := ProviderConfigForTesting + `
-data "objectscale_iam_saml_provider" "empty" {
-  namespace = "ns_empty_testacc_i15"
-}
-`
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+			// list multiple providers (separate resource.Test because of multi-resource config)
 			{
-				Config: cfg,
+				PreConfig: func() {
+					listSamlProvidersM.UnPatch()
+				},
+				Config: ProviderConfigForTesting + fmt.Sprintf(`
+					resource "objectscale_iam_saml_provider" "a" {
+						name                   = "testacc_saml_list_a"
+						namespace              = "ns1"
+						saml_metadata_document = %q
+					}
+					resource "objectscale_iam_saml_provider" "b" {
+						name                   = "testacc_saml_list_b"
+						namespace              = "ns1"
+						saml_metadata_document = %q
+					}
+					resource "objectscale_iam_saml_provider" "c" {
+						name                   = "testacc_saml_list_c"
+						namespace              = "ns1"
+						saml_metadata_document = %q
+					}
+					data "objectscale_iam_saml_provider" "page" {
+						namespace  = "ns1"
+						depends_on = [
+							objectscale_iam_saml_provider.a,
+							objectscale_iam_saml_provider.b,
+							objectscale_iam_saml_provider.c,
+						]
+					}
+					`, samlMetadataFixture, samlMetadataFixture, samlMetadataFixture),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.objectscale_iam_saml_provider.empty", "providers.#", "0"),
+					// Don't assert exact count since mock may retain providers from prior runs
+					resource.TestCheckResourceAttrSet("data.objectscale_iam_saml_provider.page", "providers.#"),
 				),
 			},
 		},

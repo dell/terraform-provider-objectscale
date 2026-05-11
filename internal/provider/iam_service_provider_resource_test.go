@@ -18,8 +18,11 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
+	"terraform-provider-objectscale/internal/clientgen"
 	"testing"
 
+	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -36,13 +39,27 @@ resource "objectscale_iam_service_provider" "sp" {
 `, dns, spKeystoreFixture)
 }
 
-// I-16 — Create service provider populates computed fields.
-func TestAcc_I16_CreateServiceProvider(t *testing.T) {
+// TestAccIAMServiceProviderResource exercises the full service provider resource
+// lifecycle: create, read, update DNS, import, and implicit destroy.
+func TestAccIAMServiceProviderResource(t *testing.T) {
 	defer testUserTokenCleanup(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
+			// invalid DNS validation
+			{
+				Config: ProviderConfigForTesting + fmt.Sprintf(`
+					resource "objectscale_iam_service_provider" "sp" {
+						dns           = ""
+						java_keystore = %q
+						key_alias     = "saml"
+						key_password  = "pass123"
+					}
+					`, spKeystoreFixture),
+				ExpectError: regexp.MustCompile(`Invalid SP DNS`),
+			},
+			// create and read
 			{
 				Config: spHCL("objectscale.example.com"),
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -55,20 +72,7 @@ func TestAcc_I16_CreateServiceProvider(t *testing.T) {
 					resource.TestCheckResourceAttrSet("objectscale_iam_service_provider.sp", "last_modified"),
 				),
 			},
-		},
-	})
-}
-
-// I-17 — Update SP DNS changes last_modified.
-func TestAcc_I17_UpdateServiceProvider(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: spHCL("objectscale.example.com"),
-			},
+			// update DNS
 			{
 				Config: spHCL("objectscale-rotated.example.com"),
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -76,35 +80,7 @@ func TestAcc_I17_UpdateServiceProvider(t *testing.T) {
 					resource.TestCheckResourceAttrSet("objectscale_iam_service_provider.sp", "etag"),
 				),
 			},
-		},
-	})
-}
-
-// I-18 — Destroy issues DELETE.
-func TestAcc_I18_DeleteServiceProvider(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: spHCL("objectscale.example.com"),
-				// implicit destroy at end
-			},
-		},
-	})
-}
-
-// I-20 — Import singleton SP.
-func TestAcc_I20_ImportServiceProvider(t *testing.T) {
-	defer testUserTokenCleanup(t)
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: spHCL("objectscale.example.com"),
-			},
+			// import singleton SP
 			{
 				ResourceName:      "objectscale_iam_service_provider.sp",
 				ImportState:       true,
@@ -114,6 +90,74 @@ func TestAcc_I20_ImportServiceProvider(t *testing.T) {
 				// for these inputs since they are sensitive and round-tripped.
 				ImportStateVerifyIgnore: []string{"java_keystore", "key_password"},
 				ImportStateId:           "objectscale-sp",
+			},
+		},
+	})
+}
+
+func TestAccIAMServiceProviderResourceMock(t *testing.T) {
+	defer testUserTokenCleanup(t)
+	// --- mocked error paths for coverage ---
+	var createM, updateM, deleteM, getM *mockey.Mocker
+	spCfg := spHCL("objectscale-mock.example.com")
+
+	// update API error
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// create error
+			{
+				PreConfig: func() {
+					createM = mockey.Mock((*clientgen.IamProviderApiService).ServiceProviderCreateExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      spCfg,
+				ExpectError: regexp.MustCompile(`CreateServiceProvider failed`),
+			},
+			{
+				PreConfig: func() {
+					createM.UnPatch()
+				},
+				Config: spHCL("objectscale-uperr.example.com"),
+			},
+			// update error
+			{
+				PreConfig: func() {
+					updateM = mockey.Mock((*clientgen.IamProviderApiService).ServiceProviderUpdateExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      spHCL("objectscale-uperr-new.example.com"),
+				ExpectError: regexp.MustCompile(`UpdateServiceProvider failed`),
+			},
+			// delete error
+			{
+				PreConfig: func() {
+					updateM.UnPatch()
+					deleteM = mockey.Mock((*clientgen.IamProviderApiService).ServiceProviderDeleteExecute).
+						Return(nil, nil, fmt.Errorf("error")).Build()
+				},
+				Config:      spHCL("objectscale-uperr.example.com"),
+				Destroy:     true,
+				ExpectError: regexp.MustCompile(`DeleteServiceProvider failed`),
+			},
+			// unpatch delete error and test mocked resource not found
+			{
+				PreConfig: func() {
+					deleteM.UnPatch()
+					// Mock GetServiceProvider to return not found
+					getM = mockey.Mock((*clientgen.IamProviderApiService).ServiceProviderGetExecute).
+						Return(nil, nil, fmt.Errorf("not found")).Build()
+				},
+				RefreshState:       true,
+				ExpectNonEmptyPlan: true,
+			},
+			// unpatch read error
+			{
+				PreConfig: func() {
+					getM.UnPatch()
+				},
+				Config: spHCL("objectscale-uperr.example.com"),
 			},
 		},
 	})
