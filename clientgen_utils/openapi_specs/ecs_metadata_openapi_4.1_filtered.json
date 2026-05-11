@@ -8423,6 +8423,358 @@
 				}
 			}
 		},
+		"/ecs-service-provider": {
+			"post": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Creates a service provider using the specified attributes",
+				"description": "Creates a service provider using the specified attributes. The submitted provider element values will be\n validated. The required set of parameters are: <ul>\n      <li>java_keystore/li>\n      <li>key_alias</li>\n      <li>key_password</li>\n      <li>dns</li>",
+				"operationId": "ServiceProvider_Create",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderCreateResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:22f86:42"
+											},
+											"CreateServiceProviderResult": {
+												"service_provider": {
+													"dns": "127.0.0.1",
+													"uuid": "396dc76a-1118-4ff8-b338-c6222a4b5709",
+													"etag": "0000000000000000",
+													"java_keystore": "/u3+7QAAAAIAAAABA. . .",
+													"key_alias": "saml",
+													"key_password": "pass123",
+													"unique_id": "48eef7e9-aadc-3a01-813b-54b06abb8d80",
+													"create_time": "2020-04-16T20:06:05Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IamServiceProviderController_processCreateServiceProviderRequest"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Creates a service provider using the specified attributes",
+				"description": "Updatess a service provider using the specified attributes. The submitted provider element values will be\n validated. The optional set of parameters are: <ul>\n      <li>java_keystore/li>\n      <li>key_alias</li>\n      <li>key_password</li>\n      <li>dns</li>",
+				"operationId": "ServiceProvider_Update",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderUpdateResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:22e62:25"
+											},
+											"UpdateServiceProviderResult": {
+												"service_provider": {
+													"dns": "127.0.0.1",
+													"uuid": "a5853e0f-3d2f-4a70-b560-37ca7af41c92",
+													"etag": "0000000000000001",
+													"java_keystore": "/u3+7QAAAAIAAAABAAAAA. . .",
+													"key_alias": "saml",
+													"key_password": "pass123",
+													"unique_id": "48eef7e9-aadc-3a01-813b-54b06abb8d80",
+													"create_time": "2020-04-16T20:01:37Z",
+													"last_modified": "2020-04-16T20:02:23Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IamServiceProviderController_processUpdateServiceProviderRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Returns a service provider if it exists",
+				"description": "returns a service provider",
+				"operationId": "ServiceProvider_Get",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderGetResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:231c1:b"
+											},
+											"GetServiceProviderResult": {
+												"service_provider": {
+													"dns": "127.0.0.1",
+													"uuid": "396dc76a-1118-4ff8-b338-c6222a4b5709",
+													"etag": "0000000000000000",
+													"java_keystore": "/u3+7QAAAAIAAAABAAAAAQA. . .",
+													"key_alias": "saml",
+													"key_password": "pass123",
+													"unique_id": "48eef7e9-aadc-3a01-813b-54b06abb8d80",
+													"create_time": "2020-04-16T20:06:05Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Deletes a service provider",
+				"description": "deletes a service provider",
+				"operationId": "ServiceProvider_Delete",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderDeleteResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:22e62:38"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ecs-service-provider/metadata": {
+			"get": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Returns metadata for a service provider",
+				"description": "returns metadata for a service provider",
+				"operationId": "ServiceProvider_GetMetadata",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Metadata for a service provider",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderMetadataResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=AddUserToGroup": {
 			"post": {
 				"tags": [
@@ -9359,6 +9711,99 @@
 				}
 			}
 		},
+		"/iam?Action=CreateSAMLProvider": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Create SAML Identity Provider",
+				"description": "Create SAML Identity Provider",
+				"operationId": "IamService_CreateSAMLProvider",
+				"parameters": [
+					{
+						"name": "Name",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the provider to create."
+					},
+					{
+						"name": "SAMLMetadataDocument",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "An XML document generated by an identity provider (IdP) that supports SAML 2.0. The document must be generated from\n Organization's Identity Management software."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_CreateSAMLProviderResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1bb9a:27"
+											},
+											"CreateSAMLProviderResult": {
+												"SAMLProviderArn": "urn:ecs:iam::ns:saml-provider/TestProvider"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=CreateUser": {
 			"post": {
 				"tags": [
@@ -10124,6 +10569,87 @@
 										"value": {
 											"ResponseMetadata": {
 												"RequestId": "0af9f5b8:17178fe9282:d95a:3a"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=DeleteSAMLProvider": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Delete the SAML Identity Provider.",
+				"description": "Delete the SAML Identity Provider.",
+				"operationId": "IamService_DeleteSAMLProvider",
+				"parameters": [
+					{
+						"name": "SAMLProviderArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The ARN of the provider to delete."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_DeleteSAMLProviderResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1fe14:d"
 											}
 										}
 									}
@@ -11240,6 +11766,92 @@
 												"PolicyName": "InlineRolePolicy",
 												"PolicyDocument": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"iam:TagUser\",\"iam:TagRole\",\"iam:UntagUser\",\"iam:UntagRole\"],\"Resource\":\"*\",\"Effect\":\"Allow\",\"Sid\":\"VisualEditor0\"}]}",
 												"RoleName": "FinanceRole"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=GetSAMLProvider": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Retrieve the SAML IdP document.",
+				"description": "Retrieve the SAML IdP document.",
+				"operationId": "IamService_GetSAMLProvider",
+				"parameters": [
+					{
+						"name": "SAMLProviderArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The name of the provider to retrieve."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_GetSAMLProviderResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1f923:16"
+											},
+											"GetSAMLProviderResult": {
+												"SAMLMetadataDocument": "&lt;EntityDescriptor ID=\"_fe ... xmlns=\"urn:oasis:names:tc:SAML:2.0:assertion\"/&gt;&lt;/IDPSSODescriptor&gt;&lt;/EntityDescriptor&gt;",
+												"CreateDate": "2020-04-16T16:29:27Z",
+												"ValidUntil": "2120-03-23T16:29:27Z"
 											}
 										}
 									}
@@ -12924,6 +13536,111 @@
 				}
 			}
 		},
+		"/iam?Action=ListSAMLProviders": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "List the SAML Identity Providers.",
+				"description": "List the SAML Identity Providers.",
+				"operationId": "IamService_ListSAMLProviders",
+				"parameters": [
+					{
+						"name": "Marker",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "For pagination, the value of the Marker element in the response that you received to indicate where the next call should start."
+					},
+					{
+						"name": "MaxItems",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "integer"
+						},
+						"description": "Use this only when paginating results to indicate the maximum number of items you want in the response.\n If additional items exist beyond the maximum you specify, the IsTruncated response element is true and\n Marker contains a value to include in the subsequent call that tells the service where to continue from."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_ListSAMLProvidersResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:171648dacb1:1bb98:a8"
+											},
+											"ListSAMLProvidersResult": {
+												"SAMLProviderList": [
+													{
+														"Arn": "urn:ecs:iam::ns:saml-provider/FinanceProvider",
+														"CreateDate": "2020-04-13T20:38:43Z",
+														"ValidUntil": "2120-03-20T20:38:43Z"
+													},
+													{
+														"Arn": "urn:ecs:iam::ns:saml-provider/TestProvider",
+														"CreateDate": "2020-04-13T20:50:45Z",
+														"ValidUntil": "2120-03-20T20:50:45Z"
+													}
+												],
+												"IsTruncated": false
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=ListUserPolicies": {
 			"post": {
 				"tags": [
@@ -14561,6 +15278,99 @@
 														}
 													]
 												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/iam?Action=UpdateSAMLProvider": {
+			"post": {
+				"tags": [
+					"Iam"
+				],
+				"summary": "Update the SAML Identity Provider.",
+				"description": "Update the SAML Identity Provider.",
+				"operationId": "IamService_UpdateSAMLProvider",
+				"parameters": [
+					{
+						"name": "SAMLProviderArn",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "The ARN of the provider to update."
+					},
+					{
+						"name": "SAMLMetadataDocument",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "An XML document generated by an identity provider (IdP) that supports SAML 2.0. The document must be generated from\n Organization's Identity Management software."
+					},
+					{
+						"name": "x-emc-namespace",
+						"in": "header",
+						"required": false,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ECS namespace IAM entity belongs to, only required when request performed by management user"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IamService_UpdateSAMLProviderResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:1fa86:d"
+											},
+											"UpdateSAMLProviderResult": {
+												"SAMLProviderArn": "urn:ecs:iam::ns:saml-provider/TestProvider"
 											}
 										}
 									}
@@ -19111,6 +19921,22 @@
 					}
 				}
 			},
+			"IamServiceProviderController_processCreateServiceProviderRequest": {
+				"type": "object",
+				"properties": {
+					"service_provider": {
+						"$ref": "#/components/schemas/ServiceProvider"
+					}
+				}
+			},
+			"IamServiceProviderController_processUpdateServiceProviderRequest": {
+				"type": "object",
+				"properties": {
+					"service_provider": {
+						"$ref": "#/components/schemas/ServiceProvider"
+					}
+				}
+			},
 			"IamService_CreateAccessKeyResponse": {
 				"type": "object",
 				"properties": {
@@ -20386,6 +21212,201 @@
 						"description": "Indicated whether the resource is an internal resource"
 					}
 				}
+			},
+			"IamSamlProviderEntry": {
+				"type": "object",
+				"properties": {
+					"Arn": {
+						"type": "string"
+					},
+					"CreateDate": {
+						"type": "string"
+					},
+					"ValidUntil": {
+						"type": "string"
+					}
+				}
+			},
+			"IamService_CreateSAMLProviderResponse": {
+				"type": "object",
+				"properties": {
+					"CreateSAMLProviderResult": {
+						"type": "object",
+						"properties": {
+							"SAMLProviderArn": {
+								"type": "string"
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamService_GetSAMLProviderResponse": {
+				"type": "object",
+				"properties": {
+					"GetSAMLProviderResult": {
+						"type": "object",
+						"properties": {
+							"SAMLMetadataDocument": {
+								"type": "string"
+							},
+							"CreateDate": {
+								"type": "string"
+							},
+							"ValidUntil": {
+								"type": "string"
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamService_UpdateSAMLProviderResponse": {
+				"type": "object",
+				"properties": {
+					"UpdateSAMLProviderResult": {
+						"type": "object",
+						"properties": {
+							"SAMLProviderArn": {
+								"type": "string"
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamService_DeleteSAMLProviderResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"IamService_ListSAMLProvidersResponse": {
+				"type": "object",
+				"properties": {
+					"ListSAMLProvidersResult": {
+						"type": "object",
+						"properties": {
+							"IsTruncated": {
+								"type": "boolean"
+							},
+							"Marker": {
+								"type": "string"
+							},
+							"SAMLProviderList": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/IamSamlProviderEntry"
+								}
+							}
+						}
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProvider": {
+				"type": "object",
+				"properties": {
+					"dns": {
+						"type": "string",
+						"description": "The base url of Service Provider for SAML ACS."
+					},
+					"uuid": {
+						"type": "string",
+						"description": "Used in the entity Id."
+					},
+					"unique_id": {
+						"type": "string",
+						"description": "The unique identifier of the keystore."
+					},
+					"etag": {
+						"type": "string",
+						"description": "The tag to be used for editing the service provider."
+					},
+					"java_keystore": {
+						"type": "string",
+						"description": "A repository of security keys and certificates."
+					},
+					"key_alias": {
+						"type": "string",
+						"description": "The unique alias used for accessing the keystore entry."
+					},
+					"key_password": {
+						"type": "string",
+						"description": "The password used for accessing the keystore entry."
+					},
+					"create_time": {
+						"type": "string",
+						"description": "The date the provider was created."
+					},
+					"last_modified": {
+						"type": "string",
+						"description": "The date the provider was last modified."
+					}
+				}
+			},
+			"ServiceProviderResult": {
+				"type": "object",
+				"properties": {
+					"service_provider": {
+						"$ref": "#/components/schemas/ServiceProvider"
+					}
+				}
+			},
+			"ServiceProviderCreateResponse": {
+				"type": "object",
+				"properties": {
+					"CreateServiceProviderResult": {
+						"$ref": "#/components/schemas/ServiceProviderResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderGetResponse": {
+				"type": "object",
+				"properties": {
+					"GetServiceProviderResult": {
+						"$ref": "#/components/schemas/ServiceProviderResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderUpdateResponse": {
+				"type": "object",
+				"properties": {
+					"UpdateServiceProviderResult": {
+						"$ref": "#/components/schemas/ServiceProviderResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderDeleteResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderMetadataResponse": {
+				"type": "string",
+				"description": "Raw SP metadata XML."
 			}
 		},
 		"securitySchemes": {

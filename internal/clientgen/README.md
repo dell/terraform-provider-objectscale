@@ -140,6 +140,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceCreatePolicy**](docs/IamApi.md#iamservicecreatepolicy) | **Post** /iam?Action&#x3D;CreatePolicy | Create Managed Policy
 *IamApi* | [**IamServiceCreatePolicyVersion**](docs/IamApi.md#iamservicecreatepolicyversion) | **Post** /iam?Action&#x3D;CreatePolicyVersion | Create a new version of the specified managed policy.
 *IamApi* | [**IamServiceCreateRole**](docs/IamApi.md#iamservicecreaterole) | **Post** /iam?Action&#x3D;CreateRole | Creates a new IAM role.
+*IamApi* | [**IamServiceCreateSAMLProvider**](docs/IamApi.md#iamservicecreatesamlprovider) | **Post** /iam?Action&#x3D;CreateSAMLProvider | Create SAML Identity Provider
 *IamApi* | [**IamServiceCreateUser**](docs/IamApi.md#iamservicecreateuser) | **Post** /iam?Action&#x3D;CreateUser | Creates a new IAM user.
 *IamApi* | [**IamServiceDeleteAccessKey**](docs/IamApi.md#iamservicedeleteaccesskey) | **Post** /iam?Action&#x3D;DeleteAccessKey | Delete access key.
 *IamApi* | [**IamServiceDeleteGroup**](docs/IamApi.md#iamservicedeletegroup) | **Post** /iam?Action&#x3D;DeleteGroup | Delete an IAM Group.
@@ -149,6 +150,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceDeleteRole**](docs/IamApi.md#iamservicedeleterole) | **Post** /iam?Action&#x3D;DeleteRole | Deletes the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePermissionsBoundary**](docs/IamApi.md#iamservicedeleterolepermissionsboundary) | **Post** /iam?Action&#x3D;DeleteRolePermissionsBoundary | Deletes the permissions boundary for the specified IAM role.
 *IamApi* | [**IamServiceDeleteRolePolicy**](docs/IamApi.md#iamservicedeleterolepolicy) | **Post** /iam?Action&#x3D;DeleteRolePolicy | Deletes the specified inline policy that is embedded in the specified IAM role.
+*IamApi* | [**IamServiceDeleteSAMLProvider**](docs/IamApi.md#iamservicedeletesamlprovider) | **Post** /iam?Action&#x3D;DeleteSAMLProvider | Delete the SAML Identity Provider.
 *IamApi* | [**IamServiceDeleteUser**](docs/IamApi.md#iamservicedeleteuser) | **Post** /iam?Action&#x3D;DeleteUser | Delete an IAM user.
 *IamApi* | [**IamServiceDeleteUserPermissionsBoundary**](docs/IamApi.md#iamservicedeleteuserpermissionsboundary) | **Post** /iam?Action&#x3D;DeleteUserPermissionsBoundary | Delete User&#39;s PermissionsBoundary.
 *IamApi* | [**IamServiceDeleteUserPolicy**](docs/IamApi.md#iamservicedeleteuserpolicy) | **Post** /iam?Action&#x3D;DeleteUserPolicy | Delete specific inlinePolicy for IAM User.
@@ -161,6 +163,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceGetPolicyVersion**](docs/IamApi.md#iamservicegetpolicyversion) | **Post** /iam?Action&#x3D;GetPolicyVersion | Retrieve version of Managed Policy.
 *IamApi* | [**IamServiceGetRole**](docs/IamApi.md#iamservicegetrole) | **Post** /iam?Action&#x3D;GetRole | Gets information about the specified IAM role.
 *IamApi* | [**IamServiceGetRolePolicy**](docs/IamApi.md#iamservicegetrolepolicy) | **Post** /iam?Action&#x3D;GetRolePolicy | Gets tthe specified inline policy document that is embedded with the specified IAM role.
+*IamApi* | [**IamServiceGetSAMLProvider**](docs/IamApi.md#iamservicegetsamlprovider) | **Post** /iam?Action&#x3D;GetSAMLProvider | Retrieve the SAML IdP document.
 *IamApi* | [**IamServiceGetUser**](docs/IamApi.md#iamservicegetuser) | **Post** /iam?Action&#x3D;GetUser | Retrieve IAM user.
 *IamApi* | [**IamServiceGetUserPolicy**](docs/IamApi.md#iamservicegetuserpolicy) | **Post** /iam?Action&#x3D;GetUserPolicy | Get specific inlinePolicy for IAM User.
 *IamApi* | [**IamServiceListAccessKeys**](docs/IamApi.md#iamservicelistaccesskeys) | **Post** /iam?Action&#x3D;ListAccessKeys | List AccessKeys for a user.
@@ -175,6 +178,7 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceListRolePolicies**](docs/IamApi.md#iamservicelistrolepolicies) | **Post** /iam?Action&#x3D;ListRolePolicies | Lists the names of the inline policies that are embedded in the specified IAM role.
 *IamApi* | [**IamServiceListRoleTags**](docs/IamApi.md#iamservicelistroletags) | **Post** /iam?Action&#x3D;ListRoleTags | Lists the tags that are attached to the specified IAM role.
 *IamApi* | [**IamServiceListRoles**](docs/IamApi.md#iamservicelistroles) | **Post** /iam?Action&#x3D;ListRoles | Lists the IAM roles.
+*IamApi* | [**IamServiceListSAMLProviders**](docs/IamApi.md#iamservicelistsamlproviders) | **Post** /iam?Action&#x3D;ListSAMLProviders | List the SAML Identity Providers.
 *IamApi* | [**IamServiceListUserPolicies**](docs/IamApi.md#iamservicelistuserpolicies) | **Post** /iam?Action&#x3D;ListUserPolicies | List Inline Policies for IAM User.
 *IamApi* | [**IamServiceListUserTags**](docs/IamApi.md#iamservicelistusertags) | **Post** /iam?Action&#x3D;ListUserTags | Lists the tags that are attached to the specified IAM User.
 *IamApi* | [**IamServiceListUsers**](docs/IamApi.md#iamservicelistusers) | **Post** /iam?Action&#x3D;ListUsers | Lists the IAM users.
@@ -192,6 +196,12 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceUpdateAccessKey**](docs/IamApi.md#iamserviceupdateaccesskey) | **Post** /iam?Action&#x3D;UpdateAccessKey | Update status of AccessKey for user.
 *IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 *IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
+*IamApi* | [**IamServiceUpdateSAMLProvider**](docs/IamApi.md#iamserviceupdatesamlprovider) | **Post** /iam?Action&#x3D;UpdateSAMLProvider | Update the SAML Identity Provider.
+*IamProviderApi* | [**ServiceProviderCreate**](docs/IamProviderApi.md#serviceprovidercreate) | **Post** /ecs-service-provider | Creates a service provider using the specified attributes
+*IamProviderApi* | [**ServiceProviderDelete**](docs/IamProviderApi.md#serviceproviderdelete) | **Delete** /ecs-service-provider | Deletes a service provider
+*IamProviderApi* | [**ServiceProviderGet**](docs/IamProviderApi.md#serviceproviderget) | **Get** /ecs-service-provider | Returns a service provider if it exists
+*IamProviderApi* | [**ServiceProviderGetMetadata**](docs/IamProviderApi.md#serviceprovidergetmetadata) | **Get** /ecs-service-provider/metadata | Returns metadata for a service provider
+*IamProviderApi* | [**ServiceProviderUpdate**](docs/IamProviderApi.md#serviceproviderupdate) | **Put** /ecs-service-provider | Creates a service provider using the specified attributes
 *MgmtUserInfoApi* | [**MgmtUserInfoServiceCreateLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicecreatelocaluserinfo) | **Post** /vdc/users | Creates a local VDC user with the specified details
 *MgmtUserInfoApi* | [**MgmtUserInfoServiceDeleteLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicedeletelocaluserinfo) | **Post** /vdc/users/{userid}/deactivate | Deletes local user information for the specified user identifier
 *MgmtUserInfoApi* | [**MgmtUserInfoServiceGetLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicegetlocaluserinfo) | **Get** /vdc/users/{userid} | Gets local user details for the specified user identifier
@@ -309,6 +319,7 @@ Class | Method | HTTP request | Description
  - [IamRole](docs/IamRole.md)
  - [IamRolePermissionsBoundary](docs/IamRolePermissionsBoundary.md)
  - [IamRoleResult](docs/IamRoleResult.md)
+ - [IamSamlProviderEntry](docs/IamSamlProviderEntry.md)
  - [IamServiceCreateAccessKeyResponse](docs/IamServiceCreateAccessKeyResponse.md)
  - [IamServiceCreateAccessKeyResponseCreateAccessKeyResult](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResult.md)
  - [IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey](docs/IamServiceCreateAccessKeyResponseCreateAccessKeyResultAccessKey.md)
@@ -322,10 +333,13 @@ Class | Method | HTTP request | Description
  - [IamServiceCreatePolicyVersionResponseCreatePolicyVersionResult](docs/IamServiceCreatePolicyVersionResponseCreatePolicyVersionResult.md)
  - [IamServiceCreatePolicyVersionResponseCreatePolicyVersionResultPolicyVersion](docs/IamServiceCreatePolicyVersionResponseCreatePolicyVersionResultPolicyVersion.md)
  - [IamServiceCreateRoleResponse](docs/IamServiceCreateRoleResponse.md)
+ - [IamServiceCreateSAMLProviderResponse](docs/IamServiceCreateSAMLProviderResponse.md)
+ - [IamServiceCreateSAMLProviderResponseCreateSAMLProviderResult](docs/IamServiceCreateSAMLProviderResponseCreateSAMLProviderResult.md)
  - [IamServiceCreateUserResponse](docs/IamServiceCreateUserResponse.md)
  - [IamServiceCreateUserResponseCreateUserResult](docs/IamServiceCreateUserResponseCreateUserResult.md)
  - [IamServiceCreateUserResponseCreateUserResultUser](docs/IamServiceCreateUserResponseCreateUserResultUser.md)
  - [IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary](docs/IamServiceCreateUserResponseCreateUserResultUserPermissionsBoundary.md)
+ - [IamServiceDeleteSAMLProviderResponse](docs/IamServiceDeleteSAMLProviderResponse.md)
  - [IamServiceGetGroupPolicyResponse](docs/IamServiceGetGroupPolicyResponse.md)
  - [IamServiceGetGroupPolicyResponseGetGroupPolicyResult](docs/IamServiceGetGroupPolicyResponseGetGroupPolicyResult.md)
  - [IamServiceGetGroupResponse](docs/IamServiceGetGroupResponse.md)
@@ -338,6 +352,8 @@ Class | Method | HTTP request | Description
  - [IamServiceGetRolePolicyResponse](docs/IamServiceGetRolePolicyResponse.md)
  - [IamServiceGetRolePolicyResponseGetRolePolicyResult](docs/IamServiceGetRolePolicyResponseGetRolePolicyResult.md)
  - [IamServiceGetRoleResponse](docs/IamServiceGetRoleResponse.md)
+ - [IamServiceGetSAMLProviderResponse](docs/IamServiceGetSAMLProviderResponse.md)
+ - [IamServiceGetSAMLProviderResponseGetSAMLProviderResult](docs/IamServiceGetSAMLProviderResponseGetSAMLProviderResult.md)
  - [IamServiceGetUserPolicyResponse](docs/IamServiceGetUserPolicyResponse.md)
  - [IamServiceGetUserPolicyResponseGetUserPolicyResult](docs/IamServiceGetUserPolicyResponseGetUserPolicyResult.md)
  - [IamServiceGetUserResponse](docs/IamServiceGetUserResponse.md)
@@ -369,13 +385,18 @@ Class | Method | HTTP request | Description
  - [IamServiceListRoleTagsResponseListRoleTagsResult](docs/IamServiceListRoleTagsResponseListRoleTagsResult.md)
  - [IamServiceListRolesResponse](docs/IamServiceListRolesResponse.md)
  - [IamServiceListRolesResponseListRolesResult](docs/IamServiceListRolesResponseListRolesResult.md)
+ - [IamServiceListSAMLProvidersResponse](docs/IamServiceListSAMLProvidersResponse.md)
+ - [IamServiceListSAMLProvidersResponseListSAMLProvidersResult](docs/IamServiceListSAMLProvidersResponseListSAMLProvidersResult.md)
  - [IamServiceListUserPoliciesResponse](docs/IamServiceListUserPoliciesResponse.md)
  - [IamServiceListUserTagsResponse](docs/IamServiceListUserTagsResponse.md)
  - [IamServiceListUserTagsResponseListUserTagsResult](docs/IamServiceListUserTagsResponseListUserTagsResult.md)
  - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
  - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
  - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
+ - [IamServiceProviderControllerProcessCreateServiceProviderRequest](docs/IamServiceProviderControllerProcessCreateServiceProviderRequest.md)
+ - [IamServiceProviderControllerProcessUpdateServiceProviderRequest](docs/IamServiceProviderControllerProcessUpdateServiceProviderRequest.md)
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
+ - [IamServiceUpdateSAMLProviderResponse](docs/IamServiceUpdateSAMLProviderResponse.md)
  - [IamTagKey](docs/IamTagKey.md)
  - [IamTagKeyValue](docs/IamTagKeyValue.md)
  - [Link](docs/Link.md)
@@ -409,6 +430,12 @@ Class | Method | HTTP request | Description
  - [ObjectVarrayServiceGetVirtualArraysResponse](docs/ObjectVarrayServiceGetVirtualArraysResponse.md)
  - [ObjectVarrayServiceUpdateVirtualArrayRequest](docs/ObjectVarrayServiceUpdateVirtualArrayRequest.md)
  - [ObjectVarrayServiceUpdateVirtualArrayResponse](docs/ObjectVarrayServiceUpdateVirtualArrayResponse.md)
+ - [ServiceProvider](docs/ServiceProvider.md)
+ - [ServiceProviderCreateResponse](docs/ServiceProviderCreateResponse.md)
+ - [ServiceProviderDeleteResponse](docs/ServiceProviderDeleteResponse.md)
+ - [ServiceProviderGetResponse](docs/ServiceProviderGetResponse.md)
+ - [ServiceProviderResult](docs/ServiceProviderResult.md)
+ - [ServiceProviderUpdateResponse](docs/ServiceProviderUpdateResponse.md)
  - [UserManagementServiceAddUserRequest](docs/UserManagementServiceAddUserRequest.md)
  - [UserManagementServiceAddUserRequestTagsInner](docs/UserManagementServiceAddUserRequestTagsInner.md)
  - [UserManagementServiceAddUserResponse](docs/UserManagementServiceAddUserResponse.md)
