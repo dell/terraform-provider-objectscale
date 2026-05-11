@@ -43,22 +43,22 @@ type SPMetadata struct {
 
 // internal raw EntityDescriptor structure used only for parsing.
 type entityDescriptor struct {
-	XMLName        xml.Name        `xml:"EntityDescriptor"`
-	EntityID       string          `xml:"entityID,attr"`
+	XMLName          xml.Name          `xml:"EntityDescriptor"`
+	EntityID         string            `xml:"entityID,attr"`
 	SPSSODescriptors []spssoDescriptor `xml:"SPSSODescriptor"`
 }
 
 type spssoDescriptor struct {
-	AuthnRequestsSigned  string                  `xml:"AuthnRequestsSigned,attr"`
-	WantAssertionsSigned string                  `xml:"WantAssertionsSigned,attr"`
-	KeyDescriptor        []keyDescriptor         `xml:"KeyDescriptor"`
-	NameIDFormats        []string                `xml:"NameIDFormat"`
-	ACS                  []assertionConsumerSvc  `xml:"AssertionConsumerService"`
+	AuthnRequestsSigned  string                 `xml:"AuthnRequestsSigned,attr"`
+	WantAssertionsSigned string                 `xml:"WantAssertionsSigned,attr"`
+	KeyDescriptor        []keyDescriptor        `xml:"KeyDescriptor"`
+	NameIDFormats        []string               `xml:"NameIDFormat"`
+	ACS                  []assertionConsumerSvc `xml:"AssertionConsumerService"`
 }
 
 type keyDescriptor struct {
-	Use      string  `xml:"use,attr"`
-	KeyInfo  keyInfo `xml:"KeyInfo"`
+	Use     string  `xml:"use,attr"`
+	KeyInfo keyInfo `xml:"KeyInfo"`
 }
 
 type keyInfo struct {

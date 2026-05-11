@@ -28,7 +28,7 @@ type fakeHTTPErr struct {
 	msg    string
 }
 
-func (e *fakeHTTPErr) Error() string  { return e.msg }
+func (e *fakeHTTPErr) Error() string   { return e.msg }
 func (e *fakeHTTPErr) HTTPStatus() int { return e.status }
 
 // U-17 — Parse error response — 400.

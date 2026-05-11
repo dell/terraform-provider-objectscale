@@ -116,11 +116,11 @@ func TestAcc_I04_ForceNewOnNameChange(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: samlProviderHCL("testacc_saml_i04_a", "ns1", samlMetadataFixture),
-				Check: resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_a"),
+				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_a"),
 			},
 			{
 				Config: samlProviderHCL("testacc_saml_i04_b", "ns1", samlMetadataFixture),
-				Check: resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_b"),
+				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_b"),
 			},
 		},
 	})

@@ -26,14 +26,14 @@ import (
 type SAMLErrorClass int
 
 const (
-	SAMLErrUnknown SAMLErrorClass = iota
-	SAMLErrBadRequest                                                  // 400
-	SAMLErrUnauthorized                                                // 401
-	SAMLErrForbidden                                                   // 403
-	SAMLErrNotFound                                                    // 404
-	SAMLErrConflict                                                    // 409
-	SAMLErrRateLimited                                                 // 429
-	SAMLErrServer                                                      // 5xx
+	SAMLErrUnknown      SAMLErrorClass = iota
+	SAMLErrBadRequest                  // 400
+	SAMLErrUnauthorized                // 401
+	SAMLErrForbidden                   // 403
+	SAMLErrNotFound                    // 404
+	SAMLErrConflict                    // 409
+	SAMLErrRateLimited                 // 429
+	SAMLErrServer                      // 5xx
 )
 
 // HTTPStatusError is the common interface implemented by manual clientgen
