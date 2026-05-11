@@ -8423,6 +8423,358 @@
 				}
 			}
 		},
+		"/ecs-service-provider": {
+			"post": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Creates a service provider using the specified attributes",
+				"description": "Creates a service provider using the specified attributes. The submitted provider element values will be\n validated. The required set of parameters are: <ul>\n      <li>java_keystore/li>\n      <li>key_alias</li>\n      <li>key_password</li>\n      <li>dns</li>",
+				"operationId": "ServiceProvider_Create",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderCreateResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:22f86:42"
+											},
+											"CreateServiceProviderResult": {
+												"service_provider": {
+													"dns": "127.0.0.1",
+													"uuid": "396dc76a-1118-4ff8-b338-c6222a4b5709",
+													"etag": "0000000000000000",
+													"java_keystore": "/u3+7QAAAAIAAAABA. . .",
+													"key_alias": "saml",
+													"key_password": "pass123",
+													"unique_id": "48eef7e9-aadc-3a01-813b-54b06abb8d80",
+													"create_time": "2020-04-16T20:06:05Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IamServiceProviderController_processCreateServiceProviderRequest"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Creates a service provider using the specified attributes",
+				"description": "Updatess a service provider using the specified attributes. The submitted provider element values will be\n validated. The optional set of parameters are: <ul>\n      <li>java_keystore/li>\n      <li>key_alias</li>\n      <li>key_password</li>\n      <li>dns</li>",
+				"operationId": "ServiceProvider_Update",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderUpdateResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:22e62:25"
+											},
+											"UpdateServiceProviderResult": {
+												"service_provider": {
+													"dns": "127.0.0.1",
+													"uuid": "a5853e0f-3d2f-4a70-b560-37ca7af41c92",
+													"etag": "0000000000000001",
+													"java_keystore": "/u3+7QAAAAIAAAABAAAAA. . .",
+													"key_alias": "saml",
+													"key_password": "pass123",
+													"unique_id": "48eef7e9-aadc-3a01-813b-54b06abb8d80",
+													"create_time": "2020-04-16T20:01:37Z",
+													"last_modified": "2020-04-16T20:02:23Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IamServiceProviderController_processUpdateServiceProviderRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Returns a service provider if it exists",
+				"description": "returns a service provider",
+				"operationId": "ServiceProvider_Get",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderGetResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:231c1:b"
+											},
+											"GetServiceProviderResult": {
+												"service_provider": {
+													"dns": "127.0.0.1",
+													"uuid": "396dc76a-1118-4ff8-b338-c6222a4b5709",
+													"etag": "0000000000000000",
+													"java_keystore": "/u3+7QAAAAIAAAABAAAAAQA. . .",
+													"key_alias": "saml",
+													"key_password": "pass123",
+													"unique_id": "48eef7e9-aadc-3a01-813b-54b06abb8d80",
+													"create_time": "2020-04-16T20:06:05Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Deletes a service provider",
+				"description": "deletes a service provider",
+				"operationId": "ServiceProvider_Delete",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Newly created service provider details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderDeleteResponse"
+								},
+								"examples": {
+									"example_1": {
+										"value": {
+											"ResponseMetadata": {
+												"RequestId": "0af9f5b8:17178fe9282:22e62:38"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ecs-service-provider/metadata": {
+			"get": {
+				"tags": [
+					"Iam Provider"
+				],
+				"summary": "Returns metadata for a service provider",
+				"description": "returns metadata for a service provider",
+				"operationId": "ServiceProvider_GetMetadata",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Metadata for a service provider",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceProviderMetadataResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/iam?Action=AddUserToGroup": {
 			"post": {
 				"tags": [
@@ -19569,6 +19921,22 @@
 					}
 				}
 			},
+			"IamServiceProviderController_processCreateServiceProviderRequest": {
+				"type": "object",
+				"properties": {
+					"service_provider": {
+						"$ref": "#/components/schemas/ServiceProvider"
+					}
+				}
+			},
+			"IamServiceProviderController_processUpdateServiceProviderRequest": {
+				"type": "object",
+				"properties": {
+					"service_provider": {
+						"$ref": "#/components/schemas/ServiceProvider"
+					}
+				}
+			},
 			"IamService_CreateAccessKeyResponse": {
 				"type": "object",
 				"properties": {
@@ -20945,6 +21313,100 @@
 						"$ref": "#/components/schemas/IamResponseMetadata"
 					}
 				}
+			},
+			"ServiceProvider": {
+				"type": "object",
+				"properties": {
+					"dns": {
+						"type": "string",
+						"description": "The base url of Service Provider for SAML ACS."
+					},
+					"uuid": {
+						"type": "string",
+						"description": "Used in the entity Id."
+					},
+					"unique_id": {
+						"type": "string",
+						"description": "The unique identifier of the keystore."
+					},
+					"etag": {
+						"type": "string",
+						"description": "The tag to be used for editing the service provider."
+					},
+					"java_keystore": {
+						"type": "string",
+						"description": "A repository of security keys and certificates."
+					},
+					"key_alias": {
+						"type": "string",
+						"description": "The unique alias used for accessing the keystore entry."
+					},
+					"key_password": {
+						"type": "string",
+						"description": "The password used for accessing the keystore entry."
+					},
+					"create_time": {
+						"type": "string",
+						"description": "The date the provider was created."
+					},
+					"last_modified": {
+						"type": "string",
+						"description": "The date the provider was last modified."
+					}
+				}
+			},
+			"ServiceProviderResult": {
+				"type": "object",
+				"properties": {
+					"service_provider": {
+						"$ref": "#/components/schemas/ServiceProvider"
+					}
+				}
+			},
+			"ServiceProviderCreateResponse": {
+				"type": "object",
+				"properties": {
+					"CreateServiceProviderResult": {
+						"$ref": "#/components/schemas/ServiceProviderResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderGetResponse": {
+				"type": "object",
+				"properties": {
+					"GetServiceProviderResult": {
+						"$ref": "#/components/schemas/ServiceProviderResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderUpdateResponse": {
+				"type": "object",
+				"properties": {
+					"UpdateServiceProviderResult": {
+						"$ref": "#/components/schemas/ServiceProviderResult"
+					},
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderDeleteResponse": {
+				"type": "object",
+				"properties": {
+					"ResponseMetadata": {
+						"$ref": "#/components/schemas/IamResponseMetadata"
+					}
+				}
+			},
+			"ServiceProviderMetadataResponse": {
+				"type": "string",
+				"description": "Raw SP metadata XML."
 			}
 		},
 		"securitySchemes": {

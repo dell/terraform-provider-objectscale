@@ -19,6 +19,7 @@ package provider
 import (
 	"context"
 
+	"terraform-provider-objectscale/internal/helper"
 	"terraform-provider-objectscale/internal/models"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -62,22 +63,23 @@ func (d *IAMServiceProviderDataSource) Schema(_ context.Context, _ datasource.Sc
 }
 
 func (d *IAMServiceProviderDataSource) Read(ctx context.Context, _ datasource.ReadRequest, resp *datasource.ReadResponse) {
-	got, _, err := d.client.GenClient.GetServiceProvider(ctx)
+	getRes, _, err := d.client.GenClient.IamProviderApi.ServiceProviderGet(ctx).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("GetServiceProvider failed", classifyDiag(err).Error())
 		return
 	}
+	sp := getRes.GetServiceProviderResult.ServiceProvider
 	state := models.IAMServiceProviderDataSourceModel{
 		ID:           types.StringValue("objectscale-sp"),
-		DNS:          types.StringValue(got.DNS),
-		UUID:         types.StringValue(got.UUID),
-		UniqueID:     types.StringValue(got.UniqueId),
-		Etag:         types.StringValue(got.Etag),
-		KeyAlias:     types.StringValue(got.KeyAlias),
-		CreateTime:   types.StringValue(got.CreateTime),
-		LastModified: types.StringValue(got.LastModified),
-		JavaKeystore: types.StringValue(got.JavaKeystore),
-		KeyPassword:  types.StringValue(got.KeyPassword),
+		DNS:          helper.TfStringNN(sp.Dns),
+		UUID:         helper.TfStringNN(sp.Uuid),
+		UniqueID:     helper.TfStringNN(sp.UniqueId),
+		Etag:         helper.TfStringNN(sp.Etag),
+		KeyAlias:     helper.TfStringNN(sp.KeyAlias),
+		CreateTime:   helper.TfStringNN(sp.CreateTime),
+		LastModified: helper.TfStringNN(sp.LastModified),
+		JavaKeystore: helper.TfStringNN(sp.JavaKeystore),
+		KeyPassword:  helper.TfStringNN(sp.KeyPassword),
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }

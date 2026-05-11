@@ -535,6 +535,141 @@ def _normalizeObjectScaleReplicationGroups(json_obj: dict) -> dict:
     return json_obj
 
 
+def _normalizeObjectScaleServiceProvider(json_obj: dict) -> dict:
+    """
+    Normalize /ecs-service-provider endpoints:
+    - Define typed response schemas (Create/Get/Update/Delete)
+    - Define a common ServiceProvider model
+    - Shorten operation IDs for cleaner generated code
+    - Define proper response for /ecs-service-provider/metadata (returns XML string)
+    """
+    schemas = json_obj["components"]["schemas"]
+
+    # Common ServiceProvider model
+    service_provider_model = {
+        "type": "object",
+        "properties": {
+            "dns": {"type": "string", "description": "The base url of Service Provider for SAML ACS."},
+            "uuid": {"type": "string", "description": "Used in the entity Id."},
+            "unique_id": {"type": "string", "description": "The unique identifier of the keystore."},
+            "etag": {"type": "string", "description": "The tag to be used for editing the service provider."},
+            "java_keystore": {"type": "string", "description": "A repository of security keys and certificates."},
+            "key_alias": {"type": "string", "description": "The unique alias used for accessing the keystore entry."},
+            "key_password": {"type": "string", "description": "The password used for accessing the keystore entry."},
+            "create_time": {"type": "string", "description": "The date the provider was created."},
+            "last_modified": {"type": "string", "description": "The date the provider was last modified."},
+        },
+    }
+    schemas["ServiceProvider"] = service_provider_model
+
+    # Inner result type (shared by Create/Get/Update)
+    schemas["ServiceProviderResult"] = {
+        "type": "object",
+        "properties": {
+            "service_provider": {"$ref": "#/components/schemas/ServiceProvider"},
+        },
+    }
+
+    # Create response
+    schemas["ServiceProviderCreateResponse"] = {
+        "type": "object",
+        "properties": {
+            "CreateServiceProviderResult": {"$ref": "#/components/schemas/ServiceProviderResult"},
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    # Get response
+    schemas["ServiceProviderGetResponse"] = {
+        "type": "object",
+        "properties": {
+            "GetServiceProviderResult": {"$ref": "#/components/schemas/ServiceProviderResult"},
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    # Update response
+    schemas["ServiceProviderUpdateResponse"] = {
+        "type": "object",
+        "properties": {
+            "UpdateServiceProviderResult": {"$ref": "#/components/schemas/ServiceProviderResult"},
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    # Delete response
+    schemas["ServiceProviderDeleteResponse"] = {
+        "type": "object",
+        "properties": {
+            "ResponseMetadata": {"$ref": "#/components/schemas/IamResponseMetadata"},
+        },
+    }
+
+    # Metadata response (raw string)
+    schemas["ServiceProviderMetadataResponse"] = {
+        "type": "string",
+        "description": "Raw SP metadata XML.",
+    }
+
+    # Normalize request body schemas to use common ServiceProvider ref
+    for req_schema_name in [
+        "IamServiceProviderController_processCreateServiceProviderRequest",
+        "IamServiceProviderController_processUpdateServiceProviderRequest",
+    ]:
+        if req_schema_name in schemas:
+            schemas[req_schema_name] = {
+                "type": "object",
+                "properties": {
+                    "service_provider": {"$ref": "#/components/schemas/ServiceProvider"},
+                },
+            }
+
+    # Shorten operation IDs and set typed response schemas
+    sp_path = "/ecs-service-provider"
+    if sp_path in json_obj["paths"]:
+        path_obj = json_obj["paths"][sp_path]
+
+        # POST = Create
+        if "post" in path_obj:
+            path_obj["post"]["operationId"] = "ServiceProvider_Create"
+            path_obj["post"]["responses"]["200"]["content"]["application/json"]["schema"] = {
+                "$ref": "#/components/schemas/ServiceProviderCreateResponse"
+            }
+
+        # GET = Get
+        if "get" in path_obj:
+            path_obj["get"]["operationId"] = "ServiceProvider_Get"
+            path_obj["get"]["responses"]["200"]["content"]["application/json"]["schema"] = {
+                "$ref": "#/components/schemas/ServiceProviderGetResponse"
+            }
+
+        # PUT = Update
+        if "put" in path_obj:
+            path_obj["put"]["operationId"] = "ServiceProvider_Update"
+            path_obj["put"]["responses"]["200"]["content"]["application/json"]["schema"] = {
+                "$ref": "#/components/schemas/ServiceProviderUpdateResponse"
+            }
+
+        # DELETE = Delete
+        if "delete" in path_obj:
+            path_obj["delete"]["operationId"] = "ServiceProvider_Delete"
+            path_obj["delete"]["responses"]["200"]["content"]["application/json"]["schema"] = {
+                "$ref": "#/components/schemas/ServiceProviderDeleteResponse"
+            }
+
+    # Metadata endpoint
+    meta_path = "/ecs-service-provider/metadata"
+    if meta_path in json_obj["paths"]:
+        path_obj = json_obj["paths"][meta_path]
+        if "get" in path_obj:
+            path_obj["get"]["operationId"] = "ServiceProvider_GetMetadata"
+            path_obj["get"]["responses"]["200"]["content"]["application/json"]["schema"] = {
+                "$ref": "#/components/schemas/ServiceProviderMetadataResponse"
+            }
+
+    return json_obj
+
+
 def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     """
     Normalize ObjectScale specific models.
@@ -550,4 +685,5 @@ def NormalizeObjectScaleModels(json_obj: dict) -> dict:
     ret = _normalizeObjectScaleStoragePools(ret)
     ret = _normalizeObjectScaleReplicationGroups(ret)
     ret = _normalizeObjectScaleIamSamlProviderResponses(ret)
+    ret = _normalizeObjectScaleServiceProvider(ret)
     return ret

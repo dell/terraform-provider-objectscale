@@ -97,24 +97,29 @@ func (r *IAMServiceProviderResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 	tflog.Debug(ctx, "creating SP config", map[string]interface{}{"dns": plan.DNS.ValueString()})
-	body := clientgen.ServiceProvider{
-		DNS:          plan.DNS.ValueString(),
-		JavaKeystore: plan.JavaKeystore.ValueString(),
-		KeyAlias:     plan.KeyAlias.ValueString(),
-		KeyPassword:  plan.KeyPassword.ValueString(),
+	body := r.buildRequestBody(&plan)
+	_, _, err := r.client.GenClient.IamProviderApi.ServiceProviderCreate(ctx).IamServiceProviderControllerProcessCreateServiceProviderRequest(body).Execute()
+	if err != nil {
+		// Singleton: if it already exists, update in place.
+		if helper.ClassifyError(err) == helper.SAMLErrConflict {
+			tflog.Info(ctx, "SP already exists, updating in place")
+			updateBody := r.buildUpdateBody(&plan)
+			if _, _, uErr := r.client.GenClient.IamProviderApi.ServiceProviderUpdate(ctx).IamServiceProviderControllerProcessUpdateServiceProviderRequest(updateBody).Execute(); uErr != nil {
+				resp.Diagnostics.AddError("UpdateServiceProvider (upsert) failed", classifyDiag(uErr).Error())
+				return
+			}
+		} else {
+			resp.Diagnostics.AddError("CreateServiceProvider failed", classifyDiag(err).Error())
+			return
+		}
 	}
-	if _, _, err := r.client.GenClient.CreateServiceProvider(ctx, body); err != nil {
-		resp.Diagnostics.AddError("CreateServiceProvider failed", classifyDiag(err).Error())
-		return
-	}
-	got, _, err := r.client.GenClient.GetServiceProvider(ctx)
+	getRes, _, err := r.client.GenClient.IamProviderApi.ServiceProviderGet(ctx).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("GetServiceProvider after create failed", classifyDiag(err).Error())
 		return
 	}
-	r.applySPToModel(got, &plan)
-	plan.ID = types.StringValue("objectscale-sp")
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	data := r.getModel(getRes, plan)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *IAMServiceProviderResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -123,7 +128,7 @@ func (r *IAMServiceProviderResource) Read(ctx context.Context, req resource.Read
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	got, _, err := r.client.GenClient.GetServiceProvider(ctx)
+	getRes, _, err := r.client.GenClient.IamProviderApi.ServiceProviderGet(ctx).Execute()
 	if err != nil {
 		if helper.IsSAMLNotFound(err) {
 			resp.State.RemoveResource(ctx)
@@ -132,9 +137,8 @@ func (r *IAMServiceProviderResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError("GetServiceProvider failed", classifyDiag(err).Error())
 		return
 	}
-	r.applySPToModel(got, &state)
-	state.ID = types.StringValue("objectscale-sp")
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	data := r.getModel(getRes, state)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *IAMServiceProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -143,28 +147,22 @@ func (r *IAMServiceProviderResource) Update(ctx context.Context, req resource.Up
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	body := clientgen.ServiceProvider{
-		DNS:          plan.DNS.ValueString(),
-		JavaKeystore: plan.JavaKeystore.ValueString(),
-		KeyAlias:     plan.KeyAlias.ValueString(),
-		KeyPassword:  plan.KeyPassword.ValueString(),
-	}
-	if _, _, err := r.client.GenClient.UpdateServiceProvider(ctx, body); err != nil {
+	body := r.buildUpdateBody(&plan)
+	if _, _, err := r.client.GenClient.IamProviderApi.ServiceProviderUpdate(ctx).IamServiceProviderControllerProcessUpdateServiceProviderRequest(body).Execute(); err != nil {
 		resp.Diagnostics.AddError("UpdateServiceProvider failed", classifyDiag(err).Error())
 		return
 	}
-	got, _, err := r.client.GenClient.GetServiceProvider(ctx)
+	getRes, _, err := r.client.GenClient.IamProviderApi.ServiceProviderGet(ctx).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("GetServiceProvider after update failed", classifyDiag(err).Error())
 		return
 	}
-	r.applySPToModel(got, &plan)
-	plan.ID = types.StringValue("objectscale-sp")
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	data := r.getModel(getRes, plan)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *IAMServiceProviderResource) Delete(ctx context.Context, _ resource.DeleteRequest, resp *resource.DeleteResponse) {
-	if _, err := r.client.GenClient.DeleteServiceProvider(ctx); err != nil && !helper.IsSAMLNotFound(err) {
+	if _, _, err := r.client.GenClient.IamProviderApi.ServiceProviderDelete(ctx).Execute(); err != nil && !helper.IsSAMLNotFound(err) {
 		resp.Diagnostics.AddError("DeleteServiceProvider failed", classifyDiag(err).Error())
 		return
 	}
@@ -175,25 +173,58 @@ func (r *IAMServiceProviderResource) ImportState(ctx context.Context, _ resource
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), "objectscale-sp")...)
 }
 
-func (r *IAMServiceProviderResource) applySPToModel(got *clientgen.ServiceProvider, m *models.IAMServiceProviderResourceModel) {
-	if got == nil {
-		return
+func (r *IAMServiceProviderResource) getModel(
+	getRes *clientgen.ServiceProviderGetResponse,
+	prior models.IAMServiceProviderResourceModel,
+) models.IAMServiceProviderResourceModel {
+	sp := getRes.GetServiceProviderResult.ServiceProvider
+	m := models.IAMServiceProviderResourceModel{
+		ID:           types.StringValue("objectscale-sp"),
+		UUID:         helper.TfStringNN(sp.Uuid),
+		UniqueID:     helper.TfStringNN(sp.UniqueId),
+		Etag:         helper.TfStringNN(sp.Etag),
+		CreateTime:   helper.TfStringNN(sp.CreateTime),
+		LastModified: helper.TfStringNN(sp.LastModified),
+		DNS:          helper.TfStringNN(sp.Dns),
+		KeyAlias:     helper.TfStringNN(sp.KeyAlias),
+		JavaKeystore: prior.JavaKeystore,
+		KeyPassword:  prior.KeyPassword,
 	}
-	m.UUID = types.StringValue(got.UUID)
-	m.UniqueID = types.StringValue(got.UniqueId)
-	m.Etag = types.StringValue(got.Etag)
-	m.CreateTime = types.StringValue(got.CreateTime)
-	m.LastModified = types.StringValue(got.LastModified)
-	if got.DNS != "" {
-		m.DNS = types.StringValue(got.DNS)
+	if sp.JavaKeystore != nil && *sp.JavaKeystore != "" {
+		m.JavaKeystore = helper.TfStringNN(sp.JavaKeystore)
 	}
-	if got.KeyAlias != "" {
-		m.KeyAlias = types.StringValue(got.KeyAlias)
+	if sp.KeyPassword != nil && *sp.KeyPassword != "" {
+		m.KeyPassword = helper.TfStringNN(sp.KeyPassword)
 	}
-	if got.JavaKeystore != "" {
-		m.JavaKeystore = types.StringValue(got.JavaKeystore)
+	return m
+}
+
+func (r *IAMServiceProviderResource) buildRequestBody(plan *models.IAMServiceProviderResourceModel) clientgen.IamServiceProviderControllerProcessCreateServiceProviderRequest {
+	dns := plan.DNS.ValueString()
+	jks := plan.JavaKeystore.ValueString()
+	alias := plan.KeyAlias.ValueString()
+	pwd := plan.KeyPassword.ValueString()
+	return clientgen.IamServiceProviderControllerProcessCreateServiceProviderRequest{
+		ServiceProvider: &clientgen.ServiceProvider{
+			Dns:          &dns,
+			JavaKeystore: &jks,
+			KeyAlias:     &alias,
+			KeyPassword:  &pwd,
+		},
 	}
-	if got.KeyPassword != "" {
-		m.KeyPassword = types.StringValue(got.KeyPassword)
+}
+
+func (r *IAMServiceProviderResource) buildUpdateBody(plan *models.IAMServiceProviderResourceModel) clientgen.IamServiceProviderControllerProcessUpdateServiceProviderRequest {
+	dns := plan.DNS.ValueString()
+	jks := plan.JavaKeystore.ValueString()
+	alias := plan.KeyAlias.ValueString()
+	pwd := plan.KeyPassword.ValueString()
+	return clientgen.IamServiceProviderControllerProcessUpdateServiceProviderRequest{
+		ServiceProvider: &clientgen.ServiceProvider{
+			Dns:          &dns,
+			JavaKeystore: &jks,
+			KeyAlias:     &alias,
+			KeyPassword:  &pwd,
+		},
 	}
 }

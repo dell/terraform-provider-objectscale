@@ -197,6 +197,11 @@ Class | Method | HTTP request | Description
 *IamApi* | [**IamServiceUpdateAssumeRolePolicy**](docs/IamApi.md#iamserviceupdateassumerolepolicy) | **Post** /iam?Action&#x3D;UpdateAssumeRolePolicy | Updates the policy that grants an IAM entity permission to assume a role.
 *IamApi* | [**IamServiceUpdateRole**](docs/IamApi.md#iamserviceupdaterole) | **Post** /iam?Action&#x3D;UpdateRole | Updates the description or maximum session duration setting of the specified IAM role.
 *IamApi* | [**IamServiceUpdateSAMLProvider**](docs/IamApi.md#iamserviceupdatesamlprovider) | **Post** /iam?Action&#x3D;UpdateSAMLProvider | Update the SAML Identity Provider.
+*IamProviderApi* | [**ServiceProviderCreate**](docs/IamProviderApi.md#serviceprovidercreate) | **Post** /ecs-service-provider | Creates a service provider using the specified attributes
+*IamProviderApi* | [**ServiceProviderDelete**](docs/IamProviderApi.md#serviceproviderdelete) | **Delete** /ecs-service-provider | Deletes a service provider
+*IamProviderApi* | [**ServiceProviderGet**](docs/IamProviderApi.md#serviceproviderget) | **Get** /ecs-service-provider | Returns a service provider if it exists
+*IamProviderApi* | [**ServiceProviderGetMetadata**](docs/IamProviderApi.md#serviceprovidergetmetadata) | **Get** /ecs-service-provider/metadata | Returns metadata for a service provider
+*IamProviderApi* | [**ServiceProviderUpdate**](docs/IamProviderApi.md#serviceproviderupdate) | **Put** /ecs-service-provider | Creates a service provider using the specified attributes
 *MgmtUserInfoApi* | [**MgmtUserInfoServiceCreateLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicecreatelocaluserinfo) | **Post** /vdc/users | Creates a local VDC user with the specified details
 *MgmtUserInfoApi* | [**MgmtUserInfoServiceDeleteLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicedeletelocaluserinfo) | **Post** /vdc/users/{userid}/deactivate | Deletes local user information for the specified user identifier
 *MgmtUserInfoApi* | [**MgmtUserInfoServiceGetLocalUserInfo**](docs/MgmtUserInfoApi.md#mgmtuserinfoservicegetlocaluserinfo) | **Get** /vdc/users/{userid} | Gets local user details for the specified user identifier
@@ -388,6 +393,8 @@ Class | Method | HTTP request | Description
  - [IamServiceListUsersResponse](docs/IamServiceListUsersResponse.md)
  - [IamServiceListUsersResponseListUsersResult](docs/IamServiceListUsersResponseListUsersResult.md)
  - [IamServiceListUsersResponseListUsersResultUsersInner](docs/IamServiceListUsersResponseListUsersResultUsersInner.md)
+ - [IamServiceProviderControllerProcessCreateServiceProviderRequest](docs/IamServiceProviderControllerProcessCreateServiceProviderRequest.md)
+ - [IamServiceProviderControllerProcessUpdateServiceProviderRequest](docs/IamServiceProviderControllerProcessUpdateServiceProviderRequest.md)
  - [IamServiceUpdateRoleResponse](docs/IamServiceUpdateRoleResponse.md)
  - [IamServiceUpdateSAMLProviderResponse](docs/IamServiceUpdateSAMLProviderResponse.md)
  - [IamTagKey](docs/IamTagKey.md)
@@ -423,6 +430,12 @@ Class | Method | HTTP request | Description
  - [ObjectVarrayServiceGetVirtualArraysResponse](docs/ObjectVarrayServiceGetVirtualArraysResponse.md)
  - [ObjectVarrayServiceUpdateVirtualArrayRequest](docs/ObjectVarrayServiceUpdateVirtualArrayRequest.md)
  - [ObjectVarrayServiceUpdateVirtualArrayResponse](docs/ObjectVarrayServiceUpdateVirtualArrayResponse.md)
+ - [ServiceProvider](docs/ServiceProvider.md)
+ - [ServiceProviderCreateResponse](docs/ServiceProviderCreateResponse.md)
+ - [ServiceProviderDeleteResponse](docs/ServiceProviderDeleteResponse.md)
+ - [ServiceProviderGetResponse](docs/ServiceProviderGetResponse.md)
+ - [ServiceProviderResult](docs/ServiceProviderResult.md)
+ - [ServiceProviderUpdateResponse](docs/ServiceProviderUpdateResponse.md)
  - [UserManagementServiceAddUserRequest](docs/UserManagementServiceAddUserRequest.md)
  - [UserManagementServiceAddUserRequestTagsInner](docs/UserManagementServiceAddUserRequestTagsInner.md)
  - [UserManagementServiceAddUserResponse](docs/UserManagementServiceAddUserResponse.md)

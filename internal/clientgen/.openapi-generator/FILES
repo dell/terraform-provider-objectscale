@@ -3,6 +3,7 @@ api_authentication.go
 api_bucket.go
 api_data_vpool.go
 api_iam.go
+api_iam_provider.go
 api_mgmt_user_info.go
 api_namespace.go
 api_object_varray.go
@@ -15,6 +16,7 @@ docs/AuthenticationApi.md
 docs/BucketApi.md
 docs/DataVpoolApi.md
 docs/IamApi.md
+docs/IamProviderApi.md
 docs/MgmtUserInfoApi.md
 docs/NamespaceApi.md
 docs/ObjectVarrayApi.md
@@ -163,6 +165,8 @@ model_iam_service_list_user_tags_response_list_user_tags_result.go
 model_iam_service_list_users_response.go
 model_iam_service_list_users_response_list_users_result.go
 model_iam_service_list_users_response_list_users_result_users_inner.go
+model_iam_service_provider_controller_process_create_service_provider_request.go
+model_iam_service_provider_controller_process_update_service_provider_request.go
 model_iam_service_update_role_response.go
 model_iam_service_update_saml_provider_response.go
 model_iam_tag_key.go
@@ -198,6 +202,12 @@ model_object_varray_service_get_virtual_array_response.go
 model_object_varray_service_get_virtual_arrays_response.go
 model_object_varray_service_update_virtual_array_request.go
 model_object_varray_service_update_virtual_array_response.go
+model_service_provider.go
+model_service_provider_create_response.go
+model_service_provider_delete_response.go
+model_service_provider_get_response.go
+model_service_provider_result.go
+model_service_provider_update_response.go
 model_user_management_service_add_user_request.go
 model_user_management_service_add_user_request_tags_inner.go
 model_user_management_service_add_user_response.go

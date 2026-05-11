@@ -66,7 +66,7 @@ func (d *IAMServiceProviderMetadataDataSource) Schema(_ context.Context, _ datas
 }
 
 func (d *IAMServiceProviderMetadataDataSource) Read(ctx context.Context, _ datasource.ReadRequest, resp *datasource.ReadResponse) {
-	rawXML, _, err := d.client.GenClient.GetServiceProviderMetadata(ctx)
+	rawXML, _, err := d.client.GenClient.IamProviderApi.ServiceProviderGetMetadata(ctx).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError("GetServiceProviderMetadata failed", classifyDiag(err).Error())
 		return
