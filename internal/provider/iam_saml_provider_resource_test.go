@@ -54,14 +54,14 @@ const samlMetadataUpdated = `<?xml version="1.0" encoding="UTF-8"?>
 </md:EntityDescriptor>`
 const samlMetadataInvalid = `INVALID_XML not a valid <SAML metadata`
 
-func samlProviderHCL(name, ns, metadata string) string {
+func samlProviderHCL(name, metadata string) string {
 	return ProviderConfigForTesting + fmt.Sprintf(`
 resource "objectscale_iam_saml_provider" "test" {
   name                   = %q
-  namespace              = %q
+  namespace              = "ns1"
   saml_metadata_document = %q
 }
-`, name, ns, metadata)
+`, name, metadata)
 }
 
 // I-01 — Create SAML provider.
@@ -73,7 +73,7 @@ func TestAcc_I01_I02_CreateAndReadSAMLProvider(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i01", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i01", samlMetadataFixture),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i01"),
 					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "namespace", "ns1"),
@@ -95,10 +95,10 @@ func TestAcc_I03_UpdateSAMLMetadata(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i03", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i03", samlMetadataFixture),
 			},
 			{
-				Config: samlProviderHCL("testacc_saml_i03", "ns1", samlMetadataUpdated),
+				Config: samlProviderHCL("testacc_saml_i03", samlMetadataUpdated),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "saml_metadata_document", samlMetadataUpdated),
 				),
@@ -115,11 +115,11 @@ func TestAcc_I04_ForceNewOnNameChange(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i04_a", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i04_a", samlMetadataFixture),
 				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_a"),
 			},
 			{
-				Config: samlProviderHCL("testacc_saml_i04_b", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i04_b", samlMetadataFixture),
 				Check:  resource.TestCheckResourceAttr("objectscale_iam_saml_provider.test", "name", "testacc_saml_i04_b"),
 			},
 		},
@@ -134,7 +134,7 @@ func TestAcc_I05_DeleteSAMLProvider(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i05", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i05", samlMetadataFixture),
 				// implicit destroy at end of test must succeed via mock
 			},
 		},
@@ -149,7 +149,7 @@ func TestAcc_I06_ImportSAMLProvider(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i06", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i06", samlMetadataFixture),
 			},
 			{
 				ResourceName:      "objectscale_iam_saml_provider.test",
@@ -177,11 +177,11 @@ func TestAcc_I07_DriftDetection(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i07", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i07", samlMetadataFixture),
 			},
 			{
 				// re-applying the same config must produce no diff
-				Config:   samlProviderHCL("testacc_saml_i07", "ns1", samlMetadataFixture),
+				Config:   samlProviderHCL("testacc_saml_i07", samlMetadataFixture),
 				PlanOnly: true,
 			},
 		},
@@ -196,7 +196,7 @@ func TestAcc_I08_InvalidMetadata(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      samlProviderHCL("testacc_saml_i08", "ns1", samlMetadataInvalid),
+				Config:      samlProviderHCL("testacc_saml_i08", samlMetadataInvalid),
 				ExpectError: regexp.MustCompile(`(?i)validation|MalformedSAMLMetadataDocument|400`),
 			},
 		},
@@ -247,7 +247,7 @@ func TestAcc_I10_DeleteAlreadyDeleted(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: samlProviderHCL("testacc_saml_i10", "ns1", samlMetadataFixture),
+				Config: samlProviderHCL("testacc_saml_i10", samlMetadataFixture),
 			},
 		},
 	})

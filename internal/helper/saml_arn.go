@@ -50,7 +50,7 @@ func BuildSAMLProviderARN(namespace, name string) string {
 // type segment, or a missing name yields an error.
 func ParseSAMLProviderARN(arn string) (SAMLProviderARN, error) {
 	if !strings.HasPrefix(arn, "urn:ecs:iam::") {
-		return SAMLProviderARN{}, fmt.Errorf("invalid SAML provider ARN %q: must start with urn:ecs:iam::", arn)
+		return SAMLProviderARN{}, fmt.Errorf("invalid SAML provider ARN %q: must start with urn:ecs:iam:: prefix", arn)
 	}
 	rest := strings.TrimPrefix(arn, "urn:ecs:iam::")
 	// rest is "<namespace>:saml-provider/<name>"
