@@ -1,3 +1,5 @@
+version:
+  format: "2"
 linters:
   default: none
   enable:
