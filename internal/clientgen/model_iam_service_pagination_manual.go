@@ -113,3 +113,12 @@ func (a *IamServiceListGroupPoliciesResponse) GetNextMarker() *string {
 func (o *IamServiceListGroupPoliciesResponse) GetPaginatedResp() []string {
 	return o.ListGroupPoliciesResult.PolicyNames
 }
+
+// List SAML Providers pagination helper methods
+func (a *IamServiceListSAMLProvidersResponse) GetNextMarker() *string {
+	return a.ListSAMLProvidersResult.Marker
+}
+
+func (o *IamServiceListSAMLProvidersResponse) GetPaginatedResp() []IamSamlProviderEntry {
+	return o.ListSAMLProvidersResult.SAMLProviderList
+}
