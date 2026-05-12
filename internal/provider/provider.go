@@ -149,6 +149,8 @@ func (p *ObjectScaleProvider) Resources(ctx context.Context) []func() resource.R
 		NewIAMPolicyResource,
 		NewObjectUserSecretKeyResource,
 		NewReplicationGroupResource,
+		NewVDCCertificateResource,
+		NewObjectCertificateResource,
 	}
 }
 
@@ -167,6 +169,8 @@ func (p *ObjectScaleProvider) DataSources(ctx context.Context) []func() datasour
 		NewStoragePoolDataSource,
 		NewManagementUserDataSource,
 		NewObjectUserDataSource,
+		NewVDCCertificateDataSource,
+		NewObjectCertificateDataSource,
 	}
 }
 

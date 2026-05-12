@@ -18,30 +18,37 @@ import (
 
 // Client type is to hold objectscale client.
 type Client struct {
-	GenClient *clientgen.APIClient
+	GenClient   *clientgen.APIClient
+	BaseURL     string
+	HTTPClient  *http.Client
+	AuthHeaders map[string]string
 }
 
 // NewClient returns the objectscale client.
 func NewClient(endpoint string, username string, password string, insecure bool, timeout int64) (*Client, error) {
-	genClient, err := newClientGen(context.Background(), endpoint, username, password, insecure, timeout)
+	genClient, baseURL, httpClient, authHeaders, err := newClientGen(context.Background(), endpoint, username, password, insecure, timeout)
 	if err != nil {
 		return nil, fmt.Errorf("cannot create client: %w", err)
 	}
 
 	var client = Client{
-		GenClient: genClient,
+		GenClient:   genClient,
+		BaseURL:     baseURL,
+		HTTPClient:  httpClient,
+		AuthHeaders: authHeaders,
 	}
 	return &client, nil
 }
 
 // newClientGen returns the generated objectscale client.
-func newClientGen(ctx context.Context, endpoint string, username string, password string, insecure bool, timeout int64) (*clientgen.APIClient, error) {
+func newClientGen(ctx context.Context, endpoint string, username string, password string, insecure bool, timeout int64) (*clientgen.APIClient, string, *http.Client, map[string]string, error) {
 
 	// Setup a User-Agent for your API client (replace the provider name for yours):
 	userAgent := "terraform-objectscale-provider/1.0.0"
 	jar, err := cookiejar.New(nil)
 	if err != nil {
 		tflog.Error(ctx, "Got error while creating cookie jar")
+		return nil, "", nil, nil, fmt.Errorf("error creating cookie jar: %w", err)
 	}
 
 	httpclient := &http.Client{
@@ -61,7 +68,7 @@ func newClientGen(ctx context.Context, endpoint string, username string, passwor
 		pool, err := x509.SystemCertPool()
 		if err != nil {
 			errSysCerts := errors.New("unable to initialize cert pool from system")
-			return nil, errSysCerts
+			return nil, "", nil, nil, errSysCerts
 		}
 		httpclient.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{
@@ -95,7 +102,7 @@ func newClientGen(ctx context.Context, endpoint string, username string, passwor
 
 	_, resp, err := apiClient.AuthenticationApi.AuthenticationResourceGetLoginToken(ctx).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error during login: %w", err)
+		return nil, "", nil, nil, fmt.Errorf("error during login: %w", err)
 	}
 
 	// get the X-SDS-AUTH-TOKEN header from the response
@@ -104,10 +111,15 @@ func newClientGen(ctx context.Context, endpoint string, username string, passwor
 		cfg.AddDefaultHeader("X-SDS-AUTH-TOKEN", token)
 		apiClient = clientgen.NewAPIClient(cfg)
 	} else {
-		return nil, errors.New("no token returned during login")
+		return nil, "", nil, nil, errors.New("no token returned during login")
 	}
 
-	return apiClient, nil
+	authHeaders := make(map[string]string)
+	for k, v := range cfg.DefaultHeader {
+		authHeaders[k] = v
+	}
+
+	return apiClient, url, httpclient, authHeaders, nil
 
 }
 
