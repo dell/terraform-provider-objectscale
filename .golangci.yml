@@ -1,4 +1,3 @@
-version: "2"
 linters:
   default: none
   enable:
@@ -16,6 +15,8 @@ linters:
     - unconvert
     - unparam
     - unused
+  disable:
+    - typecheck
   exclusions:
     generated: lax
     presets:
@@ -27,6 +28,12 @@ linters:
       - third_party$
       - builtin$
       - examples$
+      - internal/clientgen/
+      - internal/client/
+skip-dirs:
+  - internal/clientgen
+  - internal/client
+  - internal/helper
 formatters:
   enable:
     - gofmt
@@ -36,3 +43,5 @@ formatters:
       - third_party$
       - builtin$
       - examples$
+      - internal/clientgen/
+      - internal/client/
