@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -178,7 +178,7 @@ func (r *IAMPolicyResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	var policyDocument = jsontypes.NewNormalizedValue(IAMPolicyDataSource{}.decodeDocument(iam_policy_document.GetPolicyVersionResult.PolicyVersion.Document).ValueString())
+	var policyDocument jsontypes.Normalized = jsontypes.NewNormalizedValue(IAMPolicyDataSource{}.decodeDocument(iam_policy_document.GetPolicyVersionResult.PolicyVersion.Document).ValueString())
 
 	data := r.getModel(&clientgen.IamServiceCreatePolicyResponseCreatePolicyResultPolicy{
 		PolicyName:       iam_policy.GetPolicyResult.Policy.PolicyName,
