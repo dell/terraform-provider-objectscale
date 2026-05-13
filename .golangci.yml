@@ -1,3 +1,5 @@
+version:
+  format: 1
 output:
   format: colored-line-number
 linters:
