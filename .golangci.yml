@@ -1,5 +1,3 @@
-version:
-  format: "2"
 output:
   format: colored-line-number
 linters:
