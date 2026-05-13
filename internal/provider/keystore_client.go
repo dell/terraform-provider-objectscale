@@ -183,16 +183,16 @@ var PutObjectCertSelfSigned = func(ctx context.Context, c *client.Client, ipAddr
 	}
 
 	if statusCode == http.StatusUnauthorized {
-		return "", fmt.Errorf("Object certificate keystore: authentication failed (HTTP 401). Check credentials")
+		return "", fmt.Errorf("object certificate keystore: authentication failed (HTTP 401). Check credentials")
 	}
 
 	if errResp := parseKeystoreError(respBody); errResp != nil {
 		summary, detail := mapKeystoreError(errResp)
-		return "", fmt.Errorf("Object certificate keystore: %s - %s", summary, detail)
+		return "", fmt.Errorf("object certificate keystore: %s - %s", summary, detail)
 	}
 
 	if statusCode >= 500 {
-		return "", fmt.Errorf("Object certificate keystore: server error (HTTP %d)", statusCode)
+		return "", fmt.Errorf("object certificate keystore: server error (HTTP %d)", statusCode)
 	}
 
 	var getResp models.KeystoreGetResponse

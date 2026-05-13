@@ -45,7 +45,9 @@ func TestGetVDCKeystore_Success(t *testing.T) {
 		}
 		resp := models.KeystoreGetResponse{Chain: "-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----"}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -63,7 +65,9 @@ func TestGetVDCKeystore_Error999(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreErrorResponse{Code: 999, Description: "Insufficient permissions", Details: "No SECURITY_ADMIN role"}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -83,7 +87,9 @@ func TestPutVDCKeystore_Success(t *testing.T) {
 			t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("{}"))
+		if _, err := w.Write([]byte("{}")); err != nil {
+			t.Errorf("failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -98,7 +104,9 @@ func TestPutVDCKeystore_Error1013(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		resp := models.KeystoreErrorResponse{Code: 1013, Description: "Duplicate cert", Details: "Already deployed"}
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -119,7 +127,9 @@ func TestGetObjectCertKeystore_Success(t *testing.T) {
 		}
 		resp := models.KeystoreGetResponse{Chain: "-----BEGIN CERTIFICATE-----\nobjtest\n-----END CERTIFICATE-----"}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -139,7 +149,9 @@ func TestPutObjectCertKeystore_Success(t *testing.T) {
 			t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("{}"))
+		if _, err := w.Write([]byte("{}")); err != nil {
+			t.Errorf("failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -157,7 +169,9 @@ func TestPutObjectCertSelfSigned_Success(t *testing.T) {
 		}
 		resp := models.KeystoreGetResponse{Chain: "-----BEGIN CERTIFICATE-----\nselfsigned\n-----END CERTIFICATE-----"}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -175,7 +189,9 @@ func TestPutVDCKeystore_Error1008(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreErrorResponse{Code: 1008, Description: "Invalid format", Details: "Bad PEM"}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -225,7 +241,9 @@ func TestGetVDCKeystore_EmptyChain(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreGetResponse{Chain: ""}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -307,7 +325,9 @@ func TestPutObjectCertSelfSigned_Error999(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreErrorResponse{Code: 999, Description: "Insufficient permissions", Details: "No role"}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -324,7 +344,9 @@ func TestPutObjectCertSelfSigned_Error999(t *testing.T) {
 func TestPutObjectCertSelfSigned_ServerError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("internal error"))
+		if _, err := w.Write([]byte("internal error")); err != nil {
+			t.Errorf("failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -344,12 +366,16 @@ func TestPutVDCKeystore_RetryOn500(t *testing.T) {
 		callCount++
 		if callCount < 3 {
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("server error"))
+			if _, err := w.Write([]byte("server error")); err != nil {
+				t.Errorf("failed to write response: %v", err)
+			}
 			return
 		}
 		// Third attempt succeeds
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("{}"))
+		if _, err := w.Write([]byte("{}")); err != nil {
+			t.Errorf("failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -366,7 +392,9 @@ func TestPutVDCKeystore_RetryOn500(t *testing.T) {
 func TestPutVDCKeystore_RetryExhausted(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("error"))
+		if _, err := w.Write([]byte("error")); err != nil {
+			t.Errorf("failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -383,7 +411,9 @@ func TestPutVDCKeystore_RetryExhausted(t *testing.T) {
 func TestGetVDCKeystore_BadJSON(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("not json at all"))
+		if _, err := w.Write([]byte("not json at all")); err != nil {
+			t.Errorf("failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -429,7 +459,9 @@ func TestGetObjectCertKeystore_Auth401(t *testing.T) {
 func TestGetObjectCertKeystore_Error999(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreErrorResponse{Code: 999, Description: "Permission denied", Details: "No role"}
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -443,7 +475,9 @@ func TestGetObjectCertKeystore_Error999(t *testing.T) {
 func TestGetObjectCertKeystore_EmptyChain(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreGetResponse{Chain: ""}
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -457,7 +491,9 @@ func TestGetObjectCertKeystore_EmptyChain(t *testing.T) {
 func TestPutObjectCertKeystore_Error999(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := models.KeystoreErrorResponse{Code: 999, Description: "Permission denied", Details: "No role"}
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -500,12 +536,16 @@ func TestPutObjectCertSelfSigned_FallbackReadBack(t *testing.T) {
 		if callCount == 1 {
 			// First call is the PUT - return success but no chain
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"status":"ok"}`))
+			if _, err := w.Write([]byte(`{"status":"ok"}`)); err != nil {
+				t.Errorf("failed to write response: %v", err)
+			}
 			return
 		}
 		// Second call is the GET read-back
 		resp := models.KeystoreGetResponse{Chain: "-----BEGIN CERTIFICATE-----\nreadback\n-----END CERTIFICATE-----"}
-		json.NewEncoder(w).Encode(resp)
+		if err := json.NewEncoder(w).Encode(resp); err != nil {
+			t.Errorf("failed to encode response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -526,7 +566,9 @@ func TestPutObjectCertSelfSigned_FallbackReadBackFail(t *testing.T) {
 		if callCount == 1 {
 			// PUT succeeds with empty chain in response
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"chain":""}`))
+			if _, err := w.Write([]byte(`{"chain":""}`)); err != nil {
+				t.Errorf("failed to write response: %v", err)
+			}
 			return
 		}
 		// GET read-back also fails
