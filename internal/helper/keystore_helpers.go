@@ -18,8 +18,6 @@ limitations under the License.
 package helper
 
 import (
-	"crypto/rsa"
-	"crypto/x509"
 	"encoding/pem"
 	"errors"
 	"fmt"
