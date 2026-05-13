@@ -52,21 +52,6 @@ func ValidateAndNormalizePrivateKey(pemKey string) (string, error) {
 	}
 }
 
-// convertPKCS8ToPKCS1 converts a PKCS#8 encoded RSA private key to PKCS#1 format.
-func convertPKCS8ToPKCS1(pkcs8Bytes []byte) ([]byte, error) {
-	key, err := x509.ParsePKCS8PrivateKey(pkcs8Bytes)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse PKCS#8 private key: %w", err)
-	}
-
-	rsaKey, ok := key.(*rsa.PrivateKey)
-	if !ok {
-		return nil, errors.New("PKCS#8 key is not an RSA key")
-	}
-
-	return x509.MarshalPKCS1PrivateKey(rsaKey), nil
-}
-
 // NormalizeLineEndings replaces all \r\n with \n.
 func NormalizeLineEndings(s string) string {
 	return strings.ReplaceAll(s, "\r\n", "\n")
@@ -93,7 +78,6 @@ func ValidatePEMCertificate(pemStr string) error {
 }
 
 // ValidatePEMPrivateKey validates that the given string contains a valid PEM private key in PKCS#1 format.
-// PKCS#8 keys are automatically converted to PKCS#1 format for compatibility.
 func ValidatePEMPrivateKey(pemStr string) error {
 	block, _ := pem.Decode([]byte(pemStr))
 	if block == nil {
@@ -103,8 +87,8 @@ func ValidatePEMPrivateKey(pemStr string) error {
 	case "RSA PRIVATE KEY":
 		return nil
 	case "PRIVATE KEY":
-		// PKCS#8 is acceptable - will be converted to PKCS#1 by ValidateAndNormalizePrivateKey
-		return nil
+		// PKCS#8 is not supported
+		return errors.New("PKCS#8 format is not supported. Please convert your private key to PKCS#1 (RSA PRIVATE KEY) format using: openssl rsa -in key.pem -out key-pkcs1.pem")
 	case "ENCRYPTED PRIVATE KEY":
 		return errors.New("encrypted (passphrase-protected) private keys are not supported")
 	default:
