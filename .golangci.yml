@@ -1,9 +1,5 @@
 version: "2"
-run:
-  skip-dirs:
-    - internal/clientgen
-    - internal/client
-    - internal/helper
+run:  
   timeout: 5m
 output:
   format: colored-line-number
