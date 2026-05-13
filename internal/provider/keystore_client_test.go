@@ -23,18 +23,26 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"terraform-provider-objectscale/internal/client"
+	"terraform-provider-objectscale/internal/clientgen"
 	"terraform-provider-objectscale/internal/models"
 	"testing"
 )
 
 // newTestClient creates a client.Client pointing to a test HTTP server.
 func newTestClient(server *httptest.Server) *client.Client {
-	return &client.Client{
-		BaseURL:    server.URL,
+	cfg := &clientgen.Configuration{
 		HTTPClient: server.Client(),
-		AuthHeaders: map[string]string{
+		DefaultHeader: map[string]string{
 			"X-SDS-AUTH-TOKEN": "test-token",
 		},
+		Servers: clientgen.ServerConfigurations{
+			{
+				URL: server.URL,
+			},
+		},
+	}
+	return &client.Client{
+		GenClient: clientgen.NewAPIClient(cfg),
 	}
 }
 
@@ -429,10 +437,17 @@ func TestGetVDCKeystore_BadJSON(t *testing.T) {
 
 func TestDoKeystoreRequest_ConnectionError(t *testing.T) {
 	// Use a client pointing to a non-existent server
+	cfg := &clientgen.Configuration{
+		HTTPClient:   &http.Client{Timeout: 1},
+		DefaultHeader: map[string]string{},
+		Servers: clientgen.ServerConfigurations{
+			{
+				URL: "http://127.0.0.1:1",
+			},
+		},
+	}
 	c := &client.Client{
-		BaseURL:     "http://127.0.0.1:1",
-		HTTPClient:  &http.Client{Timeout: 1},
-		AuthHeaders: map[string]string{},
+		GenClient: clientgen.NewAPIClient(cfg),
 	}
 	_, err := GetVDCKeystore(context.Background(), c)
 	if err == nil {
@@ -518,10 +533,17 @@ func TestPutObjectCertKeystore_Auth401(t *testing.T) {
 }
 
 func TestPutVDCKeystore_ConnectionError(t *testing.T) {
+	cfg := &clientgen.Configuration{
+		HTTPClient:   &http.Client{Timeout: 1},
+		DefaultHeader: map[string]string{},
+		Servers: clientgen.ServerConfigurations{
+			{
+				URL: "http://127.0.0.1:1",
+			},
+		},
+	}
 	c := &client.Client{
-		BaseURL:     "http://127.0.0.1:1",
-		HTTPClient:  &http.Client{Timeout: 1},
-		AuthHeaders: map[string]string{},
+		GenClient: clientgen.NewAPIClient(cfg),
 	}
 	err := PutVDCKeystore(context.Background(), c, "key", "chain")
 	if err == nil {
