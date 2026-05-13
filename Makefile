@@ -84,7 +84,7 @@ extract_template:
 check:
 	terraform fmt -recursive examples/
 	gofmt -s -w .
-	golangci-lint run --fix --disable typecheck --timeout 5m
+	golangci-lint run --fix --timeout 5m
 	go vet
 
 gosec:

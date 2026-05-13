@@ -1,14 +1,10 @@
-version:
-  format: "2"
+version: "2"
 run:
   skip-dirs:
     - internal/clientgen
     - internal/client
     - internal/helper
-  timeout: 5m  
-  linters:
-    disable:
-      - typecheck
+  timeout: 5m
 output:
   format: colored-line-number
 linters:
@@ -28,8 +24,6 @@ linters:
     - unconvert
     - unparam
     - unused
-  disable:
-    - typecheck
   exclusions:
     generated: lax
     presets:
