@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,10 +17,6 @@ limitations under the License.
 
 # Example: Get all VDCs
 data "objectscale_vdc" "all" {
-}
-
-# Example: Get all VDCs (federation view)
-data "objectscale_vdc" "federation" {
 }
 
 # Example: Get VDC by name
