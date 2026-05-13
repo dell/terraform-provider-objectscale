@@ -39,7 +39,8 @@ const (
 
 // doKeystoreRequest executes an HTTP request against the ObjectScale keystore API with auth headers.
 func doKeystoreRequest(ctx context.Context, c *client.Client, method, path string, body []byte) ([]byte, int, error) {
-	url := c.BaseURL + path
+	cfg := c.GenClient.GetConfig()
+	url := cfg.Servers[0].URL + path
 	var reqBody io.Reader
 	if body != nil {
 		reqBody = bytes.NewReader(body)
@@ -48,13 +49,13 @@ func doKeystoreRequest(ctx context.Context, c *client.Client, method, path strin
 	if err != nil {
 		return nil, 0, fmt.Errorf("error creating request: %w", err)
 	}
-	for k, v := range c.AuthHeaders {
+	for k, v := range cfg.DefaultHeader {
 		req.Header.Set(k, v)
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 
-	resp, err := c.HTTPClient.Do(req)
+	resp, err := cfg.HTTPClient.Do(req)
 	if err != nil {
 		return nil, 0, fmt.Errorf("error executing request: %w", err)
 	}
