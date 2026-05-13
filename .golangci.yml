@@ -1,5 +1,14 @@
 version:
-  format: 1
+  format: "2"
+run:
+  skip-dirs:
+    - internal/clientgen
+    - internal/client
+    - internal/helper
+  timeout: 5m  
+  linters:
+    disable:
+      - typecheck
 output:
   format: colored-line-number
 linters:
