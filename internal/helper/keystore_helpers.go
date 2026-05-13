@@ -28,7 +28,6 @@ import (
 
 // ValidateAndNormalizePrivateKey validates that the private key is in PKCS#1 (RSA PRIVATE KEY) PEM format
 // and normalizes line endings. ObjectScale requires PKCS#1 format.
-// PKCS#8 keys are automatically converted to PKCS#1 format for compatibility.
 func ValidateAndNormalizePrivateKey(pemKey string) (string, error) {
 	normalized := NormalizeLineEndings(pemKey)
 	block, _ := pem.Decode([]byte(normalized))
@@ -42,16 +41,8 @@ func ValidateAndNormalizePrivateKey(pemKey string) (string, error) {
 		return normalized, nil
 
 	case "PRIVATE KEY":
-		// PKCS#8 — convert to PKCS#1 automatically
-		pkcs1Bytes, err := convertPKCS8ToPKCS1(block.Bytes)
-		if err != nil {
-			return "", fmt.Errorf("failed to convert PKCS#8 to PKCS#1: %w", err)
-		}
-		pkcs1PEM := string(pem.EncodeToMemory(&pem.Block{
-			Type:  "RSA PRIVATE KEY",
-			Bytes: pkcs1Bytes,
-		}))
-		return NormalizeLineEndings(pkcs1PEM), nil
+		// PKCS#8 — not supported, user must convert to PKCS#1
+		return "", errors.New("PKCS#8 format is not supported. Please convert your private key to PKCS#1 (RSA PRIVATE KEY) format using: openssl rsa -in key.pem -out key-pkcs1.pem")
 
 	case "ENCRYPTED PRIVATE KEY":
 		return "", errors.New("encrypted (passphrase-protected) private keys are not supported")
