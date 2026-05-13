@@ -30,7 +30,7 @@ This data source retrieves an Dell ObjectScale IAM inline policy (JSON) for a sp
 
 ```terraform
 /*
-Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
