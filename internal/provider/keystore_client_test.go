@@ -438,7 +438,7 @@ func TestGetVDCKeystore_BadJSON(t *testing.T) {
 func TestDoKeystoreRequest_ConnectionError(t *testing.T) {
 	// Use a client pointing to a non-existent server
 	cfg := &clientgen.Configuration{
-		HTTPClient:   &http.Client{Timeout: 1},
+		HTTPClient:    &http.Client{Timeout: 1},
 		DefaultHeader: map[string]string{},
 		Servers: clientgen.ServerConfigurations{
 			{
@@ -534,7 +534,7 @@ func TestPutObjectCertKeystore_Auth401(t *testing.T) {
 
 func TestPutVDCKeystore_ConnectionError(t *testing.T) {
 	cfg := &clientgen.Configuration{
-		HTTPClient:   &http.Client{Timeout: 1},
+		HTTPClient:    &http.Client{Timeout: 1},
 		DefaultHeader: map[string]string{},
 		Servers: clientgen.ServerConfigurations{
 			{
