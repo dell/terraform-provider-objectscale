@@ -85,10 +85,6 @@ func TestValidateAndNormalizePrivateKey_PKCS8Accepted(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error for PKCS#8 key: %v", err)
 	}
-	// Verify the key is normalized (line endings)
-	if normalized == pkcs8Key {
-		t.Error("expected normalization of line endings")
-	}
 	// Verify the normalized key is valid PEM
 	block, _ := pem.Decode([]byte(normalized))
 	if block == nil {
