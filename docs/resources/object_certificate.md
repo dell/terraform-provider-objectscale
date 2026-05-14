@@ -36,7 +36,7 @@ This resource manages the Object data-plane (S3) TLS certificate on Dell ObjectS
 
 - `certificate_chain` (String) Certificate chain in PEM format. Required when `system_selfsigned` is not set. Mutually exclusive with `system_selfsigned`.
 - `ip_addresses` (List of String) List of IP addresses for self-signed certificate SANs. Only used when `system_selfsigned` is `true`.
-- `private_key` (String, Sensitive) Private key in PEM PKCS#1 format (`RSA PRIVATE KEY`). PKCS#8 keys are not supported; convert with: `openssl rsa -in key.pem -out key-pkcs1.pem`. Required when `system_selfsigned` is not set. Mutually exclusive with `system_selfsigned`.
+- `private_key` (String, Sensitive) Private key in PEM format. Supports PKCS#1 (`RSA PRIVATE KEY`) and PKCS#8 (`PRIVATE KEY`) formats. PKCS#8 is supported on OBS 4.3+, but OBS 4.1 requires PKCS#1. Convert PKCS#8 to PKCS#1 for OBS 4.1 compatibility using: `openssl rsa -in key.pem -out key-pkcs1.pem`. Required when `system_selfsigned` is not set. Mutually exclusive with `system_selfsigned`.
 - `system_selfsigned` (Boolean) Generate a self-signed certificate. Mutually exclusive with `private_key` and `certificate_chain`. Forces resource replacement.
 
 ### Read-Only

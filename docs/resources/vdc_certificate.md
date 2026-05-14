@@ -35,7 +35,7 @@ This resource manages the VDC management-plane TLS certificate on Dell ObjectSca
 ### Required
 
 - `certificate_chain` (String) Certificate chain in PEM format. Must contain at least one CERTIFICATE block.
-- `private_key` (String, Sensitive) Private key in PEM PKCS#1 format (`RSA PRIVATE KEY`). PKCS#8 keys are not supported; convert with: `openssl rsa -in key.pem -out key-pkcs1.pem`
+- `private_key` (String, Sensitive) Private key in PEM format. Supports PKCS#1 (`RSA PRIVATE KEY`) and PKCS#8 (`PRIVATE KEY`) formats. PKCS#8 is supported on OBS 4.3+, but OBS 4.1 requires PKCS#1. Convert PKCS#8 to PKCS#1 for OBS 4.1 compatibility using: `openssl rsa -in key.pem -out key-pkcs1.pem`
 
 ### Read-Only
 
