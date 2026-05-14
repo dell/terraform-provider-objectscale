@@ -93,6 +93,7 @@ func TestValidateAndNormalizePrivateKey_PKCS8Accepted(t *testing.T) {
 	block, _ := pem.Decode([]byte(normalized))
 	if block == nil {
 		t.Error("failed to decode normalized PKCS#8 key")
+		return
 	}
 	if block.Type != "PRIVATE KEY" {
 		t.Errorf("expected PRIVATE KEY block, got %s", block.Type)
@@ -199,6 +200,7 @@ func TestValidatePEMPrivateKey_PKCS8Accepted(t *testing.T) {
 	block, _ := pem.Decode([]byte(key))
 	if block == nil {
 		t.Error("failed to decode PKCS#8 key")
+		return
 	}
 	if block.Type != "PRIVATE KEY" {
 		t.Errorf("expected PRIVATE KEY block, got %s", block.Type)
