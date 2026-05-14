@@ -18,6 +18,7 @@ limitations under the License.
 package provider
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"testing"
@@ -29,7 +30,9 @@ import (
 func TestAccVDCCertificateDataSource_Read(t *testing.T) {
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	mocker := mockey.Mock(GetVDCKeystore).Return("-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----", nil).Build()
+	mocker := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return "-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----", nil
+	}).Build()
 	defer mocker.UnPatch()
 
 	resource.Test(t, resource.TestCase{
@@ -50,7 +53,9 @@ func TestAccVDCCertificateDataSource_Read(t *testing.T) {
 func TestAccVDCCertificateDataSource_ReadError(t *testing.T) {
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	mocker := mockey.Mock(GetVDCKeystore).Return("", fmt.Errorf("permission denied")).Build()
+	mocker := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return "", fmt.Errorf("permission denied")
+	}).Build()
 	defer mocker.UnPatch()
 
 	resource.Test(t, resource.TestCase{

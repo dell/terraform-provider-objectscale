@@ -18,6 +18,7 @@ limitations under the License.
 package provider
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"testing"
@@ -32,8 +33,12 @@ func TestAccObjectCertificateResource_CustomCert(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetObjectCertKeystore).Return(testCert, nil).Build()
-	putM := mockey.Mock(PutObjectCertKeystore).Return(nil).Build()
+	getM := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return testCert, nil
+	}).Build()
+	putM := mockey.Mock(PutObjectCertKeystore).To(func(ctx context.Context, c interface{}, pk, cc string) error {
+		return nil
+	}).Build()
 	defer getM.UnPatch()
 	defer putM.UnPatch()
 
@@ -61,8 +66,12 @@ func TestAccObjectCertificateResource_SelfSigned(t *testing.T) {
 	selfSignedChain := "-----BEGIN CERTIFICATE-----\nselfsigned\n-----END CERTIFICATE-----"
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetObjectCertKeystore).Return(selfSignedChain, nil).Build()
-	putM := mockey.Mock(PutObjectCertSelfSigned).Return(selfSignedChain, nil).Build()
+	getM := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return selfSignedChain, nil
+	}).Build()
+	putM := mockey.Mock(PutObjectCertSelfSigned).To(func(ctx context.Context, c interface{}, ips []string) (string, error) {
+		return selfSignedChain, nil
+	}).Build()
 	defer getM.UnPatch()
 	defer putM.UnPatch()
 
@@ -89,7 +98,9 @@ func TestAccObjectCertificateResource_SelfSigned(t *testing.T) {
 func TestAccObjectCertificateResource_SelfSignedError(t *testing.T) {
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	putM := mockey.Mock(PutObjectCertSelfSigned).Return("", fmt.Errorf("server error")).Build()
+	putM := mockey.Mock(PutObjectCertSelfSigned).To(func(ctx context.Context, c interface{}, ips []string) (string, error) {
+		return "", fmt.Errorf("server error")
+	}).Build()
 	defer putM.UnPatch()
 
 	resource.Test(t, resource.TestCase{
@@ -114,7 +125,9 @@ func TestAccObjectCertificateResource_CustomCertGetError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetObjectCertKeystore).Return("", fmt.Errorf("connection refused")).Build()
+	getM := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return "", fmt.Errorf("connection refused")
+	}).Build()
 	defer getM.UnPatch()
 
 	resource.Test(t, resource.TestCase{
@@ -141,8 +154,12 @@ func TestAccObjectCertificateResource_CustomCertPutError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetObjectCertKeystore).Return(differentCert, nil).Build()
-	putM := mockey.Mock(PutObjectCertKeystore).Return(fmt.Errorf("server error")).Build()
+	getM := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return differentCert, nil
+	}).Build()
+	putM := mockey.Mock(PutObjectCertKeystore).To(func(ctx context.Context, c interface{}, pk, cc string) error {
+		return fmt.Errorf("server error")
+	}).Build()
 	defer getM.UnPatch()
 	defer putM.UnPatch()
 
@@ -192,10 +209,13 @@ func TestAccObjectCertificateResource_ReadError(t *testing.T) {
 	selfSignedChain := "-----BEGIN CERTIFICATE-----\nselfsigned\n-----END CERTIFICATE-----"
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	putM := mockey.Mock(PutObjectCertSelfSigned).Return(selfSignedChain, nil).Build()
+	putM := mockey.Mock(PutObjectCertSelfSigned).To(func(ctx context.Context, c interface{}, ips []string) (string, error) {
+		return selfSignedChain, nil
+	}).Build()
 	defer putM.UnPatch()
-	// GetObjectCertKeystore fails — this will hit the Read path after Create
-	getM := mockey.Mock(GetObjectCertKeystore).Return("", fmt.Errorf("read error")).Build()
+	getM := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return "", fmt.Errorf("read error")
+	}).Build()
 	defer getM.UnPatch()
 
 	resource.Test(t, resource.TestCase{

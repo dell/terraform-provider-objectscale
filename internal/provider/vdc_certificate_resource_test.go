@@ -18,6 +18,7 @@ limitations under the License.
 package provider
 
 import (
+	"context"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -62,8 +63,12 @@ func TestAccVDCCertificateResource_Create(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).Return(testCert, nil).Build()
-	putM := mockey.Mock(PutVDCKeystore).Return(nil).Build()
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return testCert, nil
+	}).Build()
+	putM := mockey.Mock(PutVDCKeystore).To(func(ctx context.Context, c interface{}, pk, cc string) error {
+		return nil
+	}).Build()
 	defer getM.UnPatch()
 	defer putM.UnPatch()
 
@@ -93,7 +98,9 @@ func TestAccVDCCertificateResource_CreateGetError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).Return("", fmt.Errorf("connection refused")).Build()
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return "", fmt.Errorf("connection refused")
+	}).Build()
 	defer getM.UnPatch()
 
 	resource.Test(t, resource.TestCase{
@@ -120,8 +127,12 @@ func TestAccVDCCertificateResource_PutError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).Return(differentCert, nil).Build()
-	putM := mockey.Mock(PutVDCKeystore).Return(fmt.Errorf("server error")).Build()
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return differentCert, nil
+	}).Build()
+	putM := mockey.Mock(PutVDCKeystore).To(func(ctx context.Context, c interface{}, pk, cc string) error {
+		return fmt.Errorf("server error")
+	}).Build()
 	defer getM.UnPatch()
 	defer putM.UnPatch()
 
@@ -148,7 +159,9 @@ func TestAccVDCCertificateResource_ReadError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).Return("", fmt.Errorf("read error")).Build()
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+		return "", fmt.Errorf("read error")
+	}).Build()
 	defer getM.UnPatch()
 
 	resource.Test(t, resource.TestCase{
