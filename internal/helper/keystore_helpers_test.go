@@ -79,17 +79,23 @@ func TestValidateAndNormalizePrivateKey_PKCS1Passthrough(t *testing.T) {
 	}
 }
 
-func TestValidateAndNormalizePrivateKey_PKCS8Rejected(t *testing.T) {
+func TestValidateAndNormalizePrivateKey_PKCS8Accepted(t *testing.T) {
 	pkcs8Key := generateTestRSAKeyPKCS8()
-	_, err := ValidateAndNormalizePrivateKey(pkcs8Key)
-	if err == nil {
-		t.Fatal("expected error for PKCS#8 key")
+	normalized, err := ValidateAndNormalizePrivateKey(pkcs8Key)
+	if err != nil {
+		t.Fatalf("unexpected error for PKCS#8 key: %v", err)
 	}
-	if !strings.Contains(err.Error(), "PKCS#8") {
-		t.Errorf("expected PKCS#8 error message, got: %v", err)
+	// Verify the key is normalized (line endings)
+	if normalized == pkcs8Key {
+		t.Error("expected normalization of line endings")
 	}
-	if !strings.Contains(err.Error(), "openssl rsa") {
-		t.Error("expected conversion guidance in error message")
+	// Verify the normalized key is valid PEM
+	block, _ := pem.Decode([]byte(normalized))
+	if block == nil {
+		t.Error("failed to decode normalized PKCS#8 key")
+	}
+	if block.Type != "PRIVATE KEY" {
+		t.Errorf("expected PRIVATE KEY block, got %s", block.Type)
 	}
 }
 
@@ -183,14 +189,19 @@ func TestValidatePEMPrivateKey_Valid(t *testing.T) {
 	}
 }
 
-func TestValidatePEMPrivateKey_PKCS8Rejected(t *testing.T) {
+func TestValidatePEMPrivateKey_PKCS8Accepted(t *testing.T) {
 	key := generateTestRSAKeyPKCS8()
 	err := ValidatePEMPrivateKey(key)
-	if err == nil {
-		t.Fatal("expected error for PKCS#8 key")
+	if err != nil {
+		t.Fatalf("unexpected error for PKCS#8 key: %v", err)
 	}
-	if !strings.Contains(err.Error(), "PKCS#8") {
-		t.Errorf("expected PKCS#8 error, got: %v", err)
+	// Verify the key is valid PEM
+	block, _ := pem.Decode([]byte(key))
+	if block == nil {
+		t.Error("failed to decode PKCS#8 key")
+	}
+	if block.Type != "PRIVATE KEY" {
+		t.Errorf("expected PRIVATE KEY block, got %s", block.Type)
 	}
 }
 

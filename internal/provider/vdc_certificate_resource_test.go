@@ -32,6 +32,7 @@ import (
 
 	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"terraform-provider-objectscale/internal/client"
 )
 
 func generateTestKey() string {
@@ -63,10 +64,10 @@ func TestAccVDCCertificateResource_Create(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c *client.Client) (string, error) {
 		return testCert, nil
 	}).Build()
-	putM := mockey.Mock(PutVDCKeystore).To(func(ctx context.Context, c interface{}, pk, cc string) error {
+	putM := mockey.Mock(PutVDCKeystore).To(func(ctx context.Context, c *client.Client, pk, cc string) error {
 		return nil
 	}).Build()
 	defer getM.UnPatch()
@@ -98,7 +99,7 @@ func TestAccVDCCertificateResource_CreateGetError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c *client.Client) (string, error) {
 		return "", fmt.Errorf("connection refused")
 	}).Build()
 	defer getM.UnPatch()
@@ -127,10 +128,10 @@ func TestAccVDCCertificateResource_PutError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c *client.Client) (string, error) {
 		return differentCert, nil
 	}).Build()
-	putM := mockey.Mock(PutVDCKeystore).To(func(ctx context.Context, c interface{}, pk, cc string) error {
+	putM := mockey.Mock(PutVDCKeystore).To(func(ctx context.Context, c *client.Client, pk, cc string) error {
 		return fmt.Errorf("server error")
 	}).Build()
 	defer getM.UnPatch()
@@ -159,7 +160,7 @@ func TestAccVDCCertificateResource_ReadError(t *testing.T) {
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+	getM := mockey.Mock(GetVDCKeystore).To(func(ctx context.Context, c *client.Client) (string, error) {
 		return "", fmt.Errorf("read error")
 	}).Build()
 	defer getM.UnPatch()

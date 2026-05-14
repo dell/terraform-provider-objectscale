@@ -25,12 +25,13 @@ import (
 
 	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"terraform-provider-objectscale/internal/client"
 )
 
 func TestAccObjectCertificateDataSource_Read(t *testing.T) {
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	mocker := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+	mocker := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c *client.Client) (string, error) {
 		return "-----BEGIN CERTIFICATE-----\nobjtest\n-----END CERTIFICATE-----", nil
 	}).Build()
 	defer mocker.UnPatch()
@@ -53,7 +54,7 @@ func TestAccObjectCertificateDataSource_Read(t *testing.T) {
 func TestAccObjectCertificateDataSource_ReadError(t *testing.T) {
 	loginM := loginMocker()
 	defer loginM.UnPatch()
-	mocker := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c interface{}) (string, error) {
+	mocker := mockey.Mock(GetObjectCertKeystore).To(func(ctx context.Context, c *client.Client) (string, error) {
 		return "", fmt.Errorf("permission denied")
 	}).Build()
 	defer mocker.UnPatch()
