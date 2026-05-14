@@ -65,8 +65,8 @@ func (r *ObjectCertificateResource) Schema(ctx context.Context, req resource.Sch
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"private_key": schema.StringAttribute{
-				Description:         "Private key in PEM PKCS#1 format (RSA PRIVATE KEY). PKCS#8 keys are not supported; convert with: openssl rsa -in key.pem -out key-pkcs1.pem. Required when system_selfsigned is not set. Mutually exclusive with system_selfsigned.",
-				MarkdownDescription: "Private key in PEM PKCS#1 format (`RSA PRIVATE KEY`). PKCS#8 keys are not supported; convert with: `openssl rsa -in key.pem -out key-pkcs1.pem`. Required when `system_selfsigned` is not set. Mutually exclusive with `system_selfsigned`.",
+				Description:         "Private key in PEM format. Supports PKCS#1 (RSA PRIVATE KEY) and PKCS#8 (PRIVATE KEY) formats. PKCS#8 is supported on OBS 4.3+, but OBS 4.1 requires PKCS#1. Required when system_selfsigned is not set. Mutually exclusive with system_selfsigned.",
+				MarkdownDescription: "Private key in PEM format. Supports PKCS#1 (`RSA PRIVATE KEY`) and PKCS#8 (`PRIVATE KEY`) formats. PKCS#8 is supported on OBS 4.3+, but OBS 4.1 requires PKCS#1. Required when `system_selfsigned` is not set. Mutually exclusive with `system_selfsigned`.",
 				Optional:            true,
 				Sensitive:           true,
 			},

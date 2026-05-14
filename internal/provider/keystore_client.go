@@ -89,7 +89,7 @@ func mapKeystoreError(errResp *models.KeystoreErrorResponse) (string, string) {
 	case 1005:
 		return "Missing Required Field", fmt.Sprintf("Both private_key and certificate_chain are required. API code: %d. Details: %s", errResp.Code, errResp.Details)
 	case 1008:
-		return "Invalid Certificate or Key Format", fmt.Sprintf("Ensure valid PEM with PKCS#1 or PKCS#8 RSA key. API code: %d. Details: %s", errResp.Code, errResp.Details)
+		return "Invalid Certificate or Key Format", fmt.Sprintf("Ensure valid PEM with PKCS#1 or PKCS#8 RSA key. Note: OBS 4.1 only supports PKCS#1 format. If using PKCS#8, convert to PKCS#1 using: openssl rsa -in key.pem -out key-pkcs1.pem. API code: %d. Details: %s", errResp.Code, errResp.Details)
 	case 1013:
 		return "Certificate Already Deployed", fmt.Sprintf("The certificate chain is already active. No changes made. API code: %d. Details: %s", errResp.Code, errResp.Details)
 	default:

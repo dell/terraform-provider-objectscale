@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 	"terraform-provider-objectscale/internal/client"
+	"terraform-provider-objectscale/internal/helper"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
@@ -214,7 +215,9 @@ func (d *datasourceProviderConfig) Configure(ctx context.Context, req datasource
 
 // resourceProviderConfig defines the provider config struct.
 type resourceProviderConfig struct {
-	client *client.Client
+	client       *client.Client
+	obsVersion   helper.OBSVersion
+	pkcs8Rejected bool
 }
 
 func (r *resourceProviderConfig) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -234,4 +237,7 @@ func (r *resourceProviderConfig) Configure(ctx context.Context, req resource.Con
 		return
 	}
 	r.client = client
+	// Initialize OBS version as unknown - will be detected on first PKCS#8 operation
+	r.obsVersion = helper.OBSVersionUnknown
+	r.pkcs8Rejected = false
 }
