@@ -215,8 +215,8 @@ func (d *datasourceProviderConfig) Configure(ctx context.Context, req datasource
 
 // resourceProviderConfig defines the provider config struct.
 type resourceProviderConfig struct {
-	client       *client.Client
-	obsVersion   helper.OBSVersion
+	client        *client.Client
+	obsVersion    helper.OBSVersion
 	pkcs8Rejected bool
 }
 

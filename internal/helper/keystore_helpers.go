@@ -29,8 +29,8 @@ import (
 type OBSVersion string
 
 const (
-	OBSVersion41   OBSVersion = "4.1"
-	OBSVersion43Plus OBSVersion = "4.3+"
+	OBSVersion41      OBSVersion = "4.1"
+	OBSVersion43Plus  OBSVersion = "4.3+"
 	OBSVersionUnknown OBSVersion = "unknown"
 )
 
