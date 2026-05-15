@@ -1,4 +1,8 @@
 version: "2"
+run:  
+  timeout: 5m
+output:
+  format: colored-line-number
 linters:
   default: none
   enable:
@@ -27,6 +31,12 @@ linters:
       - third_party$
       - builtin$
       - examples$
+      - internal/clientgen/
+      - internal/client/
+skip-dirs:
+  - internal/clientgen
+  - internal/client
+  - internal/helper
 formatters:
   enable:
     - gofmt
@@ -36,3 +46,5 @@ formatters:
       - third_party$
       - builtin$
       - examples$
+      - internal/clientgen/
+      - internal/client/
