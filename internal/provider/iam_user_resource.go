@@ -225,8 +225,9 @@ func (r *IAMUserResource) getModel(
 		permissionsBoundaryArn = helper.TfStringNN(iam_user.PermissionsBoundary.PermissionsBoundaryArn)
 		permissionsBoundaryType = helper.TfStringNN(iam_user.PermissionsBoundary.PermissionsBoundaryType)
 	} else {
-		permissionsBoundaryArn = types.StringNull()
-		permissionsBoundaryType = types.StringNull()
+		// Set empty values if missing
+		permissionsBoundaryArn = types.StringValue("")
+		permissionsBoundaryType = types.StringValue("")
 	}
 	return models.IAMUserResourceModel{
 

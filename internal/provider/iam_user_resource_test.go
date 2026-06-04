@@ -73,7 +73,7 @@ func TestAccIamUserResource_NoBoundary(t *testing.T) {
 					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "name", "test_user_no_boundary"),
 					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "namespace", "ns1"),
 					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "id", userId),
-					resource.TestCheckNoResourceAttr("objectscale_iam_user.no_boundary", "permissions_boundary_arn"),
+					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "permissions_boundary_arn", ""),
 				),
 			},
 		},
