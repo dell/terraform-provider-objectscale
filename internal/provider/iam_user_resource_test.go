@@ -27,6 +27,7 @@ import (
 
 // TestAccIamUserResource_NoBoundary verifies that creating a user without permissions_boundary_arn succeeds.
 func TestAccIamUserResource_NoBoundary(t *testing.T) {
+	defer testUserTokenCleanup(t)
 	userId := "AIDTEST00NOBOUNDARY"
 	userName := "test_user_no_boundary"
 	arn := "urn:ecs:iam::ns1:user/test_user_no_boundary"
