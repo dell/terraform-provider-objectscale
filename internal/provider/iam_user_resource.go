@@ -144,7 +144,7 @@ func (r *IAMUserResource) Create(ctx context.Context, req resource.CreateRequest
 		UserName(plan.Name.ValueString()).
 		XEmcNamespace(plan.Namespace.ValueString())
 
-	if !plan.PermissionsBoundaryArn.IsNull() && plan.PermissionsBoundaryArn.ValueString() != "" {
+	if !plan.PermissionsBoundaryArn.IsNull() && !plan.PermissionsBoundaryArn.IsUnknown() && plan.PermissionsBoundaryArn.ValueString() != "" {
 		creq = creq.PermissionsBoundary(plan.PermissionsBoundaryArn.ValueString())
 	}
 
@@ -326,7 +326,7 @@ func (r *IAMUserResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 	// Update permission boundary
 
-	if !plan.PermissionsBoundaryArn.IsNull() {
+	if !plan.PermissionsBoundaryArn.IsNull() && !plan.PermissionsBoundaryArn.IsUnknown() {
 		if plan.PermissionsBoundaryArn.ValueString() == "" && state.PermissionsBoundaryArn.ValueString() != "" {
 			_, _, err := r.client.GenClient.IamApi.IamServiceDeleteUserPermissionsBoundary(ctx).
 				UserName(plan.Name.ValueString()).

@@ -16,11 +16,70 @@ limitations under the License.
 package provider
 
 import (
+	"net/http"
 	"regexp"
+	"terraform-provider-objectscale/internal/clientgen"
 	"testing"
 
+	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// TestAccIamUserResource_NoBoundary verifies that creating a user without permissions_boundary_arn succeeds.
+func TestAccIamUserResource_NoBoundary(t *testing.T) {
+	defer testUserTokenCleanup(t)
+	userId := "AIDTEST00NOBOUNDARY"
+	userName := "test_user_no_boundary"
+	arn := "urn:ecs:iam::ns1:user/test_user_no_boundary"
+	createDate := "2026-06-03T00:00:00Z"
+	path := "/"
+
+	getUserResp := &clientgen.IamServiceGetUserResponse{
+		GetUserResult: &clientgen.IamServiceGetUserResponseGetUserResult{
+			User: &clientgen.IamServiceGetUserResponseGetUserResultUser{
+				UserId:              &userId,
+				UserName:            &userName,
+				Arn:                 &arn,
+				CreateDate:          &createDate,
+				Path:                &path,
+				PermissionsBoundary: nil,
+			},
+		},
+	}
+
+	createM := mockey.Mock((*clientgen.IamApiService).IamServiceCreateUserExecute).
+		Return(&clientgen.IamServiceCreateUserResponse{}, &http.Response{StatusCode: 200}, nil).Build()
+	defer createM.UnPatch()
+
+	getM := mockey.Mock((*clientgen.IamApiService).IamServiceGetUserExecute).
+		Return(getUserResp, &http.Response{StatusCode: 200}, nil).Build()
+	defer getM.UnPatch()
+
+	deleteM := mockey.Mock((*clientgen.IamApiService).IamServiceDeleteUserExecute).
+		Return(&clientgen.BasicResponse{}, &http.Response{StatusCode: 200}, nil).Build()
+	defer deleteM.UnPatch()
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: ProviderConfigForTesting + `
+				resource "objectscale_iam_user" "no_boundary" {
+					name      = "test_user_no_boundary"
+					namespace = "ns1"
+				}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "name", "test_user_no_boundary"),
+					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "namespace", "ns1"),
+					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "id", userId),
+					resource.TestCheckResourceAttr("objectscale_iam_user.no_boundary", "permissions_boundary_arn", ""),
+				),
+			},
+		},
+	})
+}
 
 // Test to Create and Update User Resource.
 func TestAccIamUserResource(t *testing.T) {
