@@ -23,14 +23,15 @@ import (
 	"regexp"
 	"testing"
 
+	"terraform-provider-objectscale/internal/client"
+
 	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"terraform-provider-objectscale/internal/client"
 )
 
 func TestAccObjectCertificateResource_CustomCert(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
@@ -121,8 +122,8 @@ func TestAccObjectCertificateResource_SelfSignedError(t *testing.T) {
 }
 
 func TestAccObjectCertificateResource_CustomCertGetError(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
@@ -149,9 +150,9 @@ func TestAccObjectCertificateResource_CustomCertGetError(t *testing.T) {
 }
 
 func TestAccObjectCertificateResource_CustomCertPutError(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
-	differentCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
+	differentCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
@@ -182,8 +183,8 @@ func TestAccObjectCertificateResource_CustomCertPutError(t *testing.T) {
 }
 
 func TestAccObjectCertificateResource_ConflictValidation(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
