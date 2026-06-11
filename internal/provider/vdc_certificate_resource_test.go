@@ -30,28 +30,40 @@ import (
 	"testing"
 	"time"
 
+	"terraform-provider-objectscale/internal/client"
+
 	"github.com/bytedance/mockey"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"terraform-provider-objectscale/internal/client"
 )
 
-func generateTestKey() string {
-	key, _ := rsa.GenerateKey(rand.Reader, 2048)
+func generateTestKey(t *testing.T) string {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatalf("failed to generate RSA key: %v", err)
+	}
 	return string(pem.EncodeToMemory(&pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(key),
 	}))
 }
 
-func generateTestCert() string {
-	key, _ := rsa.GenerateKey(rand.Reader, 2048)
+func generateTestCert(t *testing.T) string {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatalf("failed to generate RSA key: %v", err)
+	}
 	template := x509.Certificate{
 		SerialNumber: big.NewInt(1),
 		Subject:      pkix.Name{CommonName: "test"},
 		NotBefore:    time.Now(),
 		NotAfter:     time.Now().Add(365 * 24 * time.Hour),
 	}
-	certBytes, _ := x509.CreateCertificate(rand.Reader, &template, &template, &key.PublicKey, key)
+	certBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &key.PublicKey, key)
+	if err != nil {
+		t.Fatalf("failed to create certificate: %v", err)
+	}
 	return string(pem.EncodeToMemory(&pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: certBytes,
@@ -59,8 +71,8 @@ func generateTestCert() string {
 }
 
 func TestAccVDCCertificateResource_Create(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
@@ -94,8 +106,8 @@ func TestAccVDCCertificateResource_Create(t *testing.T) {
 }
 
 func TestAccVDCCertificateResource_CreateGetError(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
@@ -122,9 +134,9 @@ func TestAccVDCCertificateResource_CreateGetError(t *testing.T) {
 }
 
 func TestAccVDCCertificateResource_PutError(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
-	differentCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
+	differentCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()
@@ -155,8 +167,8 @@ func TestAccVDCCertificateResource_PutError(t *testing.T) {
 }
 
 func TestAccVDCCertificateResource_ReadError(t *testing.T) {
-	testKey := generateTestKey()
-	testCert := generateTestCert()
+	testKey := generateTestKey(t)
+	testCert := generateTestCert(t)
 
 	loginM := loginMocker()
 	defer loginM.UnPatch()

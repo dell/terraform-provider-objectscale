@@ -30,8 +30,12 @@ import (
 )
 
 // generateTestRSAKeyPKCS1 generates a test RSA private key in PKCS#1 PEM format.
-func generateTestRSAKeyPKCS1() string {
-	key, _ := rsa.GenerateKey(rand.Reader, 2048)
+func generateTestRSAKeyPKCS1(t *testing.T) string {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatalf("failed to generate RSA key: %v", err)
+	}
 	pkcs1Bytes := x509.MarshalPKCS1PrivateKey(key)
 	block := &pem.Block{
 		Type:  "RSA PRIVATE KEY",
@@ -41,9 +45,16 @@ func generateTestRSAKeyPKCS1() string {
 }
 
 // generateTestRSAKeyPKCS8 generates a test RSA private key in PKCS#8 PEM format.
-func generateTestRSAKeyPKCS8() string {
-	key, _ := rsa.GenerateKey(rand.Reader, 2048)
-	pkcs8Bytes, _ := x509.MarshalPKCS8PrivateKey(key)
+func generateTestRSAKeyPKCS8(t *testing.T) string {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatalf("failed to generate RSA key: %v", err)
+	}
+	pkcs8Bytes, err := x509.MarshalPKCS8PrivateKey(key)
+	if err != nil {
+		t.Fatalf("failed to marshal PKCS#8 key: %v", err)
+	}
 	block := &pem.Block{
 		Type:  "PRIVATE KEY",
 		Bytes: pkcs8Bytes,
@@ -52,15 +63,22 @@ func generateTestRSAKeyPKCS8() string {
 }
 
 // generateTestCertificate generates a self-signed test certificate PEM.
-func generateTestCertificate() string {
-	key, _ := rsa.GenerateKey(rand.Reader, 2048)
+func generateTestCertificate(t *testing.T) string {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatalf("failed to generate RSA key: %v", err)
+	}
 	template := x509.Certificate{
 		SerialNumber: big.NewInt(1),
 		Subject:      pkix.Name{CommonName: "test"},
 		NotBefore:    time.Now(),
 		NotAfter:     time.Now().Add(365 * 24 * time.Hour),
 	}
-	certBytes, _ := x509.CreateCertificate(rand.Reader, &template, &template, &key.PublicKey, key)
+	certBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &key.PublicKey, key)
+	if err != nil {
+		t.Fatalf("failed to create certificate: %v", err)
+	}
 	block := &pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: certBytes,
@@ -69,7 +87,7 @@ func generateTestCertificate() string {
 }
 
 func TestValidateAndNormalizePrivateKey_PKCS1Passthrough(t *testing.T) {
-	pkcs1Key := generateTestRSAKeyPKCS1()
+	pkcs1Key := generateTestRSAKeyPKCS1(t)
 	result, err := ValidateAndNormalizePrivateKey(pkcs1Key)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -80,7 +98,7 @@ func TestValidateAndNormalizePrivateKey_PKCS1Passthrough(t *testing.T) {
 }
 
 func TestValidateAndNormalizePrivateKey_PKCS8Accepted(t *testing.T) {
-	pkcs8Key := generateTestRSAKeyPKCS8()
+	pkcs8Key := generateTestRSAKeyPKCS8(t)
 	normalized, err := ValidateAndNormalizePrivateKey(pkcs8Key)
 	if err != nil {
 		t.Fatalf("unexpected error for PKCS#8 key: %v", err)
@@ -140,7 +158,7 @@ func TestNormalizeLineEndings(t *testing.T) {
 }
 
 func TestCompareCertificateChains_Identical(t *testing.T) {
-	cert := generateTestCertificate()
+	cert := generateTestCertificate(t)
 	certCRLF := strings.ReplaceAll(cert, "\n", "\r\n")
 	if !CompareCertificateChains(cert, certCRLF) {
 		t.Error("chains should be identical after normalization")
@@ -148,15 +166,15 @@ func TestCompareCertificateChains_Identical(t *testing.T) {
 }
 
 func TestCompareCertificateChains_Different(t *testing.T) {
-	cert1 := generateTestCertificate()
-	cert2 := generateTestCertificate()
+	cert1 := generateTestCertificate(t)
+	cert2 := generateTestCertificate(t)
 	if CompareCertificateChains(cert1, cert2) {
 		t.Error("different chains should not compare as equal")
 	}
 }
 
 func TestValidatePEMCertificate_Valid(t *testing.T) {
-	cert := generateTestCertificate()
+	cert := generateTestCertificate(t)
 	if err := ValidatePEMCertificate(cert); err != nil {
 		t.Fatalf("unexpected error for valid cert: %v", err)
 	}
@@ -169,7 +187,7 @@ func TestValidatePEMCertificate_Invalid(t *testing.T) {
 }
 
 func TestValidatePEMCertificate_WrongType(t *testing.T) {
-	key := generateTestRSAKeyPKCS1()
+	key := generateTestRSAKeyPKCS1(t)
 	err := ValidatePEMCertificate(key)
 	if err == nil {
 		t.Error("expected error for non-CERTIFICATE PEM block")
@@ -180,14 +198,14 @@ func TestValidatePEMCertificate_WrongType(t *testing.T) {
 }
 
 func TestValidatePEMPrivateKey_Valid(t *testing.T) {
-	key := generateTestRSAKeyPKCS1()
+	key := generateTestRSAKeyPKCS1(t)
 	if err := ValidatePEMPrivateKey(key); err != nil {
 		t.Fatalf("unexpected error for valid key: %v", err)
 	}
 }
 
 func TestValidatePEMPrivateKey_PKCS8Accepted(t *testing.T) {
-	key := generateTestRSAKeyPKCS8()
+	key := generateTestRSAKeyPKCS8(t)
 	err := ValidatePEMPrivateKey(key)
 	if err != nil {
 		t.Fatalf("unexpected error for PKCS#8 key: %v", err)
@@ -221,7 +239,7 @@ func TestValidatePEMPrivateKey_Encrypted(t *testing.T) {
 }
 
 func TestValidatePEMPrivateKey_UnsupportedType(t *testing.T) {
-	cert := generateTestCertificate()
+	cert := generateTestCertificate(t)
 	err := ValidatePEMPrivateKey(cert)
 	if err == nil {
 		t.Error("expected error for certificate passed as key")
@@ -232,7 +250,7 @@ func TestValidatePEMPrivateKey_UnsupportedType(t *testing.T) {
 }
 
 func TestValidateAndNormalizePrivateKey_CRLFNormalized(t *testing.T) {
-	pkcs1Key := generateTestRSAKeyPKCS1()
+	pkcs1Key := generateTestRSAKeyPKCS1(t)
 	crlfKey := strings.ReplaceAll(pkcs1Key, "\n", "\r\n")
 	result, err := ValidateAndNormalizePrivateKey(crlfKey)
 	if err != nil {
@@ -244,7 +262,7 @@ func TestValidateAndNormalizePrivateKey_CRLFNormalized(t *testing.T) {
 }
 
 func TestCompareCertificateChains_WithWhitespace(t *testing.T) {
-	cert := generateTestCertificate()
+	cert := generateTestCertificate(t)
 	certWithSpaces := "\n\n" + cert + "\n\n"
 	if !CompareCertificateChains(cert, certWithSpaces) {
 		t.Error("chains should be identical after trimming")
