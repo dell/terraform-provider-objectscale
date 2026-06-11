@@ -4,7 +4,7 @@
 
 <!-- yaml-metadata-start -->
 scope_paths: ["./"]
-capture_git_sha: "66fc80e74867cb03a4ac3f13d2640505b97cfeb6"
+capture_git_sha: "adbbeab1bc6c67c7b4a7aa4ad897974c7583329a"
 status: "current"
 auto_update: false
 preview_before_apply: true
