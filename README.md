@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 
 | **Terraform Provider** | **ObjectScale Version** |         **OS**         |   **Terraform**   | **Golang** |
 |------------------------|:------------------------|:-----------------------|-------------------|------------|
-| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.3 and 1.13.5 | 1.25.6     |
+| v1.1.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.x and 1.15.x | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
 
@@ -58,6 +58,9 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [IAM Role](docs/data-sources/iam_role.md)
 * [IAM User](docs/data-sources/iam_user.md)
 * [IAM Inline Policy](docs/data-sources/iam_inline_policy.md)
+* [IAM SAML Provider](docs/data-sources/iam_saml_provider.md)
+* [IAM Service Provider](docs/data-sources/iam_service_provider.md)
+* [IAM Service Provider Metadata](docs/data-sources/iam_service_provider_metadata.md)
 
 ### Namespacing & Tenancy
 * [Namespace](docs/data-sources/namespace.md)
@@ -76,6 +79,10 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [Storage Pool](docs/data-sources/storage_pool.md)
 * [VDC](docs/data-sources/vdc.md)
 
+### Certificate Management
+* [Object Certificate](docs/data-sources/object_certificate.md)
+* [VDC Certificate](docs/data-sources/vdc_certificate.md)
+
 ## List of Resources in Terraform Provider for Dell ObjectScale
 
 ### Identity & Access Management (IAM)
@@ -87,6 +94,8 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [IAM User](docs/resources/iam_user.md)
 * [IAM User Access Key](docs/resources/iam_user_access_key.md)
 * [IAM Group Membership](docs/resources/iam_group_membership.md)
+* [IAM SAML Provider](docs/resources/iam_saml_provider.md)
+* [IAM Service Provider](docs/resources/iam_service_provider.md)
 
 ### Object Storage Containers
 * [Bucket](docs/resources/bucket.md)
@@ -95,12 +104,16 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 * [Namespace](docs/resources/namespace.md)
 
 ### User Management
-* [Object User ](docs/resources/object_user.md)
+* [Object User](docs/resources/object_user.md)
 * [Object User Secret Key](docs/resources/object_user_secret_key.md)
-* [Management User](docs/data-sources/management_user.md)
+* [Management User](docs/resources/management_user.md)
 
 ### Data Protection
 * [Replication Group](docs/resources/replication_group.md)
+
+### Certificate Management
+* [Object Certificate](docs/resources/object_certificate.md)
+* [VDC Certificate](docs/resources/vdc_certificate.md)
 
 ## Installation and execution of Terraform Provider for Dell ObjectScale
 
@@ -113,7 +126,7 @@ Create a file called `main.tf` in your workspace with the following contents
 terraform {
   required_providers {
     objectscale = { 
-      version = "1.0.0"
+      version = "1.1.0"
       source = "registry.terraform.io/dell/objectscale"
     }
   }
