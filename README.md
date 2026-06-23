@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2025 Dell Inc., or its subsidiaries. All Rights Reserved.
+Copyright (c) 2025-2026 Dell Inc., or its subsidiaries. All Rights Reserved.
 
 Licensed under the Mozilla Public License Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 
 | **Terraform Provider** | **ObjectScale Version** |         **OS**         |   **Terraform**   | **Golang** |
 |------------------------|:------------------------|:-----------------------|-------------------|------------|
-| v1.0.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.3 and 1.13.5 | 1.25.6     |
+| v1.1.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.X and 1.15.x | 1.25.6     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
 
