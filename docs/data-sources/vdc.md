@@ -102,6 +102,6 @@ Read-Only:
 - `name` (String) Name assigned to this resource in ECS (name-defined, not unique)
 - `permanently_failed` (Boolean) True if VDC is permanently failed, false otherwise
 - `remote` (Boolean) Indicates whether the resource is remote
-- `secret_keys` (String) Secret key for this VDC
+- `secret_keys` (String, Sensitive) Secret key for this VDC
 - `vdc_id` (String) VDC id
 - `vdc_name` (String) VDC name
