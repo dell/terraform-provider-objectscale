@@ -83,6 +83,7 @@ func (d *VDCDataSource) itemSchema() schema.ListNestedAttribute {
 					Description:         "Secret key for this VDC",
 					MarkdownDescription: "Secret key for this VDC",
 					Computed:            true,
+					Sensitive:           true,
 				},
 				// PermanentlyFailed types.Bool `tfsdk:"permanently_failed"`
 				"permanently_failed": schema.BoolAttribute{

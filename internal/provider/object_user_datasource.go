@@ -116,6 +116,7 @@ func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.Schema
 
 								"secret_key_1": schema.StringAttribute{
 									Computed:            true,
+									Sensitive:           true,
 									Description:         "First secret key for the object user.",
 									MarkdownDescription: "First secret key for the object user.",
 								},
@@ -144,6 +145,7 @@ func (d *ObjectUserDataSource) Schema(ctx context.Context, req datasource.Schema
 
 								"secret_key_2": schema.StringAttribute{
 									Computed:            true,
+									Sensitive:           true,
 									Description:         "Second secret key for the object user.",
 									MarkdownDescription: "Second secret key for the object user.",
 								},

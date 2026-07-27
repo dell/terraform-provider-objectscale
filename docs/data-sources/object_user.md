@@ -88,10 +88,10 @@ Read-Only:
 - `key_expiry_timestamp_2` (String) Timestamp when the second secret key expires.
 - `key_timestamp_1` (String) Timestamp when the first secret key was created.
 - `key_timestamp_2` (String) Timestamp when the second secret key was created.
-- `secret_key_1` (String) First secret key for the object user.
+- `secret_key_1` (String, Sensitive) First secret key for the object user.
 - `secret_key_1_exist` (Boolean) If the first secret key exists.
 - `secret_key_1_id` (String) ID of the first secret key.
-- `secret_key_2` (String) Second secret key for the object user.
+- `secret_key_2` (String, Sensitive) Second secret key for the object user.
 - `secret_key_2_exist` (Boolean) If the second secret key exists.
 - `secret_key_2_id` (String) ID of the second secret key.
 
