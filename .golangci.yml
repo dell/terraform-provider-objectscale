@@ -1,5 +1,4 @@
-version: "2"
-run:  
+run:
   timeout: 5m
 output:
   format: colored-line-number
@@ -33,18 +32,8 @@ linters:
       - examples$
       - internal/clientgen/
       - internal/client/
-skip-dirs:
-  - internal/clientgen
-  - internal/client
-  - internal/helper
-formatters:
-  enable:
-    - gofmt
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
-      - internal/clientgen/
-      - internal/client/
+issues:
+  exclude-dirs:
+    - internal/clientgen
+    - internal/client
+    - internal/helper
