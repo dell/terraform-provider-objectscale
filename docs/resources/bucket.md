@@ -230,7 +230,7 @@ resource "objectscale_bucket" "example_bucket" {
 - `default_object_lock_retention_days` (Number) Default object lock retention days.
 - `default_object_lock_retention_mode` (String) Default object lock retention mode.
 - `default_object_lock_retention_years` (Number) Default object lock retention years.
-- `default_retention` (Number) Default retention period in seconds.
+- `default_retention` (Number) Enable default retention for the bucket (`0` = disabled, non-zero = enabled). The retention period is controlled by `default_object_lock_retention_days` or `default_object_lock_retention_years`.
 - `enable_advanced_metadata_search` (Boolean) Enable advanced metadata search.
 - `filesystem_enabled` (Boolean) Enable filesystem access.
 - `group_acl` (Attributes Set) List of group ACLs for the bucket. (see [below for nested schema](#nestedatt--group_acl))
