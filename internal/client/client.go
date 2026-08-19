@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/cookiejar"
+	"os"
+	"strconv"
 	"strings"
 	"terraform-provider-objectscale/internal/clientgen"
 	"time"
@@ -75,12 +77,15 @@ func newClientGen(ctx context.Context, endpoint string, username string, passwor
 	url, _ := strings.CutSuffix(endpoint, "/")
 	basicAuthString := basicAuth(username, password)
 
+	// Debug mode is disabled by default for security. Enable via TF_OBJECTSCALE_DEBUG=true environment variable.
+	debug, _ := strconv.ParseBool(os.Getenv("TF_OBJECTSCALE_DEBUG"))
+
 	cfg := &clientgen.Configuration{
 		HTTPClient: httpclient,
 		// Host:          url,
 		DefaultHeader: make(map[string]string),
 		UserAgent:     userAgent,
-		Debug:         true,
+		Debug:         debug,
 		Servers: clientgen.ServerConfigurations{
 			{
 				URL:         url,
