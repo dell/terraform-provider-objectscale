@@ -3,7 +3,7 @@ module terraform-provider-objectscale
 go 1.25.4
 
 require (
-	github.com/bytedance/mockey v1.2.17
+	github.com/bytedance/mockey v1.4.6
 	github.com/hashicorp/terraform-plugin-framework v1.15.1
 	github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.18.0
