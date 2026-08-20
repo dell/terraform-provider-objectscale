@@ -38,7 +38,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -391,8 +390,8 @@ func (r *BucketResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 			},
 			"default_retention": schema.Int64Attribute{
-				Description:         "Default retention period in seconds.",
-				MarkdownDescription: "Default retention period in seconds.",
+				Description:         "Enable default retention for the bucket (0 = disabled, non-zero = enabled). The retention period is controlled by default_object_lock_retention_days or default_object_lock_retention_years.",
+				MarkdownDescription: "Enable default retention for the bucket (`0` = disabled, non-zero = enabled). The retention period is controlled by `default_object_lock_retention_days` or `default_object_lock_retention_years`.",
 				Optional:            true,
 				Computed:            true,
 			},
@@ -539,24 +538,6 @@ func (r *BucketResource) ValidateConfig(ctx context.Context, req resource.Valida
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
-	}
-
-	// Validation: if enforce_retention is true, then default_retention and retention must be the same (if both are set)
-	if !config.MinMaxGovernor.IsNull() && !config.MinMaxGovernor.IsUnknown() {
-		var minMax models.MinMaxGovernorModel
-		diags := config.MinMaxGovernor.As(ctx, &minMax, basetypes.ObjectAsOptions{})
-		resp.Diagnostics.Append(diags...)
-		if !minMax.EnforceRetention.IsNull() && minMax.EnforceRetention.ValueBool() {
-			if !config.DefaultRetention.IsNull() && !config.DefaultRetention.IsUnknown() &&
-				!config.Retention.IsNull() && !config.Retention.IsUnknown() &&
-				config.DefaultRetention.ValueInt64() != config.Retention.ValueInt64() {
-				resp.Diagnostics.AddAttributeError(
-					path.Root("default_retention"),
-					"Default Retention and Retention Mismatch",
-					"When 'enforce_retention' is true, 'default_retention' and 'retention' must be the same value.",
-				)
-			}
-		}
 	}
 
 	if !config.DefaultGroupFileReadPermission.IsNull() && config.DefaultGroupFileReadPermission.ValueBool() ||
@@ -1671,6 +1652,9 @@ func getBucketToModel(b clientgen.BucketServiceGetBucketInfoResponse) models.Buc
 		}(),
 		AuditDeleteExpiration:              helper.TfInt64(b.AuditDeleteExpiration),
 		IsObjectLockEnabled:                helper.TfBool(b.IsObjectLockEnabled),
+		DefaultObjectLockRetentionMode:     helper.TfString(b.DefaultObjectLockRetentionMode),
+		DefaultObjectLockRetentionYears:    helper.TfInt64From32(b.DefaultObjectLockRetentionYears),
+		DefaultObjectLockRetentionDays:     helper.TfInt64From32(b.DefaultObjectLockRetentionDays),
 		EnableAdvancedMetadataSearch:       helper.TfBool(b.EnableAdvancedMetadataSearch),
 		AdvancedMetadataSearchTargetName:   helper.TfString(b.AdvancedMetadataSearchTargetName),
 		AdvancedMetadataSearchTargetStream: helper.TfString(b.AdvancedMetadataSearchTargetStream),
