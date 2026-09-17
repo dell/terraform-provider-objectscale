@@ -45,7 +45,7 @@ jobs:
       - name: Check formatting
         run: |
           echo "=== Checking format..."
-          unformatted=$(gofmt -l ./...)
+          unformatted=$(gofmt -l .)
           if [ -n "$unformatted" ]; then
             echo "Formatting issues found in:"
             echo "$unformatted"
