@@ -48,7 +48,7 @@ The Terraform Provider for Dell ObjectScale is released and licensed under the M
 
 | **Terraform Provider** | **ObjectScale Version** |         **OS**         |   **Terraform**   | **Golang** |
 |------------------------|:------------------------|:-----------------------|-------------------|------------|
-| v1.1.0                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.x and 1.15.x | 1.25.6     |
+| v1.1.1                 | 4.1.x                   | RHEL 9.6, UBUNTU 22.04 | 1.14.x and 1.15.x | 1.26.0     |
 
 ## List of Data Sources in Terraform Provider for Dell ObjectScale
 
@@ -126,7 +126,7 @@ Create a file called `main.tf` in your workspace with the following contents
 terraform {
   required_providers {
     objectscale = { 
-      version = "1.1.0"
+      version = "1.1.1"
       source = "registry.terraform.io/dell/objectscale"
     }
   }
