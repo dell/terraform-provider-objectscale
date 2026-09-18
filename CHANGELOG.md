@@ -17,7 +17,7 @@ limitations under the License.
 
 # Changelog
 
-## [1.1.1] - 2026-09-18
+## [1.1.1] - 2026-09-30
 
 ### Changed
 - Updated the golangci-lint configuration and CI workflow for toolchain compatibility ([#65](https://github.com/dell/terraform-provider-objectscale/pull/65), [#70](https://github.com/dell/terraform-provider-objectscale/pull/70))
