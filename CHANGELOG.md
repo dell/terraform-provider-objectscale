@@ -17,6 +17,20 @@ limitations under the License.
 
 # Changelog
 
+## [1.1.1] - 2026-09-18
+
+### Changed
+- Updated the golangci-lint configuration and CI workflow for toolchain compatibility ([#65](https://github.com/dell/terraform-provider-objectscale/pull/65), [#70](https://github.com/dell/terraform-provider-objectscale/pull/70))
+- Marked object user and VDC secret fields as sensitive ([#66](https://github.com/dell/terraform-provider-objectscale/pull/66))
+
+### Fixed
+- Fixed object lock retention fields not being read back from the API after apply ([#68](https://github.com/dell/terraform-provider-objectscale/pull/68))
+
+### Security
+- Disabled debug logging by default and added opt-in debug logging through `TF_OBJECTSCALE_DEBUG` ([#67](https://github.com/dell/terraform-provider-objectscale/pull/67))
+- Added redaction for authorization, token, and cookie headers in debug output ([#69](https://github.com/dell/terraform-provider-objectscale/pull/69))
+- Updated Go to 1.26 and remediated vulnerable dependencies ([#70](https://github.com/dell/terraform-provider-objectscale/pull/70))
+
 ## [1.1.0] - 2026-06-23
 
 ### Added
@@ -110,5 +124,6 @@ Each release follows this structure:
 - **Fixed**: Bug fixes
 - **Security**: Security vulnerability fixes
 
+[1.1.1]: https://github.com/dell/terraform-provider-objectscale/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/dell/terraform-provider-objectscale/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/dell/terraform-provider-objectscale/releases/tag/v1.0.0
