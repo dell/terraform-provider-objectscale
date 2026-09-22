@@ -31,7 +31,7 @@ HOSTNAME=registry.terraform.io
 NAMESPACE=dell
 NAME=objectscale
 BINARY=terraform-provider-${NAME}
-VERSION?=1.1.0
+VERSION?=1.1.1
 OS_ARCH=linux_amd64
 
 OPENAPI_CMD?=java -Xmx16G -jar openapi-generator-cli-6.6.0.jar
