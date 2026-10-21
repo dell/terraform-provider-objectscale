@@ -25777,8 +25777,8 @@
                         "security": "startTlsStrict",
                         "authenticationEnabled": "true",
                         "user_security_model": {
-                          "username": "svc_npecssmtp@apac.dell.com",
-                          "password": "uhk26+aj7mb?XSFV5yZCg8nd"
+                          "username": "smtp_user@example.com",
+                          "password": "password_placeholder"
                         }
                       }
                     }
@@ -25792,8 +25792,8 @@
                         "security": "startTlsStrict",
                         "authenticationEnabled": "true",
                         "user_security_model": {
-                          "username": "svc_npecssmtp@apac.dell.com",
-                          "password": "uhk26+aj7mb?XSFV5yZCg8nd"
+                          "username": "smtp_user@example.com",
+                          "password": "password_placeholder"
                         }
                       }
                     }
