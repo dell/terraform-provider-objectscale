@@ -25772,7 +25772,7 @@
                   "example_0": {
                     "value": {
                       "smtp_server": {
-                        "server": "smtp-dev.dell.com",
+                        "server": "smtp.example.com",
                         "port": "587",
                         "security": "startTlsStrict",
                         "authenticationEnabled": "true",
@@ -25787,7 +25787,7 @@
                     "value": {
                       "smtp_server": {
                         "serverId": "urn:storageos:SmtpServer:bbdbfad6-9f8a-47c0-9125-51b480cfb054",
-                        "server": "smtp-dev.dell.com",
+                        "server": "smtp.example.com",
                         "port": "587",
                         "security": "startTlsStrict",
                         "authenticationEnabled": "true",
@@ -25879,7 +25879,7 @@
                         "authenticationEnabled": "false",
                         "port": "587",
                         "security": "startTlsAny",
-                        "server": "smtp-dev.dell.com",
+                        "server": "smtp.example.com",
                         "serverId": "urn:storageos:SmtpServer:bbdbfad6-9f8a-47c0-9125-51b480cfb054"
                       }
                     }
@@ -25950,7 +25950,7 @@
                   "example_0": {
                     "value": {
                       "smtp_server": {
-                        "server": "smtp-dev.dell.com",
+                        "server": "smtp.example.com",
                         "port": "587",
                         "security": "startTlsStrict",
                         "authenticationEnabled": "false"
@@ -26090,7 +26090,7 @@
                           "authenticationEnabled": "true",
                           "port": "25",
                           "security": "startTlsAny",
-                          "server": "smtp-outbound.dell.com",
+                          "server": "smtp.example.com",
                           "serverId": "4107778f-99ef-43ba-b121-bdd6b6487888",
                           "user_security_model": {
                             "username": "Q2hhbmdlTWU="
