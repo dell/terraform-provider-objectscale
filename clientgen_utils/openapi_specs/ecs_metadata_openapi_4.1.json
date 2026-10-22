@@ -2497,8 +2497,8 @@
                           "password": "***********",
                           "type": "GEMALTO",
                           "port": 5696,
-                          "server_id": "urn:storageos:EKMServer:80552697-a715-3515-bcc3-aaf8607024f7",
-                          "cluster_id": "52ce6785-330b-306d-b902-413c3cfc8c11",
+                          "server_id": "urn:storageos:EKMServer:00000000-0000-0000-0000-000000000000",
+                          "cluster_id": "00000000-0000-0000-0000-000000000000",
                           "fqdn_ip": "server-2",
                           "server_hostname": "server-2",
                           "certificate_authority": "-----BEGIN CERTIFICATE-----\r\nMIIDcTCCAlmgAwIBAgIJAJpaK/LOEFhaMA0GCSqGSIb3DQEBCwUAME8xCzAJBgNV\r\nBAYTAlVTMQswCQYDVQQIDAJXQTEQMA4GA1UEBwwHUmVkbW9uZDEhMB8GA1UECgwY\r\nSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMB4XDTE4MTEyNzIwMDI1MFoXDTE4MTIy\r\nODIwMDI1MFowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMRAwDgYDVQQHDAdS\r\nZWRtb25kMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0G\r\nCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCoM4akzg6b/ixUlCVkhmClKGgePiPK\r\nOJRT1snwbnDMAQWVLoeKgg37SV5KrVRCaz+lXrUJYLYmRs4KoiEXxHCIS/uXZXt7\r\n3QvBbRrLLg9ibcBtpDrWLORe+8z0a9oE6EbpHqNZMsc121KjJaMApJiwcWYyaFW7\r\nW03ISMdyI1cHOn9Ab3DGFvXdb22pMPo9Bn1pYw76UwxEo1p4BHtFXo1c8ltyQ/xi\r\n+oILPJDy99B/YtMv4LnZfCbsch8PKw0O82bfGsImcWVMc6i/B1xY0Icilq9Q/xPS\r\nWxogOHGg/8JcvV8YZwSgzZormBgX+yWtcvkBweHf+FulwckZJ8xzvzXbAgMBAAGj\r\nUDBOMB0GA1UdDgQWBBQJIyg2jpQ1CVEcUJniznxCgnN6mzAfBgNVHSMEGDAWgBQJ\r\nIyg2jpQ1CVEcUJniznxCgnN6mzAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUA\r\nA4IBAQAYkAONQY2sLHkHXdpJZ4lF8/JQlon+VWIcHNsVprRJ61GmPr5z791jgISs\r\nzerb1W6rp7NXg7O3REhictMJxDe6euEevknR7BcfaiahgiQRI8r2QiOs0V6msj/6\r\nyVDXKXlk+VNcxIqVHrO8j+CicnyGw7l5NT2+CU7bvAGg++VtWIS1l6a1EUZJY1mC\r\na/A6CMJOdwZ5rAZmDTr66awjAqKufpo+NUvIKk6mEYDsgFSEmNpFcDDksqdadtOO\r\ns1g01WflF2qcO6oVhB/wMvnfzgfgyPASa3INHD6AdNQbEkblomaNxJo2ZfhVL24N\r\nrR6OW/1Nmto3621EhWcf9/Ub2iNp\r\n-----END CERTIFICATE-----\r\n",
@@ -2568,8 +2568,8 @@
                       "password": "***********",
                       "type": "GEMALTO",
                       "port": 5696,
-                      "server_id": "urn:storageos:EKMServer:80552697-a715-3515-bcc3-aaf8607024f7",
-                      "cluster_id": "52ce6785-330b-306d-b902-413c3cfc8c11",
+                      "server_id": "urn:storageos:EKMServer:00000000-0000-0000-0000-000000000000",
+                      "cluster_id": "00000000-0000-0000-0000-000000000000",
                       "fqdn_ip": "server-2",
                       "server_hostname": "server-2",
                       "certificate_authority": "-----BEGIN CERTIFICATE-----\r\nMIIDcTCCAlmgAwIBAgIJAJpaK/LOEFhaMA0GCSqGSIb3DQEBCwUAME8xCzAJBgNV\r\nBAYTAlVTMQswCQYDVQQIDAJXQTEQMA4GA1UEBwwHUmVkbW9uZDEhMB8GA1UECgwY\r\nSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMB4XDTE4MTEyNzIwMDI1MFoXDTE4MTIy\r\nODIwMDI1MFowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMRAwDgYDVQQHDAdS\r\nZWRtb25kMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0G\r\nCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCoM4akzg6b/ixUlCVkhmClKGgePiPK\r\nOJRT1snwbnDMAQWVLoeKgg37SV5KrVRCaz+lXrUJYLYmRs4KoiEXxHCIS/uXZXt7\r\n3QvBbRrLLg9ibcBtpDrWLORe+8z0a9oE6EbpHqNZMsc121KjJaMApJiwcWYyaFW7\r\nW03ISMdyI1cHOn9Ab3DGFvXdb22pMPo9Bn1pYw76UwxEo1p4BHtFXo1c8ltyQ/xi\r\n+oILPJDy99B/YtMv4LnZfCbsch8PKw0O82bfGsImcWVMc6i/B1xY0Icilq9Q/xPS\r\nWxogOHGg/8JcvV8YZwSgzZormBgX+yWtcvkBweHf+FulwckZJ8xzvzXbAgMBAAGj\r\nUDBOMB0GA1UdDgQWBBQJIyg2jpQ1CVEcUJniznxCgnN6mzAfBgNVHSMEGDAWgBQJ\r\nIyg2jpQ1CVEcUJniznxCgnN6mzAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUA\r\nA4IBAQAYkAONQY2sLHkHXdpJZ4lF8/JQlon+VWIcHNsVprRJ61GmPr5z791jgISs\r\nzerb1W6rp7NXg7O3REhictMJxDe6euEevknR7BcfaiahgiQRI8r2QiOs0V6msj/6\r\nyVDXKXlk+VNcxIqVHrO8j+CicnyGw7l5NT2+CU7bvAGg++VtWIS1l6a1EUZJY1mC\r\na/A6CMJOdwZ5rAZmDTr66awjAqKufpo+NUvIKk6mEYDsgFSEmNpFcDDksqdadtOO\r\ns1g01WflF2qcO6oVhB/wMvnfzgfgyPASa3INHD6AdNQbEkblomaNxJo2ZfhVL24N\r\nrR6OW/1Nmto3621EhWcf9/Ub2iNp\r\n-----END CERTIFICATE-----\r\n",
@@ -25772,7 +25772,7 @@
                   "example_0": {
                     "value": {
                       "smtp_server": {
-                        "server": "smtp-dev.dell.com",
+                        "server": "smtp.example.com",
                         "port": "587",
                         "security": "startTlsStrict",
                         "authenticationEnabled": "true",
@@ -25786,8 +25786,8 @@
                   "example_1": {
                     "value": {
                       "smtp_server": {
-                        "serverId": "urn:storageos:SmtpServer:bbdbfad6-9f8a-47c0-9125-51b480cfb054",
-                        "server": "smtp-dev.dell.com",
+                        "serverId": "urn:storageos:SmtpServer:00000000-0000-0000-0000-000000000000",
+                        "server": "smtp.example.com",
                         "port": "587",
                         "security": "startTlsStrict",
                         "authenticationEnabled": "true",
@@ -25879,8 +25879,8 @@
                         "authenticationEnabled": "false",
                         "port": "587",
                         "security": "startTlsAny",
-                        "server": "smtp-dev.dell.com",
-                        "serverId": "urn:storageos:SmtpServer:bbdbfad6-9f8a-47c0-9125-51b480cfb054"
+                        "server": "smtp.example.com",
+                        "serverId": "urn:storageos:SmtpServer:00000000-0000-0000-0000-000000000000"
                       }
                     }
                   }
@@ -25950,7 +25950,7 @@
                   "example_0": {
                     "value": {
                       "smtp_server": {
-                        "server": "smtp-dev.dell.com",
+                        "server": "smtp.example.com",
                         "port": "587",
                         "security": "startTlsStrict",
                         "authenticationEnabled": "false"
@@ -26090,8 +26090,8 @@
                           "authenticationEnabled": "true",
                           "port": "25",
                           "security": "startTlsAny",
-                          "server": "smtp-outbound.dell.com",
-                          "serverId": "4107778f-99ef-43ba-b121-bdd6b6487888",
+                          "server": "smtp.example.com",
+                          "serverId": "00000000-0000-0000-0000-000000000000",
                           "user_security_model": {
                             "username": "Q2hhbmdlTWU="
                           }
@@ -26168,7 +26168,7 @@
                   "example_1": {
                     "value": {
                       "smtp_target": {
-                        "targetId": "urn:storageos:SmtpTarget:6ccf7f6f-766d-4a1c-8c14-7c759446add6",
+                        "targetId": "urn:storageos:SmtpTarget:00000000-0000-0000-0000-000000000000",
                         "sender": "donotreply@dell.com",
                         "recipientList": {
                           "recipient": "firstname.lastname@dell.com"
@@ -26260,7 +26260,7 @@
                         },
                         "sender": "firstname.lastname@dell.com",
                         "severity": "Critical",
-                        "targetId": "urn:storageos:SmtpTarget:6ccf7f6f-766d-4a1c-8c14-7c759446add6"
+                        "targetId": "urn:storageos:SmtpTarget:00000000-0000-0000-0000-000000000000"
                       }
                     }
                   }
@@ -26478,7 +26478,7 @@
                             },
                             "sender": "firstname.lastname@dell.com",
                             "severity": "Critical",
-                            "targetId": "urn:storageos:SmtpTarget:6ccf7f6f-766d-4a1c-8c14-7c759446add6"
+                            "targetId": "urn:storageos:SmtpTarget:00000000-0000-0000-0000-000000000000"
                           },
                           {
                             "recipientList": {
@@ -26489,7 +26489,7 @@
                             },
                             "sender": "firstname2.lastname2@dell.com",
                             "severity": "Critical",
-                            "targetId": "urn:storageos:SmtpTarget:b948ca10-53ff-4a93-846b-b3d623c4b6ae"
+                            "targetId": "urn:storageos:SmtpTarget:00000000-0000-0000-0000-000000000001"
                           }
                         ]
                       }
